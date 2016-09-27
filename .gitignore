@@ -1,0 +1,23 @@
+# Compiled Object files
+Debug/
+Release/
+Tuning/
+*.lib
+*.obj
+
+# Work files
+*.ini
+*.dmp
+*.suo
+*.dmp
+*.db
+*.opendb
+
+# Binary files
+*.m88
+*.exe
+*.rom
+*.ROM
+*.WAV
+*.d88
+*.D88
