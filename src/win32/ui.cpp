@@ -33,6 +33,8 @@ extern char m88ini[MAX_PATH];
 
 using namespace PC8801;
 
+// TODO: Remove this
+WinUI* g_ui;
 
 // ---------------------------------------------------------------------------
 //	WinUI 
@@ -41,7 +43,7 @@ using namespace PC8801;
 WinUI::WinUI(HINSTANCE hinstance)
 : hinst(hinstance), diskmgr(0), tapemgr(0)
 {
-	winproc.SetDestination((void*)(WinProcGate), (void*) this);
+	g_ui = this;
 	timerid = 0;
 	point.x = point.y = 0;
 //	resizewindow = 0;
@@ -174,7 +176,7 @@ bool WinUI::InitWindow(int nwinmode)
  
 	wcl.hInstance = hinst;
 	wcl.lpszClassName = szwinname;
-	wcl.lpfnWndProc = WNDPROC((void*)(winproc));
+	wcl.lpfnWndProc = WNDPROC((void*)(WinProcGate));
 	wcl.style = 0;
 	wcl.hIcon = LoadIcon(hinst, MAKEINTRESOURCE(IDI_ICON_M88));
 	wcl.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -322,9 +324,9 @@ LRESULT WinUI::WinProc(HWND hwnd, UINT umsg, WPARAM wp, LPARAM lp)
 	return ret;
 }
 
-LRESULT CALLBACK WinUI::WinProcGate(WinUI* ui, HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK WinUI::WinProcGate(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-	return ui->WinProc(hwnd, umsg, wparam, lparam);
+	return g_ui->WinProc(hwnd, umsg, wparam, lparam);
 }
 
 // ---------------------------------------------------------------------------

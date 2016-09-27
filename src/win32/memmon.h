@@ -28,9 +28,9 @@ public:
 	bool Init(WinCore*); 
 
 private:
-	BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
-	BOOL EDlgProc(HWND, UINT, WPARAM, LPARAM);
-	static BOOL CALLBACK EDlgProcGate(MemoryMonitor*, HWND, UINT, WPARAM, LPARAM);
+	INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
+	INT_PTR EDlgProc(HWND, UINT, WPARAM, LPARAM);
+	static INT_PTR CALLBACK EDlgProcGate(HWND, UINT, WPARAM, LPARAM);
 
 	static uint MEMCALL MemRead(void* p, uint a);
 	static void MEMCALL MemWrite(void* p, uint a, uint d);
@@ -48,7 +48,6 @@ private:
 
 	void SetBank();
 
-	InstanceThunk edlgproc;
 	WinCore* core;
 	IMemoryManager* mm;
 	IGetMemoryBank* gmb;

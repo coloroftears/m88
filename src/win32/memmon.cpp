@@ -26,7 +26,6 @@ COLORREF MemoryMonitor::col[0x100] = { 0 };
 //
 MemoryMonitor::MemoryMonitor()
 {
-	edlgproc.SetDestination(EDlgProcGate, this);
 	mid = -1;
 	mm = 0;
 
@@ -263,8 +262,8 @@ BOOL MemoryMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 				editaddr = (GetLine() + p.y) * 16 + (p.x - 6) / 3;
 				if (editaddr < 0x10000)
 				{
-					DialogBox(GetHInst(), MAKEINTRESOURCE(IDD_MEMORY_EDIT), 
-								hdlg, DLGPROC((void*) edlgproc));
+					DialogBoxParam(GetHInst(), MAKEINTRESOURCE(IDD_MEMORY_EDIT), 
+								hdlg, DLGPROC((void*)EDlgProcGate), (LPARAM)this);
 				}
 			}
 		}
@@ -412,7 +411,7 @@ bool MemoryMonitor::SaveImage()
 // ---------------------------------------------------------------------------
 //	内容書き換えダイアログ表示
 //
-BOOL MemoryMonitor::EDlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
+INT_PTR MemoryMonitor::EDlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 {
 	char buf[16];
 	switch (msg)
@@ -452,9 +451,19 @@ BOOL MemoryMonitor::EDlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 	}
 }
 
-BOOL CALLBACK MemoryMonitor::EDlgProcGate
-(MemoryMonitor* about, HWND hwnd, UINT m, WPARAM w, LPARAM l)
+INT_PTR CALLBACK MemoryMonitor::EDlgProcGate
+(HWND hwnd, UINT m, WPARAM w, LPARAM l)
 {
-	return about->EDlgProc(hwnd, m, w, l);
+	MemoryMonitor* monitor = nullptr;
+	if (m == WM_INITDIALOG) {
+		if (monitor = reinterpret_cast<MemoryMonitor*>(l))
+			::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)monitor);
+	}
+	else {
+		monitor = (MemoryMonitor*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
+	}
+	if (!monitor)
+		return FALSE;
+	return monitor->EDlgProc(hwnd, m, w, l);
 }
 

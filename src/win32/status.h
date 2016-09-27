@@ -8,7 +8,6 @@
 #define win32_status_h
 
 #include "types.h"
-#include "instthnk.h"
 #include "critsect.h"
 
 class StatusDisplay
@@ -55,7 +54,6 @@ private:
 	HWND hwnd;
 	HWND hwndparent;
 	List* list;
-	InstanceThunk timerproc;
 	uint timerid;
 	CriticalSection cs;
 	Border border;

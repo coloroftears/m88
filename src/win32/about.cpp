@@ -17,8 +17,6 @@
 //
 M88About::M88About()
 {
-	dlgproc.SetDestination(DlgProcGate, this);
-	
 	SanityCheck(&crc);
 }
 
@@ -27,14 +25,14 @@ M88About::M88About()
 //
 void M88About::Show(HINSTANCE hinst, HWND hwndparent)
 {
-	DialogBox(hinst, MAKEINTRESOURCE(IDD_ABOUT), 
-				hwndparent, DLGPROC((void*) dlgproc)); 
+	DialogBoxParam(hinst, MAKEINTRESOURCE(IDD_ABOUT),
+                   hwndparent, DLGPROC(DlgProcGate), LPARAM(this)); 
 }
 
 // ---------------------------------------------------------------------------
 //	ダイアログ処理
 //
-BOOL M88About::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
+INT_PTR M88About::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 {
 	char buf[4096];
 	
@@ -72,9 +70,19 @@ BOOL M88About::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 	return false;
 }
 
-BOOL CALLBACK M88About::DlgProcGate
-(M88About* about, HWND hwnd, UINT m, WPARAM w, LPARAM l)
+// static
+INT_PTR M88About::DlgProcGate
+(HWND hwnd, UINT m, WPARAM w, LPARAM l)
 {
+	M88About* about = nullptr;
+	if (m == WM_INITDIALOG) {
+		if (about = reinterpret_cast<M88About*>(l))
+			::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)about);
+	} else {
+		about = (M88About*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
+	}
+	if (!about)
+		return FALSE;
 	return about->DlgProc(hwnd, m, w, l);
 }
 
@@ -82,7 +90,7 @@ BOOL CALLBACK M88About::DlgProcGate
 //	about 用のテキスト
 //
 const char M88About::abouttext[] =
-	"build date:"__DATE__" (%.8x)\r\n"
+	"build date:" __DATE__" (%.8x)\r\n"
 	"\r\n"
 	"感想・要望・バグ報告などは M88 のページ\r\n"
 	"http://www.retropc.net/cisc/m88/\r\n"

@@ -362,7 +362,7 @@ void OPNIF::UpdateTimer()
 {
 	scheduler->DelEvent(this);
 	nextcount = opn.GetNextEvent();
-	if (nextcount)
+	if (nextcount > 0)
 	{
 		nextcount = (nextcount+9) / 10;
 		scheduler->AddEvent(nextcount, this, STATIC_CAST(TimeFunc, &OPNIF::TimeEvent), 1);

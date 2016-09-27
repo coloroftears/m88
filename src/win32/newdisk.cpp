@@ -15,7 +15,6 @@
 //
 WinNewDisk::WinNewDisk()
 {
-	dlgproc.SetDestination(DlgProcGate, this);
 	info.title[0] = 0;
 }
 
@@ -27,14 +26,14 @@ bool WinNewDisk::Show(HINSTANCE hinst, HWND hwndparent)
 	info.title[0] = 0;
 	info.type = MD2D;
 	info.basicformat = 0;
-	return DialogBox(hinst, MAKEINTRESOURCE(IDD_NEWDISK), 
-				hwndparent, DLGPROC((void*) dlgproc)) > 0; 
+	return DialogBoxParam(hinst, MAKEINTRESOURCE(IDD_NEWDISK), 
+				hwndparent, DLGPROC((void*)DlgProcGate), (LPARAM)this) > 0; 
 }
 
 // ---------------------------------------------------------------------------
 //	ダイアログ処理
 //
-BOOL WinNewDisk::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
+INT_PTR WinNewDisk::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 {
 	switch (msg)
 	{
@@ -76,8 +75,18 @@ BOOL WinNewDisk::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp)
 	}
 }
 
-BOOL CALLBACK WinNewDisk::DlgProcGate
-(WinNewDisk* about, HWND hwnd, UINT m, WPARAM w, LPARAM l)
+INT_PTR CALLBACK WinNewDisk::DlgProcGate
+(HWND hwnd, UINT m, WPARAM w, LPARAM l)
 {
-	return about->DlgProc(hwnd, m, w, l);
+	WinNewDisk* newdisk = nullptr;
+	if (m == WM_INITDIALOG) {
+		if (newdisk = reinterpret_cast<WinNewDisk*>(l))
+			::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)newdisk);
+	}
+	else {
+		newdisk = (WinNewDisk*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
+	}
+	if (!newdisk)
+		return FALSE;
+	return newdisk->DlgProc(hwnd, m, w, l);
 }

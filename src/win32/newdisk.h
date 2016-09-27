@@ -10,7 +10,6 @@
 #define WIN32_NEWDISK_H
 
 #include "types.h"
-#include "instthnk.h"
 
 // ---------------------------------------------------------------------------
 
@@ -38,10 +37,9 @@ public:
 	};
 
 private:
-	BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
-	static BOOL CALLBACK DlgProcGate(WinNewDisk*, HWND, UINT, WPARAM, LPARAM);
+	INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
+	static INT_PTR CALLBACK DlgProcGate(HWND, UINT, WPARAM, LPARAM);
 	
-	InstanceThunk dlgproc;
 	DiskInfo info;
 };
 

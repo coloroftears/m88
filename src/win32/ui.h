@@ -10,7 +10,6 @@
 #define win_ui_h
 
 #include "types.h"
-#include "instthnk.h"
 #include "wincore.h"
 #include "WinDraw.h"
 #include "WinKeyIF.h"
@@ -57,7 +56,7 @@ private:
 	bool InitM88(const char* cmdline);
 	void CleanupM88();
 	LRESULT WinProc(HWND, UINT, WPARAM, LPARAM);
-	static LRESULT CALLBACK WinProcGate(WinUI*, HWND, UINT, WPARAM, LPARAM);
+	static LRESULT CALLBACK WinProcGate(HWND, UINT, WPARAM, LPARAM);
 	void ReportError();
 	void Reset();
 
@@ -90,7 +89,6 @@ private:
 	void FreeControlID(int);
 
 	// ウインドウ関係
-	InstanceThunk winproc;
 	HWND hwnd;
 	HINSTANCE hinst;
 	HACCEL accel;

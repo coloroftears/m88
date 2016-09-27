@@ -8,6 +8,8 @@
 #ifndef WIN_HEADERS_H
 #define WIN_HEADERS_H
 
+#pragma warning(disable: 4867)
+
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 
