@@ -1349,16 +1349,16 @@ const Device::Descriptor FDC::descriptor = { indef, outdef };
 
 const Device::OutFuncPtr FDC::outdef[] = 
 {
-	STATIC_CAST(Device::OutFuncPtr, Reset),
-	STATIC_CAST(Device::OutFuncPtr, SetData),
-	STATIC_CAST(Device::OutFuncPtr, DriveControl),
-	STATIC_CAST(Device::OutFuncPtr, MotorControl)
+	STATIC_CAST(Device::OutFuncPtr, &FDC::Reset),
+	STATIC_CAST(Device::OutFuncPtr, &FDC::SetData),
+	STATIC_CAST(Device::OutFuncPtr, &FDC::DriveControl),
+	STATIC_CAST(Device::OutFuncPtr, &FDC::MotorControl)
 };
 
 const Device::InFuncPtr FDC::indef[] = 
 {
-	STATIC_CAST(Device::InFuncPtr, Status),
-	STATIC_CAST(Device::InFuncPtr, GetData),
-	STATIC_CAST(Device::InFuncPtr, TC),
+	STATIC_CAST(Device::InFuncPtr, &FDC::Status),
+	STATIC_CAST(Device::InFuncPtr, &FDC::GetData),
+	STATIC_CAST(Device::InFuncPtr, &FDC::TC),
 };
 
