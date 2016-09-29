@@ -1828,7 +1828,7 @@ void Z80C::SingleStep(uint m)
 				if (--RegBC & 0xffff)
 				{
 					SetFlags(PF|NF|HF, PF);
-					PCDec(2), CLK(20);
+					PCDec(2), CLK(21);
 				}
 				else
 				{
@@ -1842,7 +1842,7 @@ void Z80C::SingleStep(uint m)
 				if (--RegBC & 0xffff)
 				{
 					SetFlags(PF|NF|HF, PF);
-					PCDec(2), CLK(20);
+					PCDec(2), CLK(21);
 				}
 				else
 				{
