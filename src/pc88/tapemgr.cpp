@@ -10,6 +10,7 @@
 #include "status.h"
 #include "misc.h"
 
+#include <inttypes.h>
 
 #define LOGNAME	"tape"
 #include "diag.h"
@@ -72,7 +73,7 @@ bool TapeManager::Open(const char* file)
 		TagHdr hdr;
 		fio.Read(&hdr, 4);
 		
-		Tag* tag = (Tag*) malloc(sizeof(Tag)-1+hdr.length);
+		Tag* tag = (Tag*)new uint8_t[sizeof(Tag)-1+hdr.length];
 		if (!tag)
 		{
 			Close();
@@ -103,7 +104,7 @@ bool TapeManager::Close()
 	while (tags)
 	{
 		Tag* n = tags->next;
-		free(tags);
+		delete[] tags;
 		tags = n;
 	}
 	return true;

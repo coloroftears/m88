@@ -22,7 +22,6 @@
 #include <string.h>
 #include <process.h>
 #include <assert.h>
-#include <malloc.h>
 
 #ifdef _MSC_VER
 	#undef max
