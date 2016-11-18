@@ -3,7 +3,6 @@
 <!-- $Id: M88.html,v 1.14 2003/09/28 14:46:40 cisc Exp $ -->
 
 <HEAD>
-   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=shift_jis">
    <META NAME="Author" CONTENT="cisc">
    <LINK REV=MADE HREF="mailto:cisc@retropc.net">
    <TITLE>M88</TITLE>
@@ -15,118 +14,118 @@
 <h1>M88 <small>- PC88 emulator -</small></h1>
 <HR>
 
-<H3>�T�v</H3>
+<H3>概要</H3>
 	<P>
-		M88 �́CNEC �� 8bit ����̖��@ PC-8801 �̃\�t�g�E�F�A�� Win32 ���œ��삳����C
-		�G�~�����[�^�ƌĂ΂���ނ̃v���O�����ł��D
+		M88 は，NEC の 8bit 時代の名機 PC-8801 のソフトウェアを Win32 環境で動作させる，
+		エミュレータと呼ばれる種類のプログラムです．
 	</P>
 	<P>
-		PC-8801mkIISR �ȍ~�ɓ��ڂ��ꂽ�@�\���܂ށC88 �̎�v�ȃn�[�h�E�F�A���\�t�g�E�F�A�݂̂ōČ����Ă��܂��D
-		���̂��ߏ��X(?) CPU �p���[���₵�܂����C88 �Ƃ͉����������Ȃ������Ȋ�(���CMicrosoft �q���肩)�ŁC�̉������� 88 �̃\�t�g�𓮂������Ƃ��ł���悤�ɂȂ�܂��D
+		PC-8801mkIISR 以降に搭載された機能を含む，88 の主要なハードウェアをソフトウェアのみで再現しています．
+		このため少々(?) CPU パワーを費やしますが，88 とは縁も所縁もなさそうな環境(あ，Microsoft 繋がりか)で，昔懐かしい 88 のソフトを動かすことができるようになります．
 	</P>
 	<P>
-		�������CM88 ���Č�����̂� 88 �̃n�[�h�E�F�A�@�\�����ł��D
-		PC-88 ���Č����邽�߂ɂ͌������Ȃ��CN88-BASIC ���̃t�@�[���E�F�A�ɂ��@�\�� M88 �ɂ͈�؎�������Ă���܂���D
-		���̂��߁C���ۂ� M88 ���N�����C�\�t�g�𓮍삳���邽�߂ɂ́C���@�ɓ��ڂ���Ă��� ROM ����t�@�[���E�F�A�����o���K�v������܂��D
+		ただし，M88 が再現するのは 88 のハードウェア機能だけです．
+		PC-88 を再現するためには欠かせない，N88-BASIC 等のファームウェアによる機能は M88 には一切実装されておりません．
+		このため，実際に M88 を起動し，ソフトを動作させるためには，実機に搭載されている ROM からファームウェアを取り出す必要があります．
 	</P>
 
 <HR>
-<H3>���쌠�C�ƐӋK�蓙</H3>
+<H3>著作権，免責規定等</H3>
 
-	M88 ���g�p����O�ɁC�m�F���Ă��������D
+	M88 を使用する前に，確認してください．
 
 	<UL>
-		<LI>M88 �͍�� cisc (<A HREF="mailto:cisc@remus.dti.ne.jp">cisc@remus.dti.ne.jp</A>) �����쌠�����L���Ă��܂��D
-		<LI>M88 �̓t���[�\�t�g�ł��D
-		<LI>��҂� M88 �̓���Ɋւ��Ă����Ȃ�ۏ؂����܂���D���S�ɖ��ۏ؂ł��D
-		<LI>��҂� M88 �ɋN�����邢���Ȃ��Q�E���Q�ɑ΂��Ă��C��؂̐ӔC�𕉂����˂܂��D
-		<LI>M88 �Ŏg�p���� ROM �f�[�^�͒��앨�ɑ������܂��D�g�p�҂͒��쌠�@�����炵�Ă��������D
+		<LI>M88 は作者 cisc (<A HREF="mailto:cisc@remus.dti.ne.jp">cisc@remus.dti.ne.jp</A>) が著作権を所有しています．
+		<LI>M88 はフリーソフトです．
+		<LI>作者は M88 の動作に関していかなる保証もしません．完全に無保証です．
+		<LI>作者は M88 に起因するいかなる被害・損害に対しても，一切の責任を負いかねます．
+		<LI>M88 で使用する ROM データは著作物に相当します．使用者は著作権法を厳守してください．
 	</UL>
 
 <HR>
-<H3>�g�p��̒���</H3>
+<H3>使用上の注意</H3>
 	<P>
 		<FONT COLOR="red"><strong>
-			M88 ���g���ꍇ�CPC-8801 �V���[�Y�̖{�̂��璼�ړ]������ BIOS �f�[�^��p�ӂ���K�v������܂��D
-			M88 �̎g�p�҂� NEC PC-8801 �V���[�Y�̖{�̂����L���Ă���K�v������܂��D
-			���@�����L���Ă��Ȃ��������쌠�҂̋��Ȃ� BIOS �f�[�^�����E�g�p����ƒ��쌠�@�ɒ�G���܂��D
+			M88 を使う場合，PC-8801 シリーズの本体から直接転送した BIOS データを用意する必要があります．
+			M88 の使用者は NEC PC-8801 シリーズの本体を所有している必要があります．
+			実機を所有していない方が著作権者の許可なく BIOS データを入手・使用すると著作権法に抵触します．
 		</strong></FONT>
 	</p>
 
 <HR>
-<H3>�����</H3>
+<H3>動作環境</H3>
 	<P>
-		M88 �͈ȉ��Ɏ������œ��삷�邱�Ƃ����҂��č���Ă��܂��D
+		M88 は以下に示す環境で動作することを期待して作られています．
 	</P>
 	<TABLE BORDER="3">
 		<TR>
-			<TD>CPU<TD>IA-32 �n CPU<BR>Pentium Pro ����(Pentium-II/K6)�ȍ~�� CPU �𐄏����܂��D
+			<TD>CPU<TD>IA-32 系 CPU<BR>Pentium Pro 世代(Pentium-II/K6)以降の CPU を推奨します．
 		</TR>
 		<TR>
-			<TD>OS<TD>Windows 95/98/NT4/2000 (x86)<BR>DirectX 3 �ȏ�K�{�D<BR>
-					VC 6.0 �ɑΉ����������^�C�����C�u�������K�v�ɂȂ邩���D<BR>
+			<TD>OS<TD>Windows 95/98/NT4/2000 (x86)<BR>DirectX 3 以上必須．<BR>
+					VC 6.0 に対応したランタイムライブラリが必要になるかも．<BR>
 		</TR>
 		<TR>
-			<TD>�L�[�{�[�h(*1)<TD>���{�� 106 �L�[�{�[�h �܂��� PC-98 �p�L�[�{�[�h
+			<TD>キーボード(*1)<TD>日本語 106 キーボード または PC-98 用キーボード
 		</TR>
 		<TR>
-			<TD>88 �{��<TD>PC-8801mkIISR �ȍ~(PC-88VA�n���CPC-8801/mkII �͕s��)<BR>
+			<TD>88 本体<TD>PC-8801mkIISR 以降(PC-88VA系も可，PC-8801/mkII は不明)<BR>
 		</TR>
 	</TABLE>
 	<BR>
 
-	(*1) ���Ή��̃L�[�{�[�h���g�p����ꍇ�C�������L�[�� 88 �ɓ��͂���镶�����Ή����Ȃ��\��������܂��D<BR>
+	(*1) 未対応のキーボードを使用する場合，押したキーと 88 に入力される文字が対応しない可能性があります．<BR>
 	<BR>
 
 <HR>
-<H3>����</H3>
+<H3>準備</H3>
 
-	<H4>BIOS �̓]��</H4>
+	<H4>BIOS の転送</H4>
 	<P>
-		�܂��C88 �{�̂��� BASIC-ROM �̓��e��]�����܂��D
+		まず，88 本体から BASIC-ROM の内容を転送します．
 	</P>
 	<P>
 		<FONT COLOR="red"><strong>
-			���ӁF88 �� ROM �f�[�^�͒��앨�ł��D
-			�l�I�ȗ��p�ȊO�́C���쌠�@��C�����҂̋��Ȃ����p���邱�Ƃ͂ł��܂���D
+			注意：88 の ROM データは著作物です．
+			個人的な利用以外は，著作権法上，権利者の許可なく利用することはできません．
 		</strong></FONT>
 	</P>
 
-	<H5>5 �C���`�h���C�u�𓋍ڂ��� AT �݊��@������ꍇ</H5>
+	<H5>5 インチドライブを搭載した AT 互換機がある場合</H5>
 	<p>
-		M88 Tools for AT �̒��� READROM.EXE ���g�p�ł��܂�(DOS/Win95 �œ���m�F��)�D<BR>
+		M88 Tools for AT の中の READROM.EXE が使用できます(DOS/Win95 で動作確認済)．<BR>
 	</p>
 	<p>
-		�܂��C2D �̃u�����N�f�B�X�N���T�C���`�h���C�u�ɓ���C<BR>
+		まず，2D のブランクディスクを５インチドライブに入れ，<BR>
 		<font color="#0040ff"><KBD>READROM M [drive]:</KBD></font><BR>
-		�Ǝ��s���C�ǂݏo���p�f�B�X�N���쐬���܂��D<BR>
+		と実行し，読み出し用ディスクを作成します．<BR>
 		<BR>
-		���̃f�B�X�N�� 88 �ŋN�����CCompleted �̕����ƂƂ��Ƀf�B�X�N�����v����������܂ő҂��܂��D
+		このディスクを 88 で起動し，Completed の文字とともにディスクランプが消灯するまで待ちます．
 	</p>
 	<p>
-		���̌�f�B�X�N���T�C���`�h���C�u�ɓ���C<BR>
+		その後ディスクを５インチドライブに入れ，<BR>
 		<font color="#0040ff"><KBD>READROM R [drive]:</KBD></font><BR>
-		�Ǝ��s����΁C�J�����g�f�B���N�g���� &quot;.ROM&quot; �Ƃ����g���q������
-		BIOS �f�[�^���쐬����܂��D
+		と実行すれば，カレントディレクトリに &quot;.ROM&quot; という拡張子を持つ
+		BIOS データが作成されます．
 	</p>
 
-	<h5>Windows �@�� 88 ���߂��ɂ���ꍇ</h5>
+	<h5>Windows 機と 88 が近くにある場合</h5>
 	<p>
-		Windows �@�� 88 ���V���A���N���X�P�[�u���Őڑ����� BIOS �f�[�^��]�����邱�Ƃ��ł��܂��D
+		Windows 機と 88 をシリアルクロスケーブルで接続して BIOS データを転送することができます．
 	</p>
 	<p>
-		TransDisk ���g�p���Ă��������D
-		�ڂ��������͕t���̃e�L�X�g�ɂ���܂��D
+		TransDisk を使用してください．
+		詳しい説明は付属のテキストにあります．
 	</p>
 
-	<h5>���͂œǂݏo���l��</h5>
+	<h5>自力で読み出す人へ</h5>
 	<p>
-		88 �̓����ɏڂ������͎��͂œǂݏo���̂��ǂ��ł��傤�D
-		�K�v�ȃf�[�^�ƃt�@�C�����͈ȉ��̒ʂ�ł��D
+		88 の内部に詳しい方は自力で読み出すのも良いでしょう．
+		必要なデータとファイル名は以下の通りです．
 	</p>
 
 	<TABLE BORDER="3">
-		<tr><td>ROM ���<td>�A�h���X<td>�t�@�C����
+		<tr><td>ROM 種別<td>アドレス<td>ファイル名
 		<tr><td>N88 BASIC ROM<td>0000-7fff<td>N88.ROM
 		<tr><td>N88 E0-ROM<td>6000-7fff<td>N88_0.ROM
 		<tr><td>N88 E1-ROM<td>6000-7fff<td>N88_1.ROM
@@ -134,416 +133,416 @@
 		<tr><td>N88 E3-ROM<td>6000-7fff<td>N88_3.ROM
 		<tr><td>N88 BASIC ROM<td>0000-7fff<td>N80.ROM
 		<tr><td>SUB ROM(FDD)<td>0000-1fff(*1)<td>DISK.ROM
-		<tr><td>���� ROM<td>(128KB)<td>KANJI1.ROM(*2)
-		<tr><td>�� 2 ����<td>(128KB)<td>KANJI2.ROM(*3)
-		<tr><td>���� ROM<td>(512KB)<td>JISYO.ROM(*4)
+		<tr><td>漢字 ROM<td>(128KB)<td>KANJI1.ROM(*2)
+		<tr><td>第 2 水準<td>(128KB)<td>KANJI2.ROM(*3)
+		<tr><td>辞書 ROM<td>(512KB)<td>JISYO.ROM(*4)
 		<tr><td>N80 BASIC ROM<td>0000-7fff<td>N80_2.ROM(*5)
 		<tr><td>CD-BIOS ROM<td>0000-7fffx2<td>CDBIOS.ROM(*6)
 		<tr><td>N80v2 BASIC ROM<td>0000-7fff,6000-7fff<td>N80_3.ROM(*7)
 	</TABLE>
 
 	<p>
-		(*1) SR, FA ���C2D ��p�@�� 0000-07ff �܂�
+		(*1) SR, FA 等，2D 専用機は 0000-07ff まで
 	</p>
 	<p>
-		(*2) M88 �̓e�L�X�g�̕\���Ɋ��� ROM �̒��� 1/4 �{�p�t�H���g�𗘗p���Ă���̂ŁC
-			 KANJI1.ROM ���Ȃ��Ɖ�ʂ�����ɕ\������܂���D
-			 �A���e�L�X�g�t�H���g�̃t�@�C�������삷��΂���ő�p���邱�Ƃ��\�ł�(FONT.ROM 8 �o�C�g * 256 ����)�D
+		(*2) M88 はテキストの表示に漢字 ROM の中の 1/4 倍角フォントを利用しているので，
+			 KANJI1.ROM がないと画面が正常に表示されません．
+			 但しテキストフォントのファイルを自作すればそれで代用することも可能です(FONT.ROM 8 バイト * 256 文字)．
 	</p>
 	<p>
-		(*3) MR, FH/MH �ȍ~�ɂ�����������Ă܂��񂪁C����ȑO�̋@�킩��ǂݏo���Ă��t�@�C���͍쐬����܂��D�A�����g�ɈӖ��͂���܂���D�폜���Ă����\�ł��D
+		(*3) MR, FH/MH 以降にしか実装されてませんが，それ以前の機種から読み出してもファイルは作成されます．但し中身に意味はありません．削除しても結構です．
 	</p>
 	<p>
-		(*4) MA, MA2, MC �Ɏ�������Ă��܂����C�Y�t�̓��{�� DISK BASIC ���g��Ȃ����蕁�ʕK�v����܂���D�{���ɕK�v�ȕ��݂̂ǂ����D
+		(*4) MA, MA2, MC に実装されていますが，添付の日本語 DISK BASIC を使わない限り普通必要ありません．本当に必要な方のみどうぞ．
 	</p>
 	<p>
-		(*5) N80 Mode ���g�p����ꍇ�̂ݕK�v�ł��DPC-8001mk2/SR ����z���o�����Ƃ��\�ł��D
+		(*5) N80 Mode を使用する場合のみ必要です．PC-8001mk2/SR から吸い出すことが可能です．
 	</p>
 	<p>
-		(*6) CD-ROM �g�����W���[�����g�p����ꍇ�̂ݕK�v�ɂȂ�܂��D
+		(*6) CD-ROM 拡張モジュールを使用する場合のみ必要になります．
 	</p>
 	<p>
-		(*7) N80v2 Mode ���g�p����ꍇ�̂ݕK�v�ł��DPC-8001mk2SR ����z���o�����Ƃ��\�ł��D
+		(*7) N80v2 Mode を使用する場合のみ必要です．PC-8001mk2SR から吸い出すことが可能です．
 	</p>
 	<p>
-		�N���ɂ͍Œ�ł� N88.ROM �܂��� PC88.ROM�C�����ăt�H���g�t�@�C��(KANJI1.ROM ���� FONT.ROM)���K�v�ł��D
-		���̑��̃t�@�C��������Ȃ��ꍇ�C�N���͂��܂����C����ȓ���͊��҂ł��܂���D
-		N80 mode �̂ݎg�p�����ꍇ�� N88.ROM �������Ă��Ȃ��ꍇ�� N80_2.ROM �̃R�s�[�� N88.ROM �Ƃ������O�Œu���Ă����Ă��������D
-	</p>
-
-	<h5>���܂�: P88SR �p�� PC88.ROM ���g�p����ꍇ</h5>
-	<p>
-		KANJI1.ROM ���Ȃ��ꍇ�����\���������ɂȂ�܂����C�Ƃ肠�����N���ł���悤�ɂȂ�܂��D
-		�܂��CKANJI1.ROM �������ꍇ�C�e�L�X�g�t�H���g�t�@�C�� FONT.ROM ���K�v�ɂȂ�܂����C
-		����ɂ� P88SR ���������������t�H���g�t�@�C�� PC88.FNT ���g�p�ł��܂��D
-		FONT.ROM �Ƃ������O�ɕς��Ēu���Ă��������D
-	</p>
-	<p>
-		<a href="http://www5.airnet.ne.jp/kajapon/">KAJA ���̃T�C�g</a>�ɂ��� GETK �Ƃ����c�[���ŁC
-		98 �ɓ��ڂ���Ă��銿�� ROM ���� KANJIx.ROM ���쐬���邱�Ƃ��ł��܂��D
+		起動には最低でも N88.ROM または PC88.ROM，そしてフォントファイル(KANJI1.ROM 又は FONT.ROM)が必要です．
+		その他のファイルが足りない場合，起動はしますが，正常な動作は期待できません．
+		N80 mode のみ使用される場合で N88.ROM を持っていない場合は N80_2.ROM のコピーを N88.ROM という名前で置いておいてください．
 	</p>
 
-	<h4>���Y����</h4>
+	<h5>おまけ: P88SR 用の PC88.ROM を使用する場合</h5>
 	<p>
-		YM2608(OPNA)�ɓ��ڂ���Ă��郊�Y�������́CLSI ������ ROM �ɓ����Ă��� ADPCM �T���v����炷���̂ł��D���̂��߁CM88 �Ń��Y������炵�����ꍇ�́C���@����^������Ȃ�C�����悤�Ȋy�킩��^������Ȃ肵�ă��Y�����̃T���v����p�ӂ���K�v������܂��D
+		KANJI1.ROM がない場合漢字表示が豆腐になりますが，とりあえず起動できるようになります．
+		また，KANJI1.ROM が無い場合，テキストフォントファイル FONT.ROM が必要になりますが，
+		これには P88SR が自動生成したフォントファイル PC88.FNT が使用できます．
+		FONT.ROM という名前に変えて置いてください．
 	</p>
 	<p>
-		<strong>���m����, 16bit PCM �� wav �t�@�C��</strong> �̂ݎg�p�ł��܂��D
-		wav �t�@�C���̓ǂݍ��ݕ����́C���蔲���Ȏ����Ȃ̂ŁC�w�b�_�[�ɗ]�v�Ȃ��̂�����Ɛ���ɓǂ݂��߂܂���D
-		�T���v���̃t�@�C�����͉��L�̒ʂ�ɂ��Ă��������D
-		�ЂƂł������Ă���ƃ��Y�����͖�܂���D
+		<a href="http://www5.airnet.ne.jp/kajapon/">KAJA 氏のサイト</a>にある GETK というツールで，
+		98 に搭載されている漢字 ROM から KANJIx.ROM を作成することができます．
+	</p>
+
+	<h4>リズム音</h4>
+	<p>
+		YM2608(OPNA)に搭載されているリズム音源は，LSI 内部の ROM に入っている ADPCM サンプルを鳴らすものです．そのため，M88 でリズム音を鳴らしたい場合は，実機から録音するなり，似たような楽器から録音するなりしてリズム音のサンプルを用意する必要があります．
 	</p>
 	<p>
-		���Y�����̎��g���ϊ��A���S���Y���́C�P���ȊԈ����@�ł��D
-		�ʏ�g�p���� PCM ���[�g�ɂ��킹�� wav �t�@�C����p�ӂ���Ɖ����𗎂Ƃ����ɍĐ��ł��܂��D
+		<strong>モノラル, 16bit PCM の wav ファイル</strong> のみ使用できます．
+		wav ファイルの読み込み部分は，超手抜きな実装なので，ヘッダーに余計なものがあると正常に読みこめません．
+		サンプルのファイル名は下記の通りにしてください．
+		ひとつでも欠けているとリズム音は鳴りません．
+	</p>
+	<p>
+		リズム音の周波数変換アルゴリズムは，単純な間引き法です．
+		通常使用する PCM レートにあわせた wav ファイルを用意すると音質を落とさずに再生できます．
 	</p>
 	<table border="3">
-		<tr><td>���F<td>�t�@�C����
-		<tr><td>�o�X�h����<td>2608_BD.WAV
-		<tr><td>�X�l�A�h����<td>2608_SD.WAV
-		<tr><td>�g�b�v�V���o��<td>2608_TOP.WAV
-		<tr><td>�n�C�n�b�g<td>2608_HH.WAV
-		<tr><td>�^���^��<td>2608_TOM.WAV
-		<tr><td>�����V���b�g<td>2608_RIM.WAV
+		<tr><td>音色<td>ファイル名
+		<tr><td>バスドラム<td>2608_BD.WAV
+		<tr><td>スネアドラム<td>2608_SD.WAV
+		<tr><td>トップシンバル<td>2608_TOP.WAV
+		<tr><td>ハイハット<td>2608_HH.WAV
+		<tr><td>タムタム<td>2608_TOM.WAV
+		<tr><td>リムショット<td>2608_RIM.WAV
 	</table>
 	<br>
 	<hr>
-	<h3>�N��</h3>
+	<h3>起動</h3>
 	<p>
-		�ǂݏo���� ROM �t�@�C���S�ĂƁC�K�v�Ȃ�t�H���g�t�@�C���C���Y������ M88.EXE �Ɠ����f�B���N�g��(�N�����f�B���N�g��)�ɂ����CM88.EXE �����s���Ă��������D
+		読み出した ROM ファイル全てと，必要ならフォントファイル，リズム音を M88.EXE と同じディレクトリ(起動時ディレクトリ)におき，M88.EXE を実行してください．
 	</p>
 
 <hr>
-<h3>���j���[</h3>
+<h3>メニュー</h3>
 
-	<h4>Control ���j���[</h4>
+	<h4>Control メニュー</h4>
 
 	<dl>
 		<dt>Reset
-		<dd>���Z�b�g���܂��D
+		<dd>リセットします．
 		
 		<dt>V1/V1S/V2/N/N80 Mode
-		<dd>�N�����[�h��ς��ă��Z�b�g���܂��DVA �n�� ROM �ł� N-BASIC �͎g�p�ł��܂���D<BR>
-		N80 ���[�h�� PC-8001mkII �݊����[�h�ŁC�Ή����� ROM ��p�ӂ����ꍇ�̂ݎg�p�ł��܂��D
+		<dd>起動モードを変えてリセットします．VA 系の ROM では N-BASIC は使用できません．<BR>
+		N80 モードは PC-8001mkII 互換モードで，対応する ROM を用意した場合のみ使用できます．
 		
 		<dt>Configure
-		<dd>����Ɋւ���ݒ���s���܂��D
+		<dd>動作に関する設定を行います．
 		
 		<dt>Exit
-		<dd>M88 ���I�����܂��D
+		<dd>M88 を終了します．
 	</dl>
 
 
-	<h4>Disk ���j���[</h4>
+	<h4>Disk メニュー</h4>
 	<dl>
 		<dt>Drive 1/2
-		<dd>�h���C�u�Ƀf�B�X�N�C���[�W���Z�b�g���܂��D<BR>
-			�L�����Z���Ȃǃ_�C�A���O�ɉ����w�肵�Ȃ������ꍇ�C�h���C�u�̓f�B�X�N�𔲂�����ԂɂȂ�܂��D
-			�܂��C���݂��Ȃ��t�@�C�����w�肷��ƁC���̖��O�ŐV������̃f�B�X�N�C���[�W (P88SR �`��) ���쐬����܂��D
+		<dd>ドライブにディスクイメージをセットします．<BR>
+			キャンセルなどダイアログに何も指定しなかった場合，ドライブはディスクを抜いた状態になります．
+			また，存在しないファイルを指定すると，その名前で新しく空のディスクイメージ (P88SR 形式) が作成されます．
 		<dt>Change both drive
-		<dd>�o���̃h���C�u����f�B�X�N���A�����[�h���Ă���f�B�X�N�C���[�W���J���܂��D
+		<dd>双方のドライブからディスクをアンロードしてからディスクイメージを開きます．
 	</dl>
 
-	<h4>Tool ���j���[</h4>
+	<h4>Tool メニュー</h4>
 	<dl>
 		<dt>Show status
-		<dd>��ʂ̉����ɁC�X�e�[�^�X�o�[�ƃf�B�X�N�A�N�Z�X�����v��\�����܂��D
+		<dd>画面の下部に，ステータスバーとディスクアクセスランプを表示します．
 		<dt>Capture
-		<dd>���ݕ\������Ă����ʂ̓��e�� 16 �F BMP �Ƃ��ĕۑ����܂��D
+		<dd>現在表示されている画面の内容を 16 色 BMP として保存します．
 		<dt>Record Sound
-		<dd>M88 �Ŕ�����ꂽ���� test.wav �Ƃ����t�@�C���ɏ����o���܂��D
+		<dd>M88 で発せられた音を test.wav というファイルに書き出します．
 		<dt>Save Snapshot
-		<dd>M88 �̌��݂̏�Ԃ��t�@�C���ɕۑ����܂��D������u�ǂ��ł��Z�[�u�v�ł��D
+		<dd>M88 の現在の状態をファイルに保存します．いわゆる「どこでもセーブ」です．
 		<dt>Load Snapshot
-		<dd>�t�@�C���ɕۑ�������Ԃ𕜋A���܂��D
+		<dd>ファイルに保存した状態を復帰します．
 	</dl>
 
-	<h4>Debug ���j���[</h4>
-	�I�ׂȂ����ڂ����邩������܂��񂪁C�C�ɂ��Ȃ��ł��������D
+	<h4>Debug メニュー</h4>
+	選べない項目があるかもしれませんが，気にしないでください．
 	<dl>
 		<dt>Show FDC Status
-		<dd>�X�e�[�^�X�o�[���\������Ă���ꍇ�C�f�B�X�N�̃A�N�Z�X�󋵂Ȃǂ�\�����܂��D
+		<dd>ステータスバーが表示されている場合，ディスクのアクセス状況などを表示します．
 		
 		<dt>Show Register
-		<dd>PC �̒l���X�e�[�^�X�o�[�ɕ\�����܂��D
+		<dd>PC の値をステータスバーに表示します．
 	</dl>
 
 	<hr>
-	<h3>�ݒ�</h3>
+	<h3>設定</h3>
 
-	<h4>CPU �̐ݒ�</h4>
-	<!-- <img src="pic/config1.jpg" alt="CPU �̐ݒ�" width="454" height="371"><BR> -->
+	<h4>CPU の設定</h4>
+	<!-- <img src="pic/config1.jpg" alt="CPU の設定" width="454" height="371"><BR> -->
 
 	<dl>
-		<dt>������g��
-		<dd>88 �̃N���b�N���g����ݒ肵�܂��D
-		    ���荞�݂̕p�x�͕ω����Ȃ��̂ŁC���y�Ȃǂ͐���ɍĐ�����܂�(�\�t�g�ɂ����܂���)�D
+		<dt>動作周波数
+		<dd>88 のクロック周波数を設定します．
+		    割り込みの頻度は変化しないので，音楽などは正常に再生されます(ソフトにもよりますが)．
 
-		<dt>�S�͋쓮
-		<dd>�S�͂ŃG�~�����[�g���܂��D
-		    88 �̃N���b�N���g���͎��s���閽�߂�C���̏����̕��S���ɉ����ĕω����܂��D
-		    ���̃I�v�V����������ƁC���y�̃e���|�Ȃǂ�����������������܂���D
+		<dt>全力駆動
+		<dd>全力でエミュレートします．
+		    88 のクロック周波数は実行する命令や，他の処理の負担等に応じて変化します．
+		    このオプションをつけると，音楽のテンポなどが少し狂うかもしれません．
 		
-		<dt>�{��
-		<dd>�G�~�����[�V�����̑��x���w�肵�܂��D�X���[�⑁�񂵂ɑ������܂��D
+		<dt>倍率
+		<dd>エミュレーションの速度を指定します．スローや早回しに相当します．
 		
-		<dt>���x�������ȗ�����
-		<dd>�E�F�C�g���ȗ����܂��D
-		    �S�̓I�ȓ��삪�����Ȃ�̂ŁC���邢�C�x���g�Ȃǂ��΂������Ƃ��Ȃǂɂǂ����D
+		<dt>速度調整を省略する
+		<dd>ウェイトを省略します．
+		    全体的な動作が速くなるので，だるいイベントなどを飛ばしたいときなどにどうぞ．
 		
-		<dt>Sub CPU ����ɋ쓮����
-		<dd>M88 �́CSub ���� Main ������̌�M��҂��Ă����Ԃł́C
-		    Sub ���� CPU ���~���C�ȗ͉���}��܂����C�݊����͒ቺ���܂��D
-		    ���̃I�v�V����������� Sub �� CPU ����ɓ��삳����̂ŁC
-		    �݊����������Ȃ�܂��D
+		<dt>Sub CPU を常に駆動する
+		<dd>M88 は，Sub 側が Main 側からの交信を待っている状態では，
+		    Sub 側の CPU を停止し，省力化を図りますが，互換性は低下します．
+		    このオプションをつけると Sub 側 CPU を常に動作させるので，
+		    互換性が高くなります．
 		    
-		<dt>�E�F�C�g
-		<dd>���@�����̃E�F�C�g�������܂��D
-		    �ꕔ�\�t�g�ŁC�E�F�C�g���|����ƋN�����Ȃ����̂�����悤�ł��D
+		<dt>ウェイト
+		<dd>実機相当のウェイトをかけます．
+		    一部ソフトで，ウェイトを掛けると起動しないものがあるようです．
 	</dl>
 
-	<h4>��ʂ̐ݒ�</h4>
-	<!-- <img src="pic/config2.jpg" alt="��ʂ̐ݒ�" width="454" height="371"><BR> -->
+	<h4>画面の設定</h4>
+	<!-- <img src="pic/config2.jpg" alt="画面の設定" width="454" height="371"><BR> -->
 
 	<dl>
-		<dt>��ʍX�V�p�x
-		<dd>��ʂ����t���[�����ƂɍX�V���邩��ݒ肵�܂��D
+		<dt>画面更新頻度
+		<dd>画面を何フレームごとに更新するかを設定します．
 		
-		<dt>PCG ���g�p
-		<dd>PCG-8100 �݊��̃t�H���g�ύX�@�\��L���ɂ��܂��D
-		    PCG-8100 �̌��ʉ��@�\�͎������Ă��܂���D
+		<dt>PCG を使用
+		<dd>PCG-8100 互換のフォント変更機能を有効にします．
+		    PCG-8100 の効果音機能は実装していません．
 		
-		<dt>15KHz ���j�^�[���[�h
-		<dd>CRTC �Ɋւ���ݒ�CVRTC ���荞�݂̎����Ȃǂ� 15KHz �����̐ݒ�ɂ��܂��D
-		    PC-8001 �p�̃\�t�g�ȂǁC24KHz ���[�h�œ��삳����ƕ\�������������Ȃ�ꍇ�ɗL���ł��D
+		<dt>15KHz モニターモード
+		<dd>CRTC に関する設定，VRTC 割り込みの周期などを 15KHz 相当の設定にします．
+		    PC-8001 用のソフトなど，24KHz モードで動作させると表示がおかしくなる場合に有効です．
 		
-		<dt>�f�B�W�^���p���b�g���[�h
-		<dd>�f�B�W�^�� RGB ���j�^�ŕ\�����鎞�̂悤�ȃf�B�W�^���J���[�ŉ�ʂ�\�����܂��D
+		<dt>ディジタルパレットモード
+		<dd>ディジタル RGB モニタで表示する時のようなディジタルカラーで画面を表示します．
 		
-		<dt>�S��ʎ� 640x480 �ɂ���
-		<dd>95 ���ł́C�S��ʐ؂�ւ����́C�\�ȏꍇ�C�𑜓x 640x400 �ŕ\�����܂����C
-		    ���̃I�v�V����������Ə�ɉ𑜓x�� 640x480 �ŕ\������悤�ɂȂ�܂��D
-		    �S��ʕ\���̎��C���ɐL�т��摜�ɂȂ�Ǝv�������͎����Ă݂Ă��������D
+		<dt>全画面時 640x480 にする
+		<dd>95 等では，全画面切り替え時は，可能な場合，解像度 640x400 で表示しますが，
+		    このオプションをつけると常に解像度を 640x480 で表示するようになります．
+		    全画面表示の時，妙に伸びた画像になると思った方は試してみてください．
 		    
-		<dt>�`��̗D��x��������
-		<dd>��ʂ̏����������������\�t�g���g���ꍇ�C
-		    CPU �p���[���s�����Ă���ƃG�~�����[�V�������̂��x���Ȃ�܂��D
-		    ���̃I�v�V������t����ƁC��ʂ̕`����΂��Ăł��G�~�����[�V�����̑��x��ۂƂ��Ɠw�͂��܂��D
+		<dt>描画の優先度を下げる
+		<dd>画面の書き換えが激しいソフトを使う場合，
+		    CPU パワーが不足しているとエミュレーション自体が遅くなります．
+		    このオプションを付けると，画面の描画を飛ばしてでもエミュレーションの速度を保とうと努力します．
 		    
-		<dt>�������C����\������
-		<dd>�����̃f�B�X�v���C�\���̂悤�ɁC�O���t�B�b�N��ʂ̃��C���̊Ԃɋ󔒂����܂��D
+		<dt>偶数ラインを表示する
+		<dd>当時のディスプレイ表示のように，グラフィック画面のラインの間に空白を入れます．
 	</dl>
 
-	<h4>���̐ݒ�</h4>
-	<!-- <img src="pic/config3.jpg" alt="���̐ݒ�" width="454" height="371"><BR> -->
+	<h4>音の設定</h4>
+	<!-- <img src="pic/config3.jpg" alt="音の設定" width="454" height="371"><BR> -->
 
 	<dl>
-		<dt>�������g��
-		<dd>PCM �Đ����g���� FM �����̍������g�������߂܂��D
-		    ���g���͍����قǉ������オ��܂����CFM �����̍����͂��Ȃ� CPU ���S�̍��������Ȃ̂Ŋo�債�Ă�������(^^; 
-		<dt>FM ���� (44h)
-	   <dd>FM �����̎�ނ�ݒ肵�܂��D
-	       OPNA(�T�E���h�{�[�h�Q����) �͍��� CPU ���\��v�����܂��D
+		<dt>合成周波数
+		<dd>PCM 再生周波数と FM 音源の合成周波数を決めます．
+		    周波数は高いほど音質が上がりますが，FM 音源の合成はかなり CPU 負担の高い処理なので覚悟してください(^^; 
+		<dt>FM 音源 (44h)
+	   <dd>FM 音源の種類を設定します．
+	       OPNA(サウンドボード２相当) は高い CPU 性能を要求します．
 
-	   <dt>FM ���� (a8h)
-	   <dd>PC-8801-23 �Ȃǂ̑��݃^�C�v�� FM ������ݒ肵�܂��D
+	   <dt>FM 音源 (a8h)
+	   <dd>PC-8801-23 などの増設タイプの FM 音源を設定します．
 	   
-	   <dt>PCM �o�b�t�@
-	   <dd>���̒x���ɂȂ��� DirectSound �̃o�b�t�@�̑傫����ݒ肵�܂��D
-	       Win95/98 �ł́C100ms �ł����Ȃ��ł��傤�D
-	       �Đ����r�؂�r�؂�ɂȂ鎞�́C�傫�����邱�Ƃŉ����ł��邩������܂���D
+	   <dt>PCM バッファ
+	   <dd>音の遅延につながる DirectSound のバッファの大きさを設定します．
+	       Win95/98 では，100ms でも問題ないでしょう．
+	       再生が途切れ途切れになる時は，大きくすることで解決できるかもしれません．
 	   
-	   <dt>CMD SING ���g��
-	   <dd>PC-8801mkII �ȍ~�œ��ڂ��ꂽ CMD SING �@�\�̎g�p�ݒ�����܂��D
+	   <dt>CMD SING を使う
+	   <dd>PC-8801mkII 以降で搭載された CMD SING 機能の使用設定をします．
 	   
-	   <dt>���̍�����D��
-	   <dd>CPU �̉��Z���\������Ȃ����Ȃǂɂ����̍�����D�悳���܂��D
+	   <dt>音の合成を優先
+	   <dd>CPU の演算性能が足りない時などにも音の合成を優先させます．
 	   
-	   <dt>�����x����
-	   <dd>BEEP ���ɂ����ʉ��Ȃǂ𐳊m�ɔ����ł���悤�ɂ��܂��D
-	       �����d���Ȃ�܂��D
+	   <dt>高精度合成
+	   <dd>BEEP 音による効果音などを正確に発音できるようにします．
+	       多少重くなります．
 	   
-	   <dt>waveOut ���g�p
-	   <dd>���f�[�^�̏o�͂� DirectSound �łȂ��]���� waveOut API ��p���܂��D
+	   <dt>waveOut を使用
+	   <dd>音データの出力に DirectSound でなく従来の waveOut API を用います．
 	   
 <!--
-	   <dt>FM �������N���b�N�ō���
-	   <dd>FM �����̍������C���ۂ� LSI �Ɠ��l�̃N���b�N��p���čs���܂��D
-		    ���̃I�v�V������t���Ȃ��ꍇ�C�ꕔ���F������ɍČ��ł��܂���D
+	   <dt>FM 音を実クロックで合成
+	   <dd>FM 音源の合成を，実際の LSI と同様のクロックを用いて行います．
+		    このオプションを付けない場合，一部音色が正常に再現できません．
 -->
 	   
 	</dl>
 
-	<h4>���ʂ̐ݒ�</h4>
-	<!-- <img src="pic/config4.jpg" alt="���ʂ̐ݒ�" width="454" height="371"><BR> -->
+	<h4>音量の設定</h4>
+	<!-- <img src="pic/config4.jpg" alt="音量の設定" width="454" height="371"><BR> -->
 
 	<p>
-		�e�����̉��ʂ�ݒ肵�܂��D�� 1/2 dB �P�ʂŒ����ł��܂��D
+		各音源の音量を設定します．約 1/2 dB 単位で調整できます．
 	</p>
 
-	<h4>DIP-SW�̐ݒ�</h4>
-	<!-- <img src="pic/config5.jpg" alt="DIP-SW �̐ݒ�" width="454" height="371"><BR> -->
+	<h4>DIP-SWの設定</h4>
+	<!-- <img src="pic/config5.jpg" alt="DIP-SW の設定" width="454" height="371"><BR> -->
 	<p>
-		�f�B�b�v�X�C�b�`��ݒ肵�܂��D
+		ディップスイッチを設定します．
 	</p>
 
-	<h4>���̑��̐ݒ�</h4>
-	<!-- <img src="pic/config6.jpg" alt="���̑��̐ݒ�" width="454" height="371"><BR> -->
+	<h4>その他の設定</h4>
+	<!-- <img src="pic/config6.jpg" alt="その他の設定" width="454" height="371"><BR> -->
 
 	<dl>
-		<dt>�I�����̃f�B���N�g�����L��
-		<dd>�I�����̃f�B�X�N�I�����̃f�B���N�g�����L������悤�ɂȂ�܂��D
+		<dt>終了時のディレクトリを記憶
+		<dd>終了時のディスク選択時のディレクトリを記憶するようになります．
 		
-		<dt>���Z�b�g����яI���̍ۂɊm�F�����
-		<dd>���̃I�v�V������L���ɂ���ƁC�I�����C����у��Z�b�g����������Ƃ��ɁC
-		    ���s���m�F����_�C�A���O���J���܂��D
-		    F12 �������̔��q�ŉ����Ă��܂��Ĕ߂����C���ɂȂ�Ȃ����߂̃I�v�V�����ł��D
+		<dt>リセットおよび終了の際に確認を取る
+		<dd>このオプションを有効にすると，終了時，およびリセット操作をしたときに，
+		    実行を確認するダイアログを開きます．
+		    F12 を何かの拍子で押してしまって悲しい気分にならないためのオプションです．
 		
-		<dt>�L�[�ɂ�郁�j���[�N����}��
-		<dd>GRPH(ALT) �� F10 �L�[�ȂǂŃ��j���[���N�����Ȃ��悤�ɂ��܂��D
-		    �����̃L�[���g�������Ƃ��͎w�肷��K�v������܂��D
+		<dt>キーによるメニュー起動を抑制
+		<dd>GRPH(ALT) や F10 キーなどでメニューを起動しないようにします．
+		    これらのキーを使いたいときは指定する必要があります．
 		
-		<dt>�����L�[���e���L�[�ɑΉ�
-		<dd>�����L�[���������Ƃ��ɁC�����Ƀe���L�[�̂W�C�S�C�U�C�Q���������悤�ɂ��܂��D
-		    �w���e���L�[�ł͂Ȃ������L�[�ɍœK������Ă��܂����ꍇ�ȂǂɗL���ł��D
+		<dt>方向キーをテンキーに対応
+		<dd>方向キーを押したときに，同時にテンキーの８，４，６，２も押されるようにします．
+		    指がテンキーではなく方向キーに最適化されてしまった場合などに有効です．
 		
-		<dt>�W���C�p�b�h���g��
-		<dd>Windows �@�ɐڑ����ꂽ�W���C�p�b�h���g����悤�ɂ��܂��D
+		<dt>ジョイパッドを使う
+		<dd>Windows 機に接続されたジョイパッドを使えるようにします．
 
-		<dt>�W���C�p�b�h�̃{�^�������ւ���
-		<dd>�{�^�� 1 �� 2 �����ւ��܂��D
+		<dt>ジョイパッドのボタンを入れ替える
+		<dd>ボタン 1 と 2 を入れ替えます．
 		
-		<dt>F12 �� Reset �Ƃ���
-		<dd>F12 �����Z�b�g�L�[�Ƃ��Ďg�p����悤�ɂ��܂��D
-		    F12 �� COPY �L�[���g�������ꍇ�͖����ɂ���K�v������܂��D
+		<dt>F12 を Reset とする
+		<dd>F12 をリセットキーとして使用するようにします．
+		    F12 を COPY キーを使いたい場合は無効にする必要があります．
 		
-		<dt>�}�E�X���g�p
-		<dd>�}�E�X���g����悤�ɂ��܂��D�W���C�p�b�h�C����у��j���[�}���I�v�V�����Ƃ͔r���g�p�ƂȂ��Ă��܂��D
+		<dt>マウスを使用
+		<dd>マウスを使えるようにします．ジョイパッド，およびメニュー抑制オプションとは排他使用となっています．
 	</dl>
 
-	<h4>����</h4>
+	<h4>注意</h4>
 	<p>
-		�S��ʃ��[�h�ł́C�_�C�A���O�̃w���v�\�����g���Ɩ��Ȃ��ƂɂȂ�悤�ł��D
+		全画面モードでは，ダイアログのヘルプ表示を使うと厄介なことになるようです．
 	</p>
 
 <hr>
-<h3>�N��������</h3>
+<h3>起動時引数</h3>
 
 	<p>
-		�N�����ɁC�f�B�X�N�C���[�W�̃t�@�C������^����ƁC�N�����ɂ��̃f�B�X�N�C���[�W���J���܂��D
+		起動時に，ディスクイメージのファイル名を与えると，起動時にそのディスクイメージを開きます．
 	</p>
 	<p>
-		�܂��C���G�ł����C�������I�v�V����������܂��D
-		src/win32/ui.cpp �� ApplyCommandLine �֐��̕ӂ���Q�Ƃ��Ă��������D
+		また，複雑ですが，いくつかオプションもあります．
+		src/win32/ui.cpp の ApplyCommandLine 関数の辺りを参照してください．
 	</p>
 
 <hr>
-<h3>�L�[�{�[�h�Ή��\</h3>
+<h3>キーボード対応表</h3>
 
 	<p>
-		�L�[�{�[�h�̎�ނ́C�u�ݒ�_�C�A���O�v�́u���v�ŕύX�ł��܂��D
+		キーボードの種類は，「設定ダイアログ」の「環境」で変更できます．
 	</p>
 
 
-	<h4>106 ���{��L�[�{�[�h�̏ꍇ</h4>
+	<h4>106 日本語キーボードの場合</h4>
 
 	<p>
-		106 ���{��L�[�{�[�h�ɂ�������ʂȃL�[�z�u�́C�ȉ��̒ʂ�ł��D
+		106 日本語キーボードにおける特別なキー配置は，以下の通りです．
 	</p>
 
 	<table border="3">
-		<tr><td>88 �L�[<td>�Ή�����L�[
+		<tr><td>88 キー<td>対応するキー
 		<tr><td>Stop<td>F11
 		<tr><td>Reset/COPY(*1)<td>F12
 		<tr><td>Help<td>End
-		<tr><td>�J�i<td>Scroll Lock
+		<tr><td>カナ<td>Scroll Lock
 		<tr><td>GRPH<td>ALT(*2)
-		<tr><td>�e���L�[�� &quot;,&quot;<td>�e���L�[��&quot;.&quot;(Num Lock off)
-		<tr><td>�e���L�[�� &quot;.&quot;<td>�e���L�[��&quot;.&quot;(Num Lock on)
-		<tr><td>���ϊ�<td>����
-		<tr><td>�ϊ�<td>�ϊ��L�[
-		<tr><td>�S��ʃ��[�h�؂�ւ�<td>ALT+ENTER 
+		<tr><td>テンキーの &quot;,&quot;<td>テンキーの&quot;.&quot;(Num Lock off)
+		<tr><td>テンキーの &quot;.&quot;<td>テンキーの&quot;.&quot;(Num Lock on)
+		<tr><td>無変換<td>決定
+		<tr><td>変換<td>変換キー
+		<tr><td>全画面モード切り替え<td>ALT+ENTER 
 		<tr><td>F10(*2)<td>F10
 	</table>
-	(*1):�ݒ�́wF12 �� Reset �Ƃ���x�𖳌��ɂ�����<BR>
-	(*2):�L�[�ł̃��j���[�N���}����<BR>
+	(*1):設定の『F12 を Reset とする』を無効にした時<BR>
+	(*2):キーでのメニュー起動抑制時<BR>
 	<p>
-		Windows ���̐����ɂ��CNUM LOCK on �Ŏg�p����� SHIFT+�e���L�[���͂̍ۂ�
-		SHIFT ������Ă��܂��Ƃ������ۂ��N����ꍇ������܂��D
+		Windows 側の制限により，NUM LOCK on で使用すると SHIFT+テンキー入力の際に
+		SHIFT が離れてしまうという現象が起こる場合があります．
 		
-		�܂��DPC �L�[�C�e���L�[�� &quot;=&quot; �͊��蓖�Ă���L�[�������Ȃ��Ă��܂����̂�
-		���蓖�ĂĂ��܂���D
+		また．PC キー，テンキーの &quot;=&quot; は割り当てられるキーが無くなってしまったので
+		割り当てていません．
 	</p>
 
-	<h4>PC-98 �p�L�[�{�[�h�̏ꍇ</h4>
+	<h4>PC-98 用キーボードの場合</h4>
 	<p>
-		98 �L�[�{�[�h�̃L�[�z�u�͈ȉ��̒ʂ�ł��D
+		98 キーボードのキー配置は以下の通りです．
 	</p>
 
 	<table border="3">
-		<tr><td>88 �L�[<td>�Ή�����L�[
+		<tr><td>88 キー<td>対応するキー
 		<tr><td>Reset/COPY(*1)<td>VF2
-		<tr><td>Stop<td>VF5(���� VF1)
-		<tr><td>����<td>NFER
-		<tr><td>�ϊ�<td>XFER
-		<tr><td>�S��ʃ��[�h�؂�ւ�<td>GRPH+ENTER 
+		<tr><td>Stop<td>VF5(又は VF1)
+		<tr><td>決定<td>NFER
+		<tr><td>変換<td>XFER
+		<tr><td>全画面モード切り替え<td>GRPH+ENTER 
 		<tr><td>GRPH(*2)<td>GRPH
 		<tr><td>F10(*2)<td>F10
 	</table>
-	(*1):�ݒ�́wF12 �� Reset �Ƃ���x�𖳌��ɂ�����<BR>
-	(*2):�L�[�ł̃��j���[�N���}����<BR>
+	(*1):設定の『F12 を Reset とする』を無効にした時<BR>
+	(*2):キーでのメニュー起動抑制時<BR>
 	<BR>
 
 <HR>
-<h3>����</h3>
+<h3>注意</h3>
 	<p>
-		�p���b�g����̊֌W��C256 �F���ł́C�o�b�N�O���E���h�ɂȂ�ƁC
-		�F�����������Ȃ邱�Ƃ����X����܂��D
+		パレット制御の関係上，256 色環境では，バックグラウンドになると，
+		色がおかしくなることが多々あります．
 	</p>
 
 <HR>
-	<h3>�f�B�X�N�C���[�W�ɂ���</h3>
+	<h3>ディスクイメージについて</h3>
 
 	<p>
-		���݁CBlue_B ���� PC-9801 �p 88SR �G�~�����[�^ P88SR �Ŏg�p�ł���f�B�X�N�C���[�W�ɑΉ����Ă��܂��D
+		現在，Blue_B 氏の PC-9801 用 88SR エミュレータ P88SR で使用できるディスクイメージに対応しています．
 	</p>
 	<p>
-		�Ȃ��C�Â� M88 Tools �ɓ�������Ă��� READER ��p���č쐬���ꂽ�f�B�X�N�C���[�W�ɑ΂��ď������݂��s���ƁC�����I�� P88SR �����ɕϊ�����܂��D
+		なお，古い M88 Tools に同梱されていた READER を用いて作成されたディスクイメージに対して書き込みを行うと，自動的に P88SR 方式に変換されます．
 	</p>
 
 <HR>
-<h3>����̉ۑ�</h3>
+<h3>今後の課題</h3>
 
 	<p>
-		�J���\�肪������̂��C�Ή�������肪�������̂�...
-		�܂��܂���������c���Ă܂��D
+		開発予定があるものも，対応するつもりが無いものも...
+		まだまたたくさん残ってます．
 	</p>
 
 	<UL>
-		<LI>�V���A���C�v�����^�C�J�Z�b�g(relay music)
-		<LI>RTC �� 1Hz �o��
-		<LI>CRTC �̓���@�\
-			 (���ꐧ�䕶���ɂ�銄�荞�݁C���C�g�y��)
+		<LI>シリアル，プリンタ，カセット(relay music)
+		<LI>RTC の 1Hz 出力
+		<LI>CRTC の特殊機能
+			 (特殊制御文字による割り込み，ライトペン)
 	</UL>
 
 <HR>
-<h3>�ӎ�</h3>
+<h3>謝辞</h3>
 	<p>
-		FM �������̍쐬�ɂ������ĎQ�l�ɂ����Ă���������
-		FM Sound Generator �̍�� �����B�V���C
-		N80/SR ���[�h��ǉ����ꂽ arearea ���C
-		�܂��C�f����J��������ʂ��� M88 �̔��W�Ɋ�^���Ă����������F�l�C
-		�M�d�Ȏ�����d�v�ȏ����������Ă��������� ISL �̊F�l�C
-		�I�����CKAJA ���Cnorimy ���C�ߌ�T ���C
-		�J���̃L�b�J�P��^���Ă��ꂽ�^ CCS-BBS �̕��X�C
-		RPC �̕��X,
-		�F�l�ɐS����̊��ӂ��������܂��D
+		FM 音源部の作成にあたって参考にさせていただいた
+		FM Sound Generator の作者 佐藤達之氏，
+		N80/SR モードを追加された arearea 氏，
+		また，掲示板や開発室等を通じて M88 の発展に寄与してくださった皆様，
+		貴重な資料や重要な情報を供給してくださった ISL の皆様，
+		悠黒氏，KAJA 氏，norimy 氏，午後T 氏，
+		開発のキッカケを与えてくれた某 CCS-BBS の方々，
+		RPC の方々,
+		皆様に心からの感謝をささげます．
 	</p>
 
 <HR>
-<h3>�A����</h3>
+<h3>連絡先</h3>
 	<p>
-		�Ƃ肠�����ȉ��̏ꏊ�ɂ��肢���܂��D<BR>
+		とりあえず以下の場所にお願いします．<BR>
 		<BR>
 		cisc<BR>
 		E-mail: <A HREF="mailto:cisc@retropc.net">cisc@retropc.net</A><BR>
