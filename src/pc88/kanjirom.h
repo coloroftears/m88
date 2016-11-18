@@ -11,48 +11,45 @@
 
 #include "device.h"
 
-namespace PC8801
-{
+namespace PC8801 {
 
-class KanjiROM : public Device  
-{
-public:
-    enum
-    {
-        setl = 0, seth
-    };
-    
-    enum
-    {
-        readl = 0, readh
-    };
+class KanjiROM : public Device {
+ public:
+  enum { setl = 0, seth };
 
-public:
-    KanjiROM(const ID& id);
-    ~KanjiROM();
+  enum { readl = 0, readh };
 
-    bool Init(const char* filename);
+ public:
+  KanjiROM(const ID& id);
+  ~KanjiROM();
 
-    void IOCALL SetL(uint p, uint d);
-    void IOCALL SetH(uint p, uint d);
-    uint IOCALL ReadL(uint p);
-    uint IOCALL ReadH(uint p);
-    
-    uint IFCALL GetStatusSize() { return sizeof(uint); }
-    bool IFCALL SaveStatus(uint8* status) { *(uint*) status = adr; return true; }
-    bool IFCALL LoadStatus(const uint8* status) { adr = *(const uint*) status; return true; }
+  bool Init(const char* filename);
 
-    const Descriptor* IFCALL GetDesc() const { return &descriptor; } 
-    
-private:
-    uint adr;
-    uint8* image;
+  void IOCALL SetL(uint p, uint d);
+  void IOCALL SetH(uint p, uint d);
+  uint IOCALL ReadL(uint p);
+  uint IOCALL ReadH(uint p);
 
-    static const Descriptor descriptor;
-    static const InFuncPtr indef[];
-    static const OutFuncPtr outdef[];
+  uint IFCALL GetStatusSize() { return sizeof(uint); }
+  bool IFCALL SaveStatus(uint8* status) {
+    *(uint*)status = adr;
+    return true;
+  }
+  bool IFCALL LoadStatus(const uint8* status) {
+    adr = *(const uint*)status;
+    return true;
+  }
+
+  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+
+ private:
+  uint adr;
+  uint8* image;
+
+  static const Descriptor descriptor;
+  static const InFuncPtr indef[];
+  static const OutFuncPtr outdef[];
+};
 };
 
-};
-
-#endif // !defined(pc88_kanjirom_h)
+#endif  // !defined(pc88_kanjirom_h)
