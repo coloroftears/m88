@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="pch">
-      <UniqueIdentifier>{7ec52e76-664b-4f19-90f3-14d579d5b293}</UniqueIdentifier>
-    </Filter>
     <Filter Include="common">
       <UniqueIdentifier>{af21d1ac-fa55-4fd1-bd8d-32ab0f8169b4}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Win32\pch.cpp">
-      <Filter>pch</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\device.cpp">
       <Filter>common</Filter>
     </ClCompile>
