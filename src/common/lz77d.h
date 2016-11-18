@@ -9,10 +9,9 @@
 
 #include "types.h"
 
-class LZ77Dec
-{
-public:
-    bool Decode(uint8* dest, int destsize, const uint8* src);
+class LZ77Dec {
+ public:
+  bool Decode(uint8* dest, int destsize, const uint8* src);
 };
 
-#endif // incl_lz77d_h
+#endif  // incl_lz77d_h

@@ -7,30 +7,28 @@
 #ifndef common_error_h
 #define common_error_h
 
-class Error
-{
-public:
-    enum Errno
-    {
-        unknown = 0,
-        NoROM,
-        OutOfMemory,
-        ScreenInitFailed,
-        ThreadInitFailed,
-        LoadFontFailed,
-        InsaneModule,
-        nerrors
-    };
+class Error {
+ public:
+  enum Errno {
+    unknown = 0,
+    NoROM,
+    OutOfMemory,
+    ScreenInitFailed,
+    ThreadInitFailed,
+    LoadFontFailed,
+    InsaneModule,
+    nerrors
+  };
 
-public:
-    static void SetError(Errno e);
-    static const char* GetErrorText();
+ public:
+  static void SetError(Errno e);
+  static const char* GetErrorText();
 
-private:
-    Error();
+ private:
+  Error();
 
-    static Errno err;
-    static const char* ErrorText[nerrors];
+  static Errno err;
+  static const char* ErrorText[nerrors];
 };
 
-#endif // common_error_h
+#endif  // common_error_h
