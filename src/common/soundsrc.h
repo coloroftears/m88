@@ -3,7 +3,7 @@
 #ifndef common_soundsrc_h
 #define common_soundsrc_h
 
-#include "types.h"
+#include "win32/types.h"
 
 typedef int16 Sample;
 

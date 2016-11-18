@@ -7,9 +7,9 @@
 #ifndef pc88_base_h
 #define pc88_base_h
 
-#include "schedule.h"
-#include "device.h"
-#include "Z80C.h"
+#include "common/schedule.h"
+#include "common/device.h"
+#include "devices/z80c.h"
 
 class PC88;
 class TapeManager;

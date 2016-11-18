@@ -9,10 +9,10 @@
 #ifndef Z80debug_h
 #define Z80debug_h
 
-#include "device.h"
-#include "Z80.h"
-#include "Z80C.h"
-#include "Z80_x86.h"
+#include "common/device.h"
+#include "devices/z80.h"
+#include "devices/z80c.h"
+#include "devices/z80_x86.h"
 
 // ----------------------------------------------------------------------------
 

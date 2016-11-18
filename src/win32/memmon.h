@@ -7,10 +7,10 @@
 #if !defined(win32_memmon_h)
 #define win32_memmon_h
 
-#include "device.h"
-#include "mvmon.h"
+#include "common/device.h"
+#include "win32/mvmon.h"
 #include "pc88/memview.h"
-#include "wincore.h"
+#include "win32/wincore.h"
 
 // ---------------------------------------------------------------------------
 

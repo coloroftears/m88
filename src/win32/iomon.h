@@ -7,10 +7,10 @@
 #if !defined(win32_iomon_h)
 #define win32_iomon_h
 
-#include "device.h"
-#include "mvmon.h"
+#include "common/device.h"
+#include "win32/mvmon.h"
 #include "pc88/ioview.h"
-#include "wincore.h"
+#include "win32/wincore.h"
 
 // ---------------------------------------------------------------------------
 

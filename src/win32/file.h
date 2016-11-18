@@ -9,7 +9,7 @@
 #if !defined(win32_file_h)
 #define win32_file_h
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 

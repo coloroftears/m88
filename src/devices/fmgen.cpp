@@ -21,10 +21,10 @@
 //      ‚Ù‚©Œf¦”Â“™‚Å—lX‚È‚²•Œ¾C‚²x‰‡‚ğ‚¨Šñ‚¹‚¢‚½‚¾‚¢‚½ŠF—l‚É
 // ---------------------------------------------------------------------------
 
-#include "headers.h"
-#include "misc.h"
-#include "fmgen.h"
-#include "fmgeninl.h"
+#include "win32/headers.h"
+#include "common/misc.h"
+#include "devices/fmgen.h"
+#include "devices/fmgeninl.h"
 
 #define LOGNAME "fmgen"
 

@@ -7,7 +7,7 @@
 #ifndef common_device_h
 #define common_device_h
 
-#include "types.h"
+#include "win32/types.h"
 #include "if/ifcommon.h"
 
 // ---------------------------------------------------------------------------

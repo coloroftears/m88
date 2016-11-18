@@ -7,6 +7,8 @@
 #ifndef PSG_H
 #define PSG_H
 
+#include "win32/types.h"
+
 #define PSG_SAMPLETYPE int32  // int32 or int16
 
 // ---------------------------------------------------------------------------

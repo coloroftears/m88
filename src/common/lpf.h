@@ -7,7 +7,7 @@
 #ifndef incl_lpf_h
 #define incl_lpf_h
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 //  ƒtƒBƒ‹ƒ^

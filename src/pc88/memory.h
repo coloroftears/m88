@@ -9,8 +9,8 @@
 #ifndef pc88_memory_h
 #define pc88_memory_h
 
-#include "device.h"
-#include "config.h"
+#include "common/device.h"
+#include "pc88/config.h"
 
 class MemoryManager;
 

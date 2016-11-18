@@ -7,10 +7,10 @@
 #if !defined(diskmgr_h)
 #define diskmgr_h
 
-#include "floppy.h"
-#include "file.h"
-#include "fdu.h"
-#include "critsect.h"
+#include "pc88/floppy.h"
+#include "win32/file.h"
+#include "pc88/fdu.h"
+#include "win32/critsect.h"
 
 namespace D88 {
 struct ImageHeader {

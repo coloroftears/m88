@@ -9,7 +9,7 @@
 #ifndef incl_interface_common_h
 #define incl_interface_common_h
 
-#include "types.h"
+#include "win32/types.h"
 
 #ifndef IFCALL
 #define IFCALL __stdcall

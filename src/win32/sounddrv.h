@@ -9,7 +9,7 @@
 #if !defined(win32_sounddrv_h)
 #define win32_sounddrv_h
 
-#include "types.h"
+#include "win32/types.h"
 #include "common/sndbuf2.h"
 
 // ---------------------------------------------------------------------------

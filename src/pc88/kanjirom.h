@@ -9,7 +9,7 @@
 #if !defined(pc88_kanjirom_h)
 #define pc88_kanjirom_h
 
-#include "device.h"
+#include "common/device.h"
 
 namespace PC8801 {
 

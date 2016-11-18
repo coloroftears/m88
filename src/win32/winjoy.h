@@ -7,7 +7,7 @@
 #if !defined(win32_winjoy_h)
 #define win32_winjoy_h
 
-#include "device.h"
+#include "common/device.h"
 #include "if/ifui.h"
 
 class WinPadIF : public IPadInput {

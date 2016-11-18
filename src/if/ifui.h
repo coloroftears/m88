@@ -6,8 +6,8 @@
 #ifndef incl_ifui_h
 #define incl_ifui_h
 
-#include "types.h"
-#include "ifcommon.h"
+#include "win32/types.h"
+#include "if/ifcommon.h"
 
 #ifndef IFCALL
 #define IFCALL __stdcall

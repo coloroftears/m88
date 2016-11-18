@@ -9,7 +9,7 @@
 #if !defined(win32_soundds_h)
 #define win32_soundds_h
 
-#include "sounddrv.h"
+#include "win32/sounddrv.h"
 
 // ---------------------------------------------------------------------------
 

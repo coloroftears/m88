@@ -3,7 +3,7 @@
 #ifndef incl_pcinfo_h
 #define incl_pcinfo_h
 
-#include "types.h"
+#include "win32/types.h"
 
 struct DeviceInfo {
   enum {

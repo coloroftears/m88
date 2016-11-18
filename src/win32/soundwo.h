@@ -9,8 +9,8 @@
 #if !defined(win32_soundwo_h)
 #define win32_soundwo_h
 
-#include "sounddrv.h"
-#include "critsect.h"
+#include "win32/sounddrv.h"
+#include "win32/critsect.h"
 
 // ---------------------------------------------------------------------------
 

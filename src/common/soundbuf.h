@@ -7,8 +7,8 @@
 #ifndef common_soundbuf_h
 #define common_soundbuf_h
 
-#include "types.h"
-#include "critsect.h"
+#include "win32/types.h"
+#include "win32/critsect.h"
 #include "if/ifcommon.h"
 
 // ---------------------------------------------------------------------------

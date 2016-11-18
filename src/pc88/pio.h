@@ -10,7 +10,7 @@
 #ifndef PC88_FDIF_PIO_H
 #define PC88_FDIF_PIO_H
 
-#include "device.h"
+#include "common/device.h"
 
 namespace PC8801 {
 

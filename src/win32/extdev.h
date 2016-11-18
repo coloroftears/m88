@@ -7,7 +7,7 @@
 #ifndef win32_extdev_h
 #define win32_extdev_h
 
-#include "device.h"
+#include "common/device.h"
 #include "pc88/pcinfo.h"
 #include "pc88/sound.h"
 

@@ -7,8 +7,8 @@
 #if !defined(win32_basmon_h)
 #define win32_basmon_h
 
-#include "winmon.h"
-#include "device.h"
+#include "win32/winmon.h"
+#include "common/device.h"
 #include "pc88/memview.h"
 
 // ---------------------------------------------------------------------------

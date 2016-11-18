@@ -9,9 +9,9 @@
 #if !defined(win32_windraw_h)
 #define win32_windraw_h
 
-#include "types.h"
-#include "draw.h"
-#include "critsect.h"
+#include "win32/types.h"
+#include "common/draw.h"
+#include "win32/critsect.h"
 
 // ---------------------------------------------------------------------------
 

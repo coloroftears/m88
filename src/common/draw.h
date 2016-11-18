@@ -7,8 +7,8 @@
 #if !defined(common_draw_h)
 #define common_draw_h
 
-#include "types.h"
-#include "misc.h"
+#include "win32/types.h"
+#include "common/misc.h"
 
 // ---------------------------------------------------------------------------
 

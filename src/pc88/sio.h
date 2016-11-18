@@ -9,7 +9,7 @@
 #ifndef pc88_sio_h
 #define pc88_sio_h
 
-#include "device.h"
+#include "common/device.h"
 
 class Scheduler;
 

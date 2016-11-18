@@ -9,10 +9,10 @@
 #if !defined(pc88_screen_h)
 #define pc88_screen_h
 
-#include "types.h"
-#include "device.h"
-#include "draw.h"
-#include "config.h"
+#include "win32/types.h"
+#include "common/device.h"
+#include "common/draw.h"
+#include "pc88/config.h"
 
 // ---------------------------------------------------------------------------
 //  color mode

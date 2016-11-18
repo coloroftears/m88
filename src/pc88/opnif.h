@@ -7,8 +7,8 @@
 #ifndef PC88_OPNIF_H
 #define PC88_OPNIF_H
 
-#include "device.h"
-#include "opna.h"
+#include "common/device.h"
+#include "devices/opna.h"
 
 // ---------------------------------------------------------------------------
 

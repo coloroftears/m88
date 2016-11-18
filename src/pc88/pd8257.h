@@ -9,7 +9,7 @@
 #if !defined(PC88_PD8257_H)
 #define PC88_PD8257_H
 
-#include "device.h"
+#include "common/device.h"
 #include "if/ifpc88.h"
 
 // ---------------------------------------------------------------------------

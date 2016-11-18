@@ -9,7 +9,7 @@
 #ifndef pc88_intc_h
 #define pc88_intc_h
 
-#include "device.h"
+#include "common/device.h"
 
 namespace PC8801 {
 

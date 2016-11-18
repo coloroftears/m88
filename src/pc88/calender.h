@@ -9,7 +9,7 @@
 #if !defined(pc88_calender_h)
 #define pc88_calender_h
 
-#include "device.h"
+#include "common/device.h"
 
 namespace PC8801 {
 

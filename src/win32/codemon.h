@@ -7,10 +7,10 @@
 #if !defined(win32_codemon_h)
 #define win32_codemon_h
 
-#include "mvmon.h"
-#include "device.h"
+#include "win32/mvmon.h"
+#include "common/device.h"
 #include "pc88/memview.h"
-#include "Z80diag.h"
+#include "devices/z80diag.h"
 
 // ---------------------------------------------------------------------------
 

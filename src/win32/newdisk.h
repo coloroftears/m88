@@ -9,7 +9,7 @@
 #if !defined(WIN32_NEWDISK_H)
 #define WIN32_NEWDISK_H
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 

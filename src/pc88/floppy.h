@@ -7,7 +7,7 @@
 #ifndef floppy_h
 #define floppy_h
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 //  フロッピーディスク

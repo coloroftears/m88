@@ -7,7 +7,7 @@
 #ifndef common_schedule_h
 #define common_schedule_h
 
-#include "device.h"
+#include "common/device.h"
 
 // ---------------------------------------------------------------------------
 

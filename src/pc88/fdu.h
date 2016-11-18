@@ -7,7 +7,7 @@
 #ifndef FDU_H
 #define FDU_H
 
-#include "floppy.h"
+#include "pc88/floppy.h"
 
 class DiskManager;
 

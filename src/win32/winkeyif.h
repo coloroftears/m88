@@ -9,8 +9,8 @@
 #ifndef WIN32_WINKEYIF_H
 #define WIN32_WINKEYIF_H
 
-#include "device.h"
-#include "CritSect.h"
+#include "common/device.h"
+#include "win32/critsect.h"
 
 // ---------------------------------------------------------------------------
 namespace PC8801 {

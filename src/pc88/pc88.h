@@ -7,9 +7,9 @@
 #ifndef pc88_h
 #define pc88_h
 
-#include "schedule.h"
-#include "device.h"
-#include "draw.h"
+#include "common/schedule.h"
+#include "common/device.h"
+#include "common/draw.h"
 
 // ---------------------------------------------------------------------------
 //  使用する Z80 エンジンの種類を決める
@@ -23,17 +23,17 @@
 //#define   CPU_DEBUG           // Z80 エンジンテスト用
 
 #ifdef CPU_Z80X86
-#include "Z80_x86.h"
+#include "devices/z80_x86.h"
 #else
-#include "Z80C.h"
+#include "devices/z80c.h"
 #endif
 
 #ifdef CPU_TEST
-#include "Z80Test.h"
+#include "devices/z80test.h"
 #endif
 
 #ifdef CPU_DEBUG
-#include "Z80Debug.h"
+#include "devices/z80debug.h"
 #endif
 
 // ---------------------------------------------------------------------------

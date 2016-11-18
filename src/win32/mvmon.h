@@ -7,9 +7,9 @@
 #if !defined(win32_mvmon_h)
 #define win32_mvmon_h
 
-#include "instthnk.h"
-#include "device.h"
-#include "winmon.h"
+#include "win32/instthnk.h"
+#include "common/device.h"
+#include "win32/winmon.h"
 #include "pc88/memview.h"
 
 // ---------------------------------------------------------------------------

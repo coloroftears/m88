@@ -11,12 +11,12 @@
 //  Memory ŠÖ”‚Í __cdecl, IO ŠÖ”‚Í __stdcall (IOCALL) ‚ğ‘z’è‚µ‚Ä‚¢‚Ü‚·
 //
 
-#include "headers.h"
-#include "types.h"
+#include "win32/headers.h"
+#include "win32/types.h"
 
 #ifdef USE_Z80_X86
 
-#include "Z80_x86.h"
+#include "devices/z80_x86.h"
 
 //#define NO_UNOFFICIALFLAGS
 

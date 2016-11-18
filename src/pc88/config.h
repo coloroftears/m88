@@ -7,7 +7,7 @@
 #ifndef pc88_config_h
 #define pc88_config_h
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
 #if !defined(pc88_mouse_h)
 #define pc88_mouse_h
 
-#include "device.h"
+#include "common/device.h"
 #include "if/ifui.h"
 
 class PC88;

@@ -7,7 +7,7 @@
 #if !defined(win32_timekeep_h)
 #define win32_timekeep_h
 
-#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 //  TimeKeeper

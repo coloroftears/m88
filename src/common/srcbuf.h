@@ -3,8 +3,8 @@
 #ifndef common_srcbuf_h
 #define common_srcbuf_h
 
-#include "critsect.h"
-#include "soundsrc.h"
+#include "win32/critsect.h"
+#include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------
 //  SamplingRateConverter

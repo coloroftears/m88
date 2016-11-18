@@ -7,9 +7,9 @@
 #if !defined(win32_soundmon_h)
 #define win32_soundmon_h
 
-#include "device.h"
-#include "winmon.h"
-#include "soundsrc.h"
+#include "common/device.h"
+#include "win32/winmon.h"
+#include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------
 

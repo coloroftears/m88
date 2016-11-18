@@ -7,7 +7,7 @@
 #if !defined(pc88_joypad_h)
 #define pc88_joypad_h
 
-#include "device.h"
+#include "common/device.h"
 #include "if/ifui.h"
 
 namespace PC8801 {

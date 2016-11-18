@@ -7,7 +7,7 @@
 #ifndef FM_GEN_H
 #define FM_GEN_H
 
-//#include "types.h"
+#include "win32/types.h"
 
 // ---------------------------------------------------------------------------
 //  o—ÍƒTƒ“ƒvƒ‹‚ÌŒ^

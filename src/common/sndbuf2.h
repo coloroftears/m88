@@ -3,9 +3,9 @@
 #ifndef common_soundbuf2_h
 #define common_soundbuf2_h
 
-#include "critsect.h"
+#include "win32/critsect.h"
 #include "if/ifcommon.h"
-#include "soundsrc.h"
+#include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------
 //  SoundBuffer2

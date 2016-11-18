@@ -7,7 +7,7 @@
 #ifndef PC88_BEEP_H
 #define PC88_BEEP_H
 
-#include "device.h"
+#include "common/device.h"
 
 // ---------------------------------------------------------------------------
 

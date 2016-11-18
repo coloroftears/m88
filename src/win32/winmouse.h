@@ -7,7 +7,7 @@
 #if !defined(win32_winmouse_h)
 #define win32_winmouse_h
 
-#include "Device.h"
+#include "common/device.h"
 #include "if/ifui.h"
 
 class WinUI;
