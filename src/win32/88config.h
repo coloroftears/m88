@@ -11,11 +11,13 @@
 #include "pc88/config.h"
 #include "instthnk.h"
 
-namespace PC8801
-{
-    void SaveConfig(Config* cfg, const char* inifile, bool writedefault);
-    void LoadConfig(Config* cfg, const char* inifile, bool applydefault);
-    void LoadConfigDirectory(Config* cfg, const char* inifile, const char* entry, bool readalways);
+namespace PC8801 {
+void SaveConfig(Config* cfg, const char* inifile, bool writedefault);
+void LoadConfig(Config* cfg, const char* inifile, bool applydefault);
+void LoadConfigDirectory(Config* cfg,
+                         const char* inifile,
+                         const char* entry,
+                         bool readalways);
 }
 
-#endif // !defined(win32_88config_h)
+#endif  // !defined(win32_88config_h)

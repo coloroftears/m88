@@ -13,20 +13,19 @@
 
 // ---------------------------------------------------------------------------
 
-class M88About  
-{
-public:
-    M88About();
-    ~M88About() {}
-    
-    void Show(HINSTANCE, HWND);
+class M88About {
+ public:
+  M88About();
+  ~M88About() {}
 
-private:
-    INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
-    static INT_PTR DlgProcGate(HWND, UINT, WPARAM, LPARAM);
+  void Show(HINSTANCE, HWND);
 
-    static const char abouttext[];
-    uint32 crc;
+ private:
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
+  static INT_PTR DlgProcGate(HWND, UINT, WPARAM, LPARAM);
+
+  static const char abouttext[];
+  uint32 crc;
 };
 
-#endif // !defined(WIN_ABOUT_H)
+#endif  // !defined(WIN_ABOUT_H)

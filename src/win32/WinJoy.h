@@ -10,19 +10,17 @@
 #include "device.h"
 #include "if/ifui.h"
 
-class WinPadIF : public IPadInput
-{
-public:
-    WinPadIF();
-    ~WinPadIF();
+class WinPadIF : public IPadInput {
+ public:
+  WinPadIF();
+  ~WinPadIF();
 
-    bool Init();
-    
-    void IFCALL GetState(PadState*);
+  bool Init();
 
-private:
-    bool enabled;
+  void IFCALL GetState(PadState*);
+
+ private:
+  bool enabled;
 };
 
-
-#endif // !defined(win32_winjoy_h)
+#endif  // !defined(win32_winjoy_h)
