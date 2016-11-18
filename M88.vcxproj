@@ -205,7 +205,6 @@
     <ClCompile Include="src\common\device.cpp" />
     <ClCompile Include="src\common\error.cpp" />
     <ClCompile Include="src\common\lpf.cpp" />
-    <ClCompile Include="src\common\lz77d.cpp" />
     <ClCompile Include="src\common\memmgr.cpp" />
     <ClCompile Include="src\common\schedule.cpp" />
     <ClCompile Include="src\common\sndbuf2.cpp" />
@@ -425,7 +424,6 @@
     <ClInclude Include="src\common\draw.h" />
     <ClInclude Include="src\common\error.h" />
     <ClInclude Include="src\common\lpf.h" />
-    <ClInclude Include="src\common\lz77d.h" />
     <ClInclude Include="src\common\memmgr.h" />
     <ClInclude Include="src\common\misc.h" />
     <ClInclude Include="src\common\schedule.h" />
