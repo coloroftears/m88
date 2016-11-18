@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------------
-//	M88 - PC-8801 series emulator
-//	Copyright (C) cisc 1999.
+//  M88 - PC-8801 series emulator
+//  Copyright (C) cisc 1999.
 // ----------------------------------------------------------------------------
-//	$Id: types.h,v 1.10 1999/12/28 10:34:53 cisc Exp $
+//  $Id: types.h,v 1.10 1999/12/28 10:34:53 cisc Exp $
 
 #if !defined(win32_types_h)
 #define win32_types_h
@@ -39,9 +39,9 @@ typedef uint intpointer;
 // (x86 版 Z80 エンジンでは必須)
 
 #if defined(_DEBUG)
-	#define PTR_IDBIT	0x80000000
+    #define PTR_IDBIT   0x80000000
 #else
-	#define PTR_IDBIT	0x1
+    #define PTR_IDBIT   0x1
 #endif
 
 // ワード境界を越えるアクセスを許可
@@ -56,17 +56,17 @@ typedef uint intpointer;
 // ---------------------------------------------------------------------------
 
 #ifdef USE_Z80_X86
-	#define MEMCALL __stdcall
+    #define MEMCALL __stdcall
 #else
-	#define MEMCALL
+    #define MEMCALL
 #endif
 
 #if defined(USE_NEW_CAST) && defined(__cplusplus) 
-	#define STATIC_CAST(t, o)			static_cast<t> (o)
-	#define REINTERPRET_CAST(t, o)		reinterpret_cast<t> (o)
+    #define STATIC_CAST(t, o)           static_cast<t> (o)
+    #define REINTERPRET_CAST(t, o)      reinterpret_cast<t> (o)
 #else
-	#define STATIC_CAST(t, o)			((t)(o))
-	#define REINTERPRET_CAST(t, o)		(*(t*)(void*)&(o))
+    #define STATIC_CAST(t, o)           ((t)(o))
+    #define REINTERPRET_CAST(t, o)      (*(t*)(void*)&(o))
 #endif
 
 #endif // win32_types_h

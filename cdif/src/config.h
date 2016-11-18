@@ -9,17 +9,17 @@
 class ConfigCDIF : public IConfigPropSheet
 {
 public:
-	ConfigCDIF();
-	bool Init(HINSTANCE _hinst);  
-	bool IFCALL Setup(IConfigPropBase*, PROPSHEETPAGE* psp);
-	
+    ConfigCDIF();
+    bool Init(HINSTANCE _hinst);  
+    bool IFCALL Setup(IConfigPropBase*, PROPSHEETPAGE* psp);
+    
 private:
-	BOOL PageProc(HWND, UINT, WPARAM, LPARAM);
-	static BOOL CALLBACK PageGate(ConfigCDIF*, HWND, UINT, WPARAM, LPARAM);
-	
-	HINSTANCE hinst;
-	IConfigPropBase* base;
-	InstanceThunk gate;
+    BOOL PageProc(HWND, UINT, WPARAM, LPARAM);
+    static BOOL CALLBACK PageGate(ConfigCDIF*, HWND, UINT, WPARAM, LPARAM);
+    
+    HINSTANCE hinst;
+    IConfigPropBase* base;
+    InstanceThunk gate;
 };
 
 #endif // incl_config_h
