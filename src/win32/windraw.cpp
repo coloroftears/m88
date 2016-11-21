@@ -477,11 +477,11 @@ int WinDraw::CaptureScreen(uint8* dest) {
     rgb.rgbGreen = palette[0x40 + index].peGreen;
     //      LOG4("c[%.2x] = G:%.2x R:%.2x B:%.2x\n", index, rgb.rgbGreen,
     //      rgb.rgbRed, rgb.rgbBlue);
-    uint32 entry = *((uint32*)&rgb);
+    uint32_t entry = *((uint32_t*)&rgb);
 
     int k;
     for (k = 0; k < colors; k++) {
-      if (!((*((uint32*)&pal[k]) ^ entry) & 0xffffff))
+      if (!((*((uint32_t*)&pal[k]) ^ entry) & 0xffffff))
         goto match;
     }
     if (colors < 15) {

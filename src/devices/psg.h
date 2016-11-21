@@ -9,7 +9,7 @@
 
 #include "win32/types.h"
 
-#define PSG_SAMPLETYPE int32  // int32 or int16
+#define PSG_SAMPLETYPE int32_t  // int32_t or int16
 
 // ---------------------------------------------------------------------------
 //  class PSG
@@ -70,18 +70,18 @@ class PSG {
  protected:
   void MakeNoiseTable();
   void MakeEnvelopTable();
-  static void StoreSample(Sample& dest, int32 data);
+  static void StoreSample(Sample& dest, int32_t data);
 
   uint8 reg[16];
 
   const uint* envelop;
   uint olevel[3];
-  uint32 scount[3], speriod[3];
-  uint32 ecount, eperiod;
-  uint32 ncount, nperiod;
-  uint32 tperiodbase;
-  uint32 eperiodbase;
-  uint32 nperiodbase;
+  uint32_t scount[3], speriod[3];
+  uint32_t ecount, eperiod;
+  uint32_t ncount, nperiod;
+  uint32_t tperiodbase;
+  uint32_t eperiodbase;
+  uint32_t nperiodbase;
   int volume;
   int mask;
 

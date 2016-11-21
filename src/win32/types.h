@@ -30,7 +30,7 @@ typedef signed short int16;
 typedef signed int int32;
 
 // 8 bit 数値をまとめて処理するときに使う型
-typedef uint32 packed;
+typedef uint32_t packed;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
 
 // ボインタ値を表現できる整数型

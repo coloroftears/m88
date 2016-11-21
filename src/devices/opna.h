@@ -64,12 +64,12 @@
 //      ReadStatusEx は拡張ステータスレジスタの読み出し(OPNA)
 //      busy フラグは常に 0
 //
-//  bool Count(uint32 t)
+//  bool Count(uint32_t t)
 //      音源のタイマーを t [μ秒] 進める．
 //      音源の内部状態に変化があった時(timer オーバーフロー)
 //      true を返す
 //
-//  uint32 GetNextEvent()
+//  uint32_t GetNextEvent()
 //      音源のタイマーのどちらかがオーバーフローするまでに必要な
 //      時間[μ秒]を返す
 //      タイマーが停止している場合は ULONG_MAX を返す… と思う
@@ -104,7 +104,7 @@ class OPNBase : public Timer {
   uint status;
   Channel4* csmch;
 
-  static uint32 lfotable[8];
+  static uint32_t lfotable[8];
 
  private:
   void TimerA();
@@ -169,8 +169,8 @@ class OPNABase : public OPNBase {
   uint stmask;
   uint statusnext;
 
-  uint32 lfocount;
-  uint32 lfodcount;
+  uint32_t lfocount;
+  uint32_t lfodcount;
 
   uint fnum[6];
   uint fnum3[3];
@@ -212,7 +212,7 @@ class OPNABase : public OPNBase {
   static void BuildLFOTable();
   static int amtable[FM_LFOENTS];
   static int pmtable[FM_LFOENTS];
-  static int32 tltable[FM_TLENTS + FM_TLPOS];
+  static int32_t tltable[FM_TLENTS + FM_TLPOS];
   static bool tablehasmade;
 };
 
@@ -389,7 +389,7 @@ class OPN2 : public OPNBase {
   uint8 fnum2[6];
 
   // 線形補間用ワーク
-  int32 mixc, mixc1;
+  int32_t mixc, mixc1;
 
   Channel4 ch[3];
 };

@@ -808,8 +808,8 @@ void Z80C::ADCHL(uint y) {
   uint cy = GetCF();
   uint x = RegHL;
 
-  fx32 = (uint32)(x & 0xffff) * 2 + 1;
-  fy32 = (uint32)(y & 0xffff) * 2 + cy;
+  fx32 = (uint32_t)(x & 0xffff) * 2 + 1;
+  fy32 = (uint32_t)(y & 0xffff) * 2 + cy;
   RegHL = x + y + cy;
   uf = SF | ZF | HF | PF | CF | WF;
   nfa = 0;
@@ -820,8 +820,8 @@ void Z80C::ADCHL(uint y) {
 void Z80C::SBCHL(uint y) {
   uint cy = GetCF();
 
-  fx32 = (uint32)(RegHL & 0xffff) * 2;
-  fy32 = (uint32)(y & 0xffff) * 2 + cy;
+  fx32 = (uint32_t)(RegHL & 0xffff) * 2;
+  fy32 = (uint32_t)(y & 0xffff) * 2 + cy;
   RegHL = RegHL - y - cy;
   uf = SF | ZF | HF | PF | CF | WF;
   nfa = 1;

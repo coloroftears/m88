@@ -18,8 +18,8 @@ struct ImageHeader {
   uint8 reserved[9];
   uint8 readonly;
   uint8 disktype;
-  uint32 disksize;
-  uint32 trackptr[164];
+  uint32_t disksize;
+  uint32_t trackptr[164];
 };
 
 struct SectorHeader {
@@ -60,8 +60,8 @@ class DiskImageHolder {
  private:
   struct DiskInfo {
     char title[20];
-    int32 pos;
-    int32 size;
+    int32_t pos;
+    int32_t size;
   };
   bool ReadHeaders();
   void Close();
@@ -116,7 +116,7 @@ class DiskManager {
     int index;
     bool sizechanged;
 
-    uint32 trackpos[168];
+    uint32_t trackpos[168];
     int tracksize[168];
     bool modified[168];
   };

@@ -13,7 +13,7 @@ class PiccoloChip {
  public:
   virtual int Init(uint c) = 0;
   virtual void Reset() = 0;
-  virtual bool SetReg(uint32 at, uint addr, uint data) = 0;
+  virtual bool SetReg(uint32_t at, uint addr, uint data) = 0;
   virtual void SetChannelMask(uint mask) = 0;
   virtual void SetVolume(int ch, int value) = 0;
 };
@@ -50,7 +50,7 @@ class Piccolo {
   bool SetMaximumLatency(uint nanosec);
 
   // メソッド呼び出し時点での時間を渡す(単位は nanosec)
-  uint32 GetCurrentTime();
+  uint32_t GetCurrentTime();
 
   //
   int GetChip(PICCOLO_CHIPTYPE type, PiccoloChip** pc);
@@ -72,7 +72,7 @@ class Piccolo {
 
     int Init(uint param) { return pic->DrvInit(drv, param); }
     void Reset() { pic->DrvReset(drv); }
-    bool SetReg(uint32 at, uint addr, uint data) {
+    bool SetReg(uint32_t at, uint addr, uint data) {
       return pic->DrvSetReg(drv, at, addr, data);
     }
     void SetChannelMask(uint mask) {}
@@ -109,7 +109,7 @@ class Piccolo {
     };
     bool IsBusy();
     Piccolo* piccolo;
-    uint32 addr;
+    uint32_t addr;
     bool used;
   };
   friend class YMF288;
@@ -136,7 +136,7 @@ class Piccolo {
   Event* Top();
   void Pop();
 
-  bool DrvSetReg(Driver* drv, uint32 at, uint addr, uint data);
+  bool DrvSetReg(Driver* drv, uint32_t at, uint addr, uint data);
   int DrvInit(Driver* drv, uint c);
   void DrvReset(Driver* drv);
   void DrvRelease(Driver* drv);
@@ -150,8 +150,8 @@ class Piccolo {
 
   int maxlatency;
 
-  uint32 addr;
-  uint32 irq;
+  uint32_t addr;
+  uint32_t irq;
   int avail;
 
   volatile bool shouldterminate;

@@ -124,7 +124,7 @@ void OPNIF::SetFMMixMode(bool mm) {
 // ---------------------------------------------------------------------------
 //  çáê¨
 //
-void IFCALL OPNIF::Mix(int32* dest, int nsamples) {
+void IFCALL OPNIF::Mix(int32_t* dest, int nsamples) {
   if (enable)
     opn.Mix(dest, nsamples);
 }

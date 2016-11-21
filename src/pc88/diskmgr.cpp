@@ -69,7 +69,7 @@ bool DiskImageHolder::AddDisk(const char* title, uint type) {
   if (ndisks >= max_disks)
     return false;
 
-  int32 diskpos = 0;
+  int32_t diskpos = 0;
   if (ndisks > 0) {
     diskpos = disks[ndisks - 1].pos + disks[ndisks - 1].size;
   }
@@ -234,19 +234,19 @@ bool DiskImageHolder::SetDiskSize(int index, int newsize) {
   if (index >= ndisks)
     return false;
 
-  int32 sizediff = newsize - disks[index].size;
+  int32_t sizediff = newsize - disks[index].size;
   if (!sizediff)
     return true;
 
   // 移動させる必要のあるデータのサイズを計算する
-  int32 sizemove = 0;
+  int32_t sizemove = 0;
   for (i = index + 1; i < ndisks; i++) {
     sizemove += disks[i].size;
   }
 
   fio.SetLogicalOrigin(0);
   if (sizemove) {
-    int32 moveorg = disks[index + 1].pos;
+    int32_t moveorg = disks[index + 1].pos;
     uint8* data = new uint8[sizemove];
     if (!data)
       return false;
@@ -405,7 +405,7 @@ bool DiskManager::Unmount(uint dr) {
     if (drv.index >= 0) {
       for (int t = 0; t < 164; t++) {
         if (drv.modified[t]) {
-          uint32 disksize = GetDiskImageSize(&drv);
+          uint32_t disksize = GetDiskImageSize(&drv);
           if (!drv.holder->SetDiskSize(drv.index, disksize)) {
             ret = false;
             break;
@@ -631,7 +631,7 @@ bool DiskManager::WriteDiskImage(FileIO* fio, Drive* drv) {
   ih.disktype = typetbl[drv->disk.GetType()];
   ih.readonly = drv->disk.IsReadOnly() ? 0x10 : 0;
 
-  uint32 disksize = sizeof(ImageHeader);
+  uint32_t disksize = sizeof(ImageHeader);
   int ntracks = drv->disk.GetNumTracks();
 
   for (t = 0; t < ntracks; t++) {

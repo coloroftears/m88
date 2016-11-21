@@ -40,7 +40,7 @@ class Beep : public Device, public ISoundSource {
 
   bool IFCALL Connect(ISoundControl* sc);
   bool IFCALL SetRate(uint rate);
-  void IFCALL Mix(int32*, int);
+  void IFCALL Mix(int32_t*, int);
 
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
   uint IFCALL GetStatusSize();
@@ -56,7 +56,7 @@ class Beep : public Device, public ISoundSource {
   struct Status {
     uint8 rev;
     uint8 port40;
-    uint32 prevtime;
+    uint32_t prevtime;
   };
 
   ISoundControl* soundcontrol;

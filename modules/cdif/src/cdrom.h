@@ -18,7 +18,7 @@ class ASPI;
 class CDROM {
  public:
   struct Track {
-    uint32 addr;
+    uint32_t addr;
     uint control;  // b2 = data/~audio
   };
   struct MSF {

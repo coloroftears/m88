@@ -40,7 +40,7 @@ class Memory : public Device, public IGetMemoryBank {
   };
   enum IDIn { in32 = 0, in5c, in70, in71, ine2, ine3, in33 };
   union quadbyte {
-    uint32 pack;
+    uint32_t pack;
     uint8 byte[4];
   };
   enum ROM { n88 = 0, n88e = 0x8000, n80 = 0x10000, romsize = 0x18000 };

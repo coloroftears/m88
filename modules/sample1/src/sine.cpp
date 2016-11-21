@@ -41,7 +41,7 @@ void IOCALL Sine::SetVolume(uint, uint data) {
   volume = data;
 }
 
-void IFCALL Sine::Mix(int32* dest, int length) {
+void IFCALL Sine::Mix(int32_t* dest, int length) {
   for (; length > 0; length--) {
     int a = (table[(pos >> 8) & 127] * volume) >> 8;
     pos += step;

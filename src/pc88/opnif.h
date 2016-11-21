@@ -56,7 +56,7 @@ class OPNIF : public Device, public ISoundSource {
 
   bool IFCALL Connect(ISoundControl* c);
   bool IFCALL SetRate(uint rate);
-  void IFCALL Mix(int32* buffer, int nsamples);
+  void IFCALL Mix(int32_t* buffer, int nsamples);
 
   void SetVolume(const Config* config);
   void SetFMMixMode(bool);
@@ -133,7 +133,7 @@ class OPNIF : public Device, public ISoundSource {
   ISoundControl* soundcontrol;
   IOBus* bus;
   Scheduler* scheduler;
-  int32 nextcount;
+  int32_t nextcount;
   uint imaskport;
   int imaskbit;
   int prevtime;
@@ -141,8 +141,8 @@ class OPNIF : public Device, public ISoundSource {
   uint currentrate;
   bool fmmixmode;
 
-  uint32 basetime;
-  uint32 basetick;
+  uint32_t basetime;
+  uint32_t basetick;
   uint clock;
 
   bool opnamode;

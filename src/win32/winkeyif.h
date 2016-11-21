@@ -37,8 +37,8 @@ class WinKeyIF : public Device {
 
   void Activate(bool);
   void Disable(bool);
-  void KeyDown(uint, uint32);
-  void KeyUp(uint, uint32);
+  void KeyDown(uint, uint32_t);
+  void KeyUp(uint, uint32_t);
 
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 

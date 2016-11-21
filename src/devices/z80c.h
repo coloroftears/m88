@@ -171,7 +171,7 @@ class Z80C : public Device {
   uint8 uf;          /* 未計算フラグ */
   uint8 nfa;         /* 最後の加減算の種類 */
   uint8 xf;          /* 未定義フラグ(第3,5ビット) */
-  uint32 fx32, fy32; /* フラグ計算用のデータ */
+  uint32_t fx32, fy32; /* フラグ計算用のデータ */
   uint fx, fy;
 
   uint8* ref_h[3];            /* H / XH / YH のテーブル */

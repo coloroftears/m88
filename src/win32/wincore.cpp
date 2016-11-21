@@ -186,7 +186,7 @@ bool WinCore::SaveShapshot(const char* filename) {
         delete[] buf;
         return false;
       }
-      *(int32*)(buf + size) = -(long)esize;
+      *(int32_t*)(buf + size) = -(long)esize;
       esize += 4;
     }
 
@@ -265,7 +265,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
   if (buf) {
     bool read = false;
     if (ssh.flags & 0x80000000) {
-      int32 csize;
+      int32_t csize;
 
       file.Read(&csize, 4);
       if (csize < 0) {

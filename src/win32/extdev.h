@@ -51,7 +51,7 @@ class ExternalDevice : public Device, public ISoundSource {
   void IOCALL Out(uint port, uint data);
 
   bool IFCALL SetRate(uint r);
-  void IFCALL Mix(int32* s, int len);
+  void IFCALL Mix(int32_t* s, int len);
   bool IFCALL Connect(ISoundControl* sound) { return false; }
 
   HMODULE hdll;

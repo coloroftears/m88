@@ -180,7 +180,7 @@ void PSG::SetReg(uint regnum, uint8 data) {
 // ---------------------------------------------------------------------------
 //
 //
-inline void PSG::StoreSample(Sample& dest, int32 data) {
+inline void PSG::StoreSample(Sample& dest, int32_t data) {
   if (sizeof(Sample) == 2)
     dest = (Sample)Limit(dest + data, 0x7fff, -0x8000);
   else

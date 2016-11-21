@@ -16,11 +16,11 @@ class SamplingRateConverter : public SoundSource {
 
   bool Init(SoundSourceL* source,
             int bufsize,
-            uint32 outrate);  // bufsize はサンプル単位
+            uint32_t outrate);  // bufsize はサンプル単位
   void Cleanup();
 
   int Get(Sample* dest, int size);
-  uint32 GetRate();
+  uint32_t GetRate();
   int GetChannels();
   int GetAvail();
 
@@ -36,7 +36,7 @@ class SamplingRateConverter : public SoundSource {
   };
 
   int FillMain(int samples);
-  void MakeFilter(uint32 outrate);
+  void MakeFilter(uint32_t outrate);
   int Avail();
 
   SoundSourceL* source;
@@ -66,7 +66,7 @@ inline void SamplingRateConverter::FillWhenEmpty(bool f) {
   fillwhenempty = f;
 }
 
-inline uint32 SamplingRateConverter::GetRate() {
+inline uint32_t SamplingRateConverter::GetRate() {
   return source ? outputrate : 0;
 }
 

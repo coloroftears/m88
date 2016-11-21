@@ -27,8 +27,8 @@
 //
 interface IUnk {
   virtual long IFCALL QueryInterface(REFIID, void**) = 0;
-  virtual uint32 IFCALL AddRef() = 0;
-  virtual uint32 IFCALL Release() = 0;
+  virtual uint32_t IFCALL AddRef() = 0;
+  virtual uint32_t IFCALL Release() = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ struct ISoundControl;
 struct ISoundSource {
   virtual bool IFCALL Connect(ISoundControl* sc) = 0;
   virtual bool IFCALL SetRate(uint rate) = 0;
-  virtual void IFCALL Mix(int32* s, int length) = 0;
+  virtual void IFCALL Mix(int32_t* s, int length) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ struct IIOAccess {
 //  デバイスのインターフェース
 //
 struct IDevice {
-  typedef uint32 ID;
+  typedef uint32_t ID;
   typedef uint (IOCALL IDevice::*InFuncPtr)(uint port);
   typedef void (IOCALL IDevice::*OutFuncPtr)(uint port, uint data);
   typedef void (IOCALL IDevice::*TimeFunc)(uint arg);

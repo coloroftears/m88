@@ -326,7 +326,7 @@ inline uint WinUI::WmKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((uint)wparam == VK_F12 && !(config.flags & Config::disablef12reset))
     ;
   else
-    keyif.KeyDown((uint)wparam, (uint32)lparam);
+    keyif.KeyDown((uint)wparam, (uint32_t)lparam);
 
   return 0;
 }
@@ -335,14 +335,14 @@ inline uint WinUI::WmKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((uint)wparam == VK_F12 && !(config.flags & Config::disablef12reset))
     Reset();
   else
-    keyif.KeyUp((uint)wparam, (uint32)lparam);
+    keyif.KeyUp((uint)wparam, (uint32_t)lparam);
 
   return 0;
 }
 
 inline uint WinUI::WmSysKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (config.flags & Config::suppressmenu) {
-    keyif.KeyDown((uint)wparam, (uint32)lparam);
+    keyif.KeyDown((uint)wparam, (uint32_t)lparam);
     return 0;
   }
   return DefWindowProc(hwnd, WM_SYSKEYDOWN, wparam, lparam);
@@ -350,7 +350,7 @@ inline uint WinUI::WmSysKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 
 inline uint WinUI::WmSysKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (config.flags & Config::suppressmenu) {
-    keyif.KeyUp((uint)wparam, (uint32)lparam);
+    keyif.KeyUp((uint)wparam, (uint32_t)lparam);
     return 0;
   }
   return DefWindowProc(hwnd, WM_SYSKEYUP, wparam, lparam);
@@ -1763,7 +1763,7 @@ void WinUI::ApplyCommandLine(const char* cmdline) {
       cmdline += 2;
       switch (tolower(cmdline[-1])) {
         char* endptr;
-        int32 newflags, activate;
+        int32_t newflags, activate;
 
         // BASIC モードを設定  -bモード番号
         case 'b':

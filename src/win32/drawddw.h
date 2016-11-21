@@ -47,9 +47,9 @@ class WinDrawDDW : public WinDrawSub {
 
   LPDIRECTDRAWSURFACE ddswork;
 
-  uint32 redmask;
-  uint32 greenmask;
-  uint32 bluemask;
+  uint32_t redmask;
+  uint32_t greenmask;
+  uint32_t bluemask;
   uint8 redshift;
   uint8 greenshift;
   uint8 blueshift;

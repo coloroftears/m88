@@ -47,7 +47,7 @@ class Mouse : public Device {
   uint8 port40;
   bool joymode;
   int phase;
-  int32 triggertime;
+  int32_t triggertime;
   int sensibility;
   int data;
 

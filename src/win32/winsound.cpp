@@ -278,7 +278,7 @@ void SoundDumpPipe::Dump(Sample* dest, int samples) {
   // –`“ª‚Ì–³‰¹•”‚ðƒJƒbƒg‚·‚é
   if (dumpstate_ == STANDBY) {
     int i;
-    uint32* s = (uint32*)dest;
+    uint32_t* s = (uint32_t*)dest;
     for (i = 0; i < samples && *s == 0; i++, s++)
       ;
     dest += i * nch, samples -= i;

@@ -22,7 +22,7 @@ class Sine : public Device, public ISoundSource {
   // ISoundSource method
   bool IFCALL Connect(ISoundControl* sc);
   bool IFCALL SetRate(uint rate);
-  void IFCALL Mix(int32*, int);
+  void IFCALL Mix(int32_t*, int);
 
   // IDevice Method
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }

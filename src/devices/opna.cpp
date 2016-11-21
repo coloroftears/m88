@@ -34,7 +34,7 @@ namespace FM {
 
 #if defined(BUILD_OPN) || defined(BUILD_OPNA) || defined(BUILD_OPNB)
 
-uint32 OPNBase::lfotable[8];  // OPNA/B —p
+uint32_t OPNBase::lfotable[8];  // OPNA/B —p
 
 OPNBase::OPNBase() {
   prescale = 0;
@@ -373,7 +373,7 @@ int OPNABase::amtable[FM_LFOENTS] = {
 };
 int OPNABase::pmtable[FM_LFOENTS];
 
-int32 OPNABase::tltable[FM_TLENTS + FM_TLPOS];
+int32_t OPNABase::tltable[FM_TLENTS + FM_TLPOS];
 bool OPNABase::tablehasmade = false;
 
 OPNABase::OPNABase() {
@@ -1233,7 +1233,7 @@ bool OPNA::LoadRhythmSample(const char* path) {
 
   for (i = 0; i < 6; i++) {
     FileIO file;
-    uint32 fsize;
+    uint32_t fsize;
     char buf[MAX_PATH] = "";
     if (path)
       strncpy(buf, path, MAX_PATH);
@@ -1252,11 +1252,11 @@ bool OPNA::LoadRhythmSample(const char* path) {
     }
 
     struct {
-      uint32 chunksize;
+      uint32_t chunksize;
       uint16 tag;
       uint16 nch;
-      uint32 rate;
-      uint32 avgbytes;
+      uint32_t rate;
+      uint32_t avgbytes;
       uint16 align;
       uint16 bps;
       uint16 size;

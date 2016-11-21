@@ -41,11 +41,11 @@ long IFCALL WinMouseUI::QueryInterface(REFIID id, void** ppi) {
   return S_OK;
 }
 
-uint32 IFCALL WinMouseUI::AddRef() {
+uint32_t IFCALL WinMouseUI::AddRef() {
   return ++refcount;
 }
 
-uint32 IFCALL WinMouseUI::Release() {
+uint32_t IFCALL WinMouseUI::Release() {
   if (--refcount)
     return refcount;
   delete this;
@@ -91,7 +91,7 @@ uint WinMouseUI::GetButton() {
 bool WinMouseUI::GetMovement(POINT* move) {
   move->x = move->y = 0;
 
-  if (enable && (!activetime || (int32(GetTickCount()) - activetime > 0))) {
+  if (enable && (!activetime || (int32_t(GetTickCount()) - activetime > 0))) {
     activetime = 0;
     POINT point;
     if (GetCursorPos(&point)) {

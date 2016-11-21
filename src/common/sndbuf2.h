@@ -19,7 +19,7 @@ class SoundBuffer2 : public SoundSource {
   void Cleanup();
 
   int Get(Sample* dest, int size);
-  uint32 GetRate();
+  uint32_t GetRate();
   int GetChannels();
 
   int Fill(int samples);  // バッファに最大 sample 分データを追加
@@ -48,7 +48,7 @@ inline void SoundBuffer2::FillWhenEmpty(bool f) {
   fillwhenempty = f;
 }
 
-inline uint32 SoundBuffer2::GetRate() {
+inline uint32_t SoundBuffer2::GetRate() {
   return source ? source->GetRate() : 0;
 }
 

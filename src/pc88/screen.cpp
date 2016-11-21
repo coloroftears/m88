@@ -499,7 +499,7 @@ void Screen::UpdateScreen200b(uint8* image, int bpl, Draw::Region& region) {
             Memory::quadbyte* s = src;
             packed* d = (packed*)dest;
             for (int j = 0; j < 4; j++) {
-              uint32 x;
+              uint32_t x;
               x = s[0].pack & mask.pack;
               WRITEB0(d[0], x);
               WRITEB1(d[1], x);
@@ -530,7 +530,7 @@ void Screen::UpdateScreen200b(uint8* image, int bpl, Draw::Region& region) {
             Memory::quadbyte* s = src;
             packed* d = (packed*)dest;
             for (int j = 0; j < 4; j++) {
-              uint32 x;
+              uint32_t x;
               x = s[0].pack & mask.pack;
               WRITEB0F(0, x);
               WRITEB1F(1, x);
@@ -1039,7 +1039,7 @@ void Screen::UpdateScreen320b(uint8* image, int bpl, Draw::Region& region) {
             dm |= tmp[x];
 
             for (int j = 0; j < 8; j++) {
-              uint32 s;
+              uint32_t s;
               s = (src[0].pack & mask1.pack) | (src[0x2000].pack & mask2.pack);
               s = (s | (s >> 8) | (s >> 16));
               WRITEB320(dest[3], s);
@@ -1082,7 +1082,7 @@ void Screen::UpdateScreen320b(uint8* image, int bpl, Draw::Region& region) {
             dm |= tmp[x];
 
             for (int j = 0; j < 8; j++) {
-              uint32 s;
+              uint32_t s;
               s = (src[0].pack & mask1.pack) | (src[0x2000].pack & mask2.pack);
               s = (s | (s >> 8) | (s >> 16));
               WRITEB320F(3, s);

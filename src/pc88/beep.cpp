@@ -64,7 +64,7 @@ bool Beep::SetRate(uint rate) {
 //  10 - 14     0011
 //  15 - 19     0001
 //
-void IFCALL Beep::Mix(int32* dest, int nsamples) {
+void IFCALL Beep::Mix(int32_t* dest, int nsamples) {
   int i;
   int p = port40 & 0x80 ? 0 : 0x10000;
   int b = port40 & 0x20 ? 0 : 0x10000;

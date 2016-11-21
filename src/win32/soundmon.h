@@ -25,7 +25,7 @@ class OPNMonitor : public WinMonitor, public ISoundSource {
   bool Init(PC8801::OPNIF* opn, ISoundControl* soundcontrol);
 
   bool IFCALL SetRate(uint rate) { return true; }
-  void IFCALL Mix(int32* s, int length);
+  void IFCALL Mix(int32_t* s, int length);
 
  private:
   enum {

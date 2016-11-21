@@ -213,7 +213,7 @@ class IOBus : public IIOAccess, public IIOBus {
   };
   struct StatusTag {
     Device::ID id;
-    uint32 size;
+    uint32_t size;
   };
 
  private:
@@ -242,11 +242,13 @@ public:
 // ---------------------------------------------------------------------------
 
 #ifdef ENDIAN_IS_SMALL
-#define DEV_ID(a, b, c, d) \
-  (Device::ID(a + (uint32(b) << 8) + (uint32(c) << 16) + (uint32(d) << 24)))
+#define DEV_ID(a, b, c, d)                                   \
+  (Device::ID(a + (uint32_t(b) << 8) + (uint32_t(c) << 16) + \
+              (uint32_t(d) << 24)))
 #else
-#define DEV_ID(a, b, c, d) \
-  (Device::ID(d + (uint32(c) << 8) + (uint32(b) << 16) + (uint32(a) << 24)))
+#define DEV_ID(a, b, c, d)                                   \
+  (Device::ID(d + (uint32_t(c) << 8) + (uint32_t(b) << 16) + \
+              (uint32_t(a) << 24)))
 #endif
 
 // ---------------------------------------------------------------------------

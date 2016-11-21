@@ -78,12 +78,12 @@ class TapeManager : public Device {
     uint8 data[1];
   };
   struct BlankTag {
-    uint32 pos;
-    uint32 tick;
+    uint32_t pos;
+    uint32_t tick;
   };
   struct DataTag {
-    uint32 pos;
-    uint32 tick;
+    uint32_t pos;
+    uint32_t tick;
     uint16 length;
     uint16 type;
     uint8 data[1];
@@ -91,7 +91,7 @@ class TapeManager : public Device {
   struct Status {
     uint8 rev;
     bool motor;
-    uint32 pos;
+    uint32_t pos;
     uint offset;
   };
 
@@ -105,7 +105,7 @@ class TapeManager : public Device {
   Tag* tags;
   Tag* pos;
   int offset;
-  uint32 tick;
+  uint32_t tick;
   Mode mode;
   uint time;  // motor on: タイマー開始時間
   uint timercount;

@@ -51,7 +51,7 @@ void Timer::SetTimerB(uint data) {
 // ---------------------------------------------------------------------------
 //  タイマー時間処理
 //
-bool Timer::Count(int32 us) {
+bool Timer::Count(int32_t us) {
   bool event = false;
 
   if (timera_count) {
@@ -84,11 +84,11 @@ bool Timer::Count(int32 us) {
 // ---------------------------------------------------------------------------
 //  次にタイマーが発生するまでの時間を求める
 //
-int32 Timer::GetNextEvent() {
+int32_t Timer::GetNextEvent() {
   if ((timera_count | timerb_count) == 0)
     return ULONG_MAX;
-  uint32 ta = ((timera_count + 0xffff) >> 16) - 1;
-  uint32 tb = ((timerb_count + 0xfff) >> 12) - 1;
+  uint32_t ta = ((timera_count + 0xffff) >> 16) - 1;
+  uint32_t tb = ((timerb_count + 0xfff) >> 12) - 1;
   return (ta < tb ? ta : tb) + 1;
 }
 
@@ -96,7 +96,7 @@ int32 Timer::GetNextEvent() {
 //  タイマー基準値設定
 //
 void Timer::SetTimerBase(uint clock) {
-  timer_step = int32(1000000. * 65536 / clock);
+  timer_step = int32_t(1000000. * 65536 / clock);
 }
 
 #else
@@ -119,7 +119,7 @@ void Timer::SetTimerB(uint data) {
 // ---------------------------------------------------------------------------
 //  タイマー時間処理
 //
-bool Timer::Count(int32 us) {
+bool Timer::Count(int32_t us) {
   bool event = false;
 
   int tick = us * timer_step;
@@ -154,10 +154,10 @@ bool Timer::Count(int32 us) {
 // ---------------------------------------------------------------------------
 //  次にタイマーが発生するまでの時間を求める
 //
-int32 Timer::GetNextEvent() {
-  uint32 ta = timera_count - 1;
-  uint32 tb = timerb_count - 1;
-  uint32 t = (ta < tb ? ta : tb) + 1;
+int32_t Timer::GetNextEvent() {
+  uint32_t ta = timera_count - 1;
+  uint32_t tb = timerb_count - 1;
+  uint32_t t = (ta < tb ? ta : tb) + 1;
 
   return (t + timer_step - 1) / timer_step;
 }

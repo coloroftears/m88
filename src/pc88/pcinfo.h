@@ -15,13 +15,13 @@ struct DeviceInfo {
 
   int size;
   int rev;
-  uint32 id;
+  uint32_t id;
   int flags;
 
   const int* outporttable;
   const int* inporttable;
 
-  void (*soundmix)(void*, int32* s, int len);
+  void (*soundmix)(void*, int32_t* s, int len);
   bool (*setrate)(void*, uint rate);
   void (*outport)(void*, uint port, uint data);
   uint (*inport)(void*, uint port);

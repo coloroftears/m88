@@ -251,7 +251,7 @@ void Chip::MakeTable() {
 //
 bool FM::Operator::tablehasmade = false;
 uint FM::Operator::sinetable[1024];
-int32 FM::Operator::cltable[FM_CLENTS];
+int32_t FM::Operator::cltable[FM_CLENTS];
 
 //  \’z
 FM::Operator::Operator() : chip_(0) {
@@ -539,15 +539,15 @@ inline void FM::Operator::EGStep() {
 
 //  PG ŒvŽZ
 //  ret:2^(20+PGBITS) / cycle
-inline uint32 FM::Operator::PGCalc() {
-  uint32 ret = pg_count_;
+inline uint32_t FM::Operator::PGCalc() {
+  uint32_t ret = pg_count_;
   pg_count_ += pg_diff_;
   dbgpgout_ = ret;
   return ret;
 }
 
-inline uint32 FM::Operator::PGCalcL() {
-  uint32 ret = pg_count_;
+inline uint32_t FM::Operator::PGCalcL() {
+  uint32_t ret = pg_count_;
   pg_count_ += pg_diff_ + ((pg_diff_lfo_ * chip_->GetPMV()) >>
                            5);  // & -(1 << (2+IS2EC_SHIFT)));
   dbgpgout_ = ret;

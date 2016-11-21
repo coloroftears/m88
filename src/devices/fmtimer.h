@@ -15,8 +15,8 @@ namespace FM {
 class Timer {
  public:
   void Reset();
-  bool Count(int32 us);
-  int32 GetNextEvent();
+  bool Count(int32_t us);
+  int32_t GetNextEvent();
 
  protected:
   virtual void SetStatus(uint bit) = 0;
@@ -34,9 +34,9 @@ class Timer {
   virtual void TimerA() {}
   uint8 regta[2];
 
-  int32 timera, timera_count;
-  int32 timerb, timerb_count;
-  int32 timer_step;
+  int32_t timera, timera_count;
+  int32_t timerb, timerb_count;
+  int32_t timer_step;
 };
 
 // ---------------------------------------------------------------------------

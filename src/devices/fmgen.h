@@ -12,7 +12,7 @@
 // ---------------------------------------------------------------------------
 //  出力サンプルの型
 //
-#define FM_SAMPLETYPE int32  // int16 or int32
+#define FM_SAMPLETYPE int32_t  // int16 or int32_t
 
 // ---------------------------------------------------------------------------
 //  定数その１
@@ -35,7 +35,7 @@
 namespace FM {
 //  Types ----------------------------------------------------------------
 typedef FM_SAMPLETYPE Sample;
-typedef int32 ISample;
+typedef int32_t ISample;
 
 enum OpType { typeN = 0, typeM = 1 };
 
@@ -93,23 +93,23 @@ class Operator {
   }
 
  private:
-  typedef uint32 Counter;
+  typedef uint32_t Counter;
 
   Chip* chip_;
   ISample out_, out2_;
   ISample in2_;
 
   //  Phase Generator ------------------------------------------------------
-  uint32 PGCalc();
-  uint32 PGCalcL();
+  uint32_t PGCalc();
+  uint32_t PGCalcL();
 
-  uint dp_;            // ΔP
-  uint detune_;        // Detune
-  uint detune2_;       // DT2
-  uint multiple_;      // Multiple
-  uint32 pg_count_;    // Phase 現在値
-  uint32 pg_diff_;     // Phase 差分値
-  int32 pg_diff_lfo_;  // Phase 差分値 >> x
+  uint dp_;              // ΔP
+  uint detune_;          // Detune
+  uint detune2_;         // DT2
+  uint multiple_;        // Multiple
+  uint32_t pg_count_;    // Phase 現在値
+  uint32_t pg_diff_;     // Phase 差分値
+  int32_t pg_diff_lfo_;  // Phase 差分値 >> x
 
   //  Envelop Generator ---------------------------------------------------
   enum EGPhase { next, attack, decay, sustain, release, off };
@@ -161,7 +161,7 @@ class Operator {
 
   //  Tables ---------------------------------------------------------------
   static Counter rate_table[16];
-  static uint32 multable[4][16];
+  static uint32_t multable[4][16];
 
   static const uint8 notetable[128];
   static const int8 dttable[256];
@@ -171,7 +171,7 @@ class Operator {
   static const int ssgenvtable[8][2][3][2];
 
   static uint sinetable[1024];
-  static int32 cltable[FM_CLENTS];
+  static int32_t cltable[FM_CLENTS];
 
   static bool tablehasmade;
   static void MakeTable();
@@ -183,7 +183,7 @@ class Operator {
  public:
   int dbgopout_;
   int dbgpgout_;
-  static const int32* dbgGetClTable() { return cltable; }
+  static const int32_t* dbgGetClTable() { return cltable; }
   static const uint* dbgGetSineTable() { return sinetable; }
 };
 
@@ -242,7 +242,7 @@ class Chip {
   void SetPML(uint l);
   void SetPMV(int pmv) { pmv_ = pmv; }
 
-  uint32 GetMulValue(uint dt2, uint mul) { return multable_[dt2][mul]; }
+  uint32_t GetMulValue(uint dt2, uint mul) { return multable_[dt2][mul]; }
   uint GetAML() { return aml_; }
   uint GetPML() { return pml_; }
   int GetPMV() { return pmv_; }
@@ -256,7 +256,7 @@ class Chip {
   uint pml_;
   int pmv_;
   OpType optype_;
-  uint32 multable_[4][16];
+  uint32_t multable_[4][16];
 };
 }
 

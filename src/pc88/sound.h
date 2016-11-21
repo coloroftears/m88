@@ -45,7 +45,7 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
 
   int Get(Sample* dest, int size);
   int Get(SampleL* dest, int size);
-  uint32 GetRate() { return mixrate; }
+  uint32_t GetRate() { return mixrate; }
   int GetChannels() { return 2; }
 
   int GetAvail() { return INT_MAX; }
@@ -66,11 +66,11 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
 
   PC88* pc;
 
-  int32* mixingbuf;
+  int32_t* mixingbuf;
   int buffersize;
 
-  uint32 prevtime;
-  uint32 cfgflg;
+  uint32_t prevtime;
+  uint32_t cfgflg;
   int tdiff;
   uint mixthreshold;
 

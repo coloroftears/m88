@@ -35,17 +35,17 @@ TimeKeeper::~TimeKeeper() {
 // ---------------------------------------------------------------------------
 //  ŽžŠÔ‚ðŽæ“¾
 //
-uint32 TimeKeeper::GetTime() {
+uint32_t TimeKeeper::GetTime() {
   if (freq) {
     LARGE_INTEGER li;
     QueryPerformanceCounter(&li);
-    uint32 dc = li.LowPart - base;
+    uint32_t dc = li.LowPart - base;
     time += dc / freq;
     base = li.LowPart - dc % freq;
     return time;
   } else {
-    uint32 t = timeGetTime();
-    uint32 dc = t - base;
+    uint32_t t = timeGetTime();
+    uint32_t dc = t - base;
     time += dc / unit;
     base = t - dc % unit;
     return time;

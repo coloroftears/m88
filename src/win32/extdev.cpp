@@ -246,7 +246,7 @@ bool IFCALL ExternalDevice::SetRate(uint rate) {
 // ---------------------------------------------------------------------------
 //  Mix
 //
-void ExternalDevice::Mix(int32* s, int l) {
+void ExternalDevice::Mix(int32_t* s, int l) {
   (*devinfo.soundmix)(dev, s, l);
 }
 

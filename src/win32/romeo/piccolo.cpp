@@ -105,7 +105,7 @@ int Piccolo::Init() {
     // ROMEO の存在確認
     // デバイスを探す
     Log("FindDevice\n");
-    uint32 id;
+    uint32_t id;
     id = pcidrv.finddev(0x6809, 0x8121, 0);
     if (id & 0xff)
       id = pcidrv.finddev(0x6809, 0x2151, 0);
@@ -169,9 +169,9 @@ uint Piccolo::ThreadMain() {
     int wait = waitdefault;
     {
       CriticalSection::Lock lock(cs);
-      uint32 time = GetCurrentTime();
+      uint32_t time = GetCurrentTime();
       while ((ev = Top()) && !shouldterminate) {
-        int32 d = ev->at - time;
+        int32_t d = ev->at - time;
 
         if (d >= 1000) {
           if (d > maxlatency)
@@ -244,7 +244,7 @@ bool Piccolo::SetMaximumLatency(uint nanosec) {
   return true;
 }
 
-uint32 Piccolo::GetCurrentTime() {
+uint32_t Piccolo::GetCurrentTime() {
   return ::GetTickCount() * 1000;
 }
 
@@ -278,8 +278,8 @@ void Piccolo::DrvReset(Driver* drv) {
   evwrite = 0;
 }
 
-bool Piccolo::DrvSetReg(Driver* drv, uint32 at, uint addr, uint data) {
-  if (int32(at - GetCurrentTime()) > maxlatency) {
+bool Piccolo::DrvSetReg(Driver* drv, uint32_t at, uint addr, uint data) {
+  if (int32_t(at - GetCurrentTime()) > maxlatency) {
     //      statusdisplay.Show(100, 0, "Piccolo: Time %.6d", at -
     //      GetCurrentTime());
     return false;
