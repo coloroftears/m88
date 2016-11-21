@@ -7,6 +7,8 @@
 #if !defined(win32_types_h)
 #define win32_types_h
 
+#include <stdint.h>
+
 #define ENDIAN_IS_SMALL
 
 //  ŒÅ’è’·Œ^‚Æ‚©
