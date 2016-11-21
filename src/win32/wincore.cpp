@@ -197,10 +197,10 @@ bool WinCore::SaveShapshot(const char* filename) {
     ssh.minor = ssminor;
     ssh.datasize = size;
     ssh.basicmode = config.basicmode;
-    ssh.clock = int16(config.clock);
-    ssh.erambanks = uint16(config.erambanks);
-    ssh.cpumode = int16(config.cpumode);
-    ssh.mainsubratio = int16(config.mainsubratio);
+    ssh.clock = int16_t(config.clock);
+    ssh.erambanks = uint16_t(config.erambanks);
+    ssh.cpumode = int16_t(config.cpumode);
+    ssh.mainsubratio = int16_t(config.mainsubratio);
     ssh.flags = config.flags | (esize < size ? 0x80000000 : 0);
     ssh.flag2 = config.flag2;
     for (uint i = 0; i < 2; i++)

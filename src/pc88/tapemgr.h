@@ -67,14 +67,14 @@ class TapeManager : public Device {
     T_MARK = 0x103,
   };
   struct TagHdr {
-    uint16 id;
-    uint16 length;
+    uint16_t id;
+    uint16_t length;
   };
   struct Tag {
     Tag* next;
     Tag* prev;
-    uint16 id;
-    uint16 length;
+    uint16_t id;
+    uint16_t length;
     uint8 data[1];
   };
   struct BlankTag {
@@ -84,8 +84,8 @@ class TapeManager : public Device {
   struct DataTag {
     uint32_t pos;
     uint32_t tick;
-    uint16 length;
-    uint16 type;
+    uint16_t length;
+    uint16_t type;
     uint8 data[1];
   };
   struct Status {

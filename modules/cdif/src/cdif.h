@@ -124,8 +124,8 @@ class CDIF : public Device {
     uint8 stat;
 
     uint sector;
-    uint16 ptr;
-    uint16 length;
+    uint16_t ptr;
+    uint16_t length;
     uint addrs;
 
     uint8 buf[16 + 16 + 2340];

@@ -144,7 +144,7 @@ class Screen : public Device {
   static const Descriptor descriptor;
   //  static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
-  static const int16 RegionTable[];
+  static const int16_t RegionTable[];
 };
 }
 

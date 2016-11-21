@@ -189,7 +189,7 @@ inline uint Z80C::Fetch16() {
   DEBUGCOUNT(3);
 #ifdef ALLOWBOUNDARYACCESS
   if (inst + 1 < instlim) {
-    uint r = *(uint16*)inst;
+    uint r = *(uint16_t*)inst;
     inst += 2;
     return r;
   } else
@@ -480,7 +480,7 @@ inline uint Z80C::Read16(uint addr) {
     DEBUGCOUNT(13);
     uint a = addr & pagemask;
     if (a < pagemask)
-      return *(uint16*)((uint8*)page.ptr + a);
+      return *(uint16_t*)((uint8*)page.ptr + a);
   }
 #endif
   return Read8(addr) + Read8(addr + 1) * 256;
@@ -499,7 +499,7 @@ inline void Z80C::Write16(uint addr, uint data) {
   {
     uint a = addr & pagemask;
     if (a < pagemask) {
-      *(uint16*)((uint8*)page.ptr + a) = data;
+      *(uint16_t*)((uint8*)page.ptr + a) = data;
       return;
     }
   }

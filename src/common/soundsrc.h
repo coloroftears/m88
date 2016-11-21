@@ -5,7 +5,7 @@
 
 #include "win32/types.h"
 
-typedef int16 Sample;
+typedef int16_t Sample;
 
 class SoundSource {
  public:

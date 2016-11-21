@@ -19,11 +19,11 @@
 
 struct Z80Reg {
 #ifdef Z80_WORDREG_IN_INT
-#define PAD(p) uint8 p[sizeof(uint) - sizeof(uint16)]
+#define PAD(p) uint8 p[sizeof(uint) - sizeof(uint16_t)]
   typedef uint wordreg;
 #else
 #define PAD(p)
-  typedef uint16 wordreg;
+  typedef uint16_t wordreg;
 #endif
 
   union regs {

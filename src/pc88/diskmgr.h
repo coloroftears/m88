@@ -24,12 +24,12 @@ struct ImageHeader {
 
 struct SectorHeader {
   FloppyDisk::IDR id;
-  uint16 sectors;
+  uint16_t sectors;
   uint8 density;
   uint8 deleted;
   uint8 status;
   uint8 reserved[5];
-  uint16 length;
+  uint16_t length;
 };
 }
 

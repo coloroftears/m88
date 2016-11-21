@@ -113,7 +113,7 @@ bool TapeManager::Rewind(bool timer) {
     // バージョン確認
     // 最初のタグはバージョンタグになるはず？
     if (pos->id != T_VERSION || pos->length < 2 ||
-        *(uint16*)pos->data != T88VER)
+        *(uint16_t*)pos->data != T88VER)
       return false;
 
     pos = pos->next;

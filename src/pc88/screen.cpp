@@ -33,7 +33,7 @@ using namespace PC8801;
 #define GVRAMM_ODD 0x40
 #define GVRAMM_EVEN 0x80
 
-const int16 Screen::RegionTable[64] = {
+const int16_t Screen::RegionTable[64] = {
     640, -1,  0, 128, 128, 256, 0, 256, 256, 384, 0, 384, 128, 384, 0, 384,
     384, 512, 0, 512, 128, 512, 0, 512, 256, 512, 0, 512, 128, 512, 0, 512,
 

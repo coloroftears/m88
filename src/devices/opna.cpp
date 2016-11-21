@@ -1253,13 +1253,13 @@ bool OPNA::LoadRhythmSample(const char* path) {
 
     struct {
       uint32_t chunksize;
-      uint16 tag;
-      uint16 nch;
+      uint16_t tag;
+      uint16_t nch;
       uint32_t rate;
       uint32_t avgbytes;
-      uint16 align;
-      uint16 bps;
-      uint16 size;
+      uint16_t align;
+      uint16_t bps;
+      uint16_t size;
     } whdr;
 
     file.Seek(0x10, FileIO::begin);
@@ -1279,7 +1279,7 @@ bool OPNA::LoadRhythmSample(const char* path) {
     fsize = Max(fsize, (1 << 31) / 1024);
 
     delete rhythm[i].sample;
-    rhythm[i].sample = new int16[fsize];
+    rhythm[i].sample = new int16_t[fsize];
     if (!rhythm[i].sample)
       break;
 

@@ -123,7 +123,7 @@ struct IIOBus {
     sync = 4,
   };
   struct Connector {
-    uint16 bank;
+    uint16_t bank;
     uint8 rule;
     uint8 id;
   };

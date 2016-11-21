@@ -282,7 +282,7 @@ class OPNA : public OPNABase {
     uint8 pan;      // ‚Ï‚ñ
     int8 level;     // ‚¨‚ñ‚è‚å‚¤
     int volume;     // ‚¨‚ñ‚è‚å‚¤‚¹‚Á‚Ä‚¢
-    int16* sample;  // ‚³‚ñ‚Õ‚é
+    int16_t* sample;  // ‚³‚ñ‚Õ‚é
     uint size;      // ‚³‚¢‚¸
     uint pos;       // ‚¢‚¿
     uint step;      // ‚·‚Ä‚Á‚Õ‚¿
