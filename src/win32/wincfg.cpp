@@ -16,7 +16,7 @@ using namespace PC8801;
 static WinConfig* g_proc;
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 WinConfig::WinConfig()
     : pplist(0),
@@ -49,7 +49,7 @@ WinConfig::~WinConfig() {
 }
 
 // ---------------------------------------------------------------------------
-//  İ’èƒ_ƒCƒAƒƒO‚ÌÀs
+//  è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®å®Ÿè¡Œ
 //
 bool WinConfig::Show(HINSTANCE hinstance, HWND hwnd, Config* conf) {
   if (!hwndps) {
@@ -71,11 +71,11 @@ bool WinConfig::Show(HINSTANCE hinstance, HWND hwnd, Config* conf) {
     cenv.Init(hinst);
     cromeo.Init(hinst);
 
-    // Šg’£ƒ‚ƒWƒ…[ƒ‹‚Ìê‡Aheader‚Ìƒo[ƒWƒ‡ƒ“‚É‚æ‚Á‚Ä PROPSHEETPAGE
-    // ‚ÌƒTƒCƒY‚ªˆá‚Á‚½‚è‚·‚é
+    // æ‹¡å¼µãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®å ´åˆã€headerã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã«ã‚ˆã£ã¦ PROPSHEETPAGE
+    // ã®ã‚µã‚¤ã‚ºãŒé•ã£ãŸã‚Šã™ã‚‹
     PROPSHEETPAGE
-    tmppage[2];  // 2ŒÂ•ªŠm•Û‚·‚é‚Ì‚ÍAŠg’£‘¤‚Ì PROPSHEETPAGE ‚ÌƒTƒCƒY‚ª
-                 // M88 ‚Ì PROPSHEETPAGE ‚æ‚è‘å‚«‚¢ƒP[ƒX‚É”õ‚¦‚Ä‚¢‚é
+    tmppage[2];  // 2å€‹åˆ†ç¢ºä¿ã™ã‚‹ã®ã¯ã€æ‹¡å¼µå´ã® PROPSHEETPAGE ã®ã‚µã‚¤ã‚ºãŒ
+                 // M88 ã® PROPSHEETPAGE ã‚ˆã‚Šå¤§ãã„ã‚±ãƒ¼ã‚¹ã«å‚™ãˆã¦ã„ã‚‹
 
     int i = 0;
     for (PropSheets::iterator n = propsheets.begin();
@@ -100,7 +100,7 @@ bool WinConfig::Show(HINSTANCE hinstance, HWND hwnd, Config* conf) {
       psh.dwFlags = PSH_PROPSHEETPAGE | PSH_MODELESS;
       psh.hwndParent = hwndparent;
       psh.hInstance = hinst;
-      psh.pszCaption = "İ’è";
+      psh.pszCaption = "è¨­å®š";
       psh.nPages = i;
       psh.nStartPage = Min(page, i - 1);
       psh.ppsp = psp;

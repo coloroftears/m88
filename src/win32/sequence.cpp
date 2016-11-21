@@ -13,7 +13,7 @@
 #include "win32/diag.h"
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 Sequencer::Sequencer() : hthread(0), execcount(0), vm(0) {}
 
@@ -22,7 +22,7 @@ Sequencer::~Sequencer() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool Sequencer::Init(PC88* _vm) {
   vm = _vm;
@@ -46,7 +46,7 @@ bool Sequencer::Init(PC88* _vm) {
 }
 
 // ---------------------------------------------------------------------------
-//  Œãn––
+//  å¾Œå§‹æœ«
 //
 bool Sequencer::Cleanup() {
   if (hthread) {
@@ -79,17 +79,17 @@ uint32_t Sequencer::ThreadMain() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒTƒuƒXƒŒƒbƒhŠJn“_
+//  ã‚µãƒ–ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ç‚¹
 //
 uint32_t CALLBACK Sequencer::ThreadEntry(void* arg) {
   return reinterpret_cast<Sequencer*>(arg)->ThreadMain();
 }
 
 // ---------------------------------------------------------------------------
-//  ‚b‚o‚tƒƒCƒ“ƒ‹[ƒv
-//  clock   ‚b‚o‚t‚ÌƒNƒƒbƒN(0.1MHz)
-//  length  Às‚·‚éŠÔ (0.01ms)
-//  eff     ÀŒøƒNƒƒbƒN
+//  ï¼£ï¼°ï¼µãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
+//  clock   ï¼£ï¼°ï¼µã®ã‚¯ãƒ­ãƒƒã‚¯(0.1MHz)
+//  length  å®Ÿè¡Œã™ã‚‹æ™‚é–“ (0.01ms)
+//  eff     å®ŸåŠ¹ã‚¯ãƒ­ãƒƒã‚¯
 //
 inline void Sequencer::Execute(long clk, long length, long eff) {
   CriticalSection::Lock lock(cs);
@@ -97,7 +97,7 @@ inline void Sequencer::Execute(long clk, long length, long eff) {
 }
 
 // ---------------------------------------------------------------------------
-//  VSYNC ”ñ“¯Šú
+//  VSYNC éåŒæœŸ
 //
 void Sequencer::ExecuteAsynchronus() {
   if (clock <= 0) {
@@ -153,10 +153,10 @@ void Sequencer::ExecuteAsynchronus() {
 }
 
 // ---------------------------------------------------------------------------
-//  ÀsƒNƒƒbƒNƒJƒEƒ“ƒg‚Ì’l‚ğ•Ô‚µAƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg
+//  å®Ÿè¡Œã‚¯ãƒ­ãƒƒã‚¯ã‚«ã‚¦ãƒ³ãƒˆã®å€¤ã‚’è¿”ã—ã€ã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
 //
 long Sequencer::GetExecCount() {
-  //  CriticalSection::Lock lock(cs); // ³Šm‚È’l‚ª•K—v‚È‚Æ‚«‚Í—LŒø‚É‚·‚é
+  //  CriticalSection::Lock lock(cs); // æ­£ç¢ºãªå€¤ãŒå¿…è¦ãªã¨ãã¯æœ‰åŠ¹ã«ã™ã‚‹
 
   int i = execcount;
   execcount = 0;
@@ -164,7 +164,7 @@ long Sequencer::GetExecCount() {
 }
 
 // ---------------------------------------------------------------------------
-//  Às‚·‚é
+//  å®Ÿè¡Œã™ã‚‹
 //
 void Sequencer::Activate(bool a) {
   CriticalSection::Lock lock(cs);

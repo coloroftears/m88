@@ -18,20 +18,20 @@
 #define T88ID "PC-8801 Tape Image(T88)"
 
 // ---------------------------------------------------------------------------
-//  \’z
+//  æ§‹ç¯‰
 //
 TapeManager::TapeManager()
     : Device(DEV_ID('T', 'A', 'P', 'E')), tags(0), scheduler(0), event(0) {}
 
 // ---------------------------------------------------------------------------
-//  ”jŠü
+//  ç ´æ£„
 //
 TapeManager::~TapeManager() {
   Close();
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool TapeManager::Init(Scheduler* s, IOBus* b, int pi) {
   scheduler = s;
@@ -46,7 +46,7 @@ bool TapeManager::Init(Scheduler* s, IOBus* b, int pi) {
 }
 
 // ---------------------------------------------------------------------------
-//  T88 ‚ğŠJ‚­
+//  T88 ã‚’é–‹ã
 //
 bool TapeManager::Open(const char* file) {
   Close();
@@ -55,13 +55,13 @@ bool TapeManager::Open(const char* file) {
   if (!fio.Open(file, FileIO::readonly))
     return false;
 
-  // ƒwƒbƒ_Šm”F
+  // ãƒ˜ãƒƒãƒ€ç¢ºèª
   char buf[24];
   fio.Read(buf, 24);
   if (memcmp(buf, T88ID, 24))
     return false;
 
-  // ƒ^ƒO‚ÌƒŠƒXƒg\‘¢‚ğ“WŠJ
+  // ã‚¿ã‚°ã®ãƒªã‚¹ãƒˆæ§‹é€ ã‚’å±•é–‹
   Tag* prv = 0;
   do {
     TagHdr hdr;
@@ -88,7 +88,7 @@ bool TapeManager::Open(const char* file) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‚Æ‚¶‚é
+//  ã¨ã˜ã‚‹
 //
 bool TapeManager::Close() {
   if (scheduler)
@@ -102,7 +102,7 @@ bool TapeManager::Close() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‚Ü‚«‚à‚Ç‚·
+//  ã¾ãã‚‚ã©ã™
 //
 bool TapeManager::Rewind(bool timer) {
   pos = tags;
@@ -110,8 +110,8 @@ bool TapeManager::Rewind(bool timer) {
   if (pos) {
     tick = 0;
 
-    // ƒo[ƒWƒ‡ƒ“Šm”F
-    // Å‰‚Ìƒ^ƒO‚Íƒo[ƒWƒ‡ƒ“ƒ^ƒO‚É‚È‚é‚Í‚¸H
+    // ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç¢ºèª
+    // æœ€åˆã®ã‚¿ã‚°ã¯ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¿ã‚°ã«ãªã‚‹ã¯ãšï¼Ÿ
     if (pos->id != T_VERSION || pos->length < 2 ||
         *(uint16_t*)pos->data != T88VER)
       return false;
@@ -123,7 +123,7 @@ bool TapeManager::Rewind(bool timer) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ‚[ƒ^
+//  ãƒ¢ãƒ¼ã‚¿
 //
 bool TapeManager::Motor(bool s) {
   if (motor == s)
@@ -161,7 +161,7 @@ uint32_t TapeManager::GetPos() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ^ƒO‚ğˆ—
+//  ã‚¿ã‚°ã‚’å‡¦ç†
 //
 void TapeManager::Proceed(bool timer) {
   while (pos) {
@@ -236,7 +236,7 @@ void IOCALL TapeManager::Timer(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒLƒƒƒŠƒAŠm”F
+//  ã‚­ãƒ£ãƒªã‚¢ç¢ºèª
 //
 bool TapeManager::Carrier() {
   if (mode == T_MARK) {
@@ -247,7 +247,7 @@ bool TapeManager::Carrier() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ^ƒCƒ}[XV
+//  ã‚¿ã‚¤ãƒãƒ¼æ›´æ–°
 //
 void TapeManager::SetTimer(int count) {
   if (count > 100)
@@ -264,7 +264,7 @@ void TapeManager::SetTimer(int count) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒCƒg“]‘—
+//  ãƒã‚¤ãƒˆè»¢é€
 //
 inline void TapeManager::Send(uint32_t byte) {
   LOG1("%.2x ", byte);
@@ -272,7 +272,7 @@ inline void TapeManager::Send(uint32_t byte) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‘¦À‚Éƒf[ƒ^‚ğ—v‹‚·‚é
+//  å³åº§ã«ãƒ‡ãƒ¼ã‚¿ã‚’è¦æ±‚ã™ã‚‹
 //
 void TapeManager::RequestData(uint32_t, uint32_t) {
   if (mode == T_DATA) {
@@ -282,7 +282,7 @@ void TapeManager::RequestData(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒV[ƒN‚·‚é
+//  ã‚·ãƒ¼ã‚¯ã™ã‚‹
 //
 bool TapeManager::Seek(uint32_t newpos, uint32_t off) {
   if (!Rewind(false))
@@ -333,7 +333,7 @@ uint32_t IOCALL TapeManager::In40(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶
+//  çŠ¶æ…‹ä¿å­˜
 //
 uint32_t IFCALL TapeManager::GetStatusSize() {
   return sizeof(Status);

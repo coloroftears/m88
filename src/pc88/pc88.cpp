@@ -2,7 +2,7 @@
 //  PC-8801 emulator
 //  Copyright (C) cisc 1999.
 // ---------------------------------------------------------------------------
-//  �f�o�C�X�Ɛi�s�Ǘ�
+//  デバイスと進行管理
 // ---------------------------------------------------------------------------
 //  $Id: pc88.cpp,v 1.53 2003/09/28 14:35:35 cisc Exp $
 
@@ -38,7 +38,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  �\�z�E�j��
+//  構築・破棄
 //
 PC88::PC88()
     : cpu1(DEV_ID('C', 'P', 'U', '1')),
@@ -87,7 +87,7 @@ PC88::~PC88() {
 }
 
 // ---------------------------------------------------------------------------
-//  ������
+//  初期化
 //
 bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   draw = _draw;
@@ -126,8 +126,8 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���s
-//  1 tick = 10��s
+//  執行
+//  1 tick = 10μs
 //
 int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
   clock = Max(1, clk);
@@ -136,7 +136,7 @@ int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���s
+//  実行
 //
 int PC88::Execute(int ticks) {
   LOADBEGIN("Core.CPU");
@@ -156,7 +156,7 @@ int PC88::Execute(int ticks) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���s�N���b�N���ύX
+//  実行クロック数変更
 //
 void PC88::Shorten(int ticks) {
   Z80::StopDual(ticks * clock);
@@ -177,7 +177,7 @@ void PC88::VSync() {
 }
 
 // ---------------------------------------------------------------------------
-//  ��ʍX�V
+//  画面更新
 //
 void PC88::UpdateScreen(bool refresh) {
   int dstat = draw->GetStatus();
@@ -223,7 +223,7 @@ void PC88::UpdateScreen(bool refresh) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���Z�b�g
+//  リセット
 //
 void PC88::Reset() {
   bool cd = false;
@@ -231,7 +231,7 @@ void PC88::Reset() {
     cd = (base->GetBasicMode() & 0x40) != 0;
 
   base->SetFDBoot(cd || diskmgr->GetCurrentDisk(0) >= 0);
-  base->Reset();  // Switch �֌W�̍X�V
+  base->Reset();  // Switch 関係の更新
 
   bool isv2 = (bus1.In(0x31) & 0x40) != 0;
   bool isn80v2 = (base->GetBasicMode() == Config::N80V2);
@@ -275,7 +275,7 @@ void PC88::Reset() {
 }
 
 // ---------------------------------------------------------------------------
-//  �f�o�C�X�ڑ�
+//  デバイス接続
 //
 bool PC88::ConnectDevices() {
   const static IOBus::Connector c_cpu1[] = {{pres, IOBus::portout, Z80::reset},
@@ -570,7 +570,7 @@ bool PC88::ConnectDevices() {
 }
 
 // ---------------------------------------------------------------------------
-//  �f�o�C�X�ڑ�(�T�uCPU)
+//  デバイス接続(サブCPU)
 //
 bool PC88::ConnectDevices2() {
   const static IOBus::Connector c_cpu2[] = {{pres2, IOBus::portout, Z80::reset},
@@ -615,7 +615,7 @@ bool PC88::ConnectDevices2() {
 }
 
 // ---------------------------------------------------------------------------
-//  �ݒ蔽�f
+//  設定反映
 //
 void PC88::ApplyConfig(Config* cfg) {
   cfgflags = cfg->flags;
@@ -652,7 +652,7 @@ void PC88::ApplyConfig(Config* cfg) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���ʕύX
+//  音量変更
 //
 void PC88::SetVolume(PC8801::Config* cfg) {
   opn1->SetVolume(cfg);
@@ -660,14 +660,14 @@ void PC88::SetVolume(PC8801::Config* cfg) {
 }
 
 // ---------------------------------------------------------------------------
-//  1 �t���[�����̎��Ԃ����߂�D
+//  1 フレーム分の時間を求める．
 //
 int PC88::GetFramePeriod() {
   return crtc ? crtc->GetFramePeriod() : 100000 / 60;
 }
 
 // ---------------------------------------------------------------------------
-//  ���z���Ԃƌ������Ԃ̓�����������Ƃ��ɌĂ΂��
+//  仮想時間と現実時間の同期を取ったときに呼ばれる
 //
 void PC88::TimeSync() {
   bus1.Out(ptimesync, 0);

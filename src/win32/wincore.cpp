@@ -34,7 +34,7 @@ using namespace PC8801;
 #define SNAPSHOT_ID "M88 SnapshotData"
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 WinCore::WinCore() {}
 
@@ -43,7 +43,7 @@ WinCore::~WinCore() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool WinCore::Init(WinUI* _ui,
                    HWND hwnd,
@@ -79,7 +79,7 @@ bool WinCore::Init(WinUI* _ui,
 }
 
 // ---------------------------------------------------------------------------
-//  Œãn––
+//  å¾Œå§‹æœ«
 //
 bool WinCore::Cleanup() {
   seq.Cleanup();
@@ -98,7 +98,7 @@ bool WinCore::Cleanup() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒŠƒZƒbƒg
+//  ãƒªã‚»ãƒƒãƒˆ
 //
 void WinCore::Reset() {
   LockObj lock(this);
@@ -106,7 +106,7 @@ void WinCore::Reset() {
 }
 
 // ---------------------------------------------------------------------------
-//  İ’è‚ğ”½‰f‚·‚é
+//  è¨­å®šã‚’åæ˜ ã™ã‚‹
 //
 void WinCore::ApplyConfig(PC8801::Config* cfg) {
   config = *cfg;
@@ -129,7 +129,7 @@ void WinCore::ApplyConfig(PC8801::Config* cfg) {
 }
 
 // ---------------------------------------------------------------------------
-//  Windows —p‚ÌƒfƒoƒCƒX‚ğÚ‘±
+//  Windows ç”¨ã®ãƒ‡ãƒã‚¤ã‚¹ã‚’æ¥ç¶š
 //
 bool WinCore::ConnectDevices(WinKeyIF* keyb) {
   const static IOBus::Connector c_keyb[] = {
@@ -166,7 +166,7 @@ bool WinCore::ConnectDevices(WinKeyIF* keyb) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒiƒbƒvƒVƒ‡ƒbƒg•Û‘¶
+//  ã‚¹ãƒŠãƒƒãƒ—ã‚·ãƒ§ãƒƒãƒˆä¿å­˜
 //
 bool WinCore::SaveShapshot(const char* filename) {
   LockObj lock(this);
@@ -220,7 +220,7 @@ bool WinCore::SaveShapshot(const char* filename) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒiƒbƒvƒVƒ‡ƒbƒg•œŒ³
+//  ã‚¹ãƒŠãƒƒãƒ—ã‚·ãƒ§ãƒƒãƒˆå¾©å…ƒ
 //
 bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
   LockObj lock(this);
@@ -257,7 +257,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
   // Reset
   PC88::Reset();
 
-  // “Ç‚İ‚İ
+  // èª­ã¿è¾¼ã¿
 
   uint8_t* buf = new uint8_t[ssh.datasize];
   bool r = false;
@@ -292,7 +292,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
         }
       }
       if (!r) {
-        statusdisplay.Show(70, 3000, "ƒo[ƒWƒ‡ƒ“‚ªˆÙ‚È‚è‚Ü‚·");
+        statusdisplay.Show(70, 3000, "ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒç•°ãªã‚Šã¾ã™");
         PC88::Reset();
       }
     }
@@ -302,7 +302,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
 }
 
 // ---------------------------------------------------------------------------
-//  ŠO•”‚à‚¶‚ã[‚é‚Ì‚½‚ß‚ÉƒCƒ“ƒ^[ƒtƒF[ƒX‚ğ’ñ‹Ÿ‚·‚é
+//  å¤–éƒ¨ã‚‚ã˜ã‚…ãƒ¼ã‚‹ã®ãŸã‚ã«ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã‚’æä¾›ã™ã‚‹
 //
 void* WinCore::QueryIF(REFIID id) {
   if (id == M88IID_IOBus1)
@@ -371,7 +371,7 @@ bool WinCore::ConnectExternalDevices() {
 }
 
 // ---------------------------------------------------------------------------
-//  PAD ‚ğÚ‘±
+//  PAD ã‚’æ¥ç¶š
 //
 /*
 bool WinCore::EnablePad(bool enable)
@@ -401,7 +401,7 @@ bool WinCore::EnablePad(bool enable)
 }
 */
 // ---------------------------------------------------------------------------
-//  ƒ}ƒEƒX‚ğÚ‘±
+//  ãƒã‚¦ã‚¹ã‚’æ¥ç¶š
 //
 /*
 bool WinCore::EnableMouse(bool enable)

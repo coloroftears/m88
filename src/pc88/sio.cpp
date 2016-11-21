@@ -16,14 +16,14 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  ç\ízÅEîjä¸
+//  ÊßãÁØâ„ÉªÁ†¥Ê£Ñ
 //
 SIO::SIO(const ID& id) : Device(id) {}
 
 SIO::~SIO() {}
 
 // ---------------------------------------------------------------------------
-//  èâä˙âª
+//  ÂàùÊúüÂåñ
 //
 bool SIO::Init(IOBus* _bus, uint32_t _prxrdy, uint32_t _preq) {
   bus = _bus, prxrdy = _prxrdy, prequest = _preq;
@@ -33,7 +33,7 @@ bool SIO::Init(IOBus* _bus, uint32_t _prxrdy, uint32_t _preq) {
 }
 
 // ---------------------------------------------------------------------------
-//  ÇËÇπÇ¡Ç∆
+//  „Çä„Åõ„Å£„Å®
 //
 void SIO::Reset(uint32_t, uint32_t) {
   mode = clear;
@@ -42,7 +42,7 @@ void SIO::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Ç±ÇÒÇ∆ÇÎÅ[ÇÈÇ€Å[Ç∆
+//  „Åì„Çì„Å®„Çç„Éº„Çã„ÅΩ„Éº„Å®
 //
 void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
   LOG1("[%.2x] ", d);
@@ -116,14 +116,14 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  Ç≈Å[ÇΩÇπÇ¡Ç∆
+//  „Åß„Éº„Åü„Åõ„Å£„Å®
 //
 void IOCALL SIO::SetData(uint32_t, uint32_t d) {
   LOG1("<%.2x ", d);
 }
 
 // ---------------------------------------------------------------------------
-//  Ç∂ÇÂÇ§ÇΩÇ¢ÇµÇ„Ç∆Ç≠
+//  „Åò„Çá„ÅÜ„Åü„ÅÑ„Åó„ÇÖ„Å®„Åè
 //
 uint32_t IOCALL SIO::GetStatus(uint32_t) {
   //  LOG1("!%.2x ", status      );
@@ -131,7 +131,7 @@ uint32_t IOCALL SIO::GetStatus(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Ç≈Å[ÇΩÇµÇ„Ç∆Ç≠
+//  „Åß„Éº„Åü„Åó„ÇÖ„Å®„Åè
 //
 uint32_t IOCALL SIO::GetData(uint32_t) {
   LOG1(">%.2x ", data);
@@ -154,7 +154,7 @@ void IOCALL SIO::AcceptData(uint32_t, uint32_t d) {
       LOG0(" - overrun");
     }
     status |= RXRDY;
-    bus->Out(prxrdy, 1);  // äÑÇËçûÇ›
+    bus->Out(prxrdy, 1);  // Ââ≤„ÇäËæº„Åø
     LOG0("\n");
   } else {
     LOG0(" - ignored\n");
@@ -162,7 +162,7 @@ void IOCALL SIO::AcceptData(uint32_t, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  èÛë‘ï€ë∂
+//  Áä∂ÊÖã‰øùÂ≠ò
 //
 uint32_t IFCALL SIO::GetStatusSize() {
   return sizeof(Status);

@@ -16,7 +16,7 @@
 LoadMonitor* LoadMonitor::instance = 0;
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 LoadMonitor::LoadMonitor() {}
 
@@ -34,7 +34,7 @@ bool LoadMonitor::Init() {
 
   LARGE_INTEGER freq;
   QueryPerformanceFrequency(&freq);
-  base = freq.LowPart / 1000000;  // 1us ’PˆÊ
+  base = freq.LowPart / 1000000;  // 1us å˜ä½
 
   instance = this;
   tidx = 0;
@@ -55,14 +55,14 @@ void LoadMonitor::DrawMain(HDC hdc, bool) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒOˆ—
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‡¦ç†
 //
 BOOL LoadMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   return WinMonitor::DlgProc(hdlg, msg, wp, lp);
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô‚ğ•\¦
+//  çŠ¶æ…‹ã‚’è¡¨ç¤º
 //
 void LoadMonitor::UpdateText() {
   CriticalSection::Lock lock(cs);
@@ -95,7 +95,7 @@ void LoadMonitor::UpdateText() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‹L˜^ŠJn
+//  è¨˜éŒ²é–‹å§‹
 //
 void LoadMonitor::ProcBegin(const char* name) {
   CriticalSection::Lock lock(cs);
@@ -109,7 +109,7 @@ void LoadMonitor::ProcBegin(const char* name) {
   if (i != states.end()) {
     i->second.timeentered = t.LowPart;
   } else {
-    // V‚µ‚­“o˜^
+    // æ–°ã—ãç™»éŒ²
     State stat;
     memset(stat.total, 0, sizeof(stat.total));
     stat.timeentered = t.LowPart;
@@ -118,7 +118,7 @@ void LoadMonitor::ProcBegin(const char* name) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‹L˜^I—¹
+//  è¨˜éŒ²çµ‚äº†
 //
 void LoadMonitor::ProcEnd(const char* name) {
   LARGE_INTEGER t;

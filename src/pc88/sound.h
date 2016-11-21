@@ -52,7 +52,7 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
 
  protected:
   uint32_t mixrate;
-  uint32_t samplingrate;  // ƒTƒ“ƒvƒŠƒ“ƒOƒŒ[ƒg
+  uint32_t samplingrate;  // ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ¬ãƒ¼ãƒˆ
   uint32_t rate50;        // samplingrate / 50
 
  private:

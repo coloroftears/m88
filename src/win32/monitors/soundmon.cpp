@@ -13,7 +13,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 OPNMonitor::OPNMonitor() {
   soundcontrol = 0;
@@ -104,7 +104,7 @@ void IFCALL OPNMonitor::Mix(int32_t* s, int length) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒOˆ—
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‡¦ç†
 //
 BOOL OPNMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
@@ -151,7 +151,7 @@ BOOL OPNMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‚PƒoƒCƒg‚Ì”’l‚ğ16i‹Lq‚É•ÏŠ·
+//  ï¼‘ãƒã‚¤ãƒˆã®æ•°å€¤ã‚’16é€²è¨˜è¿°ã«å¤‰æ›
 //
 static inline void ToHex(char** p, uint32_t d) {
   static const char hex[] = "0123456789abcdef";
@@ -161,21 +161,21 @@ static inline void ToHex(char** p, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  FN/BLK ‚ğ F-number ‚É•ÏŠ·
+//  FN/BLK ã‚’ F-number ã«å¤‰æ›
 //
 static inline uint32_t ToFnum(uint32_t f) {
   return (f & 2047) << ((f >> 11) & 7);
 }
 
 // ---------------------------------------------------------------------------
-//  $bx Œn‚Ì’l‚ğ•ÏŠ·
+//  $bx ç³»ã®å€¤ã‚’å¤‰æ›
 //
 static inline uint32_t ToFB(uint32_t f) {
   return (f & 0xff00) | ((f & 0x38) << 1) | (f & 7);
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô‚ğ•\¦
+//  çŠ¶æ…‹ã‚’è¡¨ç¤º
 //
 void OPNMonitor::UpdateText() {
   char buf[128];

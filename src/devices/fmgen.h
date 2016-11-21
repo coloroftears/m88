@@ -10,15 +10,15 @@
 #include "win32/types.h"
 
 // ---------------------------------------------------------------------------
-//  o—ÍƒTƒ“ƒvƒ‹‚ÌŒ^
+//  å‡ºåŠ›ã‚µãƒ³ãƒ—ãƒ«ã®å‹
 //
 #define FM_SAMPLETYPE int32_t  // int16_t or int32_t
 
 // ---------------------------------------------------------------------------
-//  ’è”‚»‚Ì‚P
-//  Ã“Iƒe[ƒuƒ‹‚ÌƒTƒCƒY
+//  å®šæ•°ãã®ï¼‘
+//  é™çš„ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µã‚¤ã‚º
 
-#define FM_LFOBITS 8  // •ÏX•s‰Â
+#define FM_LFOBITS 8  // å¤‰æ›´ä¸å¯
 #define FM_TLBITS 7
 
 // ---------------------------------------------------------------------------
@@ -27,7 +27,7 @@
 #define FM_LFOENTS (1 << FM_LFOBITS)
 #define FM_TLPOS (FM_TLENTS / 4)
 
-//  ƒTƒCƒ“”g‚Ì¸“x‚Í 2^(1/256)
+//  ã‚µã‚¤ãƒ³æ³¢ã®ç²¾åº¦ã¯ 2^(1/256)
 #define FM_CLENTS (0x1000 * 2)  // sin + TL + LFO
 
 // ---------------------------------------------------------------------------
@@ -103,13 +103,13 @@ class Operator {
   uint32_t PGCalc();
   uint32_t PGCalcL();
 
-  uint32_t dp_;          // ƒ¢P
+  uint32_t dp_;          // Î”P
   uint32_t detune_;      // Detune
   uint32_t detune2_;     // DT2
   uint32_t multiple_;    // Multiple
-  uint32_t pg_count_;    // Phase Œ»İ’l
-  uint32_t pg_diff_;     // Phase ·•ª’l
-  int32_t pg_diff_lfo_;  // Phase ·•ª’l >> x
+  uint32_t pg_count_;    // Phase ç¾åœ¨å€¤
+  uint32_t pg_diff_;     // Phase å·®åˆ†å€¤
+  int32_t pg_diff_lfo_;  // Phase å·®åˆ†å€¤ >> x
 
   //  Envelop Generator ---------------------------------------------------
   enum EGPhase { next, attack, decay, sustain, release, off };
@@ -123,14 +123,14 @@ class Operator {
   int FBCalc(int fb);
   ISample LogToLin(uint32_t a);
 
-  OpType type_;                 // OP ‚Ìí—Ş (M, N...)
+  OpType type_;                 // OP ã®ç¨®é¡ (M, N...)
   uint32_t bn_;                 // Block/Note
-  int eg_level_;                // EG ‚Ìo—Í’l
-  int eg_level_on_next_phase_;  // Ÿ‚Ì eg_phase_ ‚ÉˆÚ‚é’l
-  int eg_count_;                // EG ‚ÌŸ‚Ì•ÏˆÚ‚Ü‚Å‚ÌŠÔ
-  int eg_count_diff_;           // eg_count_ ‚Ì·•ª
-  int eg_out_;                  // EG+TL ‚ğ‡‚í‚¹‚½o—Í’l
-  int tl_out_;                  // TL •ª‚Ìo—Í’l
+  int eg_level_;                // EG ã®å‡ºåŠ›å€¤
+  int eg_level_on_next_phase_;  // æ¬¡ã® eg_phase_ ã«ç§»ã‚‹å€¤
+  int eg_count_;                // EG ã®æ¬¡ã®å¤‰ç§»ã¾ã§ã®æ™‚é–“
+  int eg_count_diff_;           // eg_count_ ã®å·®åˆ†
+  int eg_out_;                  // EG+TL ã‚’åˆã‚ã›ãŸå‡ºåŠ›å€¤
+  int tl_out_;                  // TL åˆ†ã®å‡ºåŠ›å€¤
                                 //      int     pm_depth_;      // PM depth
                                 //      int     am_depth_;      // AM depth
   int eg_rate_;
@@ -156,7 +156,7 @@ class Operator {
 
   bool keyon_;
   bool amon_;           // enable Amplitude Modulation
-  bool param_changed_;  // ƒpƒ‰ƒ[ƒ^‚ªXV‚³‚ê‚½
+  bool param_changed_;  // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒæ›´æ–°ã•ã‚ŒãŸ
   bool mute_;
 
   //  Tables ---------------------------------------------------------------
@@ -218,8 +218,8 @@ class Channel4 {
   static const uint8_t fbtable[8];
   uint32_t fb;
   int buf[4];
-  int* in[3];   // Še OP ‚Ì“ü—Íƒ|ƒCƒ“ƒ^
-  int* out[3];  // Še OP ‚Ìo—Íƒ|ƒCƒ“ƒ^
+  int* in[3];   // å„ OP ã®å…¥åŠ›ãƒã‚¤ãƒ³ã‚¿
+  int* out[3];  // å„ OP ã®å‡ºåŠ›ãƒã‚¤ãƒ³ã‚¿
   int* pms;
   int algo_;
   Chip* chip_;

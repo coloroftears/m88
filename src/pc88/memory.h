@@ -2,7 +2,7 @@
 //  M88 - PC-8801 series emulator
 //  Copyright (C) cisc 1999.
 // ----------------------------------------------------------------------------
-//  Main ‘¤ƒƒ‚ƒŠ(ŠÜALU)‚ÌÀ‘•
+//  Main å´ãƒ¡ãƒ¢ãƒª(å«ALU)ã®å®Ÿè£…
 // ----------------------------------------------------------------------------
 //  $Id: memory.h,v 1.26 2003/09/28 14:58:54 cisc Exp $
 
@@ -126,7 +126,7 @@ class Memory : public Device, public IGetMemoryBank {
   };
 
   enum {
-    ssrev = 2,  // Status ‚ğXV‚É‘‚â‚·‚±‚Æ
+    ssrev = 2,  // Status ã‚’æ›´æ–°æ™‚ã«å¢—ã‚„ã™ã“ã¨
   };
   struct Status {
     uint8_t rev;
@@ -172,11 +172,11 @@ class Memory : public Device, public IGetMemoryBank {
   uint8_t* ram;
   uint8_t* eram;
   uint8_t* tvram;
-  uint8_t* dicrom;       // «‘ROM
+  uint8_t* dicrom;       // è¾æ›¸ROM
   uint8_t* cdbios;       // CD-ROM BIOS ROM
   uint8_t* n80rom;       // N80-BASIC ROM
   uint8_t* n80v2rom;     // N80SR
-  uint8_t* erom[8 + 1];  // Šg’£ ROM
+  uint8_t* erom[8 + 1];  // æ‹¡å¼µ ROM
 
   uint32_t port31, port32, port33, port34, port35, port40, port5x;
   uint32_t port99, txtwnd, port71, porte2, porte3, portf0;

@@ -8,7 +8,7 @@
 #include "win32/timekeep.h"
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 TimeKeeper::TimeKeeper() {
   assert(unit > 0);
@@ -20,7 +20,7 @@ TimeKeeper::TimeKeeper() {
     base = li.LowPart;
   } else {
     freq = 0;
-    timeBeginPeriod(1);  // ¸“x‚ğã‚°‚é‚½‚ß‚Ì‚¨‚Ü‚¶‚È‚¢c‚ç‚µ‚¢
+    timeBeginPeriod(1);  // ç²¾åº¦ã‚’ä¸Šã’ã‚‹ãŸã‚ã®ãŠã¾ã˜ãªã„â€¦ã‚‰ã—ã„
     base = timeGetTime();
   }
   time = 0;
@@ -33,7 +33,7 @@ TimeKeeper::~TimeKeeper() {
 }
 
 // ---------------------------------------------------------------------------
-//  ŠÔ‚ğæ“¾
+//  æ™‚é–“ã‚’å–å¾—
 //
 uint32_t TimeKeeper::GetTime() {
   if (freq) {

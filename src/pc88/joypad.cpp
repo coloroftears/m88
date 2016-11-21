@@ -11,7 +11,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  ç\ízÅEîjä¸
+//  ÊßãÁØâ„ÉªÁ†¥Ê£Ñ
 //
 JoyPad::JoyPad() : Device(0), ui(0) {
   SetButtonMode(NORMAL);
@@ -29,7 +29,7 @@ bool JoyPad::Connect(IPadInput* u) {
 }
 
 // ---------------------------------------------------------------------------
-//  ì¸óÕ
+//  ÂÖ•Âäõ
 //
 uint32_t IOCALL JoyPad::GetDirection(uint32_t) {
   if (!paravalid)
@@ -74,7 +74,7 @@ void JoyPad::SetButtonMode(ButtonMode mode) {
 }
 
 // ---------------------------------------------------------------------------
-//  VSync ÇΩÇ¢Ç›ÇÒÇÆ
+//  VSync „Åü„ÅÑ„Åø„Çì„Åê
 //
 void IOCALL JoyPad::VSync(uint32_t, uint32_t d) {
   if (d)

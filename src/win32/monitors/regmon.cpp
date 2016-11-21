@@ -13,7 +13,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 Z80RegMonitor::Z80RegMonitor() {}
 
@@ -43,7 +43,7 @@ void Z80RegMonitor::DrawMain(HDC hdc, bool) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒOˆ—
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‡¦ç†
 //
 BOOL Z80RegMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   /*  switch (msg)
@@ -57,7 +57,7 @@ BOOL Z80RegMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô‚ð•\Ž¦
+//  çŠ¶æ…‹ã‚’è¡¨ç¤º
 //
 void Z80RegMonitor::UpdateText() {
   PC88::Z80* c1 = pc->GetCPU1();

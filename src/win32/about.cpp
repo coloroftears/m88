@@ -13,14 +13,14 @@
 #include "win32/filetest.h"
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 M88About::M88About() {
   SanityCheck(&crc);
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒO•\¦
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 //
 void M88About::Show(HINSTANCE hinst, HWND hwndparent) {
   DialogBoxParam(hinst, MAKEINTRESOURCE(IDD_ABOUT), hwndparent,
@@ -28,7 +28,7 @@ void M88About::Show(HINSTANCE hinst, HWND hwndparent) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒOˆ—
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‡¦ç†
 //
 INT_PTR M88About::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   char buf[4096];
@@ -81,17 +81,17 @@ INT_PTR M88About::DlgProcGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
 }
 
 // ---------------------------------------------------------------------------
-//  about —p‚ÌƒeƒLƒXƒg
+//  about ç”¨ã®ãƒ†ã‚­ã‚¹ãƒˆ
 //
 const char M88About::abouttext[] =
     "build date:" __DATE__
     " (%.8x)\r\n"
     "\r\n"
-    "Š´‘zE—v–]EƒoƒO•ñ‚È‚Ç‚Í M88 ‚Ìƒy[ƒW\r\n"
+    "æ„Ÿæƒ³ãƒ»è¦æœ›ãƒ»ãƒã‚°å ±å‘Šãªã©ã¯ M88 ã®ãƒšãƒ¼ã‚¸\r\n"
     "http://www.retropc.net/cisc/m88/\r\n"
-    "‚Ö‚Ç‚¤‚¼D\r\n"
+    "ã¸ã©ã†ãï¼\r\n"
     "\r\n"
-    "FM ‰¹Œ¹ƒ†ƒjƒbƒg‚Ìì¬‚É‚ ‚½‚Á‚Ä‚ÍC\r\n"
-    "²“¡’B”Vì‚Ì fm.c ‚ğQl‚É‚³‚¹‚Ä‚¢‚½‚¾‚«‚Ü‚µ‚½D\r\n"
+    "FM éŸ³æºãƒ¦ãƒ‹ãƒƒãƒˆã®ä½œæˆã«ã‚ãŸã£ã¦ã¯ï¼Œ\r\n"
+    "ä½è—¤é”ä¹‹æ°ä½œã® fm.c ã‚’å‚è€ƒã«ã•ã›ã¦ã„ãŸã ãã¾ã—ãŸï¼\r\n"
     "\r\n"
-    "N80/SR ƒ‚[ƒh‚Í arearea ‚ÌƒR[ƒh‚ğŒ³‚ÉÀ‘•‚³‚ê‚Ä‚¢‚Ü‚·D\r\n";
+    "N80/SR ãƒ¢ãƒ¼ãƒ‰ã¯ arearea æ°ã®ã‚³ãƒ¼ãƒ‰ã‚’å…ƒã«å®Ÿè£…ã•ã‚Œã¦ã„ã¾ã™ï¼\r\n";

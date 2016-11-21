@@ -8,7 +8,7 @@ static WinVars winvars;
 int WinVars::var[nparam];
 
 void WinVars::Init() {
-  // Windows ‚Ìƒo[ƒWƒ‡ƒ“
+  // Windows ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
   OSVERSIONINFO vi;
   memset(&vi, 0, sizeof(vi));
   vi.dwOSVersionInfoSize = sizeof(vi);
@@ -16,7 +16,7 @@ void WinVars::Init() {
   var[MajorVer] = vi.dwMajorVersion;
   var[MinorVer] = vi.dwMinorVersion;
 
-  // \‘¢‘Ì‚Æ‚©
+  // æ§‹é€ ä½“ã¨ã‹
   var[OFNSIZE] = Var(MajorVer) <= 4 ? OFNV4SIZE : sizeof(OPENFILENAME);
   var[MIISIZE] = Var(MajorVer) <= 4 ? 44 : sizeof(MENUITEMINFO);
 }

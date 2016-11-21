@@ -7,7 +7,7 @@
 #include "win32/timekeep.h"
 #include "win32/critsect.h"
 
-//  �x�����M�Ή� ROMEO �h���C�o
+//  遅延送信対応 ROMEO ドライバ
 //
 class PiccoloChip {
  public:
@@ -40,16 +40,16 @@ class Piccolo {
 
   static Piccolo* GetInstance();
 
-  // �x���o�b�t�@�̃T�C�Y��ݒ�
+  // 遅延バッファのサイズを設定
   bool SetLatencyBufferSize(uint32_t entry);
 
-  // �x�����Ԃ̍ő�l��ݒ�
-  // SetReg ���Ăяo���ꂽ�Ƃ��Ananosec ��ȍ~�̃��W�X�^�������݂��w������ at
-  // �̒l���w�肵���ꍇ
-  // �Ăяo���͋p������邩������Ȃ��B
+  // 遅延時間の最大値を設定
+  // SetReg が呼び出されたとき、nanosec 後以降のレジスタ書き込みを指示する at
+  // の値を指定した場合
+  // 呼び出しは却下されるかもしれない。
   bool SetMaximumLatency(uint32_t nanosec);
 
-  // ���\�b�h�Ăяo�����_�ł̎��Ԃ�n��(�P�ʂ� nanosec)
+  // メソッド呼び出し時点での時間を渡す(単位は nanosec)
   uint32_t GetCurrentTime();
 
   //

@@ -53,7 +53,7 @@ uint32_t IFCALL WinMouseUI::Release() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ}ƒEƒXƒLƒƒƒvƒ`ƒƒƒŠƒ“ƒOŠJnE’â~
+//  ãƒã‚¦ã‚¹ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒªãƒ³ã‚°é–‹å§‹ãƒ»åœæ­¢
 //
 bool WinMouseUI::Enable(bool en) {
   if (enable != en) {
@@ -86,7 +86,7 @@ uint32_t WinMouseUI::GetButton() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ}ƒEƒX‚ÌˆÚ“®ó‹µ‚ğæ“¾
+//  ãƒã‚¦ã‚¹ã®ç§»å‹•çŠ¶æ³ã‚’å–å¾—
 //
 bool WinMouseUI::GetMovement(POINT* move) {
   move->x = move->y = 0;
@@ -111,7 +111,7 @@ bool WinMouseUI::GetMovement(POINT* move) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒEƒBƒ“ƒhƒEˆÊ’u‚Ìæ“¾
+//  ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½®ã®å–å¾—
 //
 POINT WinMouseUI::GetWindowCenter() {
   RECT rect;

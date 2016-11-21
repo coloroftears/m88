@@ -18,7 +18,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’zE”jŠü
+//  æ§‹ç¯‰ãƒ»ç ´æ£„
 //
 SubSystem::SubSystem(const ID& id) : Device(id), mm(0), mid(-1), rom(0) {
   cw_m = cw_s = 0x80;
@@ -31,7 +31,7 @@ SubSystem::~SubSystem() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool SubSystem::Init(MemoryManager* _mm) {
   mm = _mm;
@@ -47,7 +47,7 @@ bool SubSystem::Init(MemoryManager* _mm) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒƒ‚ƒŠ‰Šú‰»
+//  ãƒ¡ãƒ¢ãƒªåˆæœŸåŒ–
 //
 bool SubSystem::InitMemory() {
   const uint32_t pagesize = 1 << MemoryManagerBase::pagebits;
@@ -77,7 +77,7 @@ bool SubSystem::InitMemory() {
 }
 
 // ---------------------------------------------------------------------------
-//  ROM “Ç‚İ‚İ
+//  ROM èª­ã¿è¾¼ã¿
 //
 bool SubSystem::LoadROM() {
   memset(rom, 0xff, 0x2000);
@@ -100,8 +100,8 @@ bool SubSystem::LoadROM() {
 
 // ---------------------------------------------------------------------------
 //  SubSystem::PatchROM
-//  ƒ‚[ƒ^[‚Ì‰ñ“]‘Ò‚¿‚ğÈ—ª‚·‚éƒpƒbƒ`‚ğ“–‚Ä‚é
-//  •Ê‚É‚ ‚Ä‚È‚­‚Ä‚à‹N“®‚ª’x‚­‚È‚é‚¾‚¯‚È‚ñ‚¾‚¯‚Ç‚ËD
+//  ãƒ¢ãƒ¼ã‚¿ãƒ¼ã®å›è»¢å¾…ã¡ã‚’çœç•¥ã™ã‚‹ãƒ‘ãƒƒãƒã‚’å½“ã¦ã‚‹
+//  åˆ¥ã«ã‚ã¦ãªãã¦ã‚‚èµ·å‹•ãŒé…ããªã‚‹ã ã‘ãªã‚“ã ã‘ã©ã­ï¼
 //
 void SubSystem::PatchROM() {
   if (rom[0xfb] == 0xcd && rom[0xfc] == 0xb4 && rom[0xfd] == 0x02) {
@@ -120,14 +120,14 @@ void IOCALL SubSystem::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İó—
+//  å‰²ã‚Šè¾¼ã¿å—ç†
 //
 uint32_t IOCALL SubSystem::IntAck(uint32_t) {
   return 0x00;
 }
 
 // ---------------------------------------------------------------------------
-//  Main ‘¤ PIO
+//  Main å´ PIO
 //
 void IOCALL SubSystem::M_Set0(uint32_t, uint32_t data) {
   idlecount = 0;
@@ -176,7 +176,7 @@ uint32_t IOCALL SubSystem::M_Read2(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Sub ‘¤ PIO
+//  Sub å´ PIO
 //
 void IOCALL SubSystem::S_Set0(uint32_t, uint32_t data) {
   idlecount = 0;
@@ -234,7 +234,7 @@ bool SubSystem::IsBusy() {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶
+//  çŠ¶æ…‹ä¿å­˜
 //
 uint32_t IFCALL SubSystem::GetStatusSize() {
   return sizeof(Status);

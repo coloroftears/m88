@@ -87,23 +87,23 @@ Piccolo* Piccolo::GetInstance() {
 //
 //
 int Piccolo::Init() {
-  // piccolo.sys ‚Í‚¢‚Ü‚·‚©H
+  // piccolo.sys ã¯ã„ã¾ã™ã‹ï¼Ÿ
   hfile =
       CreateFile("\\\\.\\Romeo",  // Open the Device "file"
                  GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
   islegacy = false;
 
   if (hfile == INVALID_HANDLE_VALUE) {
-    // ]—ˆ‚Ì•û–@‚ÅB
-    // DLL —pˆÓ
+    // å¾“æ¥ã®æ–¹æ³•ã§ã€‚
+    // DLL ç”¨æ„
     Log("LoadDLL\n");
     if (!LoadDLL())
       return PICCOLOE_DLL_NOT_FOUND;
 
     islegacy = true;
 
-    // ROMEO ‚Ì‘¶İŠm”F
-    // ƒfƒoƒCƒX‚ğ’T‚·
+    // ROMEO ã®å­˜åœ¨ç¢ºèª
+    // ãƒ‡ãƒã‚¤ã‚¹ã‚’æ¢ã™
     Log("FindDevice\n");
     uint32_t id;
     id = pcidrv.finddev(0x6809, 0x8121, 0);
@@ -113,7 +113,7 @@ int Piccolo::Init() {
     if (id & 0xff)
       return PICCOLOE_ROMEO_NOT_FOUND;
 
-    // ROMEO ‚Í‚ ‚è‚»‚¤‚¾‚ªAƒfƒoƒCƒX‚ÍH
+    // ROMEO ã¯ã‚ã‚Šãã†ã ãŒã€ãƒ‡ãƒã‚¤ã‚¹ã¯ï¼Ÿ
     id >>= 16;
     addr = pcidrv.read32(id, ROMEO_BASEADDRESS1);
     irq = pcidrv.read32(id, ROMEO_PCIINTERRUPT) & 0xff;
@@ -126,7 +126,7 @@ int Piccolo::Init() {
   ymf288.Init(this, addr + ROMEO_YMF288BASE);
   ymf288.Reset();
 
-  // thread ì¬
+  // thread ä½œæˆ
   shouldterminate = false;
   if (!hthread) {
     hthread = (HANDLE)_beginthreadex(
@@ -141,7 +141,7 @@ int Piccolo::Init() {
 }
 
 // ---------------------------------------------------------------------------
-//  Œãn––
+//  å¾Œå§‹æœ«
 //
 void Piccolo::Cleanup() {
   if (hthread) {
@@ -191,7 +191,7 @@ uint32_t Piccolo::ThreadMain() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒLƒ…[‚É’Ç‰Á
+//  ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ 
 //
 bool Piccolo::Push(Piccolo::Event& ev) {
   if ((evwrite + 1) % eventries == evread)
@@ -202,7 +202,7 @@ bool Piccolo::Push(Piccolo::Event& ev) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒLƒ…[‚©‚çˆêŒÂ–á‚¤
+//  ã‚­ãƒ¥ãƒ¼ã‹ã‚‰ä¸€å€‹è²°ã†
 //
 Piccolo::Event* Piccolo::Top() {
   if (evwrite == evread)
@@ -216,7 +216,7 @@ void Piccolo::Pop() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒTƒuƒXƒŒƒbƒhŠJn“_
+//  ã‚µãƒ–ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ç‚¹
 //
 uint32_t CALLBACK Piccolo::ThreadEntry(void* arg) {
   return reinterpret_cast<Piccolo*>(arg)->ThreadMain();
@@ -273,7 +273,7 @@ int Piccolo::DrvInit(Driver* drv, uint32_t param) {
 void Piccolo::DrvReset(Driver* drv) {
   CriticalSection::Lock lock(cs);
   drv->Reset();
-  // –{“–‚ÍŠY“–‚·‚éƒGƒ“ƒgƒŠ‚¾‚¯íœ‚·‚×‚«‚¾‚ªc
+  // æœ¬å½“ã¯è©²å½“ã™ã‚‹ã‚¨ãƒ³ãƒˆãƒªã ã‘å‰Šé™¤ã™ã¹ãã ãŒâ€¦
   evread = 0;
   evwrite = 0;
 }

@@ -8,7 +8,7 @@
 #include "pc88/floppy.h"
 
 // ---------------------------------------------------------------------------
-//  \’z
+//  æ§‹ç¯‰
 //
 FloppyDisk::FloppyDisk() {
   ntracks = 0;
@@ -20,7 +20,7 @@ FloppyDisk::FloppyDisk() {
 FloppyDisk::~FloppyDisk() {}
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool FloppyDisk::Init(DiskType _type, bool _readonly) {
   static const int trtbl[] = {84, 164, 164};
@@ -36,7 +36,7 @@ bool FloppyDisk::Init(DiskType _type, bool _readonly) {
 }
 
 // ---------------------------------------------------------------------------
-//  w’è‚Ìƒgƒ‰ƒbƒN‚ÉƒV[ƒN
+//  æŒ‡å®šã®ãƒˆãƒ©ãƒƒã‚¯ã«ã‚·ãƒ¼ã‚¯
 //
 void FloppyDisk::Seek(uint32_t tr) {
   if (tr != curtracknum) {
@@ -47,7 +47,7 @@ void FloppyDisk::Seek(uint32_t tr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒZƒNƒ^ˆê‚Â“Ç‚İo‚µ
+//  ã‚»ã‚¯ã‚¿ä¸€ã¤èª­ã¿å‡ºã—
 //
 FloppyDisk::Sector* FloppyDisk::GetSector() {
   if (!cursector) {
@@ -64,7 +64,7 @@ FloppyDisk::Sector* FloppyDisk::GetSector() {
 }
 
 // ---------------------------------------------------------------------------
-//  w’è‚µ‚½ ID ‚ğŒŸõ
+//  æŒ‡å®šã—ãŸ ID ã‚’æ¤œç´¢
 //
 bool FloppyDisk::FindID(IDR idr, uint32_t density) {
   if (!curtrack)
@@ -87,7 +87,7 @@ bool FloppyDisk::FindID(IDR idr, uint32_t density) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒZƒNƒ^”‚ğ“¾‚é
+//  ã‚»ã‚¯ã‚¿æ•°ã‚’å¾—ã‚‹
 //
 uint32_t FloppyDisk::GetNumSectors() {
   int n = 0;
@@ -102,7 +102,7 @@ uint32_t FloppyDisk::GetNumSectors() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒgƒ‰ƒbƒN’†‚ÌƒZƒNƒ^ƒf[ƒ^‚Ì‘—Ê‚ğ“¾‚é
+//  ãƒˆãƒ©ãƒƒã‚¯ä¸­ã®ã‚»ã‚¯ã‚¿ãƒ‡ãƒ¼ã‚¿ã®ç·é‡ã‚’å¾—ã‚‹
 //
 uint32_t FloppyDisk::GetTrackSize() {
   int size = 0;
@@ -119,15 +119,15 @@ uint32_t FloppyDisk::GetTrackSize() {
 
 // ---------------------------------------------------------------------------
 //  Floppy::Resize
-//  ƒZƒNƒ^‚ÌƒTƒCƒY‚ğ‘å‚«‚­‚µ‚½ê‡‚É‚¨‚¯‚éƒZƒNƒ^’×‚µ‚ÌÄŒ»
-//  sector ‚ÍŒ»İ‘I‘ğ‚µ‚Ä‚¢‚éƒgƒ‰ƒbƒN‚É‘®‚µ‚Ä‚¢‚é•K—v‚ª‚ ‚éD
+//  ã‚»ã‚¯ã‚¿ã®ã‚µã‚¤ã‚ºã‚’å¤§ããã—ãŸå ´åˆã«ãŠã‘ã‚‹ã‚»ã‚¯ã‚¿æ½°ã—ã®å†ç¾
+//  sector ã¯ç¾åœ¨é¸æŠã—ã¦ã„ã‚‹ãƒˆãƒ©ãƒƒã‚¯ã«å±ã—ã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼
 //
 bool FloppyDisk::Resize(Sector* sec, uint32_t newsize) {
   assert(curtrack && sec);
 
   int extend = newsize - sec->size - 0x40;
 
-  // sector ©g‚Ì resize
+  // sector è‡ªèº«ã® resize
   delete[] sec->image;
   sec->image = new uint8_t[newsize];
   sec->size = newsize;
@@ -171,7 +171,7 @@ bool FloppyDisk::FormatTrack(int nsec, int secsize) {
   if (!curtrack)
     return false;
 
-  // ¡‚ ‚éƒgƒ‰ƒbƒN‚ğ”jŠü
+  // ä»Šã‚ã‚‹ãƒˆãƒ©ãƒƒã‚¯ã‚’ç ´æ£„
   sec = curtrack->sector;
   while (sec) {
     Sector* next = sec->next;
@@ -182,7 +182,7 @@ bool FloppyDisk::FormatTrack(int nsec, int secsize) {
   curtrack->sector = 0;
 
   if (nsec) {
-    // ƒZƒNƒ^‚ğì¬
+    // ã‚»ã‚¯ã‚¿ã‚’ä½œæˆ
     cursector = 0;
     for (int i = 0; i < nsec; i++) {
       Sector* newsector = new Sector;
@@ -207,7 +207,7 @@ bool FloppyDisk::FormatTrack(int nsec, int secsize) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒZƒNƒ^ˆê‚Â’Ç‰Á
+//  ã‚»ã‚¯ã‚¿ä¸€ã¤è¿½åŠ 
 //
 FloppyDisk::Sector* FloppyDisk::AddSector(int size) {
   if (!curtrack)
@@ -241,7 +241,7 @@ FloppyDisk::Sector* FloppyDisk::AddSector(int size) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒgƒ‰ƒbƒN‚Ì—e—Ê‚ğ“¾‚é
+//  ãƒˆãƒ©ãƒƒã‚¯ã®å®¹é‡ã‚’å¾—ã‚‹
 //
 uint32_t FloppyDisk::GetTrackCapacity() {
   static const int table[3] = {6250, 6250, 10416};
@@ -249,7 +249,7 @@ uint32_t FloppyDisk::GetTrackCapacity() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒgƒ‰ƒbƒN‚ğ“¾‚é
+//  ãƒˆãƒ©ãƒƒã‚¯ã‚’å¾—ã‚‹
 //
 FloppyDisk::Sector* FloppyDisk::GetFirstSector(uint32_t tr) {
   if (tr < 168)

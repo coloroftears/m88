@@ -13,7 +13,7 @@
 using namespace WinSoundDriver;
 
 // ---------------------------------------------------------------------------
-//  \’zE”jŠü
+//  æ§‹ç¯‰ãƒ»ç ´æ£„
 //
 DriverWO::DriverWO() {
   src = 0;
@@ -30,11 +30,11 @@ DriverWO::~DriverWO() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
-//  s           PCM ‚Ìƒ\[ƒX‚Æ‚È‚é SoundBuffer ‚Ö‚Ìƒ|ƒCƒ“ƒ^
-//  rate        Ä¶ü”g”
-//  ch          ƒ`ƒƒƒlƒ‹”(2 ˆÈŠO‚Í–¢ƒeƒXƒg)
-//  buflen      ƒoƒbƒtƒ@’·(’PˆÊ: ms)
+//  åˆæœŸåŒ–
+//  s           PCM ã®ã‚½ãƒ¼ã‚¹ã¨ãªã‚‹ SoundBuffer ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+//  rate        å†ç”Ÿå‘¨æ³¢æ•°
+//  ch          ãƒãƒ£ãƒãƒ«æ•°(2 ä»¥å¤–ã¯æœªãƒ†ã‚¹ãƒˆ)
+//  buflen      ãƒãƒƒãƒ•ã‚¡é•·(å˜ä½: ms)
 //
 bool DriverWO::Init(SoundSource* s,
                     HWND,
@@ -51,7 +51,7 @@ bool DriverWO::Init(SoundSource* s,
 
   DeleteBuffers();
 
-  // ƒoƒbƒtƒ@ì¬
+  // ãƒãƒƒãƒ•ã‚¡ä½œæˆ
   buffersize = (rate * ch * sizeof(Sample) * buflen / 1000 / 4) & ~7;
   wavehdr = new WAVEHDR[numblocks];
   if (!wavehdr)
@@ -68,7 +68,7 @@ bool DriverWO::Init(SoundSource* s,
     wavehdr[i].dwBufferLength = buffersize;
   }
 
-  // ƒXƒŒƒbƒh‹N“®
+  // ã‚¹ãƒ¬ãƒƒãƒ‰èµ·å‹•
   if (!hthread) {
     hthread = HANDLE(_beginthreadex(
         NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
@@ -79,7 +79,7 @@ bool DriverWO::Init(SoundSource* s,
     SetThreadPriority(hthread, THREAD_PRIORITY_ABOVE_NORMAL);
   }
 
-  // Ä¶ƒtƒH[ƒ}ƒbƒgİ’è
+  // å†ç”Ÿãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆè¨­å®š
   WAVEFORMATEX wf;
   memset(&wf, 0, sizeof(WAVEFORMATEX));
   wf.wFormatTag = WAVE_FORMAT_PCM;
@@ -100,7 +100,7 @@ bool DriverWO::Init(SoundSource* s,
   playing = true;
   dontmix = true;
 
-  // wavehdr ‚Ì€”õ
+  // wavehdr ã®æº–å‚™
   for (i = 0; i < numblocks; i++)
     SendBlock(&wavehdr[i]);
 
@@ -109,7 +109,7 @@ bool DriverWO::Init(SoundSource* s,
 }
 
 // ---------------------------------------------------------------------------
-//  Œã•Ğ•t‚¯
+//  å¾Œç‰‡ä»˜ã‘
 //
 bool DriverWO::Cleanup() {
   if (hthread) {
@@ -138,7 +138,7 @@ bool DriverWO::Cleanup() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒbƒtƒ@‚ğíœ
+//  ãƒãƒƒãƒ•ã‚¡ã‚’å‰Šé™¤
 //
 void DriverWO::DeleteBuffers() {
   if (wavehdr) {
@@ -150,10 +150,10 @@ void DriverWO::DeleteBuffers() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒuƒƒbƒN‚ğ 1 ‚Â‘—‚é
-//  whdr        ‘—‚éƒuƒƒbƒN
+//  ãƒ–ãƒ­ãƒƒã‚¯ã‚’ 1 ã¤é€ã‚‹
+//  whdr        é€ã‚‹ãƒ–ãƒ­ãƒƒã‚¯
 //
-//  dontmix == true ‚È‚ç–³‰¹ƒf[ƒ^‚ğ‘—‚é
+//  dontmix == true ãªã‚‰ç„¡éŸ³ãƒ‡ãƒ¼ã‚¿ã‚’é€ã‚‹
 //
 bool DriverWO::SendBlock(WAVEHDR* whdr) {
   if (playing) {
@@ -172,7 +172,7 @@ bool DriverWO::SendBlock(WAVEHDR* whdr) {
       if (!waveOutWrite(hwo, whdr, sizeof(WAVEHDR)))
         return true;
 
-      // ¸”s
+      // å¤±æ•—
       waveOutUnprepareHeader(hwo, whdr, sizeof(WAVEHDR));
     }
     whdr->dwFlags = 0;
@@ -182,23 +182,23 @@ bool DriverWO::SendBlock(WAVEHDR* whdr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒuƒƒbƒNÄ¶Œã‚Ìˆ—
-//  whdr        Ä¶‚ªI‚í‚Á‚½ƒuƒƒbƒN
+//  ãƒ–ãƒ­ãƒƒã‚¯å†ç”Ÿå¾Œã®å‡¦ç†
+//  whdr        å†ç”ŸãŒçµ‚ã‚ã£ãŸãƒ–ãƒ­ãƒƒã‚¯
 //
 void DriverWO::BlockDone(WAVEHDR* whdr) {
   if (whdr) {
     waveOutUnprepareHeader(hwo, whdr, sizeof(WAVEHDR));
     whdr->dwFlags = 0;
 
-    // ƒuƒƒbƒN‚ğ‘—‚éD2 ‰ñ‚·
+    // ãƒ–ãƒ­ãƒƒã‚¯ã‚’é€ã‚‹ï¼2 å›è©¦ã™
     if (!SendBlock(whdr))
       SendBlock(whdr);
   }
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒŒƒbƒh
-//  Ä¶‚ªI‚í‚Á‚½ƒuƒƒbƒN‚ğ‘—‚è’¼‚·‚¾‚¯
+//  ã‚¹ãƒ¬ãƒƒãƒ‰
+//  å†ç”ŸãŒçµ‚ã‚ã£ãŸãƒ–ãƒ­ãƒƒã‚¯ã‚’é€ã‚Šç›´ã™ã ã‘
 //
 uint32_t __stdcall DriverWO::ThreadEntry(LPVOID arg) {
   DriverWO* dw = reinterpret_cast<DriverWO*>(arg);

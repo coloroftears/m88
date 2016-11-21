@@ -122,7 +122,7 @@ void StatusDisplay::DrawItem(DRAWITEMSTRUCT* dis) {
 }
 
 // ---------------------------------------------------------------------------
-//  ���b�Z�[�W�ǉ�
+//  メッセージ追加
 //
 bool StatusDisplay::Show(int priority, int duration, char* msg, ...) {
   CriticalSection::Lock lock(cs);
@@ -155,7 +155,7 @@ bool StatusDisplay::Show(int priority, int duration, char* msg, ...) {
 }
 
 // ---------------------------------------------------------------------------
-//  �X�V
+//  更新
 //
 void StatusDisplay::Update() {
   updatemessage = false;
@@ -202,7 +202,7 @@ void StatusDisplay::Update() {
 }
 
 // ---------------------------------------------------------------------------
-//  �K�v�Ȃ��G���g���̍폜
+//  必要ないエントリの削除
 //
 void StatusDisplay::Clean() {
   List** prev = &list;

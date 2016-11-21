@@ -96,12 +96,12 @@ class FDC : public Device {
   bool IsBusy() { return phase != idlephase; }
 
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
-  void IOCALL DriveControl(uint32_t, uint32_t data);    // 2HD/2DD Ø‚è‘Ö‚¦‚Æ‚©
-  void IOCALL MotorControl(uint32_t, uint32_t data) {}  // ƒ‚[ƒ^[§Œä
-  void IOCALL SetData(uint32_t, uint32_t data);         // ƒf[ƒ^ƒZƒbƒg
+  void IOCALL DriveControl(uint32_t, uint32_t data);    // 2HD/2DD åˆ‡ã‚Šæ›¿ãˆã¨ã‹
+  void IOCALL MotorControl(uint32_t, uint32_t data) {}  // ãƒ¢ãƒ¼ã‚¿ãƒ¼åˆ¶å¾¡
+  void IOCALL SetData(uint32_t, uint32_t data);         // ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆ
   uint32_t IOCALL TC(uint32_t);                         // TC
-  uint32_t IOCALL Status(uint32_t);                     // ƒXƒe[ƒ^ƒX“ü—Í
-  uint32_t IOCALL GetData(uint32_t);                    // ƒf[ƒ^æ“¾
+  uint32_t IOCALL Status(uint32_t);                     // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å…¥åŠ›
+  uint32_t IOCALL GetData(uint32_t);                    // ãƒ‡ãƒ¼ã‚¿å–å¾—
 
   uint32_t IFCALL GetStatusSize();
   bool IFCALL SaveStatus(uint8_t* status);
@@ -140,14 +140,14 @@ class FDC : public Device {
     uint8_t eot;
     uint8_t seekstate;
     uint8_t result;
-    uint8_t status;      // ƒXƒe[ƒ^ƒXƒŒƒWƒXƒ^
-    uint8_t command;     // Œ»İˆ—’†‚ÌƒRƒ}ƒ“ƒh
-    uint8_t data;        // ƒf[ƒ^ƒŒƒWƒXƒ^
-    bool int_requested;  // SENCEINTSTATUS ‚ÌŒÄ‚Ño‚µ‚ğ—v‹‚µ‚½
+    uint8_t status;      // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ¬ã‚¸ã‚¹ã‚¿
+    uint8_t command;     // ç¾åœ¨å‡¦ç†ä¸­ã®ã‚³ãƒãƒ³ãƒ‰
+    uint8_t data;        // ãƒ‡ãƒ¼ã‚¿ãƒ¬ã‚¸ã‚¹ã‚¿
+    bool int_requested;  // SENCEINTSTATUS ã®å‘¼ã³å‡ºã—ã‚’è¦æ±‚ã—ãŸ
     bool accepttc;
 
     uint32_t bufptr;
-    uint32_t count;  // Exec*Phase ‚Å‚Ì“]‘—c‚èƒoƒCƒg
+    uint32_t count;  // Exec*Phase ã§ã®è»¢é€æ®‹ã‚Šãƒã‚¤ãƒˆ
     Phase phase, prevphase;
     Phase t_phase;
 
@@ -201,15 +201,15 @@ class FDC : public Device {
   Scheduler::Event* timerhandle;
   uint32_t seektime;
 
-  uint32_t status;  // ƒXƒe[ƒ^ƒXƒŒƒWƒXƒ^
+  uint32_t status;  // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ¬ã‚¸ã‚¹ã‚¿
   uint8_t* buffer;
   uint8_t* bufptr;
-  int count;         // Exec*Phase ‚Å‚Ì“]‘—c‚èƒoƒCƒg
-  uint32_t command;  // Œ»İˆ—’†‚ÌƒRƒ}ƒ“ƒh
-  uint32_t data;     // ƒf[ƒ^ƒŒƒWƒXƒ^
+  int count;         // Exec*Phase ã§ã®è»¢é€æ®‹ã‚Šãƒã‚¤ãƒˆ
+  uint32_t command;  // ç¾åœ¨å‡¦ç†ä¸­ã®ã‚³ãƒãƒ³ãƒ‰
+  uint32_t data;     // ãƒ‡ãƒ¼ã‚¿ãƒ¬ã‚¸ã‚¹ã‚¿
   Phase phase, prevphase;
   Phase t_phase;
-  bool int_requested;  // SENCEINTSTATUS ‚ÌŒÄ‚Ño‚µ‚ğ—v‹‚µ‚½
+  bool int_requested;  // SENCEINTSTATUS ã®å‘¼ã³å‡ºã—ã‚’è¦æ±‚ã—ãŸ
   bool accepttc;
   bool showstatus;
 

@@ -13,7 +13,7 @@
 class ASPI;
 
 // ---------------------------------------------------------------------------
-//  CDROM §ŒäƒNƒ‰ƒX
+//  CDROM åˆ¶å¾¡ã‚¯ãƒ©ã‚¹
 //
 class CDROM {
  public:
@@ -51,16 +51,16 @@ class CDROM {
   bool FindDrive();
 
   ASPI* aspi;
-  int ha;       // CD-ROM ƒhƒ‰ƒCƒu‚ÌÚ‘±‚³‚ê‚Ä‚¢‚éƒzƒXƒgƒAƒ_ƒvƒ^
-  int id;       // CD-ROM ƒhƒ‰ƒCƒu‚Ì ID
-  int ntracks;  // ƒgƒ‰ƒbƒN”
-  int trstart;  // ƒgƒ‰ƒbƒN‚ÌŠJnˆÊ’u
+  int ha;       // CD-ROM ãƒ‰ãƒ©ã‚¤ãƒ–ã®æ¥ç¶šã•ã‚Œã¦ã„ã‚‹ãƒ›ã‚¹ãƒˆã‚¢ãƒ€ãƒ—ã‚¿
+  int id;       // CD-ROM ãƒ‰ãƒ©ã‚¤ãƒ–ã® ID
+  int ntracks;  // ãƒˆãƒ©ãƒƒã‚¯æ•°
+  int trstart;  // ãƒˆãƒ©ãƒƒã‚¯ã®é–‹å§‹ä½ç½®
 
   Track track[100];
 };
 
 // ---------------------------------------------------------------------------
-//  LBA ŠÔ‚ğ MSF ŠÔ‚É•ÏŠ·
+//  LBA æ™‚é–“ã‚’ MSF æ™‚é–“ã«å¤‰æ›
 //
 inline CDROM::MSF CDROM::ToMSF(uint32_t lba) {
   lba += trstart;
@@ -72,7 +72,7 @@ inline CDROM::MSF CDROM::ToMSF(uint32_t lba) {
 }
 
 // ---------------------------------------------------------------------------
-//  LBA ŠÔ‚ğ MSF ŠÔ‚É•ÏŠ·
+//  LBA æ™‚é–“ã‚’ MSF æ™‚é–“ã«å¤‰æ›
 //
 inline uint32_t CDROM::ToLBA(MSF msf) {
   return (BCDtoN(msf.min) * 60 + BCDtoN(msf.sec)) * 75 + BCDtoN(msf.frame) -
@@ -80,8 +80,8 @@ inline uint32_t CDROM::ToLBA(MSF msf) {
 }
 
 // ---------------------------------------------------------------------------
-//  CD ‚Ìƒgƒ‰ƒbƒNî•ñ‚ğæ“¾
-//  ReadTOC Œã‚É—LŒø
+//  CD ã®ãƒˆãƒ©ãƒƒã‚¯æƒ…å ±ã‚’å–å¾—
+//  ReadTOC å¾Œã«æœ‰åŠ¹
 //
 inline const CDROM::Track* CDROM::GetTrackInfo(int t) {
   if (t < 0 || t > ntracks + 1)
@@ -90,8 +90,8 @@ inline const CDROM::Track* CDROM::GetTrackInfo(int t) {
 }
 
 // ---------------------------------------------------------------------------
-//  CD ’†‚Ìƒgƒ‰ƒbƒN”‚ğæ“¾
-//  ReadTOC Œã‚É—LŒø
+//  CD ä¸­ã®ãƒˆãƒ©ãƒƒã‚¯æ•°ã‚’å–å¾—
+//  ReadTOC å¾Œã«æœ‰åŠ¹
 //
 inline int CDROM::GetNumTracks() {
   return ntracks;

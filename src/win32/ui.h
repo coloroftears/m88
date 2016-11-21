@@ -89,18 +89,18 @@ class WinUI {
   int AllocControlID();
   void FreeControlID(int);
 
-  // ƒEƒCƒ“ƒhƒEŠÖŒW
+  // ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦é–¢ä¿‚
   HWND hwnd;
   HINSTANCE hinst;
   HACCEL accel;
   HMENU hmenudbg;
 
-  // ó‘Ô•\¦—p
+  // çŠ¶æ…‹è¡¨ç¤ºç”¨
   UINT timerid;
   bool report;
   volatile bool active;
 
-  // ƒEƒCƒ“ƒhƒE‚Ìó‘Ô
+  // ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹
   bool background;
   bool fullscreen;
   uint32_t displaychangedtime;
@@ -114,7 +114,7 @@ class WinUI {
   DiskInfo diskinfo[2];
   char tapetitle[MAX_PATH];
 
-  // snapshot ŠÖŒW
+  // snapshot é–¢ä¿‚
   HMENU hmenuss[2];
   int currentsnapshot;
   bool snapshotchanged;
@@ -140,7 +140,7 @@ class WinUI {
   TapeManager* tapemgr;
 
  private:
-  // ƒƒbƒZ[ƒWŠÖ”
+  // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é–¢æ•°
   uint32_t M88ChangeDisplay(HWND, WPARAM, LPARAM);
   uint32_t M88ChangeVolume(HWND, WPARAM, LPARAM);
   uint32_t M88ApplyConfig(HWND, WPARAM, LPARAM);

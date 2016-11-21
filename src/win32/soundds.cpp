@@ -20,7 +20,7 @@ const uint32_t DriverDS::num_blocks = 5;
 const uint32_t DriverDS::timer_resolution = 20;
 
 // ---------------------------------------------------------------------------
-//  \’zE”jŠü ---------------------------------------------------------------
+//  æ§‹ç¯‰ãƒ»ç ´æ£„ ---------------------------------------------------------------
 
 DriverDS::DriverDS() {
   playing = false;
@@ -37,7 +37,7 @@ DriverDS::~DriverDS() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰» -------------------------------------------------------------------
+//  åˆæœŸåŒ– -------------------------------------------------------------------
 
 bool DriverDS::Init(SoundSource* s,
                     HWND hwnd,
@@ -51,10 +51,10 @@ bool DriverDS::Init(SoundSource* s,
   buffer_length = buflen;
   sampleshift = 1 + (ch == 2 ? 1 : 0);
 
-  // ŒvZ
+  // è¨ˆç®—
   buffersize = (rate * ch * sizeof(Sample) * buffer_length / 1000) & ~7;
 
-  // DirectSound object ì¬
+  // DirectSound object ä½œæˆ
   if (FAILED(CoCreateInstance(CLSID_DirectSound, 0, CLSCTX_ALL,
                               IID_IDirectSound, (void**)&lpds)))
     return false;
@@ -63,7 +63,7 @@ bool DriverDS::Init(SoundSource* s,
   //  if (FAILED(DirectSoundCreate(0, &lpds, 0)))
   //      return false;
 
-  // ‹¦’²ƒŒƒxƒ‹İ’è
+  // å”èª¿ãƒ¬ãƒ™ãƒ«è¨­å®š
   if (DS_OK != lpds->SetCooperativeLevel(hwnd, DSSCL_PRIORITY)) {
     if (DS_OK != lpds->SetCooperativeLevel(hwnd, DSSCL_NORMAL))
       return false;
@@ -78,7 +78,7 @@ bool DriverDS::Init(SoundSource* s,
   if (DS_OK != lpds->CreateSoundBuffer(&dsbd, &lpdsb_primary, 0))
     return false;
 
-  // Ä¶ƒtƒH[ƒ}ƒbƒgİ’è
+  // å†ç”Ÿãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆè¨­å®š
   WAVEFORMATEX wf;
   memset(&wf, 0, sizeof(WAVEFORMATEX));
   wf.wFormatTag = WAVE_FORMAT_PCM;
@@ -90,7 +90,7 @@ bool DriverDS::Init(SoundSource* s,
 
   lpdsb_primary->SetFormat(&wf);
 
-  // ƒZƒJƒ“ƒ_ƒŠƒoƒbƒtƒ@ì¬
+  // ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒãƒƒãƒ•ã‚¡ä½œæˆ
   memset(&dsbd, 0, sizeof(DSBUFFERDESC));
   dsbd.dwSize = sizeof(DSBUFFERDESC);
   dsbd.dwFlags = DSBCAPS_STICKYFOCUS | DSBCAPS_GETCURRENTPOSITION2;
@@ -102,11 +102,11 @@ bool DriverDS::Init(SoundSource* s,
   if (DS_OK != res)
     return false;
 
-  // Ä¶
+  // å†ç”Ÿ
   lpdsb->Play(0, 0, DSBPLAY_LOOPING);
   //  lpdsb_primary->Play(0, 0, DSBPLAY_LOOPING);
 
-  // ƒ^ƒCƒ}[ì¬
+  // ã‚¿ã‚¤ãƒãƒ¼ä½œæˆ
   timeBeginPeriod(buffer_length / num_blocks);
   timerid = timeSetEvent(buffer_length / num_blocks, timer_resolution, TimeProc,
                          reinterpret_cast<DWORD>(this), TIME_PERIODIC);
@@ -122,7 +122,7 @@ bool DriverDS::Init(SoundSource* s,
 }
 
 // ---------------------------------------------------------------------------
-//  Œã•Ğ•t‚¯ -----------------------------------------------------------------
+//  å¾Œç‰‡ä»˜ã‘ -----------------------------------------------------------------
 
 bool DriverDS::Cleanup() {
   playing = false;
@@ -154,7 +154,7 @@ void CALLBACK DriverDS::TimeProc(UINT uid, UINT, DWORD user, DWORD, DWORD) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒuƒƒbƒN‘—‚é -------------------------------------------------------------
+//  ãƒ–ãƒ­ãƒƒã‚¯é€ã‚‹ -------------------------------------------------------------
 
 void DriverDS::Send() {
   if (playing && !InterlockedExchange(&sending, true)) {
@@ -172,14 +172,14 @@ void DriverDS::Send() {
       restored = true;
     }
 
-    // ˆÊ’uæ“¾
+    // ä½ç½®å–å¾—
     DWORD cplay, cwrite;
     lpdsb->GetCurrentPosition(&cplay, &cwrite);
 
     if (cplay == nextwrite && !restored)
       goto ret;
 
-    // ‘‚«‚±‚İƒTƒCƒYŒvZ
+    // æ›¸ãã“ã¿ã‚µã‚¤ã‚ºè¨ˆç®—
     int writelength;
     if (cplay < nextwrite)
       writelength = cplay + buffersize - nextwrite;
@@ -202,7 +202,7 @@ void DriverDS::Send() {
                       &al2, 0))
         goto ret;
 
-      // ‘‚«‚±‚İ
+      // æ›¸ãã“ã¿
 
       //      if (mixalways || !src->IsEmpty())
       {
@@ -223,7 +223,7 @@ void DriverDS::Send() {
     if (restored)
       lpdsb->Play(0, 0, DSBPLAY_LOOPING);
 
-  // I—¹
+  // çµ‚äº†
   ret:
     InterlockedExchange(&sending, false);
   }

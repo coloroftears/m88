@@ -19,7 +19,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z
+//  æ§‹ç¯‰
 //
 Mouse::Mouse(const ID& id) : Device(id), ui(0) {}
 
@@ -28,7 +28,7 @@ Mouse::~Mouse() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool Mouse::Init(PC88* pc88) {
   pc = pc88;
@@ -43,7 +43,7 @@ bool Mouse::Connect(IUnk* unk) {
 }
 
 // ---------------------------------------------------------------------------
-//  “ü—Í
+//  å…¥åŠ›
 //
 uint32_t IOCALL Mouse::GetMove(uint32_t) {
   Log("%c", 'w' + phase);
@@ -86,7 +86,7 @@ uint32_t IOCALL Mouse::GetButton(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒgƒ[ƒuM†
+//  ã‚¹ãƒˆãƒ­ãƒ¼ãƒ–ä¿¡å·
 //
 void IOCALL Mouse::Strobe(uint32_t, uint32_t data) {
   data &= 0x40;
@@ -119,7 +119,7 @@ void IOCALL Mouse::VSync(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒRƒ“ƒtƒBƒMƒ…ƒŒ[ƒVƒ‡ƒ“XV
+//  ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–°
 //
 void Mouse::ApplyConfig(const Config* config) {
   joymode = (config->flags & Config::mousejoymode) != 0;

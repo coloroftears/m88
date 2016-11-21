@@ -21,7 +21,7 @@ bool GVRAMReverse::Init(IMemoryManager* _mm) {
 }
 
 // ---------------------------------------------------------------------------
-//  I/O ƒ|[ƒg‚ğŠÄ‹
+//  I/O ãƒãƒ¼ãƒˆã‚’ç›£è¦–
 
 void IFCALL GVRAMReverse::Out32(uint32_t, uint32_t r) {
   p32 = r;
@@ -39,18 +39,18 @@ void IFCALL GVRAMReverse::Out5x(uint32_t a, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  GVRAM ‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é‚É‚©‚¯‚ç‚ê‚éƒtƒbƒNŠÖ”
+//  GVRAM ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹æ™‚ã«ã‹ã‘ã‚‰ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 
 uint32_t MEMCALL GVRAMReverse::MRead(void* p, uint32_t a) {
   GVRAMReverse* mp = reinterpret_cast<GVRAMReverse*>(p);
-  if (a < 0xfe80)  // •\¦—Ìˆæ“à‚È‚ç
+  if (a < 0xfe80)  // è¡¨ç¤ºé ˜åŸŸå†…ãªã‚‰
   {
-    a -= 0xc000;  // ƒAƒhƒŒƒX‚ğã‰º”½“]‚·‚é
+    a -= 0xc000;  // ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ä¸Šä¸‹åè»¢ã™ã‚‹
     int y = 199 - a / 80;
     int x = a % 80;
     a = 0xc000 + x + y * 80;
   }
-  return mp->mm->Read8P(mp->mid, a);  // –{—ˆ‚Ìƒƒ‚ƒŠ‹óŠÔ‚Ö‚ÆƒAƒNƒZƒX
+  return mp->mm->Read8P(mp->mid, a);  // æœ¬æ¥ã®ãƒ¡ãƒ¢ãƒªç©ºé–“ã¸ã¨ã‚¢ã‚¯ã‚»ã‚¹
 }
 
 void MEMCALL GVRAMReverse::MWrite(void* p, uint32_t a, uint32_t d) {
@@ -65,7 +65,7 @@ void MEMCALL GVRAMReverse::MWrite(void* p, uint32_t a, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  GVRAM ‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚ê‚ÎCGVRAM —Ìˆæ‚ğæ‚Áæ‚é
+//  GVRAM ãŒé¸æŠã•ã‚Œã¦ã„ã‚Œã°ï¼ŒGVRAM é ˜åŸŸã‚’ä¹—ã£å–ã‚‹
 
 void GVRAMReverse::Update() {
   bool g = false;
@@ -81,11 +81,11 @@ void GVRAMReverse::Update() {
   if (g != gvram) {
     gvram = g;
     if (g) {
-      // æ‚Áæ‚é
+      // ä¹—ã£å–ã‚‹
       mm->AllocR(mid, 0xc000, 0x4000, MRead);
       mm->AllocW(mid, 0xc000, 0x4000, MWrite);
     } else {
-      // ŠJ•ú‚·‚é
+      // é–‹æ”¾ã™ã‚‹
       mm->ReleaseR(mid, 0xc000, 0x4000);
       mm->ReleaseW(mid, 0xc000, 0x4000);
     }

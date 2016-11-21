@@ -25,14 +25,14 @@ using namespace PC8801;
 #define ROMEO_JULIET 0
 
 // ---------------------------------------------------------------------------
-//  ƒvƒŠƒXƒP[ƒ‰‚Ìİ’è’l
-//  static ‚É‚·‚é‚Ì‚ÍCFMGen ‚Ì§ŒÀ‚É‚æ‚èC•¡”‚Ì OPN ‚ğˆÙ‚È‚éƒNƒƒbƒN‚É
-//  ‚·‚é‚±‚Æ‚ªo—ˆ‚È‚¢‚½‚ßD
+//  ãƒ—ãƒªã‚¹ã‚±ãƒ¼ãƒ©ã®è¨­å®šå€¤
+//  static ã«ã™ã‚‹ã®ã¯ï¼ŒFMGen ã®åˆ¶é™ã«ã‚ˆã‚Šï¼Œè¤‡æ•°ã® OPN ã‚’ç•°ãªã‚‹ã‚¯ãƒ­ãƒƒã‚¯ã«
+//  ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ãªã„ãŸã‚ï¼
 //
 int OPNIF::prescaler = 0x2d;
 
 // ---------------------------------------------------------------------------
-//  ¶¬E”jŠü
+//  ç”Ÿæˆãƒ»ç ´æ£„
 //
 OPNIF::OPNIF(const ID& id) : Device(id), chip(0) {
   Log("Hello\n");
@@ -51,7 +51,7 @@ OPNIF::~OPNIF() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool OPNIF::Init(IOBus* b, int intrport, int io, Scheduler* s) {
   bus = b;
@@ -104,7 +104,7 @@ bool IFCALL OPNIF::Connect(ISoundControl* c) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‡¬EÄ¶ƒŒ[ƒgİ’è
+//  åˆæˆãƒ»å†ç”Ÿãƒ¬ãƒ¼ãƒˆè¨­å®š
 //
 bool IFCALL OPNIF::SetRate(uint32_t rate) {
   opn.SetReg(prescaler, 0);
@@ -114,7 +114,7 @@ bool IFCALL OPNIF::SetRate(uint32_t rate) {
 }
 
 // ---------------------------------------------------------------------------
-//  FM ‰¹Œ¹‚Ì‡¬ƒ‚[ƒh‚ğİ’è
+//  FM éŸ³æºã®åˆæˆãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®š
 //
 void OPNIF::SetFMMixMode(bool mm) {
   fmmixmode = mm;
@@ -122,7 +122,7 @@ void OPNIF::SetFMMixMode(bool mm) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‡¬
+//  åˆæˆ
 //
 void IFCALL OPNIF::Mix(int32_t* dest, int nsamples) {
   if (enable)
@@ -130,7 +130,7 @@ void IFCALL OPNIF::Mix(int32_t* dest, int nsamples) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰¹—Êİ’è
+//  éŸ³é‡è¨­å®š
 //
 static inline int ConvertVolume(int volume) {
   return volume > -40 ? volume : -200;
@@ -175,7 +175,7 @@ void IOCALL OPNIF::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İ
+//  å‰²ã‚Šè¾¼ã¿
 //
 void OPNIF::OPNUnit::Intr(bool flag) {
   bool prev = intrpending && intrenabled && bus;
@@ -187,7 +187,7 @@ void OPNIF::OPNUnit::Intr(bool flag) {
 }
 
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İ‹–‰ÂH
+//  å‰²ã‚Šè¾¼ã¿è¨±å¯ï¼Ÿ
 //
 inline void OPNIF::OPNUnit::SetIntrMask(bool en) {
   bool prev = intrpending && intrenabled && bus;
@@ -328,7 +328,7 @@ uint32_t IOCALL OPNIF::ReadStatusEx(uint32_t a) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ^ƒCƒ}[XV
+//  ã‚¿ã‚¤ãƒãƒ¼æ›´æ–°
 //
 void OPNIF::UpdateTimer() {
   scheduler->DelEvent(this);
@@ -341,7 +341,7 @@ void OPNIF::UpdateTimer() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ^ƒCƒ}[
+//  ã‚¿ã‚¤ãƒãƒ¼
 //
 void IOCALL OPNIF::TimeEvent(uint32_t e) {
   int currenttime = scheduler->GetTime();
@@ -359,7 +359,7 @@ void IOCALL OPNIF::TimeEvent(uint32_t e) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô‚ÌƒTƒCƒY
+//  çŠ¶æ…‹ã®ã‚µã‚¤ã‚º
 //
 uint32_t IFCALL OPNIF::GetStatusSize() {
   if (enable)
@@ -369,7 +369,7 @@ uint32_t IFCALL OPNIF::GetStatusSize() {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶
+//  çŠ¶æ…‹ä¿å­˜
 //
 bool IFCALL OPNIF::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
@@ -388,7 +388,7 @@ bool IFCALL OPNIF::SaveStatus(uint8_t* s) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•œ‹A
+//  çŠ¶æ…‹å¾©å¸°
 //
 bool IFCALL OPNIF::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
@@ -451,7 +451,7 @@ bool IFCALL OPNIF::LoadStatus(const uint8_t* s) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒJƒEƒ“ƒ^‚ğ“¯Šú
+//  ã‚«ã‚¦ãƒ³ã‚¿ã‚’åŒæœŸ
 //
 void IOCALL OPNIF::Sync(uint32_t, uint32_t) {
   if (chip) {

@@ -20,7 +20,7 @@ static bool shift = false;
 #endif
 
 // --------------------------------------------------------------------------
-//  \’z
+//  æ§‹ç¯‰
 //
 CDROM::CDROM() {
   aspi = 0;
@@ -30,14 +30,14 @@ CDROM::CDROM() {
 }
 
 // --------------------------------------------------------------------------
-//  ”jŠü
+//  ç ´æ£„
 //
 CDROM::~CDROM() {
   delete aspi;
 }
 
 // --------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool CDROM::Init() {
   if (!aspi)
@@ -53,7 +53,7 @@ bool CDROM::Init() {
 }
 
 // --------------------------------------------------------------------------
-//  ƒhƒ‰ƒCƒu‚ğŒ©‚Â‚¯‚é
+//  ãƒ‰ãƒ©ã‚¤ãƒ–ã‚’è¦‹ã¤ã‘ã‚‹
 //
 bool CDROM::FindDrive() {
   for (uint32_t a = 0; a < aspi->GetNHostAdapters(); a++) {
@@ -74,7 +74,7 @@ bool CDROM::FindDrive() {
 }
 
 // --------------------------------------------------------------------------
-//  TOC ‚ğ“Ç‚İ‚Ş
+//  TOC ã‚’èª­ã¿è¾¼ã‚€
 //
 int CDROM::ReadTOC() {
   CDB_ReadTOC cdb;
@@ -86,7 +86,7 @@ int CDROM::ReadTOC() {
 
   cdb.id = CD_READ_TOC;
 
-  // ƒgƒ‰ƒbƒN”‚Æ Track1 ‚Ì MSF ‚ğæ“¾
+  // ãƒˆãƒ©ãƒƒã‚¯æ•°ã¨ Track1 ã® MSF ã‚’å–å¾—
   cdb.flags = 2;
   cdb.length = 12;
 
@@ -109,7 +109,7 @@ int CDROM::ReadTOC() {
   LOG3("[%d]-[%d] (%d)\n", toc.header.start, toc.header.end, trstart);
   //  printf("[%d]-[%d]\n", toc.header.start, toc.header.end);
 
-  // Šeƒgƒ‰ƒbƒN‚ÌˆÊ’u‚ğæ“¾
+  // å„ãƒˆãƒ©ãƒƒã‚¯ã®ä½ç½®ã‚’å–å¾—
   int start = toc.header.start;
   int end = toc.header.end;
   int tsize = 4 + (end - start + 2) * 8;
@@ -124,7 +124,7 @@ int CDROM::ReadTOC() {
     return 0;
   }
 
-  // ƒe[ƒuƒ‹‚É“o˜^
+  // ãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²
   Track* tr = track + start - 1;
 #ifdef SHIFT
   shift = (toc.entry[1].addr == 13578);
@@ -144,18 +144,18 @@ int CDROM::ReadTOC() {
 }
 
 // --------------------------------------------------------------------------
-//  ƒgƒ‰ƒbƒN‚ÌÄ¶
+//  ãƒˆãƒ©ãƒƒã‚¯ã®å†ç”Ÿ
 //
 bool CDROM::PlayTrack(int t, bool one) {
   if (t < 1 || ntracks < t)
     return false;
   Track* tr = &track[t - 1];
 
-  // —LŒø‚Èƒgƒ‰ƒbƒN‚©H
+  // æœ‰åŠ¹ãªãƒˆãƒ©ãƒƒã‚¯ã‹ï¼Ÿ
   if (tr->addr == ~0)
     return false;
 
-  // ƒI[ƒfƒBƒIƒgƒ‰ƒbƒN‚©?
+  // ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒˆãƒ©ãƒƒã‚¯ã‹?
   if (tr->control & 0x04)
     return false;
 
@@ -180,7 +180,7 @@ bool CDROM::PlayTrack(int t, bool one) {
 }
 
 // --------------------------------------------------------------------------
-//  ƒgƒ‰ƒbƒN‚ÌÄ¶
+//  ãƒˆãƒ©ãƒƒã‚¯ã®å†ç”Ÿ
 //
 bool CDROM::PlayAudio(uint32_t begin, uint32_t stop) {
   if (stop < begin)
@@ -205,7 +205,7 @@ bool CDROM::PlayAudio(uint32_t begin, uint32_t stop) {
 }
 
 // --------------------------------------------------------------------------
-//  ƒTƒuƒ`ƒƒƒ“ƒlƒ‹‚Ìæ“¾
+//  ã‚µãƒ–ãƒãƒ£ãƒ³ãƒãƒ«ã®å–å¾—
 //
 bool CDROM::ReadSubCh(uint8_t* dest, bool msf) {
   CDB_ReadSubChannel cdb;
@@ -225,7 +225,7 @@ bool CDROM::ReadSubCh(uint8_t* dest, bool msf) {
 }
 
 // --------------------------------------------------------------------------
-//  ƒ|[ƒY
+//  ãƒãƒ¼ã‚º
 //
 bool CDROM::Pause(bool pause) {
   CDB_PauseResume cdb;
@@ -241,7 +241,7 @@ bool CDROM::Pause(bool pause) {
 }
 
 // --------------------------------------------------------------------------
-//  ’â~
+//  åœæ­¢
 //
 bool CDROM::Stop() {
   CDB_StartStopUnit cdb;
@@ -257,7 +257,7 @@ bool CDROM::Stop() {
 }
 
 // --------------------------------------------------------------------------
-//  CD ã‚ÌƒZƒNƒ^‚ğ“Ç‚İo‚·
+//  CD ä¸Šã®ã‚»ã‚¯ã‚¿ã‚’èª­ã¿å‡ºã™
 //
 bool CDROM::Read(uint32_t sector, uint8_t* dest, int length) {
   CDB_Read cdb;
@@ -282,7 +282,7 @@ bool CDROM::Read(uint32_t sector, uint8_t* dest, int length) {
 }
 
 // --------------------------------------------------------------------------
-//  2340 ƒoƒCƒg“Ç‚Ş
+//  2340 ãƒã‚¤ãƒˆèª­ã‚€
 //
 bool CDROM::Read2(uint32_t sector, uint8_t* dest, int length) {
   CDB_ReadCD cdb;
@@ -307,7 +307,7 @@ bool CDROM::Read2(uint32_t sector, uint8_t* dest, int length) {
 }
 
 // --------------------------------------------------------------------------
-//  CD-DA ƒZƒNƒ^‚Ì“Ç‚İ‚İ
+//  CD-DA ã‚»ã‚¯ã‚¿ã®èª­ã¿è¾¼ã¿
 //
 bool CDROM::ReadCDDA(uint32_t sector, uint8_t* dest, int length) {
   CDB_ReadCD cdb;
@@ -332,7 +332,7 @@ bool CDROM::ReadCDDA(uint32_t sector, uint8_t* dest, int length) {
 }
 
 // --------------------------------------------------------------------------
-//  ƒƒfƒBƒA‚ªƒhƒ‰ƒCƒu‚É‚ ‚é‚©H
+//  ãƒ¡ãƒ‡ã‚£ã‚¢ãŒãƒ‰ãƒ©ã‚¤ãƒ–ã«ã‚ã‚‹ã‹ï¼Ÿ
 //
 bool CDROM::CheckMedia() {
   CDB_TestUnitReady cdb;

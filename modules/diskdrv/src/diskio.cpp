@@ -14,7 +14,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z”j‰ó
+//  æ§‹ç¯‰ç ´å£Š
 //
 DiskIO::DiskIO(const ID& id) : Device(id) {}
 
@@ -35,7 +35,7 @@ void DiskIO::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒRƒ}ƒ“ƒh
+//  ã‚³ãƒãƒ³ãƒ‰
 //
 void DiskIO::SetCommand(uint32_t, uint32_t d) {
   if (d != 0x84 || !writebuffer)
@@ -48,14 +48,14 @@ void DiskIO::SetCommand(uint32_t, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒe[ƒ^ƒX
+//  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
 //
 uint32_t DiskIO::GetStatus(uint32_t) {
   return status;
 }
 
 // ---------------------------------------------------------------------------
-//  ƒf[ƒ^ƒZƒbƒg
+//  ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆ
 //
 void DiskIO::SetData(uint32_t, uint32_t d) {
   if (phase == recvphase || phase == argphase) {
@@ -68,7 +68,7 @@ void DiskIO::SetData(uint32_t, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒf[ƒ^‚°‚Á‚Æ
+//  ãƒ‡ãƒ¼ã‚¿ã’ã£ã¨
 //
 uint32_t DiskIO::GetData(uint32_t) {
   uint32_t r = 0xff;

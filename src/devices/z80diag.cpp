@@ -11,12 +11,12 @@
 #include "win32/diag.h"
 
 // ---------------------------------------------------------------------------
-//  \’z
+//  æ§‹ç¯‰
 //
 Z80Diag::Z80Diag() {}
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool Z80Diag::Init(IMemoryAccess* b) {
   mem = b;
@@ -24,7 +24,7 @@ bool Z80Diag::Init(IMemoryAccess* b) {
 }
 
 // ---------------------------------------------------------------------------
-//  1–½—ß‹tƒAƒZƒ“ƒuƒ‹‚·‚é
+//  1å‘½ä»¤é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«ã™ã‚‹
 //
 uint32_t Z80Diag::Disassemble(uint32_t _pc, char* dest) {
   pc = _pc;
@@ -35,7 +35,7 @@ uint32_t Z80Diag::Disassemble(uint32_t _pc, char* dest) {
 }
 
 // ---------------------------------------------------------------------------
-//  1–½—ß‹tƒAƒZƒ“ƒuƒ‹‚·‚é
+//  1å‘½ä»¤é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«ã™ã‚‹
 //
 uint32_t Z80Diag::DisassembleS(uint32_t _pc, char* dest) {
   pc = _pc;
@@ -46,7 +46,7 @@ uint32_t Z80Diag::DisassembleS(uint32_t _pc, char* dest) {
 }
 
 // ---------------------------------------------------------------------------
-//  “WŠJ‚·‚é
+//  å±•é–‹ã™ã‚‹
 //
 char* Z80Diag::Expand(char* dest, const char* src) {
   const char* text = "HLIXIY";
@@ -110,7 +110,7 @@ char* Z80Diag::Expand(char* dest, const char* src) {
           *dest++ = 'L';
           break;
 
-        case 'C':  // CBxx Œn
+        case 'C':  // CBxx ç³»
         {
           int y;
           if (xmode != usehl)
@@ -143,10 +143,10 @@ char* Z80Diag::Expand(char* dest, const char* src) {
           break;
         }
 
-        case 'D':  // DD Œn
+        case 'D':  // DD ç³»
           xmode = useix;
           goto ddfd;
-        case 'F':  // FD Œn
+        case 'F':  // FD ç³»
           xmode = useiy;
         ddfd:
           i = Read8(pc++);
@@ -161,7 +161,7 @@ char* Z80Diag::Expand(char* dest, const char* src) {
           }
           break;
 
-        case 'E':  // ED Œn
+        case 'E':  // ED ç³»
           i = Read8(pc++);
           if ((i & 0xc0) == 0x40) {
             dest = Expand(dest, InstED1[i & 0x3f]) - 1;
@@ -203,14 +203,14 @@ void Z80Diag::SetHex(char*& dest, uint32_t n) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‚P–½—ßŒã‚ÌƒAƒhƒŒƒX‚ğ‹‚ß‚é
+//  ï¼‘å‘½ä»¤å¾Œã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ±‚ã‚ã‚‹
 //
 uint32_t Z80Diag::InstInc(uint32_t ad) {
   return ad + GetInstSize(ad);
 }
 
 // ---------------------------------------------------------------------------
-//  ‚P–½—ß‘O‚ÌƒAƒhƒŒƒX‚ğ‹‚ß‚é
+//  ï¼‘å‘½ä»¤å‰ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ±‚ã‚ã‚‹
 //
 uint32_t Z80Diag::InstDec(uint32_t ad) {
   const int scandepth = 8;

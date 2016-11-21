@@ -15,7 +15,7 @@
 
 // ---------------------------------------------------------------------------
 //  Memory Bus
-//  \’zE”pŠü
+//  æ§‹ç¯‰ãƒ»å»ƒæ£„
 //
 MemoryBus::MemoryBus() : pages(0), owners(0), ownpages(false) {}
 
@@ -26,10 +26,10 @@ MemoryBus::~MemoryBus() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
-//  arg:    npages  ƒoƒ“ƒN”
-//          _pages  Page \‘¢‘Ì‚Ì array (ŠO•”‚Å—pˆÓ‚·‚éê‡)
-//                  È—ª‚Í MemoryBus ‚Å—pˆÓ
+//  åˆæœŸåŒ–
+//  arg:    npages  ãƒãƒ³ã‚¯æ•°
+//          _pages  Page æ§‹é€ ä½“ã® array (å¤–éƒ¨ã§ç”¨æ„ã™ã‚‹å ´åˆ)
+//                  çœç•¥æ™‚ã¯ MemoryBus ã§ç”¨æ„
 //
 bool MemoryBus::Init(uint32_t npages, Page* _pages) {
   if (pages && ownpages)
@@ -63,7 +63,7 @@ bool MemoryBus::Init(uint32_t npages, Page* _pages) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒ~[“üo—ÍŠÖ”
+//  ãƒ€ãƒŸãƒ¼å…¥å‡ºåŠ›é–¢æ•°
 //
 uint32_t MEMCALL MemoryBus::rddummy(void*, uint32_t addr) {
   LOG2("bus: Read on undefined memory page 0x%x. (addr:0x%.4x)\n",
@@ -102,7 +102,7 @@ IOBus::~IOBus() {
   delete[] flags;
 }
 
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 bool IOBus::Init(uint32_t nbanks, DeviceList* dl) {
   devlist = dl;
 
@@ -132,7 +132,7 @@ bool IOBus::Init(uint32_t nbanks, DeviceList* dl) {
   return true;
 }
 
-//  ƒfƒoƒCƒXÚ‘±
+//  ãƒ‡ãƒã‚¤ã‚¹æ¥ç¶š
 bool IOBus::Connect(IDevice* device, const Connector* connector) {
   if (devlist)
     devlist->Add(device);
@@ -160,11 +160,11 @@ bool IOBus::Connect(IDevice* device, const Connector* connector) {
 bool IOBus::ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func) {
   InBank* i = &ins[bank];
   if (i->func == &DummyIO::dummyin) {
-    // Å‰‚ÌÚ‘±
+    // æœ€åˆã®æ¥ç¶š
     i->device = device;
     i->func = func;
   } else {
-    // 2‰ñ–ÚˆÈ~‚ÌÚ‘±
+    // 2å›ç›®ä»¥é™ã®æ¥ç¶š
     InBank* j = new InBank;
     if (!j)
       return false;
@@ -179,11 +179,11 @@ bool IOBus::ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func) {
 bool IOBus::ConnectOut(uint32_t bank, IDevice* device, OutFuncPtr func) {
   OutBank* i = &outs[bank];
   if (i->func == &DummyIO::dummyout) {
-    // Å‰‚ÌÚ‘±
+    // æœ€åˆã®æ¥ç¶š
     i->device = device;
     i->func = func;
   } else {
-    // 2‰ñ–ÚˆÈ~‚ÌÚ‘±
+    // 2å›ç›®ä»¥é™ã®æ¥ç¶š
     OutBank* j = new OutBank;
     if (!j)
       return false;
@@ -210,15 +210,15 @@ bool IOBus::Disconnect(IDevice* device) {
           referer->next = next;
           delete current;
         } else {
-          // íœ‚·‚é‚×‚«ƒAƒCƒeƒ€‚ªÅ‰‚É‚ ‚Á‚½ê‡
+          // å‰Šé™¤ã™ã‚‹ã¹ãã‚¢ã‚¤ãƒ†ãƒ ãŒæœ€åˆã«ã‚ã£ãŸå ´åˆ
           if (next) {
-            // Ÿ‚ÌƒAƒCƒeƒ€‚Ì“à—e‚ğ•¡Ê‚µ‚Äíœ
+            // æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã®å†…å®¹ã‚’è¤‡å†™ã—ã¦å‰Šé™¤
             *current = *next;
             referer = 0;
             delete next;
             continue;
           } else {
-            // ‚±‚ÌƒAƒCƒeƒ€‚ª—Bˆê‚ÌƒAƒCƒeƒ€‚¾‚Á‚½ê‡
+            // ã“ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒå”¯ä¸€ã®ã‚¢ã‚¤ãƒ†ãƒ ã ã£ãŸå ´åˆ
             current->func = STATIC_CAST(InFuncPtr, &DummyIO::dummyin);
           }
         }
@@ -237,15 +237,15 @@ bool IOBus::Disconnect(IDevice* device) {
           referer->next = next;
           delete current;
         } else {
-          // íœ‚·‚é‚×‚«ƒAƒCƒeƒ€‚ªÅ‰‚É‚ ‚Á‚½ê‡
+          // å‰Šé™¤ã™ã‚‹ã¹ãã‚¢ã‚¤ãƒ†ãƒ ãŒæœ€åˆã«ã‚ã£ãŸå ´åˆ
           if (next) {
-            // Ÿ‚ÌƒAƒCƒeƒ€‚Ì“à—e‚ğ•¡Ê‚µ‚Äíœ
+            // æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã®å†…å®¹ã‚’è¤‡å†™ã—ã¦å‰Šé™¤
             *current = *next;
             referer = 0;
             delete next;
             continue;
           } else {
-            // ‚±‚ÌƒAƒCƒeƒ€‚ª—Bˆê‚ÌƒAƒCƒeƒ€‚¾‚Á‚½ê‡
+            // ã“ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒå”¯ä¸€ã®ã‚¢ã‚¤ãƒ†ãƒ ã ã£ãŸå ´åˆ
             current->func = STATIC_CAST(OutFuncPtr, &DummyIO::dummyout);
           }
         }
@@ -285,14 +285,14 @@ void IOCALL IOBus::DummyIO::dummyout(uint32_t, uint32_t) {
 
 // ---------------------------------------------------------------------------
 //  DeviceList
-//  ó‘Ô•Û‘¶E•œ‹A‚Ì‘ÎÛ‚Æ‚È‚éƒfƒoƒCƒX‚ÌƒŠƒXƒg‚ğŠÇ—‚·‚éD
+//  çŠ¶æ…‹ä¿å­˜ãƒ»å¾©å¸°ã®å¯¾è±¡ã¨ãªã‚‹ãƒ‡ãƒã‚¤ã‚¹ã®ãƒªã‚¹ãƒˆã‚’ç®¡ç†ã™ã‚‹ï¼
 //
 DeviceList::~DeviceList() {
   Cleanup();
 }
 
 // ---------------------------------------------------------------------------
-//  ƒŠƒXƒg‚ğ‚·‚×‚Ä”jŠü
+//  ãƒªã‚¹ãƒˆã‚’ã™ã¹ã¦ç ´æ£„
 //
 void DeviceList::Cleanup() {
   Node* n = node;
@@ -305,7 +305,7 @@ void DeviceList::Cleanup() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒŠƒXƒg‚ÉƒfƒoƒCƒX‚ğ“o˜^
+//  ãƒªã‚¹ãƒˆã«ãƒ‡ãƒã‚¤ã‚¹ã‚’ç™»éŒ²
 //
 bool DeviceList::Add(IDevice* t) {
   ID id = t->GetID();
@@ -328,7 +328,7 @@ bool DeviceList::Add(IDevice* t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒŠƒXƒg‚©‚çƒfƒoƒCƒX‚ğíœ
+//  ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒã‚¤ã‚¹ã‚’å‰Šé™¤
 //
 bool DeviceList::Del(const ID id) {
   for (Node** r = &node; *r; r = &((*r)->next)) {
@@ -345,7 +345,7 @@ bool DeviceList::Del(const ID id) {
 }
 
 // ---------------------------------------------------------------------------
-//  w’è‚³‚ê‚½¯•Êq‚ğ‚ÂƒfƒoƒCƒX‚ğƒŠƒXƒg’†‚©‚ç’T‚·
+//  æŒ‡å®šã•ã‚ŒãŸè­˜åˆ¥å­ã‚’æŒã¤ãƒ‡ãƒã‚¤ã‚¹ã‚’ãƒªã‚¹ãƒˆä¸­ã‹ã‚‰æ¢ã™
 //
 IDevice* DeviceList::Find(const ID id) {
   Node* n = FindNode(id);
@@ -353,7 +353,7 @@ IDevice* DeviceList::Find(const ID id) {
 }
 
 // ---------------------------------------------------------------------------
-//  w’è‚³‚ê‚½¯•Êq‚ğ‚ÂƒfƒoƒCƒXƒm[ƒh‚ğ’T‚·
+//  æŒ‡å®šã•ã‚ŒãŸè­˜åˆ¥å­ã‚’æŒã¤ãƒ‡ãƒã‚¤ã‚¹ãƒãƒ¼ãƒ‰ã‚’æ¢ã™
 //
 DeviceList::Node* DeviceList::FindNode(const ID id) {
   for (Node* n = node; n; n = n->next) {
@@ -364,7 +364,7 @@ DeviceList::Node* DeviceList::FindNode(const ID id) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶‚É•K—v‚Èƒf[ƒ^ƒTƒCƒY‚ğ‹‚ß‚é
+//  çŠ¶æ…‹ä¿å­˜ã«å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’æ±‚ã‚ã‚‹
 //
 uint32_t DeviceList::GetStatusSize() {
   uint32_t size = sizeof(Header);
@@ -377,8 +377,8 @@ uint32_t DeviceList::GetStatusSize() {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶‚ğs‚¤
-//  data ‚É‚Í‚ ‚ç‚©‚¶‚ß GetStatusSize() ‚Åæ“¾‚µ‚½ƒTƒCƒY‚Ìƒoƒbƒtƒ@‚ª•K—v
+//  çŠ¶æ…‹ä¿å­˜ã‚’è¡Œã†
+//  data ã«ã¯ã‚ã‚‰ã‹ã˜ã‚ GetStatusSize() ã§å–å¾—ã—ãŸã‚µã‚¤ã‚ºã®ãƒãƒƒãƒ•ã‚¡ãŒå¿…è¦
 //
 bool DeviceList::SaveStatus(uint8_t* data) {
   for (Node* n = node; n; n = n->next) {
@@ -397,7 +397,7 @@ bool DeviceList::SaveStatus(uint8_t* data) {
 }
 
 // ---------------------------------------------------------------------------
-//  SaveStatus ‚Å•Û‘¶‚µ‚½ó‘Ô‚©‚ç•œ‹A‚·‚éD
+//  SaveStatus ã§ä¿å­˜ã—ãŸçŠ¶æ…‹ã‹ã‚‰å¾©å¸°ã™ã‚‹ï¼
 //
 bool DeviceList::LoadStatus(const uint8_t* data) {
   if (!CheckStatus(data))
@@ -419,8 +419,8 @@ bool DeviceList::LoadStatus(const uint8_t* data) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ôƒf[ƒ^‚ªŒ»İ‚Ì\¬‚Å“K‰‰Â”\‚©’²‚×‚é
-//  ‹ï‘Ì“I‚É‚ÍƒTƒCƒYƒ`ƒFƒbƒN‚¾‚¯D
+//  çŠ¶æ…‹ãƒ‡ãƒ¼ã‚¿ãŒç¾åœ¨ã®æ§‹æˆã§é©å¿œå¯èƒ½ã‹èª¿ã¹ã‚‹
+//  å…·ä½“çš„ã«ã¯ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯ã ã‘ï¼
 //
 bool DeviceList::CheckStatus(const uint8_t* data) {
   while (1) {

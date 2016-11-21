@@ -2,7 +2,7 @@
 //  M88 - PC-8801 emulator
 //  Copyright (C) cisc 1999.
 // ----------------------------------------------------------------------------
-//  �g�����W���[���p�C���^�[�t�F�[�X��`
+//  拡張モジュール用インターフェース定義
 // ----------------------------------------------------------------------------
 //  $Id: ifcommon.h,v 1.8 2002/04/07 05:40:09 cisc Exp $
 
@@ -32,7 +32,7 @@ interface IUnk {
 };
 
 // ----------------------------------------------------------------------------
-//  �����̃C���^�[�t�F�[�X
+//  音源のインターフェース
 //
 struct ISoundControl;
 struct ISoundSource {
@@ -42,7 +42,7 @@ struct ISoundSource {
 };
 
 // ----------------------------------------------------------------------------
-//  ��������̃C���^�[�t�F�[�X
+//  音源制御のインターフェース
 //
 struct ISoundControl {
   virtual bool IFCALL Connect(ISoundSource* src) = 0;
@@ -53,7 +53,7 @@ struct ISoundControl {
 };
 
 // ----------------------------------------------------------------------------
-//  �������Ǘ��̃C���^�[�t�F�[�X
+//  メモリ管理のインターフェース
 //
 struct IMemoryManager {
   virtual int IFCALL Connect(void* inst, bool highpriority = false) = 0;
@@ -87,7 +87,7 @@ struct IMemoryManager {
 };
 
 // ----------------------------------------------------------------------------
-//  ��������ԂɃA�N�Z�X���邽�߂̃C���^�[�t�F�[�X
+//  メモリ空間にアクセスするためのインターフェース
 //
 struct IMemoryAccess {
   virtual uint32_t IFCALL Read8(uint32_t addr) = 0;
@@ -95,7 +95,7 @@ struct IMemoryAccess {
 };
 
 // ----------------------------------------------------------------------------
-//  IO ��ԂɃA�N�Z�X���邽�߂̃C���^�[�t�F�[�X
+//  IO 空間にアクセスするためのインターフェース
 //
 struct IIOAccess {
   virtual uint32_t IFCALL In(uint32_t port) = 0;
@@ -103,7 +103,7 @@ struct IIOAccess {
 };
 
 // ----------------------------------------------------------------------------
-//  �f�o�C�X�̃C���^�[�t�F�[�X
+//  デバイスのインターフェース
 //
 struct IDevice {
   typedef uint32_t ID;
@@ -123,7 +123,7 @@ struct IDevice {
 };
 
 // ----------------------------------------------------------------------------
-//  IO ��ԂɃf�o�C�X��ڑ����邽�߂̃C���^�[�t�F�[�X
+//  IO 空間にデバイスを接続するためのインターフェース
 //
 struct IIOBus {
   enum ConnectRule {
@@ -143,7 +143,7 @@ struct IIOBus {
 };
 
 // ----------------------------------------------------------------------------
-//  �^�C�}�[�Ǘ��̂��߂̃C���^�[�t�F�[�X
+//  タイマー管理のためのインターフェース
 //
 struct SchedulerEvent;
 
@@ -166,14 +166,14 @@ struct IScheduler {
 };
 
 // ----------------------------------------------------------------------------
-//  �V�X�e�������Ԏ擾�̂��߂̃C���^�[�t�F�[�X
+//  システム内時間取得のためのインターフェース
 //
 struct ITime {
   virtual int IFCALL GetTime() = 0;
 };
 
 // ----------------------------------------------------------------------------
-//  ��萸�x�̍������Ԃ��擾���邽�߂̃C���^�[�t�F�[�X
+//  より精度の高い時間を取得するためのインターフェース
 //
 struct ICPUTime {
   virtual uint32_t IFCALL GetCPUTick() = 0;
@@ -181,14 +181,14 @@ struct ICPUTime {
 };
 
 // ----------------------------------------------------------------------------
-//  �V�X�e�����̃C���^�[�t�F�[�X�ɐڑ����邽�߂̃C���^�[�t�F�[�X
+//  システム内のインターフェースに接続するためのインターフェース
 //
 struct ISystem {
   virtual void* IFCALL QueryIF(REFIID iid) = 0;
 };
 
 // ----------------------------------------------------------------------------
-//  ���W���[���̊�{�C���^�[�t�F�[�X
+//  モジュールの基本インターフェース
 //
 struct IModule {
   virtual void IFCALL Release() = 0;
@@ -196,7 +196,7 @@ struct IModule {
 };
 
 // ----------------------------------------------------------------------------
-//  �u�ݒ�v�_�C�A���O�𑀍삷�邽�߂̃C���^�[�t�F�[�X
+//  「設定」ダイアログを操作するためのインターフェース
 //
 struct IConfigPropSheet;
 
@@ -211,14 +211,14 @@ struct IConfigPropBase {
 };
 
 // ----------------------------------------------------------------------------
-//  �u�ݒ�v�̃v���p�e�B�V�[�g�̊�{�C���^�[�t�F�[�X
+//  「設定」のプロパティシートの基本インターフェース
 //
 struct IConfigPropSheet {
   virtual bool IFCALL Setup(IConfigPropBase*, PROPSHEETPAGE* psp) = 0;
 };
 
 // ----------------------------------------------------------------------------
-//  UI �g���p�C���^�[�t�F�[�X
+//  UI 拡張用インターフェース
 //
 struct IWinUIExtention {
   virtual bool IFCALL WinProc(HWND, UINT, WPARAM, LPARAM) = 0;
@@ -227,17 +227,17 @@ struct IWinUIExtention {
 };
 
 // ----------------------------------------------------------------------------
-//  UI �ɑ΂���C���^�[�t�F�[�X
+//  UI に対するインターフェース
 //
 struct IWinUI2 {
   virtual HWND IFCALL GetHWnd() = 0;
 };
 
 // ----------------------------------------------------------------------------
-//  �G�~�����[�^��̃V�X�e���������鎞�Ɏg�����b�N
-//  IMemoryManager / IIOBus / IScheduler ���ɑ΂��鑀���
-//  �������C�I�����C�܂��̓�����, IO, �^�C�}�[�R�[���o�b�N�ȊO����
-//  �s���ꍇ�C���b�N��������K�v������
+//  エミュレータ上のシステムをいじる時に使うロック
+//  IMemoryManager / IIOBus / IScheduler 等に対する操作を
+//  初期化，終了時，またはメモリ, IO, タイマーコールバック以外から
+//  行う場合，ロックをかける必要がある
 //
 struct ILockCore {
   virtual void IFCALL Lock() = 0;
@@ -245,7 +245,7 @@ struct ILockCore {
 };
 
 // ----------------------------------------------------------------------------
-//  ���݃A�N�e�B�u�ɂȂ��Ă��郁�����̎�ނ��擾
+//  現在アクティブになっているメモリの種類を取得
 //
 struct IGetMemoryBank {
   virtual uint32_t IFCALL GetRdBank(uint32_t) = 0;

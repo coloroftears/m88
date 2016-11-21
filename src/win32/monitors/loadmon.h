@@ -34,8 +34,8 @@ class LoadMonitor : public WinMonitor {
 
  private:
   struct State {
-    int total[presis];  // —İŒv
-    DWORD timeentered;  // ŠJn
+    int total[presis];  // ç´¯è¨ˆ
+    DWORD timeentered;  // é–‹å§‹æ™‚åˆ»
   };
 
   typedef map<string, State> States;

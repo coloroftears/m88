@@ -10,7 +10,7 @@
 #include "common/misc.h"
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 //
 WinMonitor::WinMonitor() : txtbuf(0), txpbuf(0), timerinterval(0), timer(0) {
   hwnd = 0;
@@ -29,7 +29,7 @@ WinMonitor::~WinMonitor() {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰Šú‰»
+//  åˆæœŸåŒ–
 //
 bool WinMonitor::Init(LPCTSTR tmpl) {
   lptemplate = tmpl;
@@ -40,7 +40,7 @@ bool WinMonitor::Init(LPCTSTR tmpl) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒO•\¦
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 //
 void WinMonitor::Show(HINSTANCE hinstance, HWND hwndparent, bool show) {
   if (show) {
@@ -70,7 +70,7 @@ void WinMonitor::Show(HINSTANCE hinstance, HWND hwndparent, bool show) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒtƒHƒ“ƒg‚‚³‚Ì•ÏX
+//  ãƒ•ã‚©ãƒ³ãƒˆé«˜ã•ã®å¤‰æ›´
 //
 bool WinMonitor::SetFont(HWND hwnd, int fh) {
   if (hfont)
@@ -79,7 +79,7 @@ bool WinMonitor::SetFont(HWND hwnd, int fh) {
   fontheight = fh;
   hfont = CreateFont(fontheight, 0, 0, 0, 0, 0, 0, 0, SHIFTJIS_CHARSET,
                      OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-                     FIXED_PITCH, "‚l‚rƒSƒVƒbƒN");
+                     FIXED_PITCH, "ï¼­ï¼³ã‚´ã‚·ãƒƒã‚¯");
   if (!hfont)
     return false;
 
@@ -92,7 +92,7 @@ bool WinMonitor::SetFont(HWND hwnd, int fh) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‘‹‚Ì‘å‚«‚³‚É]‚¢ƒeƒLƒXƒgƒoƒbƒtƒ@‚ÌƒTƒCƒY‚ğ•ÏX
+//  çª“ã®å¤§ãã•ã«å¾“ã„ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã‚’å¤‰æ›´
 //
 void WinMonitor::ResizeWindow(HWND hwnd) {
   RECT rect;
@@ -110,13 +110,13 @@ void WinMonitor::ResizeWindow(HWND hwnd) {
   width = (clientwidth + fontwidth - 1) / fontwidth;
   height = (clientheight + fontheight - 1) / fontheight;
 
-  // ‰¼‘z TVRAM ‚ÌƒZƒbƒgƒAƒbƒv
+  // ä»®æƒ³ TVRAM ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
   delete[] txtbuf;
   txtbuf = new TXCHAR[width * height * 2];
   txpbuf = txtbuf + width * height;
   ClearText();
 
-  // DDB ‚Ì“ü‚ê‘Ö‚¦
+  // DDB ã®å…¥ã‚Œæ›¿ãˆ
   HDC hdc = GetDC(hwnd);
   HDC hmemdc = CreateCompatibleDC(hdc);
 
@@ -124,7 +124,7 @@ void WinMonitor::ResizeWindow(HWND hwnd) {
     DeleteObject(hbitmap);
   hbitmap = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
 
-  // ”wŒiF‚Å“h‚è‚Â‚Ô‚µ
+  // èƒŒæ™¯è‰²ã§å¡—ã‚Šã¤ã¶ã—
   HBITMAP holdbmp = (HBITMAP)SelectObject(hmemdc, hbitmap);
   HBRUSH hbrush = (HBRUSH)SelectObject(hmemdc, CreateSolidBrush(bkcol));
   PatBlt(hmemdc, 0, 0, rect.right, rect.bottom, PATCOPY);
@@ -134,12 +134,12 @@ void WinMonitor::ResizeWindow(HWND hwnd) {
 
   ReleaseDC(hwnd, hdc);
 
-  // ƒXƒNƒ[ƒ‹ƒo[‚Ìİ’è
+  // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®è¨­å®š
   SetLines(nlines);
 }
 
 // ---------------------------------------------------------------------------
-//  ‰æ–Ê‚Ì’†g‚ğÁ‚·
+//  ç”»é¢ã®ä¸­èº«ã‚’æ¶ˆã™
 //
 void WinMonitor::ClearText() {
   int nch = width * height;
@@ -155,7 +155,7 @@ static inline bool IsKan(int c) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‰æ–Ê‚ğ‘‚­
+//  ç”»é¢ã‚’æ›¸ã
 //
 void WinMonitor::DrawMain(HDC _hdc, bool update) {
   hdc = _hdc;
@@ -171,9 +171,9 @@ void WinMonitor::DrawMain(HDC _hdc, bool update) {
   int y = 0;
   for (int l = 0; l < height; l++) {
     if (memcmp(txpbuf + c, txtbuf + c, width * sizeof(TXCHAR)) || update) {
-      // 1s•`‰æ
+      // 1è¡Œæç”»
       for (int x = 0; x < width;) {
-        // “¯‚¶‘®«‚Å‰½•¶š‘‚¯‚é‚©cH
+        // åŒã˜å±æ€§ã§ä½•æ–‡å­—æ›¸ã‘ã‚‹ã‹â€¦ï¼Ÿ
         int n;
 
         for (n = x; n < width; n++) {
@@ -183,7 +183,7 @@ void WinMonitor::DrawMain(HDC _hdc, bool update) {
           buf[n - x] = txtbuf[c + n].ch;
         }
 
-        // ‘‚­
+        // æ›¸ã
         SetTextColor(hdc, txtbuf[c + x].txcol);
         SetBkColor(hdc, txtbuf[c + x].bkcol);
         TextOut(hdc, x * fontwidth, y, buf, n - x);
@@ -196,7 +196,7 @@ void WinMonitor::DrawMain(HDC _hdc, bool update) {
 }
 
 // ---------------------------------------------------------------------------
-//  1sã‚ÉƒXƒNƒ[ƒ‹
+//  1è¡Œä¸Šã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 //
 void WinMonitor::ScrollUp() {
   if (height > 2) {
@@ -221,7 +221,7 @@ void WinMonitor::ScrollUp() {
 }
 
 // ---------------------------------------------------------------------------
-//  1s‰º‚ÉƒXƒNƒ[ƒ‹
+//  1è¡Œä¸‹ã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 //
 void WinMonitor::ScrollDown() {
   if (height > 2) {
@@ -245,14 +245,14 @@ void WinMonitor::ScrollDown() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒeƒXƒg—p
+//  ãƒ†ã‚¹ãƒˆç”¨
 //
 void WinMonitor::UpdateText() {
   Puts("???\n");
 }
 
 // ---------------------------------------------------------------------------
-//  ‘‚«‚İˆÊ’u‚Ì•ÏX
+//  æ›¸ãè¾¼ã¿ä½ç½®ã®å¤‰æ›´
 //
 void WinMonitor::Locate(int x, int y) {
   txp.x = Min(x, width);
@@ -261,7 +261,7 @@ void WinMonitor::Locate(int x, int y) {
 }
 
 // ---------------------------------------------------------------------------
-//  •¶š—ñ‘‚«‚İ
+//  æ–‡å­—åˆ—æ›¸ãè¾¼ã¿
 //
 void WinMonitor::Puts(const char* text) {
   if (txp.y >= height)
@@ -313,7 +313,7 @@ void WinMonitor::Puts(const char* text) {
 }
 
 // ---------------------------------------------------------------------------
-//  •¶š—ñ‘‚«‚İ(‘®•t)
+//  æ–‡å­—åˆ—æ›¸ãè¾¼ã¿(æ›¸å¼ä»˜)
 //
 void WinMonitor::Putf(const char* msg, ...) {
   char buf[512];
@@ -325,7 +325,7 @@ void WinMonitor::Putf(const char* msg, ...) {
 }
 
 // ---------------------------------------------------------------------------
-//  ‘‹‘‚«Š·‚¦
+//  çª“æ›¸ãæ›ãˆ
 //
 void WinMonitor::Draw(HWND hwnd, HDC hdc) {
   if (!hbitmap)
@@ -357,7 +357,7 @@ void WinMonitor::Update() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ‰ƒCƒ“”‚ğİ’è
+//  ãƒ©ã‚¤ãƒ³æ•°ã‚’è¨­å®š
 //
 void WinMonitor::SetLines(int nl) {
   nlines = nl;
@@ -375,7 +375,7 @@ void WinMonitor::SetLines(int nl) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ‰ƒCƒ“”‚ğİ’è
+//  ãƒ©ã‚¤ãƒ³æ•°ã‚’è¨­å®š
 //
 void WinMonitor::SetLine(int nl) {
   line = nl;
@@ -392,7 +392,7 @@ void WinMonitor::SetLine(int nl) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒNƒ[ƒ‹ƒo[ˆ—
+//  ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼å‡¦ç†
 //
 int WinMonitor::VerticalScroll(int msg) {
   switch (msg) {
@@ -435,7 +435,7 @@ int WinMonitor::VerticalScroll(int msg) {
 }
 
 // ---------------------------------------------------------------------------
-//  Œ»İ‚ÌƒXƒNƒ[ƒ‹ƒ^ƒu‚ÌˆÊ’u‚ğ“¾‚é
+//  ç¾åœ¨ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚¿ãƒ–ã®ä½ç½®ã‚’å¾—ã‚‹
 //
 int WinMonitor::GetScrPos(bool track) {
   SCROLLINFO si;
@@ -447,7 +447,7 @@ int WinMonitor::GetScrPos(bool track) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒNƒ‰ƒCƒGƒ“ƒg—ÌˆæÀ•W‚ğ•¶šÀ•W‚É•ÏŠ·
+//  ã‚¯ãƒ©ã‚¤ã‚¨ãƒ³ãƒˆé ˜åŸŸåº§æ¨™ã‚’æ–‡å­—åº§æ¨™ã«å¤‰æ›
 //
 bool WinMonitor::GetTextPos(POINT* p) {
   if (fontwidth && fontheight) {
@@ -459,7 +459,7 @@ bool WinMonitor::GetTextPos(POINT* p) {
 }
 
 // ---------------------------------------------------------------------------
-//  ©“®XV•p“x‚ğİ’è
+//  è‡ªå‹•æ›´æ–°é »åº¦ã‚’è¨­å®š
 //
 void WinMonitor::SetUpdateTimer(int t) {
   timerinterval = t;
@@ -510,7 +510,7 @@ bool WinMonitor::PutStatus(const char* text, ...) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ_ƒCƒAƒƒOˆ—
+//  ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‡¦ç†
 //
 INT_PTR WinMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   bool r = false;

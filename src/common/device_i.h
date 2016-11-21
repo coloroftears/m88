@@ -13,7 +13,7 @@
 //  MemoryBus inline funcitions
 
 // ---------------------------------------------------------------------------
-//  ƒoƒ“ƒN‘‚«‚İ‚Éƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
+//  ãƒãƒ³ã‚¯æ›¸ãè¾¼ã¿ã«ãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
 //
 inline void MemoryBus::SetWriteMemory(uint32_t addr, void* ptr) {
   assert((uint32_t(ptr) & idbit) == 0 && (addr & pagemask) == 0);
@@ -21,7 +21,7 @@ inline void MemoryBus::SetWriteMemory(uint32_t addr, void* ptr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒ“ƒN“Ç‚İ‚İ‚Éƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
+//  ãƒãƒ³ã‚¯èª­ã¿è¾¼ã¿ã«ãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
 //
 inline void MemoryBus::SetReadMemory(uint32_t addr, void* ptr) {
   assert((uint32_t(ptr) & idbit) == 0 && (addr & pagemask) == 0);
@@ -29,7 +29,7 @@ inline void MemoryBus::SetReadMemory(uint32_t addr, void* ptr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒ“ƒN“Ç‚İ‘‚«‚Éƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
+//  ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«ãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
 //
 inline void MemoryBus::SetMemory(uint32_t addr, void* ptr) {
   assert((uint32_t(ptr) & idbit) == 0 && (addr & pagemask) == 0);
@@ -39,7 +39,7 @@ inline void MemoryBus::SetMemory(uint32_t addr, void* ptr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒ“ƒN“Ç‚İ‘‚«‚ÉŠÖ”‚ğŠ„‚è“–‚Ä‚é
+//  ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«é–¢æ•°ã‚’å‰²ã‚Šå½“ã¦ã‚‹
 //
 inline void MemoryBus::SetFunc(uint32_t addr,
                                void* inst,
@@ -54,8 +54,8 @@ inline void MemoryBus::SetFunc(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN‘‚«‚İ‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯æ›¸ãè¾¼ã¿ã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetWriteMemorys(uint32_t addr,
                                        uint32_t length,
@@ -88,8 +88,8 @@ inline void MemoryBus::SetWriteMemorys(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN‘‚«‚İ‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  Š—LÒƒ`ƒFƒbƒN•t‚«
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯æ›¸ãè¾¼ã¿ã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  æ‰€æœ‰è€…ãƒã‚§ãƒƒã‚¯ä»˜ã
 //
 inline void MemoryBus::SetWriteMemorys2(uint32_t addr,
                                         uint32_t length,
@@ -111,8 +111,8 @@ inline void MemoryBus::SetWriteMemorys2(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‚İ‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿è¾¼ã¿ã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetReadMemorys(uint32_t addr,
                                       uint32_t length,
@@ -145,8 +145,8 @@ inline void MemoryBus::SetReadMemorys(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‚İ‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿è¾¼ã¿ã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetReadMemorys2(uint32_t addr,
                                        uint32_t length,
@@ -168,8 +168,8 @@ inline void MemoryBus::SetReadMemorys2(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‘‚«‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetMemorys(uint32_t addr,
                                   uint32_t length,
@@ -206,8 +206,8 @@ inline void MemoryBus::SetMemorys(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‘‚«‚É˜A‘±‚µ‚½ƒƒ‚ƒŠ‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«é€£ç¶šã—ãŸãƒ¡ãƒ¢ãƒªã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetMemorys2(uint32_t addr,
                                    uint32_t length,
@@ -232,8 +232,8 @@ inline void MemoryBus::SetMemorys2(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‘‚«‚ÉŠÖ”‚ğŠ„‚è“–‚Ä‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«é–¢æ•°ã‚’å‰²ã‚Šå½“ã¦ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetFuncs(uint32_t addr,
                                 uint32_t length,
@@ -282,7 +282,7 @@ inline void MemoryBus::SetFuncs(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN“Ç‚İ‘‚«‚ÉŠÖ”‚ğŠ„‚è“–‚Ä‚é
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯èª­ã¿æ›¸ãã«é–¢æ•°ã‚’å‰²ã‚Šå½“ã¦ã‚‹
 //
 inline void MemoryBus::SetFuncs2(uint32_t addr,
                                  uint32_t length,
@@ -315,15 +315,15 @@ inline void MemoryBus::SetFuncs2(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒ“ƒNƒAƒNƒZƒX‚ÌƒEƒFƒCƒg‚ğİ’è‚·‚é
+//  ãƒãƒ³ã‚¯ã‚¢ã‚¯ã‚»ã‚¹ã®ã‚¦ã‚§ã‚¤ãƒˆã‚’è¨­å®šã™ã‚‹
 //
 inline void MemoryBus::SetWait(uint32_t addr, uint32_t wait) {
   pages[addr >> pagebits].wait = wait;
 }
 
 // ---------------------------------------------------------------------------
-//  •¡”‚Ìƒoƒ“ƒN‚É‘Î‚·‚éƒEƒFƒCƒg‚ğİ’è‚·‚é
-//  npages ‚ÍŒÅ’è‚Ì•û‚ªD‚Ü‚µ‚¢‚©‚à
+//  è¤‡æ•°ã®ãƒãƒ³ã‚¯ã«å¯¾ã™ã‚‹ã‚¦ã‚§ã‚¤ãƒˆã‚’è¨­å®šã™ã‚‹
+//  npages ã¯å›ºå®šã®æ–¹ãŒå¥½ã¾ã—ã„ã‹ã‚‚
 //
 inline void MemoryBus::SetWaits(uint32_t addr, uint32_t length, uint32_t wait) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
@@ -349,7 +349,7 @@ inline void MemoryBus::SetWaits(uint32_t addr, uint32_t length, uint32_t wait) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒy[ƒW‚É‘Î‚µ‚ÄŠ—LŒ ‚ğİ’è‚·‚é
+//  ãƒšãƒ¼ã‚¸ã«å¯¾ã—ã¦æ‰€æœ‰æ¨©ã‚’è¨­å®šã™ã‚‹
 //
 inline void MemoryBus::SetReadOwner(uint32_t addr,
                                     uint32_t length,
@@ -364,7 +364,7 @@ inline void MemoryBus::SetReadOwner(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  ƒy[ƒW‚É‘Î‚µ‚ÄŠ—LŒ ‚ğİ’è‚·‚é
+//  ãƒšãƒ¼ã‚¸ã«å¯¾ã—ã¦æ‰€æœ‰æ¨©ã‚’è¨­å®šã™ã‚‹
 //
 inline void MemoryBus::SetWriteOwner(uint32_t addr,
                                      uint32_t length,
@@ -379,7 +379,7 @@ inline void MemoryBus::SetWriteOwner(uint32_t addr,
 }
 
 // ---------------------------------------------------------------------------
-//  ƒy[ƒW‚É‘Î‚µ‚ÄŠ—LŒ ‚ğİ’è‚·‚é
+//  ãƒšãƒ¼ã‚¸ã«å¯¾ã—ã¦æ‰€æœ‰æ¨©ã‚’è¨­å®šã™ã‚‹
 //
 inline void MemoryBus::SetOwner(uint32_t addr, uint32_t length, void* inst) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
@@ -394,7 +394,7 @@ inline void MemoryBus::SetOwner(uint32_t addr, uint32_t length, void* inst) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒƒ‚ƒŠ‚É‘Î‚·‚é‘‚«‚İ
+//  ãƒ¡ãƒ¢ãƒªã«å¯¾ã™ã‚‹æ›¸ãè¾¼ã¿
 //
 inline void MemoryBus::Write8(uint32_t addr, uint32_t data) {
   Page* page = &pages[addr >> pagebits];
@@ -405,7 +405,7 @@ inline void MemoryBus::Write8(uint32_t addr, uint32_t data) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒƒ‚ƒŠ‚©‚ç‚Ì“Ç‚İ‚İ
+//  ãƒ¡ãƒ¢ãƒªã‹ã‚‰ã®èª­ã¿è¾¼ã¿
 //
 inline uint32_t MemoryBus::Read8(uint32_t addr) {
   Page* page = &pages[addr >> pagebits];
@@ -416,7 +416,7 @@ inline uint32_t MemoryBus::Read8(uint32_t addr) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒy[ƒWƒe[ƒuƒ‹‚Ìæ“¾
+//  ãƒšãƒ¼ã‚¸ãƒ†ãƒ¼ãƒ–ãƒ«ã®å–å¾—
 //
 inline const MemoryBus::Page* MemoryBus::GetPageTable() {
   return pages;

@@ -2,7 +2,7 @@
 //  M88 - PC-88 Emulator.
 //  Copyright (C) cisc 1998.
 // ---------------------------------------------------------------------------
-//  PD8257 (uPD8257) ‚ÌƒGƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“
+//  PD8257 (uPD8257) ã®ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 // ---------------------------------------------------------------------------
 //  $Id: pd8257.cpp,v 1.14 1999/10/10 01:47:09 cisc Exp $
 
@@ -17,7 +17,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z/Á–Å
+//  æ§‹ç¯‰/æ¶ˆæ»…
 // ---------------------------------------------------------------------------
 
 PD8257::PD8257(const ID& id) : Device(id) {
@@ -29,10 +29,10 @@ PD8257::PD8257(const ID& id) : Device(id) {
 PD8257::~PD8257() {}
 
 // ---------------------------------------------------------------------------
-//  Ú‘±
-//  arg:    mem     Ú‘±‚·‚éƒƒ‚ƒŠ
-//          addr    ƒƒ‚ƒŠ‚ÌƒAƒhƒŒƒX
-//          length  ƒƒ‚ƒŠ‚Ì’·‚³
+//  æ¥ç¶š
+//  arg:    mem     æ¥ç¶šã™ã‚‹ãƒ¡ãƒ¢ãƒª
+//          addr    ãƒ¡ãƒ¢ãƒªã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+//          length  ãƒ¡ãƒ¢ãƒªã®é•·ã•
 //
 bool PD8257::ConnectRd(uint8_t* mem, uint32_t addr, uint32_t length) {
   if (addr + length <= 0x10000) {
@@ -47,10 +47,10 @@ bool PD8257::ConnectRd(uint8_t* mem, uint32_t addr, uint32_t length) {
 }
 
 // ---------------------------------------------------------------------------
-//  Ú‘±
-//  arg:    mem     Ú‘±‚·‚éƒƒ‚ƒŠ
-//          addr    ƒƒ‚ƒŠ‚ÌƒAƒhƒŒƒX
-//          length  ƒƒ‚ƒŠ‚Ì’·‚³
+//  æ¥ç¶š
+//  arg:    mem     æ¥ç¶šã™ã‚‹ãƒ¡ãƒ¢ãƒª
+//          addr    ãƒ¡ãƒ¢ãƒªã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+//          length  ãƒ¡ãƒ¢ãƒªã®é•·ã•
 //
 bool PD8257::ConnectWr(uint8_t* mem, uint32_t addr, uint32_t length) {
   if (addr + length <= 0x10000) {
@@ -79,7 +79,7 @@ void IOCALL PD8257::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒAƒhƒŒƒXƒŒƒWƒXƒ^‚ğƒZƒbƒg
+//  ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 //
 void IOCALL PD8257::SetAddr(uint32_t d, uint32_t p) {
   int bank = (d / 2) & 3;
@@ -95,7 +95,7 @@ void IOCALL PD8257::SetAddr(uint32_t d, uint32_t p) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒJƒEƒ“ƒ^ƒŒƒWƒXƒ^‚ğƒZƒbƒg
+//  ã‚«ã‚¦ãƒ³ã‚¿ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 //
 void IOCALL PD8257::SetCount(uint32_t d, uint32_t p) {
   int bank = (d / 2) & 3;
@@ -113,7 +113,7 @@ void IOCALL PD8257::SetCount(uint32_t d, uint32_t p) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ‚[ƒhƒŒƒWƒXƒ^‚ğƒZƒbƒg
+//  ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 //
 void IOCALL PD8257::SetMode(uint32_t, uint32_t d) {
   LOG1("Mode: %.2x\n", d);
@@ -132,7 +132,7 @@ void IOCALL PD8257::SetMode(uint32_t, uint32_t d) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒAƒhƒŒƒXƒŒƒWƒXƒ^‚ğ“Ç‚İ‚Ş
+//  ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 //
 uint32_t IOCALL PD8257::GetAddr(uint32_t p) {
   int bank = (p / 2) & 3;
@@ -144,7 +144,7 @@ uint32_t IOCALL PD8257::GetAddr(uint32_t p) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒJƒEƒ“ƒ^ƒŒƒWƒXƒ^‚ğ“Ç‚İ‚Ş
+//  ã‚«ã‚¦ãƒ³ã‚¿ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 //
 uint32_t IOCALL PD8257::GetCount(uint32_t p) {
   int bank = (p / 2) & 3;
@@ -156,7 +156,7 @@ uint32_t IOCALL PD8257::GetCount(uint32_t p) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒXƒe[ƒ^ƒX‚ğæ“¾
+//  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å–å¾—
 //
 inline uint32_t IOCALL PD8257::GetStatus(uint32_t) {
   //  stat.ff = false;
@@ -164,11 +164,11 @@ inline uint32_t IOCALL PD8257::GetStatus(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  PD8257 ‚ğ’Ê‚¶‚Äƒƒ‚ƒŠ‚ğ“Ç‚İ‚Ş
-//  arg:bank    DMA ƒoƒ“ƒN‚Ì”Ô†
-//      data    “Ç‚İ‚Şƒf[ƒ^‚Ìƒ|ƒCƒ“ƒ^
-//      nbytes  “]‘—ƒTƒCƒY
-//  ret:        “]‘—‚Å‚«‚½ƒTƒCƒY
+//  PD8257 ã‚’é€šã˜ã¦ãƒ¡ãƒ¢ãƒªã‚’èª­ã¿è¾¼ã‚€
+//  arg:bank    DMA ãƒãƒ³ã‚¯ã®ç•ªå·
+//      data    èª­ã¿è¾¼ã‚€ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒ³ã‚¿
+//      nbytes  è»¢é€ã‚µã‚¤ã‚º
+//  ret:        è»¢é€ã§ããŸã‚µã‚¤ã‚º
 //
 uint32_t IFCALL PD8257::RequestRead(uint32_t bank,
                                     uint8_t* data,
@@ -182,12 +182,12 @@ uint32_t IFCALL PD8257::RequestRead(uint32_t bank,
         break;
 
       if (mread && mrbegin <= stat.ptr[bank] && stat.ptr[bank] < mrend) {
-        // ‘¶İ‚·‚éƒƒ‚ƒŠ‚ÌƒAƒNƒZƒX
+        // å­˜åœ¨ã™ã‚‹ãƒ¡ãƒ¢ãƒªã®ã‚¢ã‚¯ã‚»ã‚¹
         size = Min(size, mrend - stat.ptr[bank]);
         memcpy(data, mread + stat.ptr[bank] - mrbegin, size);
         LOG3("READ ch[%d] (%.4x - %.4x bytes)\n", bank, stat.ptr[bank], size);
       } else {
-        // ‘¶İ‚µ‚È‚¢ƒƒ‚ƒŠ‚Ö‚ÌƒAƒNƒZƒX
+        // å­˜åœ¨ã—ãªã„ãƒ¡ãƒ¢ãƒªã¸ã®ã‚¢ã‚¯ã‚»ã‚¹
         if (stat.ptr[bank] - mrbegin)
           size = Min(size, mrbegin - stat.ptr[bank]);
         else
@@ -218,11 +218,11 @@ uint32_t IFCALL PD8257::RequestRead(uint32_t bank,
 }
 
 // ---------------------------------------------------------------------------
-//  PD8257 ‚ğ’Ê‚¶‚Äƒƒ‚ƒŠ‚É‘‚«‚Ş
-//  arg:bank    DMA ƒoƒ“ƒN‚Ì”Ô†
-//      data    ‘‚«‚Şƒf[ƒ^‚Ìƒ|ƒCƒ“ƒ^
-//      nbytes  “]‘—ƒTƒCƒY
-//  ret:        “]‘—‚Å‚«‚½ƒTƒCƒY
+//  PD8257 ã‚’é€šã˜ã¦ãƒ¡ãƒ¢ãƒªã«æ›¸ãè¾¼ã‚€
+//  arg:bank    DMA ãƒãƒ³ã‚¯ã®ç•ªå·
+//      data    æ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒ³ã‚¿
+//      nbytes  è»¢é€ã‚µã‚¤ã‚º
+//  ret:        è»¢é€ã§ããŸã‚µã‚¤ã‚º
 //
 uint32_t IFCALL PD8257::RequestWrite(uint32_t bank,
                                      uint8_t* data,
@@ -235,12 +235,12 @@ uint32_t IFCALL PD8257::RequestWrite(uint32_t bank,
         break;
 
       if (mwrite && mwbegin <= stat.ptr[bank] && stat.ptr[bank] < mwend) {
-        // ‘¶İ‚·‚éƒƒ‚ƒŠ‚ÌƒAƒNƒZƒX
+        // å­˜åœ¨ã™ã‚‹ãƒ¡ãƒ¢ãƒªã®ã‚¢ã‚¯ã‚»ã‚¹
         size = Min(size, mwend - stat.ptr[bank]);
         memcpy(mwrite + stat.ptr[bank] - mwbegin, data, size);
         LOG3("WRIT ch[%d] (%.4x - %.4x bytes)\n", bank, stat.ptr[bank], size);
       } else {
-        // ‘¶İ‚µ‚È‚¢ƒƒ‚ƒŠ‚Ö‚ÌƒAƒNƒZƒX
+        // å­˜åœ¨ã—ãªã„ãƒ¡ãƒ¢ãƒªã¸ã®ã‚¢ã‚¯ã‚»ã‚¹
         if (stat.ptr[bank] - mwbegin)
           size = Min(size, mwbegin - stat.ptr[bank]);
         else
@@ -267,7 +267,7 @@ uint32_t IFCALL PD8257::RequestWrite(uint32_t bank,
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶
+//  çŠ¶æ…‹ä¿å­˜
 //
 uint32_t IFCALL PD8257::GetStatusSize() {
   return sizeof(Status);

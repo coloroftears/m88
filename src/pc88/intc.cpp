@@ -2,7 +2,7 @@
 //  PC-8801 emulator
 //  Copyright (C) cisc 1999.
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İƒRƒ“ƒgƒ[ƒ‰ü‚è(ƒÊPD8214)
+//  å‰²ã‚Šè¾¼ã¿ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©å‘¨ã‚Š(Î¼PD8214)
 // ---------------------------------------------------------------------------
 //  $Id: intc.cpp,v 1.15 2000/06/22 16:22:18 cisc Exp $
 
@@ -16,7 +16,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  \’z”j‰ó
+//  æ§‹ç¯‰ç ´å£Š
 //
 INTC::INTC(const ID& id) : Device(id) {}
 
@@ -34,7 +34,7 @@ bool INTC::Init(IOBus* b, uint32_t ip, uint32_t ipbase) {
 }
 
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İó‹µ‚ÌXV
+//  å‰²ã‚Šè¾¼ã¿çŠ¶æ³ã®æ›´æ–°
 //
 inline void INTC::IRQ(bool flag) {
   bus->Out(irqport, flag);
@@ -50,7 +50,7 @@ void IOCALL INTC::Reset(uint32_t, uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  Š„‚è‚İ—v¿
+//  å‰²ã‚Šè¾¼ã¿è¦è«‹
 //
 void IOCALL INTC::Request(uint32_t port, uint32_t en) {
   uint32_t bit = 1 << (port - iportbase);
@@ -74,7 +74,7 @@ void IOCALL INTC::Request(uint32_t port, uint32_t en) {
 }
 
 // ---------------------------------------------------------------------------
-//  CPU ‚ªŠ„‚è‚İ‚ğó‚¯æ‚Á‚½
+//  CPU ãŒå‰²ã‚Šè¾¼ã¿ã‚’å—ã‘å–ã£ãŸ
 //
 uint32_t IOCALL INTC::IntAck(uint32_t) {
   uint32_t ai = stat.irq & stat.mask & stat.mask2;
@@ -92,7 +92,7 @@ uint32_t IOCALL INTC::IntAck(uint32_t) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒ}ƒXƒNİ’è(porte6)
+//  ãƒã‚¹ã‚¯è¨­å®š(porte6)
 //
 void IOCALL INTC::SetMask(uint32_t, uint32_t data) {
   const static int8_t table[8] = {~7, ~3, ~5, ~1, ~6, ~2, ~4, ~0};
@@ -103,7 +103,7 @@ void IOCALL INTC::SetMask(uint32_t, uint32_t data) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒŒƒWƒXƒ^İ’è(porte4)
+//  ãƒ¬ã‚¸ã‚¹ã‚¿è¨­å®š(porte4)
 //
 void IOCALL INTC::SetRegister(uint32_t, uint32_t data) {
   stat.mask = ~(-1 << Min(8, data));
@@ -113,7 +113,7 @@ void IOCALL INTC::SetRegister(uint32_t, uint32_t data) {
 }
 
 // ---------------------------------------------------------------------------
-//  ó‘Ô•Û‘¶
+//  çŠ¶æ…‹ä¿å­˜
 //
 uint32_t IFCALL INTC::GetStatusSize() {
   return sizeof(Status);

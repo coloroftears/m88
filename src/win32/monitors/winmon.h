@@ -7,10 +7,10 @@
 #if !defined(win32_winmon_h)
 #define win32_winmon_h
 
-//  ŠT—vF
-//  ƒfƒoƒbƒO•\Ž¦‚Ì‚½‚ß‚ÉŽg—p‚·‚éƒeƒLƒXƒgƒEƒBƒ“ƒhƒE‚ÌŠÇ——pŠî–{ƒNƒ‰ƒX
-//  ‹@”\F
-//  ƒeƒLƒXƒgƒoƒbƒtƒ@C·•ªXVCƒXƒNƒ[ƒ‹ƒo[ƒTƒ|[ƒg
+//  æ¦‚è¦ï¼š
+//  ãƒ‡ãƒãƒƒã‚°è¡¨ç¤ºã®ãŸã‚ã«ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç®¡ç†ç”¨åŸºæœ¬ã‚¯ãƒ©ã‚¹
+//  æ©Ÿèƒ½ï¼š
+//  ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ï¼Œå·®åˆ†æ›´æ–°ï¼Œã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚µãƒãƒ¼ãƒˆ
 
 #include "win32/types.h"
 

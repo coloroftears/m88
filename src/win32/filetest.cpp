@@ -9,8 +9,8 @@
 #include "common/error.h"
 
 // ---------------------------------------------------------------------------
-//  ©•ª©g‚Ì CRC ‚ğƒ`ƒFƒbƒN‚·‚éD
-//  g‹ß‚Å PE_CIH ‚ª‘å”­¶‚µ‚½‹L”O‚É‚Â‚¯‚Ä‚İ‚½(^^;
+//  è‡ªåˆ†è‡ªèº«ã® CRC ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ï¼
+//  èº«è¿‘ã§ PE_CIH ãŒå¤§ç™ºç”Ÿã—ãŸè¨˜å¿µã«ã¤ã‘ã¦ã¿ãŸ(^^;
 //
 bool SanityCheck(uint32_t* pcrc) {
   uint32_t crc = 0;
@@ -40,7 +40,7 @@ bool SanityCheck(uint32_t* pcrc) {
 
   *(uint32_t*)(mod + tagpos) = 0;
 
-  // CRC ŒvZ
+  // CRC è¨ˆç®—
   uint32_t crctable[256];
   uint32_t i;
   for (i = 0; i < 256; i++) {

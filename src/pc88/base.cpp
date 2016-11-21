@@ -18,7 +18,7 @@
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
-//  ç\ízÅEîjâÛ
+//  ÊßãÁØâ„ÉªÁ†¥Â£ä
 //
 Base::Base(const ID& id) : Device(id) {
   port40 = 0;
@@ -28,7 +28,7 @@ Base::Base(const ID& id) : Device(id) {
 Base::~Base() {}
 
 // ---------------------------------------------------------------------------
-//  èâä˙âª
+//  ÂàùÊúüÂåñ
 //
 bool Base::Init(PC88* pc88) {
   pc = pc88;
@@ -41,7 +41,7 @@ bool Base::Init(PC88* pc88) {
 }
 
 // ---------------------------------------------------------------------------
-//  ÉXÉCÉbÉ`çXêV
+//  „Çπ„Ç§„ÉÉ„ÉÅÊõ¥Êñ∞
 //
 void Base::SetSwitch(const Config* cfg) {
   bmode = cfg->basicmode;
@@ -52,7 +52,7 @@ void Base::SetSwitch(const Config* cfg) {
 }
 
 // ---------------------------------------------------------------------------
-//  ÇËÇπÇ¡Ç∆
+//  „Çä„Åõ„Å£„Å®
 //
 void IOCALL Base::Reset(uint32_t, uint32_t) {
   port40 = 0xc0 + (fv15k ? 2 : 0) + ((dipsw & (1 << 11)) || !autoboot ? 8 : 0);
@@ -61,7 +61,7 @@ void IOCALL Base::Reset(uint32_t, uint32_t) {
          (bmode & 0x10 ? 0 : 0x80);
 
   if (bmode & 2) {
-    //  N80ÉÇÅ[ÉhÇÃÇ∆Ç´Ç‡DipSWÇï‘Ç∑ÇÊÇ§Ç…Ç∑ÇÈ(XanaduëŒçÙ)
+    //  N80„É¢„Éº„Éâ„ÅÆ„Å®„Åç„ÇÇDipSW„ÇíËøî„Åô„Çà„ÅÜ„Å´„Åô„Çã(XanaduÂØæÁ≠ñ)
     sw30 = ~((bmode & 0x10) >> 3);
   } else {
     sw30 = 0xc0 | ((dipsw << 1) & 0x3e) | (bmode & 0x22 ? 1 : 0);

@@ -107,9 +107,9 @@ class TapeManager : public Device {
   int offset;
   uint32_t tick;
   Mode mode;
-  uint32_t time;  // motor on: ƒ^ƒCƒ}[ŠJnŠÔ
+  uint32_t time;  // motor on: ã‚¿ã‚¤ãƒãƒ¼é–‹å§‹æ™‚é–“
   uint32_t timercount;
-  uint32_t timerremain;  // ƒ^ƒCƒ}[c‚è
+  uint32_t timerremain;  // ã‚¿ã‚¤ãƒãƒ¼æ®‹ã‚Š
   bool motor;
 
   IOBus* bus;

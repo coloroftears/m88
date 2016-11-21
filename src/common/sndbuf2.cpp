@@ -51,7 +51,7 @@ void SoundBuffer2::Cleanup() {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒbƒtƒ@‚É‰¹‚ğ’Ç‰Á
+//  ãƒãƒƒãƒ•ã‚¡ã«éŸ³ã‚’è¿½åŠ 
 //
 int SoundBuffer2::Fill(int samples) {
   CriticalSection::Lock lock(cs);
@@ -61,7 +61,7 @@ int SoundBuffer2::Fill(int samples) {
 }
 
 int SoundBuffer2::FillMain(int samples) {
-  // ƒŠƒ“ƒOƒoƒbƒtƒ@‚Ì‹ó‚«‚ğŒvZ
+  // ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡ã®ç©ºãã‚’è¨ˆç®—
   int free = buffersize - GetAvail();
 
   if (!fillwhenempty && (samples > free - 1)) {
@@ -72,15 +72,15 @@ int SoundBuffer2::FillMain(int samples) {
       read -= buffersize;
   }
 
-  // ‘‚«‚±‚Ş‚×‚«ƒf[ƒ^—Ê‚ğŒvZ
+  // æ›¸ãã“ã‚€ã¹ããƒ‡ãƒ¼ã‚¿é‡ã‚’è¨ˆç®—
   samples = Min(samples, free - 1);
   if (samples > 0) {
-    // ‘‚«‚±‚Ş
+    // æ›¸ãã“ã‚€
     if (buffersize - write >= samples) {
-      // ˆê“x‚Å‘‚¯‚éê‡
+      // ä¸€åº¦ã§æ›¸ã‘ã‚‹å ´åˆ
       source->Get(buffer + write * ch, samples);
     } else {
-      // ‚Q“x‚É•ª‚¯‚Ä‘‚­ê‡
+      // ï¼’åº¦ã«åˆ†ã‘ã¦æ›¸ãå ´åˆ
       source->Get(buffer + write * ch, buffersize - write);
       source->Get(buffer, samples - (buffersize - write));
     }
@@ -92,7 +92,7 @@ int SoundBuffer2::FillMain(int samples) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒbƒtƒ@‚©‚ç‰¹‚ğ–á‚¤
+//  ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰éŸ³ã‚’è²°ã†
 //
 int SoundBuffer2::Get(Sample* dest, int samples) {
   CriticalSection::Lock lock(cs);
@@ -104,7 +104,7 @@ int SoundBuffer2::Get(Sample* dest, int samples) {
 
     int avail = GetAvail();
 
-    // ‹Ÿ‹‹•s‘«‚È‚ç’Ç‰Á
+    // ä¾›çµ¦ä¸è¶³ãªã‚‰è¿½åŠ 
     if (xsize <= avail || fillwhenempty) {
       if (xsize > avail)
         FillMain(xsize - avail);
@@ -129,7 +129,7 @@ int SoundBuffer2::Get(Sample* dest, int samples) {
 }
 
 // ---------------------------------------------------------------------------
-//  ƒoƒbƒtƒ@‚ª‹ó‚©C‹ó‚É‹ß‚¢ó‘Ô‚©?
+//  ãƒãƒƒãƒ•ã‚¡ãŒç©ºã‹ï¼Œç©ºã«è¿‘ã„çŠ¶æ…‹ã‹?
 //
 bool SoundBuffer2::IsEmpty() {
   return GetAvail() == 0;

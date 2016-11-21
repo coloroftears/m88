@@ -26,7 +26,7 @@ bool Scheduler::Init() {
 }
 
 // ---------------------------------------------------------------------------
-//  ŠÔƒCƒxƒ“ƒg‚ğ’Ç‰Á
+//  æ™‚é–“ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ 
 //
 Scheduler::Event* IFCALL Scheduler::AddEvent(int count,
                                              IDevice* inst,
@@ -37,7 +37,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(int count,
   assert(count > 0);
 
   int i;
-  // ‹ó‚¢‚Ä‚é Event ‚ğ’T‚·
+  // ç©ºã„ã¦ã‚‹ Event ã‚’æ¢ã™
   for (i = 0; i <= evlast; i++)
     if (!events[i].inst)
       break;
@@ -51,7 +51,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(int count,
   ev.inst = inst, ev.func = func, ev.arg = arg;
   ev.time = repeat ? count : 0;
 
-  // Å’ZƒCƒxƒ“ƒg”­¶‚ğXV‚·‚éH
+  // æœ€çŸ­ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿæ™‚åˆ»ã‚’æ›´æ–°ã™ã‚‹ï¼Ÿ
   if ((etime - ev.count) > 0) {
     Shorten(etime - ev.count);
     etime = ev.count;
@@ -60,7 +60,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(int count,
 }
 
 // ---------------------------------------------------------------------------
-//  ŠÔƒCƒxƒ“ƒg‚Ì‘®«•ÏX
+//  æ™‚é–“ã‚¤ãƒ™ãƒ³ãƒˆã®å±æ€§å¤‰æ›´
 //
 void IFCALL Scheduler::SetEvent(Event* ev,
                                 int count,
@@ -75,7 +75,7 @@ void IFCALL Scheduler::SetEvent(Event* ev,
   ev->inst = inst, ev->func = func, ev->arg = arg;
   ev->time = repeat ? count : 0;
 
-  // Å’ZƒCƒxƒ“ƒg”­¶‚ğXV‚·‚éH
+  // æœ€çŸ­ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿæ™‚åˆ»ã‚’æ›´æ–°ã™ã‚‹ï¼Ÿ
   if ((etime - ev->count) > 0) {
     Shorten(etime - ev->count);
     etime = ev->count;
@@ -83,7 +83,7 @@ void IFCALL Scheduler::SetEvent(Event* ev,
 }
 
 // ---------------------------------------------------------------------------
-//  ŠÔƒCƒxƒ“ƒg‚ğíœ
+//  æ™‚é–“ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‰Šé™¤
 //
 bool IFCALL Scheduler::DelEvent(IDevice* inst) {
   Event* ev = &events[evlast];
@@ -107,7 +107,7 @@ bool IFCALL Scheduler::DelEvent(Event* ev) {
 }
 
 // ---------------------------------------------------------------------------
-//  ŠÔ‚ği‚ß‚é
+//  æ™‚é–“ã‚’é€²ã‚ã‚‹
 //
 int Scheduler::Proceed(int ticks) {
   int t;
@@ -129,7 +129,7 @@ int Scheduler::Proceed(int ticks) {
     etime = time += xtime;
     t -= xtime;
 
-    // ƒCƒxƒ“ƒg‚ğ‹ì“®
+    // ã‚¤ãƒ™ãƒ³ãƒˆã‚’é§†å‹•
     for (i = evlast; i >= 0; i--) {
       Event& ev = events[i];
 
