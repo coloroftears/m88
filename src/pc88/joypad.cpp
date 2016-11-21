@@ -6,7 +6,7 @@
 
 #include "win32/headers.h"
 #include "pc88/joypad.h"
-#include "if/ifguid.h"
+#include "interface/ifguid.h"
 
 using namespace PC8801;
 

@@ -2,4 +2,4 @@
 
 #define INITGUID
 #include <objbase.h>
-#include "if/ifguid.h"
+#include "interface/ifguid.h"

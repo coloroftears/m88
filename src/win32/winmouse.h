@@ -8,7 +8,7 @@
 #define win32_winmouse_h
 
 #include "common/device.h"
-#include "if/ifui.h"
+#include "interface/ifui.h"
 
 class WinUI;
 

@@ -8,7 +8,7 @@
 #define pc88_mouse_h
 
 #include "common/device.h"
-#include "if/ifui.h"
+#include "interface/ifui.h"
 
 class PC88;
 

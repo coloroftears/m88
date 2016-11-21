@@ -11,7 +11,7 @@
 #include "pc88/config.h"
 #include "pc88/pc88.h"
 #include "pc88/mouse.h"
-#include "if/ifguid.h"
+#include "interface/ifguid.h"
 
 //#define LOGNAME "mouse"
 #include "win32/diag.h"

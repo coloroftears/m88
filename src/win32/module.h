@@ -7,7 +7,7 @@
 #ifndef win32_module_h
 #define win32_module_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 namespace PC8801 {
 

@@ -4,7 +4,7 @@
 #define common_soundbuf2_h
 
 #include "win32/critsect.h"
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 #include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------

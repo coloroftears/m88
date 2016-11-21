@@ -4,7 +4,7 @@
 #define incl_mem_h
 
 #include "common/device.h"
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
 #if !defined(win32_cfgpage_h)
 #define win32_cfgpage_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 #include "pc88/config.h"
 
 namespace PC8801 {

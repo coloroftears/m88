@@ -8,7 +8,7 @@
 #define common_device_h
 
 #include "win32/types.h"
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 //  Device

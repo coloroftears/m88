@@ -13,7 +13,7 @@
 #include "common/device_i.h"
 #include "win32/file.h"
 #include "win32/winvars.h"
-#include "if/ifguid.h"
+#include "interface/ifguid.h"
 
 using namespace PC8801;
 

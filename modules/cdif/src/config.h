@@ -3,7 +3,7 @@
 #ifndef incl_config_h
 #define incl_config_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 class ConfigCDIF : public IConfigPropSheet {
  public:

@@ -7,7 +7,7 @@
 #define incl_ifui_h
 
 #include "win32/types.h"
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 #ifndef IFCALL
 #define IFCALL __stdcall

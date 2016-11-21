@@ -10,7 +10,7 @@
 #define PC88_PD8257_H
 
 #include "common/device.h"
-#include "if/ifpc88.h"
+#include "interface/ifpc88.h"
 
 // ---------------------------------------------------------------------------
 

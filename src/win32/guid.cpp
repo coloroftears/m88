@@ -4,4 +4,4 @@
 #include <windows.h>
 #include <ddraw.h>
 #include <dsound.h>
-#include "if/ifguid.h"
+#include "interface/ifguid.h"

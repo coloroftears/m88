@@ -8,7 +8,7 @@
 #define win32_winjoy_h
 
 #include "common/device.h"
-#include "if/ifui.h"
+#include "interface/ifui.h"
 
 class WinPadIF : public IPadInput {
  public:

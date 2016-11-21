@@ -7,7 +7,7 @@
 #if !defined(win32_88config_h)
 #define win32_88config_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 #include "pc88/config.h"
 #include "win32/instthnk.h"
 

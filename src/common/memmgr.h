@@ -7,7 +7,7 @@
 #ifndef incl_memmgr_h
 #define incl_memmgr_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 //  ƒƒ‚ƒŠŠÇ—ƒNƒ‰ƒX

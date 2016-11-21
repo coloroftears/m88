@@ -7,7 +7,7 @@
 #if !defined(win32_wincfg_h)
 #define win32_wincfg_h
 
-#include "if/ifcommon.h"
+#include "interface/ifcommon.h"
 #include "pc88/config.h"
 #include "win32/cfgpage.h"
 

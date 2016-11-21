@@ -1,8 +1,8 @@
 //  $Id: moduleif.cpp,v 1.2 1999/11/26 10:12:57 cisc Exp $
 
 #include "diskdrv/src/headers.h"
-#include "if/ifcommon.h"
-#include "if/ifguid.h"
+#include "interface/ifcommon.h"
+#include "interface/ifguid.h"
 #include "diskdrv/src/diskio.h"
 
 #define EXTDEVAPI __declspec(dllexport)

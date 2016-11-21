@@ -1,8 +1,8 @@
 //  $Id: moduleif.cpp,v 1.2 1999/11/26 10:12:48 cisc Exp $
 
 #include "cdif/src/headers.h"
-#include "if/ifcommon.h"
-#include "if/ifguid.h"
+#include "interface/ifcommon.h"
+#include "interface/ifguid.h"
 #include "cdif/src/cdif.h"
 #include "cdif/src/config.h"
 
