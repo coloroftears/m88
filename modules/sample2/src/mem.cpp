@@ -1,7 +1,7 @@
 //  $Id: mem.cpp,v 1.1 1999/10/10 01:43:28 cisc Exp $
 
-#include "modules/sample2/src/headers.h"
-#include "modules/sample2/src/mem.h"
+#include "sample2/src/headers.h"
+#include "sample2/src/mem.h"
 
 GVRAMReverse::GVRAMReverse() : Device(0), mm(0), gvram(false) {}
 
@@ -98,9 +98,9 @@ void GVRAMReverse::Update() {
 const Device::Descriptor GVRAMReverse::descriptor = {/*indef*/ 0, outdef};
 
 const Device::OutFuncPtr GVRAMReverse::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, Out32),
-    STATIC_CAST(Device::OutFuncPtr, Out35),
-    STATIC_CAST(Device::OutFuncPtr, Out5x),
+    STATIC_CAST(Device::OutFuncPtr, &Out32),
+    STATIC_CAST(Device::OutFuncPtr, &Out35),
+    STATIC_CAST(Device::OutFuncPtr, &Out5x),
 };
 
 /*

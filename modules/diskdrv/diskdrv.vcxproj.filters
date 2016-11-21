@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\diskio.cpp" />
+    <ClCompile Include="src\guid.cpp" />
+    <ClCompile Include="src\moduleif.cpp" />
+    <ClCompile Include="..\..\src\win32\file.cpp">
+      <Filter>m88</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\diskio.h" />
+    <ClInclude Include="src\headers.h" />
+    <ClInclude Include="..\..\src\win32\file.h">
+      <Filter>m88</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="m88">
+      <UniqueIdentifier>{c6cef3b1-e2cf-4c49-bd20-c8794367876e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

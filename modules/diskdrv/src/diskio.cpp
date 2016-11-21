@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------------------
 //  $Id: diskio.cpp,v 1.2 1999/09/25 03:13:51 cisc Exp $
 
-#include "modules/diskdrv/src/headers.h"
+#include "diskdrv/src/headers.h"
 #include "common/misc.h"
-#include "modules/diskdrv/src/diskio.h"
+#include "diskdrv/src/diskio.h"
 
 #define LOGNAME "DiskIO"
 #include "win32/diag.h"
@@ -286,12 +286,12 @@ void DiskIO::CmdGetError() {
 const Device::Descriptor DiskIO::descriptor = {DiskIO::indef, DiskIO::outdef};
 
 const Device::OutFuncPtr DiskIO::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, Reset),
-    STATIC_CAST(Device::OutFuncPtr, SetCommand),
-    STATIC_CAST(Device::OutFuncPtr, SetData),
+    STATIC_CAST(Device::OutFuncPtr, &Reset),
+    STATIC_CAST(Device::OutFuncPtr, &SetCommand),
+    STATIC_CAST(Device::OutFuncPtr, &SetData),
 };
 
 const Device::InFuncPtr DiskIO::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, GetStatus),
-    STATIC_CAST(Device::InFuncPtr, GetData),
+    STATIC_CAST(Device::InFuncPtr, &GetStatus),
+    STATIC_CAST(Device::InFuncPtr, &GetData),
 };

@@ -1,7 +1,7 @@
 //  $Id: sine.cpp,v 1.1 1999/10/10 01:41:59 cisc Exp $
 
-#include "modules/sample1/src/headers.h"
-#include "modules/sample1/src/sine.h"
+#include "sample1/src/headers.h"
+#include "sample1/src/sine.h"
 
 Sine::Sine() : Device(0), volume(0), rate(0), pitch(0), pos(0), sc(0) {}
 
@@ -72,8 +72,8 @@ const int Sine::table[] = {
 const Device::Descriptor Sine::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr Sine::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, SetVolume),
-    STATIC_CAST(Device::OutFuncPtr, SetPitch),
+    STATIC_CAST(Device::OutFuncPtr, &SetVolume),
+    STATIC_CAST(Device::OutFuncPtr, &SetPitch),
 };
 
 const Device::InFuncPtr Sine::indef[] = {

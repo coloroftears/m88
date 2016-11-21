@@ -1,13 +1,12 @@
 // $Id: config.cpp,v 1.1 1999/12/28 11:25:53 cisc Exp $
 
-#include "modules/cdif/src/headers.h"
-#include "modules/cdif/src/config.h"
+#include "cdif/src/headers.h"
+#include "cdif/src/config.h"
 #include "resource.h"
 
 // ---------------------------------------------------------------------------
 
 ConfigCDIF::ConfigCDIF() {
-  gate.SetDestination(PageGate, this);
 }
 
 bool ConfigCDIF::Init(HINSTANCE _hinst) {
@@ -24,12 +23,12 @@ bool IFCALL ConfigCDIF::Setup(IConfigPropBase* _base, PROPSHEETPAGE* psp) {
   psp->hInstance = hinst;
   psp->pszTemplate = MAKEINTRESOURCE(IDD_CONFIG);
   psp->pszIcon = 0;
-  psp->pfnDlgProc = (DLGPROC)(void*)gate;
-  psp->lParam = 0;
+  psp->pfnDlgProc = (DLGPROC)(void*)PageGate;
+  psp->lParam = (LPARAM)this;
   return true;
 }
 
-BOOL ConfigCDIF::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR ConfigCDIF::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_INITDIALOG:
       return TRUE;
@@ -49,10 +48,17 @@ BOOL ConfigCDIF::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   return FALSE;
 }
 
-BOOL CALLBACK ConfigCDIF::PageGate(ConfigCDIF* config,
-                                   HWND hwnd,
-                                   UINT m,
-                                   WPARAM w,
-                                   LPARAM l) {
+// static
+INT_PTR ConfigCDIF::PageGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
+  ConfigCDIF* config = nullptr;
+  if (m == WM_INITDIALOG) {
+    PROPSHEETPAGE* pPage = (PROPSHEETPAGE*)l;
+    if (config = reinterpret_cast<ConfigCDIF*>(pPage->lParam))
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)config);
+  } else {
+    config = (ConfigCDIF*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
+  }
+  if (!config)
+    return FALSE;
   return config->PageProc(hwnd, m, w, l);
 }

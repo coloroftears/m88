@@ -4,11 +4,11 @@
 // ---------------------------------------------------------------------------
 //  $Id: cdrom.cpp,v 1.2 1999/11/26 10:12:47 cisc Exp $
 
-#include "modules/cdif/src/headers.h"
-#include "modules/cdif/src/cdrom.h"
-#include "modules/cdif/src/aspi.h"
-#include "modules/cdif/src/aspidef.h"
-#include "modules/cdif/src/cdromdef.h"
+#include "cdif/src/headers.h"
+#include "cdif/src/cdrom.h"
+#include "cdif/src/aspi.h"
+#include "cdif/src/aspidef.h"
+#include "cdif/src/cdromdef.h"
 
 #define LOGNAME "cdrom"
 #include "win32/diag.h"

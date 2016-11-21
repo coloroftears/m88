@@ -1,13 +1,12 @@
 // $Id: config.cpp,v 1.2 1999/12/28 10:33:39 cisc Exp $
 
-#include "modules/sample2/src/headers.h"
-#include "modules/sample2/src/config.h"
+#include "sample2/src/headers.h"
+#include "sample2/src/config.h"
 #include "resource.h"
 
 // ---------------------------------------------------------------------------
 
 ConfigMP::ConfigMP() {
-  gate.SetDestination(PageGate, this);
 }
 
 bool ConfigMP::Init(HINSTANCE _hinst) {
@@ -24,12 +23,12 @@ bool IFCALL ConfigMP::Setup(IConfigPropBase* _base, PROPSHEETPAGE* psp) {
   psp->hInstance = hinst;
   psp->pszTemplate = MAKEINTRESOURCE(IDD_CONFIG);
   psp->pszIcon = 0;
-  psp->pfnDlgProc = (DLGPROC)(void*)gate;
-  psp->lParam = 0;
+  psp->pfnDlgProc = (DLGPROC)(void*)PageGate;
+  psp->lParam = (LPARAM)this;
   return true;
 }
 
-BOOL ConfigMP::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR ConfigMP::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_INITDIALOG:
       return TRUE;
@@ -49,7 +48,18 @@ BOOL ConfigMP::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   return FALSE;
 }
 
-BOOL CALLBACK
-ConfigMP::PageGate(ConfigMP* config, HWND hwnd, UINT m, WPARAM w, LPARAM l) {
+// static
+INT_PTR ConfigMP::PageGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
+  ConfigMP* config = nullptr;
+  if (m == WM_INITDIALOG) {
+    PROPSHEETPAGE* pPage = (PROPSHEETPAGE*)l;
+    if (config = reinterpret_cast<ConfigMP*>(pPage->lParam))
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)config);
+  }
+  else {
+    config = (ConfigMP*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
+  }
+  if (!config)
+    return FALSE;
   return config->PageProc(hwnd, m, w, l);
 }

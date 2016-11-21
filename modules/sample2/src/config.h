@@ -4,7 +4,6 @@
 #define incl_config_h
 
 #include "if/ifcommon.h"
-#include "win32/instthnk.h"
 
 class ConfigMP : public IConfigPropSheet {
  public:
@@ -13,12 +12,11 @@ class ConfigMP : public IConfigPropSheet {
   bool IFCALL Setup(IConfigPropBase*, PROPSHEETPAGE* psp);
 
  private:
-  BOOL PageProc(HWND, UINT, WPARAM, LPARAM);
-  static BOOL CALLBACK PageGate(ConfigMP*, HWND, UINT, WPARAM, LPARAM);
+  INT_PTR PageProc(HWND, UINT, WPARAM, LPARAM);
+  static INT_PTR PageGate(HWND, UINT, WPARAM, LPARAM);
 
   HINSTANCE hinst;
   IConfigPropBase* base;
-  InstanceThunk gate;
 };
 
 #endif  // incl_config_h

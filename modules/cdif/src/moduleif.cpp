@@ -1,10 +1,10 @@
 //  $Id: moduleif.cpp,v 1.2 1999/11/26 10:12:48 cisc Exp $
 
-#include "modules/cdif/src/headers.h"
+#include "cdif/src/headers.h"
 #include "if/ifcommon.h"
 #include "if/ifguid.h"
-#include "modules/cdif/src/cdif.h"
-#include "modules/cdif/src/config.h"
+#include "cdif/src/cdif.h"
+#include "cdif/src/config.h"
 
 #define EXTDEVAPI __declspec(dllexport)
 

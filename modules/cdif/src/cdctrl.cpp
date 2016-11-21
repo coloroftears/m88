@@ -4,11 +4,11 @@
 // ---------------------------------------------------------------------------
 //  $Id: cdctrl.cpp,v 1.1 1999/08/26 08:04:36 cisc Exp $
 
-#include "modules/cdif/src/headers.h"
-#include "modules/cdif/src/aspi.h"
-#include "modules/cdif/src/cdrom.h"
-#include "modules/cdif/src/cdctrl.h"
-#include "modules/cdif/src/cdromdef.h"
+#include "cdif/src/headers.h"
+#include "cdif/src/aspi.h"
+#include "cdif/src/cdrom.h"
+#include "cdif/src/cdctrl.h"
+#include "cdif/src/cdromdef.h"
 
 #define LOGNAME "cdctrl"
 #include "win32/diag.h"

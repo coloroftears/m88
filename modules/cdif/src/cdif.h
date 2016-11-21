@@ -10,8 +10,8 @@
 #define pc88_cdif_h
 
 #include "common/device.h"
-#include "modules/cdif/src/cdctrl.h"
-#include "modules/cdif/src/cdrom.h"
+#include "cdif/src/cdctrl.h"
+#include "cdif/src/cdrom.h"
 #include "if/ifpc88.h"
 
 namespace PC8801 {

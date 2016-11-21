@@ -5,10 +5,21 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "M88", "M88.vcxproj", "{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdif", "modules\cdif\cdif.vcxproj", "{30677C0F-F18B-4F55-805C-5133A0C5B001}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "diskdrv", "modules\diskdrv\diskdrv.vcxproj", "{FD31FA02-6A9E-494E-8919-C6C06973F972}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample1", "modules\sample1\sample1.vcxproj", "{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample2", "modules\sample2\sample2.vcxproj", "{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{240758CC-D035-4842-88FF-2FAB70D820BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
+		Template|x86 = Template|x86
 		Tuning|x86 = Tuning|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -16,10 +27,50 @@ Global
 		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Debug|x86.Build.0 = Debug|Win32
 		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Release|x86.ActiveCfg = Release|Win32
 		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Release|x86.Build.0 = Release|Win32
+		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Template|x86.ActiveCfg = Tuning|Win32
+		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Template|x86.Build.0 = Tuning|Win32
 		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Tuning|x86.ActiveCfg = Tuning|Win32
 		{275EC5B3-2ACA-4269-9D22-DF157CD9FF78}.Tuning|x86.Build.0 = Tuning|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Debug|x86.ActiveCfg = Debug|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Debug|x86.Build.0 = Debug|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Release|x86.ActiveCfg = Release|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Release|x86.Build.0 = Release|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Template|x86.ActiveCfg = Release|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Template|x86.Build.0 = Release|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Tuning|x86.ActiveCfg = Release|Win32
+		{30677C0F-F18B-4F55-805C-5133A0C5B001}.Tuning|x86.Build.0 = Release|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Debug|x86.Build.0 = Debug|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Release|x86.ActiveCfg = Release|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Release|x86.Build.0 = Release|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Template|x86.ActiveCfg = Template|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Template|x86.Build.0 = Template|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Tuning|x86.ActiveCfg = Template|Win32
+		{FD31FA02-6A9E-494E-8919-C6C06973F972}.Tuning|x86.Build.0 = Template|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Debug|x86.ActiveCfg = Debug|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Debug|x86.Build.0 = Debug|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Release|x86.ActiveCfg = Release|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Release|x86.Build.0 = Release|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Template|x86.ActiveCfg = Template|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Template|x86.Build.0 = Template|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Tuning|x86.ActiveCfg = Template|Win32
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6}.Tuning|x86.Build.0 = Template|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Debug|x86.ActiveCfg = Debug|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Debug|x86.Build.0 = Debug|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Release|x86.ActiveCfg = Release|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Release|x86.Build.0 = Release|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Template|x86.ActiveCfg = Template|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Template|x86.Build.0 = Template|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Tuning|x86.ActiveCfg = Template|Win32
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5}.Tuning|x86.Build.0 = Template|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{30677C0F-F18B-4F55-805C-5133A0C5B001} = {240758CC-D035-4842-88FF-2FAB70D820BE}
+		{FD31FA02-6A9E-494E-8919-C6C06973F972} = {240758CC-D035-4842-88FF-2FAB70D820BE}
+		{3DDFD50E-02A4-4DCF-AE02-58EF37166BD6} = {240758CC-D035-4842-88FF-2FAB70D820BE}
+		{6E1A5BA2-9C5C-41DB-92A6-2DCD82488EB5} = {240758CC-D035-4842-88FF-2FAB70D820BE}
 	EndGlobalSection
 EndGlobal

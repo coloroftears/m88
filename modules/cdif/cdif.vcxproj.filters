@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="scsi">
+      <UniqueIdentifier>{1ed01847-2559-40bf-9947-bbbf06a7f819}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\aspi.cpp">
+      <Filter>scsi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cdrom.cpp">
+      <Filter>scsi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cdctrl.cpp" />
+    <ClCompile Include="src\cdif.cpp" />
+    <ClCompile Include="src\config.cpp" />
+    <ClCompile Include="src\guid.cpp" />
+    <ClCompile Include="src\moduleif.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\aspi.h">
+      <Filter>scsi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aspidef.h">
+      <Filter>scsi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cdrom.h">
+      <Filter>scsi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cdromdef.h">
+      <Filter>scsi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cdctrl.h" />
+    <ClInclude Include="src\cdif.h" />
+    <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\headers.h" />
+    <ClInclude Include="src\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\cdif.bmp" />
+    <Image Include="src\cdif.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\cdif.rc" />
+  </ItemGroup>
+</Project>
