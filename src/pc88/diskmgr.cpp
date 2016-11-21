@@ -247,7 +247,7 @@ bool DiskImageHolder::SetDiskSize(int index, int newsize) {
   fio.SetLogicalOrigin(0);
   if (sizemove) {
     int32_t moveorg = disks[index + 1].pos;
-    uint8* data = new uint8[sizemove];
+    uint8_t* data = new uint8_t[sizemove];
     if (!data)
       return false;
 
@@ -567,7 +567,7 @@ bool DiskManager::ReadDiskImageRaw(FileIO* fio, Drive* drive) {
   }
 
   // 各トラックの読み込み
-  uint8 buf[256];
+  uint8_t buf[256];
   FloppyDisk::IDR id;
   id.n = 1;
   for (t = 0; t < 80; t++) {
@@ -620,7 +620,7 @@ uint DiskManager::GetDiskImageSize(Drive* drv) {
 //  必要となる領域はあらかじめ確保されていることとする
 //
 bool DiskManager::WriteDiskImage(FileIO* fio, Drive* drv) {
-  static const uint8 typetbl[3] = {0x00, 0x10, 0x20};
+  static const uint8_t typetbl[3] = {0x00, 0x10, 0x20};
   int t;
 
   // Header の作成
@@ -815,7 +815,7 @@ bool DiskManager::FormatDisk(uint dr) {
     return false;
   //  statusdisplay.Show(10, 5000, "Format drive : %d", dr);
 
-  uint8* buf = new uint8[80 * 16 * 256];
+  uint8_t* buf = new uint8_t[80 * 16 * 256];
   if (!buf)
     return false;
 
@@ -838,7 +838,7 @@ bool DiskManager::FormatDisk(uint dr) {
   FloppyDisk& disk = drive[dr].disk;
   FloppyDisk::IDR id;
   id.n = 1;
-  uint8* dest = buf;
+  uint8_t* dest = buf;
 
   for (int t = 0; t < 80; t++) {
     id.c = t / 2, id.h = t & 1;

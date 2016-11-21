@@ -56,8 +56,8 @@ class Z80_x86 : public Device {
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   uint IFCALL GetStatusSize() { return sizeof(CPUState); }
-  bool IFCALL LoadStatus(const uint8* status);
-  bool IFCALL SaveStatus(uint8* status);
+  bool IFCALL LoadStatus(const uint8_t* status);
+  bool IFCALL SaveStatus(uint8_t* status);
 
   bool EnableDump(bool) { return false; }
   int GetDumpState() { return -1; }
@@ -66,9 +66,9 @@ class Z80_x86 : public Device {
   // Debug Service Functions
   void TestIntr();
   void SetPC(uint n) {
-    inst = (uint8*)n;
+    inst = (uint8_t*)n;
     instbase = 0;
-    instpage = (uint8*)-1;
+    instpage = (uint8_t*)-1;
     instlim = 0;
   }
   const Z80Reg& GetReg() { return reg; }
@@ -84,28 +84,28 @@ class Z80_x86 : public Device {
   };
   struct CPUState {
     Z80Reg reg;
-    uint8 intr;
-    uint8 waitstate;
-    uint8 flagn;
-    uint8 rev;
+    uint8_t intr;
+    uint8_t waitstate;
+    uint8_t flagn;
+    uint8_t rev;
     uint execcount;
   };
 
  private:
   Z80Reg reg;
-  uint8* inst;
-  uint8* instbase;
-  uint8* instlim;
-  uint8* instpage;
+  uint8_t* inst;
+  uint8_t* instbase;
+  uint8_t* instlim;
+  uint8_t* instpage;
   uint instwait;
   const IOBus::InBank* ins;
   const IOBus::OutBank* outs;
-  const uint8* ioflags;
+  const uint8_t* ioflags;
 
-  uint8 intr;
-  uint8 waitstate;
-  uint8 flagn;
-  uint8 eshift;
+  uint8_t intr;
+  uint8_t waitstate;
+  uint8_t flagn;
+  uint8_t eshift;
 
   uint execcount;
   int stopcount;

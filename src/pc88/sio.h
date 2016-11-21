@@ -40,8 +40,8 @@ class SIO : public Device {
   void IOCALL AcceptData(uint, uint);
 
   uint IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8* s);
-  bool IFCALL LoadStatus(const uint8* s);
+  bool IFCALL SaveStatus(uint8_t* s);
+  bool IFCALL LoadStatus(const uint8_t* s);
 
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
@@ -78,7 +78,7 @@ class SIO : public Device {
     ssrev = 1,
   };
   struct Status {
-    uint8 rev;
+    uint8_t rev;
     bool rxen;
     bool txen;
 

@@ -237,11 +237,11 @@ static void __declspec(naked) SetPC() {
     // instruction is on memory
     //  ecx = page->read
     //  edi = newpc
-    //  instpage = ((uint8*) page->read);
-    //  instbase = -((uint8*) page->read) + (newpc & ~MemoryManager::pagemask &
-    //  0xffff);
-    //  instlim = ((uint8*) page->read) + (1 << MemoryManager::pagebits);
-    //  inst = ((uint8*) page->read) + (newpc & MemoryManager::pagemask);
+    //  instpage = ((uint8_t*) page->read);
+    //  instbase = -((uint8_t*) page->read) + (newpc & ~MemoryManager::pagemask
+    //  & 0xffff);
+    //  instlim = ((uint8_t*) page->read) + (1 << MemoryManager::pagebits);
+    //  inst = ((uint8_t*) page->read) + (newpc & MemoryManager::pagemask);
         mov INSTPAGE, edx
         
         mov ecx, INST
@@ -259,8 +259,8 @@ static void __declspec(naked) SetPC() {
     indirect:
         // instruction is not on memory
         //  instbase = instlim = 0;
-        //  instpage = (uint8*) ~0;
-        //  inst = (uint8*) newpc;
+        //  instpage = (uint8_t*) ~0;
+        //  inst = (uint8_t*) newpc;
         or edx,-1
         xor ecx,ecx
         mov INSTPAGE,edx
@@ -414,7 +414,7 @@ static void __declspec(naked) Fetcher8() {
 //  ret:    edx     data(sign extended)
 //  uses:   ecx, edx
 //
-//  equiv:  edx = (int8) MemoryManager::Read8(PC++)
+//  equiv:  edx = (int8_t) MemoryManager::Read8(PC++)
 //
 static void __declspec(naked) Fetcher8sx() {
   __asm {
@@ -5193,7 +5193,7 @@ void IOCALL Z80_x86::Reset(uint, uint) {
   memset(&reg, 0, sizeof(reg));
 
   inst = instbase = instlim = 0;
-  instpage = (uint8*)~0;
+  instpage = (uint8_t*)~0;
   intr = 0;
   waitstate = 0;
   execcount = 0;
@@ -5223,7 +5223,7 @@ int Z80_x86::GetCCount() {
 // ---------------------------------------------------------------------------
 //  ó‘Ô•Û‘¶
 //
-bool IFCALL Z80_x86::SaveStatus(uint8* s) {
+bool IFCALL Z80_x86::SaveStatus(uint8_t* s) {
   CPUState* status = (CPUState*)s;
   status->rev = ssrev;
   reg.pc = GetPC();
@@ -5241,7 +5241,7 @@ bool IFCALL Z80_x86::SaveStatus(uint8* s) {
 // ---------------------------------------------------------------------------
 //  ó‘Ô•œŒ³
 //
-bool IFCALL Z80_x86::LoadStatus(const uint8* s) {
+bool IFCALL Z80_x86::LoadStatus(const uint8_t* s) {
   const CPUState* status = (const CPUState*)s;
   if (status->rev != ssrev)
     return false;
@@ -5253,10 +5253,10 @@ bool IFCALL Z80_x86::LoadStatus(const uint8* s) {
   waitstate = status->waitstate;
   execcount = status->execcount;
 
-  inst = (uint8*)reg.pc;
-  instbase = (uint8*)0;
-  instlim = (uint8*)0;
-  instpage = (uint8*)~0;
+  inst = (uint8_t*)reg.pc;
+  instbase = (uint8_t*)0;
+  instlim = (uint8_t*)0;
+  instpage = (uint8_t*)~0;
   return true;
 }
 

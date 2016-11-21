@@ -41,7 +41,7 @@ class Memory : public Device, public IGetMemoryBank {
   enum IDIn { in32 = 0, in5c, in70, in71, ine2, ine3, in33 };
   union quadbyte {
     uint32_t pack;
-    uint8 byte[4];
+    uint8_t byte[4];
   };
   enum ROM { n88 = 0, n88e = 0x8000, n80 = 0x10000, romsize = 0x18000 };
 
@@ -80,18 +80,18 @@ class Memory : public Device, public IGetMemoryBank {
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   void ApplyConfig(const Config* cfg);
-  uint8* GetRAM() { return ram; }
-  uint8* GetTVRAM() { return tvram; }
+  uint8_t* GetRAM() { return ram; }
+  uint8_t* GetTVRAM() { return tvram; }
   quadbyte* GetGVRAM() { return gvram; }
-  uint8* GetROM() { return rom; }
-  uint8* GetDirtyFlag() { return dirty; }
+  uint8_t* GetROM() { return rom; }
+  uint8_t* GetDirtyFlag() { return dirty; }
 
   uint IFCALL GetRdBank(uint addr);
   uint IFCALL GetWrBank(uint addr);
 
   uint IFCALL GetStatusSize();
-  bool IFCALL LoadStatus(const uint8* status);
-  bool IFCALL SaveStatus(uint8* status);
+  bool IFCALL LoadStatus(const uint8_t* status);
+  bool IFCALL SaveStatus(uint8_t* status);
   bool IsCDBIOSReady() { return !!cdbios; }
 
   bool Init(MemoryManager* mgr, IOBus* bus, CRTC* crtc, int* waittbl);
@@ -129,21 +129,21 @@ class Memory : public Device, public IGetMemoryBank {
     ssrev = 2,  // Status ÇçXêVéûÇ…ëùÇ‚Ç∑Ç±Ç∆
   };
   struct Status {
-    uint8 rev;
-    uint8 p31, p32, p33, p34, p35, p40, p5x;
-    uint8 p70, p71, p99, pe2, pe3, pf0;
+    uint8_t rev;
+    uint8_t p31, p32, p33, p34, p35, p40, p5x;
+    uint8_t p70, p71, p99, pe2, pe3, pf0;
     quadbyte alureg;
 
-    uint8 ram[0x10000];
-    uint8 tvram[0x1000];
-    uint8 gvram[3][0x4000];
-    uint8 eram[1];
+    uint8_t ram[0x10000];
+    uint8_t tvram[0x1000];
+    uint8_t gvram[3][0x4000];
+    uint8_t eram[1];
   };
 
   bool InitMemory();
   bool LoadROM();
-  bool LoadROMImage(uint8* at, const char* file, int length);
-  bool LoadOptROM(const char* file, uint8*& rom, int length);
+  bool LoadROMImage(uint8_t* at, const char* file, int length);
+  bool LoadOptROM(const char* file, uint8_t*& rom, int length);
   void SetWait();
   void SetWaits(uint, uint, uint);
   void SelectJisyo();
@@ -159,7 +159,7 @@ class Memory : public Device, public IGetMemoryBank {
   void UpdateN80G();
   void SelectGVRAM(uint top);
   void SelectALU(uint top);
-  void SetRAMPattern(uint8* ram, uint length);
+  void SetRAMPattern(uint8_t* ram, uint length);
 
   uint GetHiBank(uint addr);
 
@@ -168,15 +168,15 @@ class Memory : public Device, public IGetMemoryBank {
   int* waits;
   IOBus* bus;
   CRTC* crtc;
-  uint8* rom;
-  uint8* ram;
-  uint8* eram;
-  uint8* tvram;
-  uint8* dicrom;       // é´èëROM
-  uint8* cdbios;       // CD-ROM BIOS ROM
-  uint8* n80rom;       // N80-BASIC ROM
-  uint8* n80v2rom;     // N80SR
-  uint8* erom[8 + 1];  // ägí£ ROM
+  uint8_t* rom;
+  uint8_t* ram;
+  uint8_t* eram;
+  uint8_t* tvram;
+  uint8_t* dicrom;       // é´èëROM
+  uint8_t* cdbios;       // CD-ROM BIOS ROM
+  uint8_t* n80rom;       // N80-BASIC ROM
+  uint8_t* n80v2rom;     // N80SR
+  uint8_t* erom[8 + 1];  // ägí£ ROM
 
   uint port31, port32, port33, port34, port35, port40, port5x;
   uint port99, txtwnd, port71, porte2, porte3, portf0;
@@ -191,15 +191,15 @@ class Memory : public Device, public IGetMemoryBank {
   bool n80srmode;
   uint erambanks;
   uint neweram;
-  uint8* r00;
-  uint8* r60;
-  uint8* w00;
-  uint8* rc0;
+  uint8_t* r00;
+  uint8_t* r60;
+  uint8_t* w00;
+  uint8_t* rc0;
   quadbyte alureg;
   quadbyte maskr, maski, masks, aluread;
 
   quadbyte gvram[0x4000];
-  uint8 dirty[0x400];
+  uint8_t dirty[0x400];
 
   static const WaitDesc waittable[48];
 

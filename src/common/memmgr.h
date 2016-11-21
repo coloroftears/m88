@@ -68,7 +68,7 @@ class MemoryManagerBase {
   uint npages;
   bool ownpages;
 
-  uint8* priority;
+  uint8_t* priority;
   LocalSpace lsp[ndevices];
 };
 
@@ -79,7 +79,7 @@ class ReadMemManager : public MemoryManagerBase {
   typedef uint(MEMCALL* RdFunc)(void* inst, uint addr);
 
   bool Init(uint sas, Page* pages = 0);
-  bool AllocR(uint pid, uint addr, uint length, uint8* ptr);
+  bool AllocR(uint pid, uint addr, uint length, uint8_t* ptr);
   bool AllocR(uint pid, uint addr, uint length, RdFunc ptr);
   bool ReleaseR(uint pid, uint addr, uint length);
   uint Read8(uint addr);
@@ -97,7 +97,7 @@ class WriteMemManager : public MemoryManagerBase {
 
  public:
   bool Init(uint sas, Page* pages = 0);
-  bool AllocW(uint pid, uint addr, uint length, uint8* ptr);
+  bool AllocW(uint pid, uint addr, uint length, uint8_t* ptr);
   bool AllocW(uint pid, uint addr, uint length, WrFunc ptr);
   bool ReleaseW(uint pid, uint addr, uint length);
   void Write8(uint addr, uint data);
@@ -127,7 +127,7 @@ class MemoryManager : public IMemoryManager,
   bool IFCALL Disconnect(uint pid);
   bool Disconnect(void* inst);
 
-  bool IFCALL AllocR(uint pid, uint addr, uint length, uint8* ptr) {
+  bool IFCALL AllocR(uint pid, uint addr, uint length, uint8_t* ptr) {
     return ReadMemManager::AllocR(pid, addr, length, ptr);
   }
   bool IFCALL AllocR(uint pid, uint addr, uint length, RdFunc ptr) {
@@ -140,7 +140,7 @@ class MemoryManager : public IMemoryManager,
   uint IFCALL Read8P(uint pid, uint addr) {
     return ReadMemManager::Read8P(pid, addr);
   }
-  bool IFCALL AllocW(uint pid, uint addr, uint length, uint8* ptr) {
+  bool IFCALL AllocW(uint pid, uint addr, uint length, uint8_t* ptr) {
     return WriteMemManager::AllocW(pid, addr, length, ptr);
   }
   bool IFCALL AllocW(uint pid, uint addr, uint length, WrFunc ptr) {
@@ -193,7 +193,7 @@ inline bool MemoryManagerBase::Alloc(uint pid,
   assert(ls.inst);
   assert(page < top);
 
-  uint8* pri = priority + page * ndevices;
+  uint8_t* pri = priority + page * ndevices;
   for (; page < top; page++, pri += ndevices) {
     // 現在のページの owner が自分よりも低い優先度を持つ場合
     // priority の書き換えを行う
@@ -227,7 +227,7 @@ inline bool MemoryManagerBase::Release(uint pid, uint page, uint top) {
     LocalSpace& ls = lsp[pid];
     assert(ls.inst);
 
-    uint8* pri = priority + page * ndevices;
+    uint8_t* pri = priority + page * ndevices;
     for (; page < top; page++, pri += ndevices) {
       // 自分が書き換えを所望するページならば
       if (pri[pid] == pid) {
@@ -253,7 +253,7 @@ inline bool MemoryManagerBase::Release(uint pid, uint page, uint top) {
 inline bool ReadMemManager::AllocR(uint pid,
                                    uint addr,
                                    uint length,
-                                   uint8* ptr) {
+                                   uint8_t* ptr) {
   assert((intpointer(ptr) & idbit) == 0);
   uint page = addr >> pagebits;
   uint top = (addr + length + pagemask) >> pagebits;
@@ -286,7 +286,7 @@ inline bool ReadMemManager::ReleaseR(uint pid, uint addr, uint length) {
 inline bool WriteMemManager::AllocW(uint pid,
                                     uint addr,
                                     uint length,
-                                    uint8* ptr) {
+                                    uint8_t* ptr) {
   assert((intpointer(ptr) & idbit) == 0);
   uint page = addr >> pagebits;
   uint top = (addr + length + pagemask) >> pagebits;
@@ -321,12 +321,12 @@ inline uint ReadMemManager::Read8(uint addr) {
   Page& page = pages[addr >> pagebits];
 #ifdef PTR_IDBIT
   if (!(page.ptr & idbit))
-    return ((uint8*)page.ptr)[addr & pagemask];
+    return ((uint8_t*)page.ptr)[addr & pagemask];
   else
     return (*RdFunc(page.ptr & ~idbit))(page.inst, addr);
 #else
   if (!page.func)
-    return ((uint8*)page.ptr)[addr & pagemask];
+    return ((uint8_t*)page.ptr)[addr & pagemask];
   else
     return (*RdFunc(page.ptr))(page.inst, addr);
 #endif
@@ -339,12 +339,12 @@ inline void WriteMemManager::Write8(uint addr, uint data) {
   Page& page = pages[addr >> pagebits];
 #ifdef PTR_IDBIT
   if (!(page.ptr & idbit))
-    ((uint8*)page.ptr)[addr & pagemask] = data;
+    ((uint8_t*)page.ptr)[addr & pagemask] = data;
   else
     (*WrFunc(page.ptr & ~idbit))(page.inst, addr, data);
 #else
   if (!page.func)
-    ((uint8*)page.ptr)[addr & pagemask] = data;
+    ((uint8_t*)page.ptr)[addr & pagemask] = data;
   else
     (*WrFunc(page.ptr))(page.inst, addr, data);
 #endif

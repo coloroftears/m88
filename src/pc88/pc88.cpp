@@ -192,7 +192,7 @@ void PC88::UpdateScreen(bool refresh) {
     //      if (dstat & (Draw::readytodraw | Draw::shouldrefresh))
     {
       int bpl;
-      uint8* image;
+      uint8_t* image;
 
       //          crtc->SetSize();
       if (draw->Lock(&image, &bpl)) {

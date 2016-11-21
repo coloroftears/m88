@@ -611,7 +611,7 @@ uint IFCALL CDIF::GetStatusSize() {
 // ---------------------------------------------------------------------------
 //  ó‘Ô•Û‘¶
 //
-bool IFCALL CDIF::SaveStatus(uint8* s) {
+bool IFCALL CDIF::SaveStatus(uint8_t* s) {
   Snapshot* ss = (Snapshot*)s;
 
   ss->rev = ssrev;
@@ -631,7 +631,7 @@ bool IFCALL CDIF::SaveStatus(uint8* s) {
   return true;
 }
 
-bool IFCALL CDIF::LoadStatus(const uint8* s) {
+bool IFCALL CDIF::LoadStatus(const uint8_t* s) {
   const Snapshot* ss = (const Snapshot*)s;
   if (ss->rev != ssrev)
     return false;

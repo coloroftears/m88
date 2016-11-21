@@ -15,9 +15,9 @@
 namespace D88 {
 struct ImageHeader {
   char title[17];
-  uint8 reserved[9];
-  uint8 readonly;
-  uint8 disktype;
+  uint8_t reserved[9];
+  uint8_t readonly;
+  uint8_t disktype;
   uint32_t disksize;
   uint32_t trackptr[164];
 };
@@ -25,10 +25,10 @@ struct ImageHeader {
 struct SectorHeader {
   FloppyDisk::IDR id;
   uint16_t sectors;
-  uint8 density;
-  uint8 deleted;
-  uint8 status;
-  uint8 reserved[5];
+  uint8_t density;
+  uint8_t deleted;
+  uint8_t status;
+  uint8_t reserved[5];
   uint16_t length;
 };
 }

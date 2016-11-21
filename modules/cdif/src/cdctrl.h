@@ -30,10 +30,10 @@ class CDControl {
   };
 
   struct Time {
-    uint8 track;
-    uint8 min;
-    uint8 sec;
-    uint8 frame;
+    uint8_t track;
+    uint8_t min;
+    uint8_t sec;
+    uint8_t frame;
   };
 
   typedef void (Device::*DONEFUNC)(int result);

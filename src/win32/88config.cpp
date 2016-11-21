@@ -86,7 +86,8 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   }
 
   if (LoadConfigEntry(inifile, "Sound", &n, 2, applydefault)) {
-    static const uint16_t srate[] = {0, 11025, 22050, 44100, 44100, 48000, 55467};
+    static const uint16_t srate[] = {0,     11025, 22050, 44100,
+                                     44100, 48000, 55467};
     if (n < 7)
       cfg->sound = srate[n];
     else

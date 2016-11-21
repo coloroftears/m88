@@ -61,7 +61,7 @@ class WinKeyIF : public Device {
     pc80key,
   };
   struct Key {
-    uint8 k, f;
+    uint8_t k, f;
   };
 
   uint GetKey(const Key* key);
@@ -79,8 +79,8 @@ class WinKeyIF : public Device {
   HANDLE hevent;
   uint basicmode;
   int keyport[16];
-  uint8 keyboard[256];
-  uint8 keystate[512];
+  uint8_t keyboard[256];
+  uint8_t keystate[512];
 
  private:
   static const Descriptor descriptor;

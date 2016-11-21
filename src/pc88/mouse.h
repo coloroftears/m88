@@ -44,7 +44,7 @@ class Mouse : public Device {
  private:
   PC88* pc;
   POINT move;
-  uint8 port40;
+  uint8_t port40;
   bool joymode;
   int phase;
   int32_t triggertime;

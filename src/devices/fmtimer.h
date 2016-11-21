@@ -27,12 +27,12 @@ class Timer {
   void SetTimerB(uint data);
   void SetTimerControl(uint data);
 
-  uint8 status;
-  uint8 regtc;
+  uint8_t status;
+  uint8_t regtc;
 
  private:
   virtual void TimerA() {}
-  uint8 regta[2];
+  uint8_t regta[2];
 
   int32_t timera, timera_count;
   int32_t timerb, timerb_count;

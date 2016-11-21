@@ -44,8 +44,8 @@ class Beep : public Device, public ISoundSource {
 
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
   uint IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8* status);
-  bool IFCALL LoadStatus(const uint8* status);
+  bool IFCALL SaveStatus(uint8_t* status);
+  bool IFCALL LoadStatus(const uint8_t* status);
 
   void IOCALL Out40(uint, uint data);
 
@@ -54,8 +54,8 @@ class Beep : public Device, public ISoundSource {
     ssrev = 1,
   };
   struct Status {
-    uint8 rev;
-    uint8 port40;
+    uint8_t rev;
+    uint8_t port40;
     uint32_t prevtime;
   };
 

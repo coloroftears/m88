@@ -264,7 +264,7 @@ uint IOCALL WinKeyIF::In(uint port) {
         LOG3("In(13)   = %.2x %.2x %.2x\n", r, keystate[0xf4], keystate[0x1f4]);
       }
     }
-    return uint8(r);
+    return uint8_t(r);
   } else
     return 0xff;
 }

@@ -31,7 +31,7 @@
 //  void Reset()
 //      リセットする
 //
-//  void SetReg(uint reg, uint8 data)
+//  void SetReg(uint reg, uint8_t data)
 //      レジスタ reg に data を書き込む
 //
 //  uint GetReg(uint reg)
@@ -64,7 +64,7 @@ class PSG {
   void SetChannelMask(int c);
 
   void Reset();
-  void SetReg(uint regnum, uint8 data);
+  void SetReg(uint regnum, uint8_t data);
   uint GetReg(uint regnum) { return reg[regnum & 0x0f]; }
 
  protected:
@@ -72,7 +72,7 @@ class PSG {
   void MakeEnvelopTable();
   static void StoreSample(Sample& dest, int32_t data);
 
-  uint8 reg[16];
+  uint8_t reg[16];
 
   const uint* envelop;
   uint olevel[3];

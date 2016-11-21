@@ -39,7 +39,7 @@ class OPNMonitor : public WinMonitor, public ISoundSource {
   bool IFCALL Connect(ISoundControl* sc);
 
   PC8801::OPNIF* opn;
-  const uint8* regs;
+  const uint8_t* regs;
 
   ISoundControl* soundcontrol;
 

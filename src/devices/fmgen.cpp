@@ -36,7 +36,7 @@
 //  Table/etc
 //
 namespace FM {
-const uint8 Operator::notetable[128] = {
+const uint8_t Operator::notetable[128] = {
     0,  0,  0,  0,  0,  0,  0,  1,  2,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,
     4,  4,  4,  4,  5,  6,  7,  7,  7,  7,  7,  7,  7,  8,  8,  8,  8,  8,  8,
     8,  9,  10, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 13, 14,
@@ -46,7 +46,7 @@ const uint8 Operator::notetable[128] = {
     28, 28, 28, 28, 28, 29, 30, 31, 31, 31, 31, 31, 31, 31,
 };
 
-const int8 Operator::dttable[256] = {
+const int8_t Operator::dttable[256] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   2,   2,   4,
@@ -67,7 +67,7 @@ const int8 Operator::dttable[256] = {
     -44,
 };
 
-const int8 Operator::decaytable1[64][8] = {
+const int8_t Operator::decaytable1[64][8] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  0,  1,
@@ -100,7 +100,7 @@ const int8 Operator::decaytable1[64][8] = {
 const int Operator::decaytable2[16] = {
     1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2047, 2047, 2047, 2047, 2047};
 
-const int8 Operator::attacktable[64][8] = {
+const int8_t Operator::attacktable[64][8] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4,  4,  4,
     4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
     4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  -1, 4,  4,  4,  -1, 4,
@@ -187,7 +187,7 @@ void MakeLFOTable() {
   //  1.000963
   //  lfofref[level * max * wave];
   //  pre = lfofref[level][pms * wave >> 8];
-  static const uint8 amt[2][4] = {
+  static const uint8_t amt[2][4] = {
       {31, 6, 4, 3},  // OPNA
       {31, 2, 1, 0},  // OPM
   };
@@ -634,7 +634,7 @@ inline FM::ISample FM::Operator::CalcFBL(uint fb) {
 // ---------------------------------------------------------------------------
 //  4-op Channel
 //
-const uint8 Channel4::fbtable[8] = {31, 7, 6, 5, 4, 3, 2, 1};
+const uint8_t Channel4::fbtable[8] = {31, 7, 6, 5, 4, 3, 2, 1};
 int Channel4::kftable[64];
 
 bool Channel4::tablehasmade = false;
@@ -733,7 +733,7 @@ void Channel4::KeyControl(uint key) {
 
 //  ƒAƒ‹ƒSƒŠƒYƒ€‚ğİ’è
 void Channel4::SetAlgorithm(uint algo) {
-  static const uint8 table1[8][6] = {
+  static const uint8_t table1[8][6] = {
       {0, 1, 1, 2, 2, 3}, {1, 0, 0, 1, 1, 2}, {1, 1, 1, 0, 0, 2},
       {0, 1, 2, 1, 1, 2}, {0, 1, 2, 2, 2, 1}, {0, 1, 0, 1, 0, 1},
       {0, 1, 2, 1, 2, 1}, {1, 0, 1, 0, 1, 0},

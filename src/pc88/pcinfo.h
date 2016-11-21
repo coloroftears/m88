@@ -26,7 +26,7 @@ struct DeviceInfo {
   void (*outport)(void*, uint port, uint data);
   uint (*inport)(void*, uint port);
   void (*eventproc)(void*, uint arg);
-  uint (*snapshot)(void*, uint8* data, bool save);
+  uint (*snapshot)(void*, uint8_t* data, bool save);
 };
 
 struct PCInfo {
@@ -34,8 +34,8 @@ struct PCInfo {
 
   int size;
   // DMA
-  int (*DMARead)(void*, uint bank, uint8* data, uint nbytes);
-  int (*DMAWrite)(void*, uint bank, uint8* data, uint nbytes);
+  int (*DMARead)(void*, uint bank, uint8_t* data, uint nbytes);
+  int (*DMAWrite)(void*, uint bank, uint8_t* data, uint nbytes);
 
   // Page
   bool (*MemAcquire)(void*,

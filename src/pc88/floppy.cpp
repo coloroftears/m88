@@ -129,7 +129,7 @@ bool FloppyDisk::Resize(Sector* sec, uint newsize) {
 
   // sector Ž©g‚Ì resize
   delete[] sec->image;
-  sec->image = new uint8[newsize];
+  sec->image = new uint8_t[newsize];
   sec->size = newsize;
 
   if (!sec->image) {
@@ -192,7 +192,7 @@ bool FloppyDisk::FormatTrack(int nsec, int secsize) {
       newsector->next = cursector;
       newsector->size = secsize;
       if (secsize) {
-        newsector->image = new uint8[secsize];
+        newsector->image = new uint8_t[secsize];
         if (!newsector->image) {
           newsector->size = 0;
           return false;
@@ -217,7 +217,7 @@ FloppyDisk::Sector* FloppyDisk::AddSector(int size) {
   if (!newsector)
     return 0;
   if (size) {
-    newsector->image = new uint8[size];
+    newsector->image = new uint8_t[size];
     if (!newsector->image) {
       delete newsector;
       return 0;

@@ -96,10 +96,10 @@ bool CRTC::Init(IOBus* b, Scheduler* s, PD8257* d, Draw* _draw) {
   delete[] vram[0];
   delete[] pcgram;
 
-  font = new uint8[0x8000 + 0x10000];
-  fontrom = new uint8[0x800];
-  vram[0] = new uint8[0x1e00 + 0x1e00 + 0x1400];
-  pcgram = new uint8[0x400];
+  font = new uint8_t[0x8000 + 0x10000];
+  fontrom = new uint8_t[0x800];
+  vram[0] = new uint8_t[0x1e00 + 0x1e00 + 0x1400];
+  pcgram = new uint8_t[0x400];
 
   if (!font || !fontrom || !vram[0] || !pcgram) {
     Error::SetError(Error::OutOfMemory);
@@ -368,7 +368,7 @@ bool CRTC::LoadFontFile() {
 
   if (file.Open("HIRAFONT.ROM", FileIO::readonly)) {
     delete[] hirarom;
-    hirarom = new uint8[0x200];
+    hirarom = new uint8_t[0x200];
     file.Seek(0, FileIO::begin);
     file.Read(hirarom, 0x200);
   }
@@ -400,14 +400,14 @@ void CRTC::CreateKanaFont() {
   CreateTFont((kanamode && hirarom) ? hirarom : fontrom + 8 * 0xa0, 0xa0, 0x40);
 }
 
-void CRTC::CreateTFont(const uint8* src, int idx, int num) {
-  uint8* dest = font + 64 * idx;
-  uint8* destw = font + 0x8000 + 128 * idx;
+void CRTC::CreateTFont(const uint8_t* src, int idx, int num) {
+  uint8_t* dest = font + 64 * idx;
+  uint8_t* destw = font + 0x8000 + 128 * idx;
 
   for (uint i = 0; i < num * 8; i++) {
-    uint8 d = *src++;
+    uint8_t d = *src++;
     for (uint j = 0; j < 8; j++, d *= 2) {
-      uint8 b = d & 0x80 ? TEXT_SET : TEXT_RES;
+      uint8_t b = d & 0x80 ? TEXT_SET : TEXT_RES;
       *dest++ = b;
       *destw++ = b;
       *destw++ = b;
@@ -416,11 +416,11 @@ void CRTC::CreateTFont(const uint8* src, int idx, int num) {
 }
 
 void CRTC::ModifyFont(uint off, uint d) {
-  uint8* dest = font + 8 * off;
-  uint8* destw = font + 0x8000 + 16 * off;
+  uint8_t* dest = font + 8 * off;
+  uint8_t* destw = font + 0x8000 + 16 * off;
 
   for (uint j = 0; j < 8; j++, d *= 2) {
-    uint8 b = d & 0x80 ? TEXT_SET : TEXT_RES;
+    uint8_t b = d & 0x80 ? TEXT_SET : TEXT_RES;
     *dest++ = b;
     *destw++ = b;
     *destw++ = b;
@@ -432,9 +432,9 @@ void CRTC::ModifyFont(uint off, uint d) {
 //  セミグラフィックス用フォントを作成する
 //
 void CRTC::CreateGFont() {
-  uint8* dest = font + 0x4000;
-  uint8* destw = font + 0x10000;
-  const uint8 order[8] = {0x01, 0x10, 0x02, 0x20, 0x04, 0x40, 0x08, 0x80};
+  uint8_t* dest = font + 0x4000;
+  uint8_t* destw = font + 0x10000;
+  const uint8_t order[8] = {0x01, 0x10, 0x02, 0x20, 0x04, 0x40, 0x08, 0x80};
 
   for (int i = 0; i < 256; i++) {
     for (uint j = 0; j < 8; j += 2) {
@@ -490,7 +490,7 @@ void IOCALL CRTC::ExpandLine(uint) {
 }
 
 int CRTC::ExpandLineSub() {
-  uint8* dest;
+  uint8_t* dest;
   dest = vram[bank] + linesize * column;
   if (!(mode & skipline) || !(column & 1)) {
     if (status & 0x10) {
@@ -556,7 +556,7 @@ void CRTC::SetSize() {}
 //  画面をイメージに展開する
 //  region  更新領域
 //
-void CRTC::UpdateScreen(uint8* image,
+void CRTC::UpdateScreen(uint8_t* image,
                         int _bpl,
                         Draw::Region& region,
                         bool ref) {
@@ -585,7 +585,7 @@ void CRTC::UpdateScreen(uint8* image,
 
   //  statusdisplay.Show(10, 0, "CRTC: %.2x %.2x %.2x", status, mode, attr);
   if (status & 0x10) {
-    static const uint8 ctype[5] = {0, underline, underline, reverse, reverse};
+    static const uint8_t ctype[5] = {0, underline, underline, reverse, reverse};
 
     if ((cursor_type & 1) &&
         ((frametime <= blinkrate / 4) ||
@@ -609,7 +609,7 @@ void CRTC::UpdateScreen(uint8* image,
 // ---------------------------------------------------------------------------
 //  テキスト画面消去
 //
-void CRTC::ClearText(uint8* dest) {
+void CRTC::ClearText(uint8_t* dest) {
   uint y;
 
   //  screenheight = 300;
@@ -648,11 +648,11 @@ void CRTC::ClearText(uint8* dest) {
 // ---------------------------------------------------------------------------
 //  画面展開
 //
-void CRTC::ExpandImage(uint8* image, Draw::Region& region) {
+void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
   static const packed colorpattern[8] = {PACK(0), PACK(1), PACK(2), PACK(3),
                                          PACK(4), PACK(5), PACK(6), PACK(7)};
 
-  uint8 attrflag[128];
+  uint8_t attrflag[128];
 
   int top = 100;
   int bottom = -1;
@@ -663,9 +663,9 @@ void CRTC::ExpandImage(uint8* image, Draw::Region& region) {
 
   //  LOG1("ExpandImage Bank:%d\n", bank);
   //  image += y * linestep;
-  uint8* src = vram[bank];         // + y * linesize;
-  uint8* cache = vram[bank ^= 1];  // + y * linesize;
-  uint8* cache_attr = attrcache;   // + y * width;
+  uint8_t* src = vram[bank];         // + y * linesize;
+  uint8_t* cache = vram[bank ^= 1];  // + y * linesize;
+  uint8_t* cache_attr = attrcache;   // + y * width;
 
   uint left = 999;
   int right = -1;
@@ -678,7 +678,7 @@ void CRTC::ExpandImage(uint8* image, Draw::Region& region) {
       int rightl = -1;
       if (widefont) {
         for (uint x = 0; x < width; x += 2) {
-          uint8 a = attrflag[x];
+          uint8_t a = attrflag[x];
           if ((src[x] ^ cache[x]) | (a ^ cache_attr[x])) {
             pat_col = colorpattern[(a >> 5) & 7];
             cache_attr[x] = a;
@@ -690,7 +690,7 @@ void CRTC::ExpandImage(uint8* image, Draw::Region& region) {
         }
       } else {
         for (uint x = 0; x < width; x++) {
-          uint8 a = attrflag[x];
+          uint8_t a = attrflag[x];
           //                  LOG1("%.2x ", a);
           if ((src[x] ^ cache[x]) | (a ^ cache_attr[x])) {
             pat_col = colorpattern[(a >> 5) & 7];
@@ -724,7 +724,7 @@ void CRTC::ExpandImage(uint8* image, Draw::Region& region) {
 // ---------------------------------------------------------------------------
 //  アトリビュート情報を展開
 //
-void CRTC::ExpandAttributes(uint8* dest, const uint8* src, uint y) {
+void CRTC::ExpandAttributes(uint8_t* dest, const uint8_t* src, uint y) {
   int i;
 
   if (attrperline == 0) {
@@ -759,7 +759,7 @@ void CRTC::ExpandAttributes(uint8* dest, const uint8* src, uint y) {
 // ---------------------------------------------------------------------------
 //  アトリビュートコードを内部のフラグに変換
 //
-void CRTC::ChangeAttr(uint8 code) {
+void CRTC::ChangeAttr(uint8_t code) {
   if (mode & color) {
     if (code & 0x8) {
       attr = (attr & 0x0f) | (code & 0xf0);
@@ -780,21 +780,21 @@ void CRTC::ChangeAttr(uint8 code) {
 // ---------------------------------------------------------------------------
 //  フォントのアドレスを取得
 //
-inline const uint8* CRTC::GetFont(uint c) {
+inline const uint8_t* CRTC::GetFont(uint c) {
   return font + c * 64;
 }
 
 // ---------------------------------------------------------------------------
 //  フォント(40文字)のアドレスを取得
 //
-inline const uint8* CRTC::GetFontW(uint c) {
+inline const uint8_t* CRTC::GetFontW(uint c) {
   return font + 0x8000 + c * 128;
 }
 
 // ---------------------------------------------------------------------------
 //  テキスト表示
 //
-inline void CRTC::PutChar(packed* dest, uint8 ch, uint8 attr) {
+inline void CRTC::PutChar(packed* dest, uint8_t ch, uint8_t attr) {
   const packed* src =
       (const packed*)GetFont(((attr << 4) & 0x100) + (attr & secret ? 0 : ch));
 
@@ -859,7 +859,7 @@ void CRTC::PutReversed(packed* dest, const packed* src) {
 // ---------------------------------------------------------------------------
 //  オーバーライン、アンダーライン表示
 //
-void CRTC::PutLineNormal(packed* dest, uint8 attr) {
+void CRTC::PutLineNormal(packed* dest, uint8_t attr) {
   packed d = pat_col | TEXT_SETP;
   if (attr & overline)  // overline
   {
@@ -867,20 +867,20 @@ void CRTC::PutLineNormal(packed* dest, uint8 attr) {
     DRAW(dest[1], d);
   }
   if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8*)dest) + underlineptr);
+    dest = (packed*)(((uint8_t*)dest) + underlineptr);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
 }
 
-void CRTC::PutLineReversed(packed* dest, uint8 attr) {
+void CRTC::PutLineReversed(packed* dest, uint8_t attr) {
   packed d = (pat_col | TEXT_SETP) ^ pat_rev;
   if (attr & overline) {
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
   if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8*)dest) + underlineptr);
+    dest = (packed*)(((uint8_t*)dest) + underlineptr);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
@@ -889,7 +889,7 @@ void CRTC::PutLineReversed(packed* dest, uint8 attr) {
 // ---------------------------------------------------------------------------
 //  テキスト表示(40 文字モード)
 //
-inline void CRTC::PutCharW(packed* dest, uint8 ch, uint8 attr) {
+inline void CRTC::PutCharW(packed* dest, uint8_t ch, uint8_t attr) {
   const packed* src =
       (const packed*)GetFontW(((attr << 4) & 0x100) + (attr & secret ? 0 : ch));
 
@@ -970,7 +970,7 @@ void CRTC::PutReversedW(packed* dest, const packed* src) {
 // ---------------------------------------------------------------------------
 //  オーバーライン、アンダーライン表示
 //
-void CRTC::PutLineNormalW(packed* dest, uint8 attr) {
+void CRTC::PutLineNormalW(packed* dest, uint8_t attr) {
   packed d = pat_col | TEXT_SETP;
   if (attr & overline)  // overline
   {
@@ -980,7 +980,7 @@ void CRTC::PutLineNormalW(packed* dest, uint8 attr) {
     DRAW(dest[3], d);
   }
   if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8*)dest) + underlineptr);
+    dest = (packed*)(((uint8_t*)dest) + underlineptr);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
     DRAW(dest[2], d);
@@ -988,7 +988,7 @@ void CRTC::PutLineNormalW(packed* dest, uint8 attr) {
   }
 }
 
-void CRTC::PutLineReversedW(packed* dest, uint8 attr) {
+void CRTC::PutLineReversedW(packed* dest, uint8_t attr) {
   packed d = (pat_col | TEXT_SETP) ^ pat_rev;
   if (attr & overline) {
     DRAW(dest[0], d);
@@ -997,7 +997,7 @@ void CRTC::PutLineReversedW(packed* dest, uint8 attr) {
     DRAW(dest[3], d);
   }
   if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8*)dest) + underlineptr);
+    dest = (packed*)(((uint8_t*)dest) + underlineptr);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
     DRAW(dest[2], d);
@@ -1082,7 +1082,7 @@ uint IFCALL CRTC::GetStatusSize() {
   return sizeof(Status);
 }
 
-bool IFCALL CRTC::SaveStatus(uint8* s) {
+bool IFCALL CRTC::SaveStatus(uint8_t* s) {
   LOG0("*** Save Status\n");
   Status* st = (Status*)s;
 
@@ -1104,7 +1104,7 @@ bool IFCALL CRTC::SaveStatus(uint8* s) {
   return true;
 }
 
-bool IFCALL CRTC::LoadStatus(const uint8* s) {
+bool IFCALL CRTC::LoadStatus(const uint8_t* s) {
   LOG0("*** Load Status\n");
   const Status* st = (const Status*)s;
   if (st->rev < 1 || ssrev < st->rev)

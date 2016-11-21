@@ -129,14 +129,14 @@ uint IFCALL Beep::GetStatusSize() {
   return sizeof(Status);
 }
 
-bool IFCALL Beep::SaveStatus(uint8* s) {
+bool IFCALL Beep::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
   st->rev = ssrev;
   st->port40 = port40;
   return true;
 }
 
-bool IFCALL Beep::LoadStatus(const uint8* s) {
+bool IFCALL Beep::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
   if (st->rev != ssrev)
     return false;

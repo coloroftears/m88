@@ -131,7 +131,7 @@ int ASPI::ExecuteSCSICommand(uint ha,
 
   srb.senselen = SENSE_LEN;
   if (dir & (SRB_DIR_IN | SRB_DIR_OUT)) {
-    srb.dataptr = (uint8*)data;
+    srb.dataptr = (uint8_t*)data;
     srb.datalen = datalen;
   }
   srb.CDBlen = cdblen;

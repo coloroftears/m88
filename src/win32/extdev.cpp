@@ -52,7 +52,7 @@ bool ExternalDevice::Init(const char* dllname,
   SetID(devinfo.id);
 
   if (devinfo.size < sizeof(DeviceInfo))
-    memset(((uint8*)&devinfo) + devinfo.size, 0,
+    memset(((uint8_t*)&devinfo) + devinfo.size, 0,
            sizeof(DeviceInfo) - devinfo.size);
 
   if (devinfo.outport && devinfo.outporttable) {
@@ -126,7 +126,7 @@ bool ExternalDevice::LoadDLL(const char* dllname) {
 // ---------------------------------------------------------------------------
 //  DMARead
 //
-int ExternalDevice::S_DMARead(void* h, uint b, uint8* d, uint l) {
+int ExternalDevice::S_DMARead(void* h, uint b, uint8_t* d, uint l) {
   ExternalDevice* e = reinterpret_cast<ExternalDevice*>(h);
   return e->dmac->RequestRead(b, d, l);
 }
@@ -134,7 +134,7 @@ int ExternalDevice::S_DMARead(void* h, uint b, uint8* d, uint l) {
 // ---------------------------------------------------------------------------
 //  DMAWrite
 //
-int ExternalDevice::S_DMAWrite(void* h, uint b, uint8* d, uint l) {
+int ExternalDevice::S_DMAWrite(void* h, uint b, uint8_t* d, uint l) {
   ExternalDevice* e = reinterpret_cast<ExternalDevice*>(h);
   return e->dmac->RequestWrite(b, d, l);
 }
@@ -159,9 +159,9 @@ bool ExternalDevice::S_MemAcquire(void* h,
     e->mm->AllocW(e->mid, p, n, (MemoryManager::WrFunc)r);
   } else {
     if (r)
-      e->mm->AllocR(e->mid, p, n, (uint8*)r);
+      e->mm->AllocR(e->mid, p, n, (uint8_t*)r);
     if (w)
-      e->mm->AllocW(e->mid, p, n, (uint8*)w);
+      e->mm->AllocW(e->mid, p, n, (uint8_t*)w);
   }
   return true;
 }
@@ -262,14 +262,14 @@ uint IFCALL ExternalDevice::GetStatusSize() {
   return 0;
 }
 
-bool IFCALL ExternalDevice::SaveStatus(uint8* s) {
+bool IFCALL ExternalDevice::SaveStatus(uint8_t* s) {
   if (devinfo.snapshot)
     return (*devinfo.snapshot)(dev, s, true) != 0;
   return false;
 }
 
-bool IFCALL ExternalDevice::LoadStatus(const uint8* s) {
+bool IFCALL ExternalDevice::LoadStatus(const uint8_t* s) {
   if (devinfo.snapshot)
-    return (*devinfo.snapshot)(dev, const_cast<uint8*>(s), false) != 0;
+    return (*devinfo.snapshot)(dev, const_cast<uint8_t*>(s), false) != 0;
   return false;
 }

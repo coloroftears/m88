@@ -30,8 +30,8 @@ class Calender : public Device {
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   uint IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8* status);
-  bool IFCALL LoadStatus(const uint8* status);
+  bool IFCALL SaveStatus(uint8_t* status);
+  bool IFCALL LoadStatus(const uint8_t* status);
 
   void IOCALL Out10(uint, uint data);
   void IOCALL Out40(uint, uint data);
@@ -41,13 +41,13 @@ class Calender : public Device {
  private:
   enum { ssrev = 1 };
   struct Status {
-    uint8 rev;
+    uint8_t rev;
     bool dataoutmode;
     bool hold;
-    uint8 datain;
-    uint8 strobe;
-    uint8 cmd, scmd, pcmd;
-    uint8 reg[6];
+    uint8_t datain;
+    uint8_t strobe;
+    uint8_t cmd, scmd, pcmd;
+    uint8_t reg[6];
     time_t t;
   };
 
@@ -61,10 +61,10 @@ class Calender : public Device {
 
   bool dataoutmode;
   bool hold;
-  uint8 datain;
-  uint8 strobe;
-  uint8 cmd, scmd, pcmd;
-  uint8 reg[6];
+  uint8_t datain;
+  uint8_t strobe;
+  uint8_t cmd, scmd, pcmd;
+  uint8_t reg[6];
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

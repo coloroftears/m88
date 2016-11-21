@@ -133,13 +133,13 @@ class OPM : public Timer {
   uint32_t noisedelta;
 
   bool interpolation;
-  uint8 lfofreq;
-  uint8 status;
-  uint8 reg01;
+  uint8_t lfofreq;
+  uint8_t status;
+  uint8_t reg01;
 
-  uint8 kc[8];
-  uint8 kf[8];
-  uint8 pan[8];
+  uint8_t kc[8];
+  uint8_t kf[8];
+  uint8_t pan[8];
 
   Channel4 ch[8];
   Chip chip;

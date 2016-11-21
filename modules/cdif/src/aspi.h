@@ -48,13 +48,13 @@ class ASPI {
 };
 
 struct LONGBE {
-  uint8 image[4];
+  uint8_t image[4];
   LONGBE() {}
   LONGBE(uint32_t a) {
-    image[0] = uint8(a >> 24);
-    image[1] = uint8(a >> 16);
-    image[2] = uint8(a >> 8);
-    image[3] = uint8(a);
+    image[0] = uint8_t(a >> 24);
+    image[1] = uint8_t(a >> 16);
+    image[2] = uint8_t(a >> 8);
+    image[3] = uint8_t(a);
   }
   operator uint32_t() {
     return image[3] + image[2] * 0x100ul + image[1] * 0x10000ul +
@@ -63,22 +63,22 @@ struct LONGBE {
 };
 
 struct TRIBE {
-  uint8 image[3];
+  uint8_t image[3];
   TRIBE() {}
   TRIBE(uint a) {
-    image[0] = uint8(a >> 16);
-    image[1] = uint8(a >> 8);
-    image[2] = uint8(a);
+    image[0] = uint8_t(a >> 16);
+    image[1] = uint8_t(a >> 8);
+    image[2] = uint8_t(a);
   }
   operator uint() { return image[2] + image[1] * 0x100 + image[0] * 0x10000; }
 };
 
 struct WORDBE {
-  uint8 image[2];
+  uint8_t image[2];
   WORDBE() {}
   WORDBE(uint a) {
-    image[0] = uint8(a >> 8);
-    image[1] = uint8(a);
+    image[0] = uint8_t(a >> 8);
+    image[1] = uint8_t(a);
   }
   operator uint() { return image[1] + image[0] * 0x100; }
 };

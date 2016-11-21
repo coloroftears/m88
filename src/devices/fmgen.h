@@ -163,11 +163,11 @@ class Operator {
   static Counter rate_table[16];
   static uint32_t multable[4][16];
 
-  static const uint8 notetable[128];
-  static const int8 dttable[256];
-  static const int8 decaytable1[64][8];
+  static const uint8_t notetable[128];
+  static const int8_t dttable[256];
+  static const int8_t decaytable1[64][8];
   static const int decaytable2[16];
-  static const int8 attacktable[64][8];
+  static const int8_t attacktable[64][8];
   static const int ssgenvtable[8][2][3][2];
 
   static uint sinetable[1024];
@@ -215,7 +215,7 @@ class Channel4 {
   }
 
  private:
-  static const uint8 fbtable[8];
+  static const uint8_t fbtable[8];
   uint fb;
   int buf[4];
   int* in[3];   // 各 OP の入力ポインタ

@@ -174,7 +174,7 @@ bool WinCore::SaveShapshot(const char* filename) {
   bool docomp = !!(config.flag2 & Config::compresssnapshot);
 
   uint size = devlist.GetStatusSize();
-  uint8* buf = new uint8[docomp ? size * 129 / 64 + 20 : size];
+  uint8_t* buf = new uint8_t[docomp ? size * 129 / 64 + 20 : size];
   if (!buf)
     return false;
   memset(buf, 0, size);
@@ -204,7 +204,7 @@ bool WinCore::SaveShapshot(const char* filename) {
     ssh.flags = config.flags | (esize < size ? 0x80000000 : 0);
     ssh.flag2 = config.flag2;
     for (uint i = 0; i < 2; i++)
-      ssh.disk[i] = (int8)diskmgr->GetCurrentDisk(i);
+      ssh.disk[i] = (int8_t)diskmgr->GetCurrentDisk(i);
 
     FileIO file;
     if (file.Open(filename, FileIO::create)) {
@@ -259,7 +259,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
 
   // ì«Ç›çûÇ›
 
-  uint8* buf = new uint8[ssh.datasize];
+  uint8_t* buf = new uint8_t[ssh.datasize];
   bool r = false;
 
   if (buf) {
@@ -270,7 +270,7 @@ bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
       file.Read(&csize, 4);
       if (csize < 0) {
         csize = -csize;
-        uint8* cbuf = new uint8[csize];
+        uint8_t* cbuf = new uint8_t[csize];
 
         if (cbuf) {
           uLongf bufsize = ssh.datasize;

@@ -31,11 +31,11 @@ class KanjiROM : public Device {
   uint IOCALL ReadH(uint p);
 
   uint IFCALL GetStatusSize() { return sizeof(uint); }
-  bool IFCALL SaveStatus(uint8* status) {
+  bool IFCALL SaveStatus(uint8_t* status) {
     *(uint*)status = adr;
     return true;
   }
-  bool IFCALL LoadStatus(const uint8* status) {
+  bool IFCALL LoadStatus(const uint8_t* status) {
     adr = *(const uint*)status;
     return true;
   }
@@ -44,7 +44,7 @@ class KanjiROM : public Device {
 
  private:
   uint adr;
-  uint8* image;
+  uint8_t* image;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

@@ -63,9 +63,9 @@ class WinCore : public PC88, public ISystem, public ILockCore {
 
   struct SnapshotHeader {
     char id[16];
-    uint8 major, minor;
+    uint8_t major, minor;
 
-    int8 disk[2];
+    int8_t disk[2];
     int datasize;
     PC8801::Config::BASICMode basicmode;
     int16_t clock;

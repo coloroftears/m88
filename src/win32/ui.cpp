@@ -316,7 +316,7 @@ LRESULT CALLBACK WinUI::WinProcGate(HWND hwnd,
 //  WinUI::M88SendKeyState
 //
 inline uint WinUI::M88SendKeyState(HWND hwnd, WPARAM wparam, LPARAM lparam) {
-  uint8* dest = reinterpret_cast<uint8*>(wparam);
+  uint8_t* dest = reinterpret_cast<uint8_t*>(wparam);
   GetKeyboardState(dest);
   SetEvent((HANDLE)lparam);
   return 0;
@@ -1022,10 +1022,10 @@ void WinUI::OpenDiskImage(const char* path) {
 //
 static void GetFileNameTitle(char* title, const char* name) {
   if (name) {
-    uint8* ptr;
-    ptr = _mbsrchr((uint8*)name, '\\');
-    _mbscpy((uint8*)title, ptr ? ptr + 1 : (uint8*)(name));
-    ptr = _mbschr((uint8*)title, '.');
+    uint8_t* ptr;
+    ptr = _mbsrchr((uint8_t*)name, '\\');
+    _mbscpy((uint8_t*)title, ptr ? ptr + 1 : (uint8_t*)(name));
+    ptr = _mbschr((uint8_t*)title, '.');
     if (ptr)
       *ptr = 0;
   }
@@ -1406,7 +1406,7 @@ uint WinUI::WmDropFiles(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 void WinUI::CaptureScreen() {
   int bmpsize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFO) +
                 15 * sizeof(RGBQUAD) + 320 * 400;
-  uint8* bmp = new uint8[bmpsize];
+  uint8_t* bmp = new uint8_t[bmpsize];
   if (!bmp)
     return;
 

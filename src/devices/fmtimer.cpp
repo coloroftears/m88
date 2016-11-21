@@ -14,7 +14,7 @@ using namespace FM;
 //
 void Timer::SetTimerControl(uint data) {
   uint tmp = regtc ^ data;
-  regtc = uint8(data);
+  regtc = uint8_t(data);
 
   if (data & 0x10)
     ResetStatus(1);
@@ -34,7 +34,7 @@ void Timer::SetTimerControl(uint data) {
 //
 void Timer::SetTimerA(uint addr, uint data) {
   uint tmp;
-  regta[addr & 1] = uint8(data);
+  regta[addr & 1] = uint8_t(data);
   tmp = (regta[0] << 2) + (regta[1] & 3);
   timera = (1024 - tmp) * timer_step;
   //  LOG2("Timer A = %d   %d us\n", tmp, timera >> 16);
@@ -105,7 +105,7 @@ void Timer::SetTimerBase(uint clock) {
 //  タイマーA 周期設定
 //
 void Timer::SetTimerA(uint addr, uint data) {
-  regta[addr & 1] = uint8(data);
+  regta[addr & 1] = uint8_t(data);
   timera = (1024 - ((regta[0] << 2) + (regta[1] & 3))) << 16;
 }
 

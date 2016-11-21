@@ -371,7 +371,7 @@ uint IFCALL OPNIF::GetStatusSize() {
 // ---------------------------------------------------------------------------
 //  ó‘Ô•Û‘¶
 //
-bool IFCALL OPNIF::SaveStatus(uint8* s) {
+bool IFCALL OPNIF::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
   st->rev = ssrev;
   st->i0 = index0;
@@ -390,7 +390,7 @@ bool IFCALL OPNIF::SaveStatus(uint8* s) {
 // ---------------------------------------------------------------------------
 //  ó‘Ô•œ‹A
 //
-bool IFCALL OPNIF::LoadStatus(const uint8* s) {
+bool IFCALL OPNIF::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
   if (st->rev != ssrev)
     return false;

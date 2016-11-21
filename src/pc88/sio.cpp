@@ -168,7 +168,7 @@ uint IFCALL SIO::GetStatusSize() {
   return sizeof(Status);
 }
 
-bool IFCALL SIO::SaveStatus(uint8* s) {
+bool IFCALL SIO::SaveStatus(uint8_t* s) {
   Status* status = (Status*)s;
   status->rev = ssrev;
   status->baseclock = baseclock;
@@ -181,7 +181,7 @@ bool IFCALL SIO::SaveStatus(uint8* s) {
   return true;
 }
 
-bool IFCALL SIO::LoadStatus(const uint8* s) {
+bool IFCALL SIO::LoadStatus(const uint8_t* s) {
   const Status* status = (const Status*)s;
   if (status->rev != ssrev)
     return false;

@@ -28,7 +28,7 @@ bool SanityCheck(uint32_t* pcrc) {
   fio.Seek(0, FileIO::end);
   uint len = fio.Tellp();
 
-  uint8* mod = new uint8[len];
+  uint8_t* mod = new uint8_t[len];
   if (!mod)
     return false;
 
