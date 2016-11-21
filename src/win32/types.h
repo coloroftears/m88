@@ -11,24 +11,6 @@
 
 #define ENDIAN_IS_SMALL
 
-//  ŒÅ’è’·Œ^‚Æ‚©
-typedef unsigned char uchar;
-typedef unsigned short ushort;
-typedef unsigned int uint;
-typedef unsigned long uint32;
-
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-
-typedef signed char sint8;
-typedef signed short sint16;
-typedef signed int sint32;
-
-typedef signed char int8;
-typedef signed short int16;
-typedef signed int int32;
-
 // 8 bit ”’l‚ğ‚Ü‚Æ‚ß‚Äˆ—‚·‚é‚Æ‚«‚Ég‚¤Œ^
 typedef uint32_t packed;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
