@@ -8,44 +8,40 @@
 
 // ---------------------------------------------------------------------------
 
-class GVRAMReverse : public Device
-{
-public:
-    enum
-    {
-        out32 = 0, out35, out5x
-    };
+class GVRAMReverse : public Device {
+ public:
+  enum { out32 = 0, out35, out5x };
 
-public:
-    GVRAMReverse();
-    ~GVRAMReverse();
-    
-    bool Init(IMemoryManager* mm);
-    void Cleanup(); 
-            
-    // IDevice Method
-    const Descriptor* IFCALL GetDesc() const { return &descriptor; }
-    
-    // I/O port functions
-    void IOCALL Out32(uint, uint data);
-    void IOCALL Out35(uint, uint data);
-    void IOCALL Out5x(uint, uint data);
+ public:
+  GVRAMReverse();
+  ~GVRAMReverse();
 
-    static uint MEMCALL MRead(void*, uint);
-    static void MEMCALL MWrite(void*, uint, uint);
+  bool Init(IMemoryManager* mm);
+  void Cleanup();
 
-private:
-    void Update();
+  // IDevice Method
+  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
-    IMemoryManager* mm;
-    int mid;
+  // I/O port functions
+  void IOCALL Out32(uint, uint data);
+  void IOCALL Out35(uint, uint data);
+  void IOCALL Out5x(uint, uint data);
 
-    uint p32, p35, p5x;
-    bool gvram;
+  static uint MEMCALL MRead(void*, uint);
+  static void MEMCALL MWrite(void*, uint, uint);
 
-    static const Descriptor descriptor;
-//  static const InFuncPtr  indef[];
-    static const OutFuncPtr outdef[];
+ private:
+  void Update();
+
+  IMemoryManager* mm;
+  int mid;
+
+  uint p32, p35, p5x;
+  bool gvram;
+
+  static const Descriptor descriptor;
+  //  static const InFuncPtr  indef[];
+  static const OutFuncPtr outdef[];
 };
 
-#endif // incl_mem_h
+#endif  // incl_mem_h
