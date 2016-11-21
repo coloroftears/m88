@@ -27,7 +27,7 @@
 #include "pc88/beep.h"
 #include "pc88/joypad.h"
 #include "pc88/calender.h"
-#include "win32/loadmon.h"
+#include "win32/monitors/loadmon.h"
 
 #include "win32/status.h"
 #include "common/device_i.h"

@@ -6,7 +6,7 @@
 
 #include "win32/headers.h"
 #include "win32/resource.h"
-#include "win32/regmon.h"
+#include "win32/monitors/regmon.h"
 #include "common/misc.h"
 #include "pc88/pc88.h"
 

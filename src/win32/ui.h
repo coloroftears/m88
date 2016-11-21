@@ -16,13 +16,13 @@
 #include "win32/88config.h"
 #include "win32/wincfg.h"
 #include "win32/newdisk.h"
-#include "win32/soundmon.h"
-#include "win32/memmon.h"
-#include "win32/codemon.h"
-#include "win32/basmon.h"
-#include "win32/regmon.h"
-#include "win32/loadmon.h"
-#include "win32/iomon.h"
+#include "win32/monitors/soundmon.h"
+#include "win32/monitors/memmon.h"
+#include "win32/monitors/codemon.h"
+#include "win32/monitors/basmon.h"
+#include "win32/monitors/regmon.h"
+#include "win32/monitors/loadmon.h"
+#include "win32/monitors/iomon.h"
 
 // ---------------------------------------------------------------------------
 

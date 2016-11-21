@@ -103,7 +103,7 @@
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>d:\work\m88p2\debug\sample2.m88</OutputFile>
+      <OutputFile>..\..\Debug\sample2.m88</OutputFile>
       <ImportLibrary>.\Debug\sample2.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -147,7 +147,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
-      <OutputFile>../Release/sample2.m88</OutputFile>
+      <OutputFile>..\..\Release\sample2.m88</OutputFile>
       <ImportLibrary>.\Release\sample2.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

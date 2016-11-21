@@ -8,7 +8,7 @@
 #include "win32/resource.h"
 #include "pc88/pc88.h"
 #include "pc88/ioview.h"
-#include "win32/iomon.h"
+#include "win32/monitors/iomon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
 #include "win32/file.h"

@@ -103,7 +103,7 @@
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>..\debug\diskdrv.m88</OutputFile>
+      <OutputFile>..\..\Debug\diskdrv.m88</OutputFile>
       <ImportLibrary>.\Debug\diskdrv.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -148,7 +148,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
-      <OutputFile>../Release/diskdrv.m88</OutputFile>
+      <OutputFile>..\..\Release\diskdrv.m88</OutputFile>
       <ImportLibrary>.\Release\diskdrv.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

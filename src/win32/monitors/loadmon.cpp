@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <numeric>
 #include "win32/resource.h"
-#include "win32/loadmon.h"
+#include "win32/monitors/loadmon.h"
 #include "common/misc.h"
 
 #ifdef ENABLE_LOADMONITOR

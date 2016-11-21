@@ -8,7 +8,7 @@
 #define win32_regmon_h
 
 #include "common/device.h"
-#include "win32/winmon.h"
+#include "win32/monitors/winmon.h"
 #include "pc88/pc88.h"
 
 class PC88;

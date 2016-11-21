@@ -7,7 +7,7 @@
 #include "win32/headers.h"
 #include "win32/resource.h"
 #include "pc88/pc88.h"
-#include "win32/codemon.h"
+#include "win32/monitors/codemon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
 #include "win32/winvars.h"

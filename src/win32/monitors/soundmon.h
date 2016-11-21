@@ -8,7 +8,7 @@
 #define win32_soundmon_h
 
 #include "common/device.h"
-#include "win32/winmon.h"
+#include "win32/monitors/winmon.h"
 #include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------

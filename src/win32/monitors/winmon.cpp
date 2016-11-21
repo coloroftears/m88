@@ -6,7 +6,7 @@
 
 #include "win32/headers.h"
 #include "win32/resource.h"
-#include "win32/winmon.h"
+#include "win32/monitors/winmon.h"
 #include "common/misc.h"
 
 // ---------------------------------------------------------------------------

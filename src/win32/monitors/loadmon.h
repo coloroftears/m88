@@ -8,7 +8,7 @@
 #define win32_loadmon_h
 
 #include "common/device.h"
-#include "win32/winmon.h"
+#include "win32/monitors/winmon.h"
 #include "win32/critsect.h"
 
 //#define ENABLE_LOADMONITOR

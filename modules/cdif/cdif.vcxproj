@@ -90,7 +90,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
-      <OutputFile>../Release/cdif.m88</OutputFile>
+      <OutputFile>..\..\Release\cdif.m88</OutputFile>
       <ImportLibrary>.\Release\cdif.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -137,7 +137,7 @@
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>../Debug/cdif.m88</OutputFile>
+      <OutputFile>..\..\Debug\cdif.m88</OutputFile>
       <ImportLibrary>.\Debug\cdif.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

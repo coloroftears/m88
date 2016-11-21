@@ -8,7 +8,7 @@
 #define win32_memmon_h
 
 #include "common/device.h"
-#include "win32/mvmon.h"
+#include "win32/monitors/mvmon.h"
 #include "pc88/memview.h"
 #include "win32/wincore.h"
 

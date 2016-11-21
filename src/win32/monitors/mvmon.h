@@ -9,7 +9,7 @@
 
 #include "win32/instthnk.h"
 #include "common/device.h"
-#include "win32/winmon.h"
+#include "win32/monitors/winmon.h"
 #include "pc88/memview.h"
 
 // ---------------------------------------------------------------------------
