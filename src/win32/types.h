@@ -34,7 +34,7 @@ typedef uint32_t packed;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
 
 // ボインタ値を表現できる整数型
-typedef uint intpointer;
+typedef uint32_t intpointer;
 
 // 関数へのポインタにおいて 常に 0 となるビット (1 bit のみ)
 // なければ PTR_IDBIT 自体を define しないでください．

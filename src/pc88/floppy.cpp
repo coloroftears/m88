@@ -38,7 +38,7 @@ bool FloppyDisk::Init(DiskType _type, bool _readonly) {
 // ---------------------------------------------------------------------------
 //  指定のトラックにシーク
 //
-void FloppyDisk::Seek(uint tr) {
+void FloppyDisk::Seek(uint32_t tr) {
   if (tr != curtracknum) {
     curtracknum = tr;
     curtrack = tr < 168 ? tracks + tr : 0;
@@ -66,7 +66,7 @@ FloppyDisk::Sector* FloppyDisk::GetSector() {
 // ---------------------------------------------------------------------------
 //  指定した ID を検索
 //
-bool FloppyDisk::FindID(IDR idr, uint density) {
+bool FloppyDisk::FindID(IDR idr, uint32_t density) {
   if (!curtrack)
     return false;
 
@@ -89,7 +89,7 @@ bool FloppyDisk::FindID(IDR idr, uint density) {
 // ---------------------------------------------------------------------------
 //  セクタ数を得る
 //
-uint FloppyDisk::GetNumSectors() {
+uint32_t FloppyDisk::GetNumSectors() {
   int n = 0;
   if (curtrack) {
     Sector* sec = curtrack->sector;
@@ -104,7 +104,7 @@ uint FloppyDisk::GetNumSectors() {
 // ---------------------------------------------------------------------------
 //  トラック中のセクタデータの総量を得る
 //
-uint FloppyDisk::GetTrackSize() {
+uint32_t FloppyDisk::GetTrackSize() {
   int size = 0;
 
   if (curtrack) {
@@ -122,7 +122,7 @@ uint FloppyDisk::GetTrackSize() {
 //  セクタのサイズを大きくした場合におけるセクタ潰しの再現
 //  sector は現在選択しているトラックに属している必要がある．
 //
-bool FloppyDisk::Resize(Sector* sec, uint newsize) {
+bool FloppyDisk::Resize(Sector* sec, uint32_t newsize) {
   assert(curtrack && sec);
 
   int extend = newsize - sec->size - 0x40;
@@ -243,7 +243,7 @@ FloppyDisk::Sector* FloppyDisk::AddSector(int size) {
 // ---------------------------------------------------------------------------
 //  トラックの容量を得る
 //
-uint FloppyDisk::GetTrackCapacity() {
+uint32_t FloppyDisk::GetTrackCapacity() {
   static const int table[3] = {6250, 6250, 10416};
   return table[type];
 }
@@ -251,7 +251,7 @@ uint FloppyDisk::GetTrackCapacity() {
 // ---------------------------------------------------------------------------
 //  トラックを得る
 //
-FloppyDisk::Sector* FloppyDisk::GetFirstSector(uint tr) {
+FloppyDisk::Sector* FloppyDisk::GetFirstSector(uint32_t tr) {
   if (tr < 168)
     return tracks[tr].sector;
   return 0;

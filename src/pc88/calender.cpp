@@ -29,7 +29,7 @@ Calender::~Calender() {}
 // ---------------------------------------------------------------------------
 //  ì¸ÅEèoóÕ
 //
-void IOCALL Calender::Reset(uint, uint) {
+void IOCALL Calender::Reset(uint32_t, uint32_t) {
   datain = 0;
   dataoutmode = 0;
   strobe = 0;
@@ -39,7 +39,7 @@ void IOCALL Calender::Reset(uint, uint) {
     reg[i] = 0;
 }
 
-uint IOCALL Calender::In40(uint) {
+uint32_t IOCALL Calender::In40(uint32_t) {
   if (dataoutmode)
     return IOBus::Active((reg[0] & 1) << 4, 0x10);
   else {
@@ -50,13 +50,13 @@ uint IOCALL Calender::In40(uint) {
   }
 }
 
-void IOCALL Calender::Out10(uint, uint data) {
+void IOCALL Calender::Out10(uint32_t, uint32_t data) {
   pcmd = data & 7;
   datain = (data >> 3) & 1;
 }
 
-void IOCALL Calender::Out40(uint, uint data) {
-  uint modified;
+void IOCALL Calender::Out40(uint32_t, uint32_t data) {
+  uint32_t modified;
   modified = strobe ^ data;
   strobe = data;
   if (modified & data & 2)
@@ -177,7 +177,7 @@ void Calender::SetTime() {
 // ---------------------------------------------------------------------------
 //  èÛë‘ï€ë∂
 //
-uint IFCALL Calender::GetStatusSize() {
+uint32_t IFCALL Calender::GetStatusSize() {
   return sizeof(Status);
 }
 

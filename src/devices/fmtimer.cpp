@@ -12,8 +12,8 @@ using namespace FM;
 // ---------------------------------------------------------------------------
 //  タイマー制御
 //
-void Timer::SetTimerControl(uint data) {
-  uint tmp = regtc ^ data;
+void Timer::SetTimerControl(uint32_t data) {
+  uint32_t tmp = regtc ^ data;
   regtc = uint8_t(data);
 
   if (data & 0x10)
@@ -32,8 +32,8 @@ void Timer::SetTimerControl(uint data) {
 // ---------------------------------------------------------------------------
 //  タイマーA 周期設定
 //
-void Timer::SetTimerA(uint addr, uint data) {
-  uint tmp;
+void Timer::SetTimerA(uint32_t addr, uint32_t data) {
+  uint32_t tmp;
   regta[addr & 1] = uint8_t(data);
   tmp = (regta[0] << 2) + (regta[1] & 3);
   timera = (1024 - tmp) * timer_step;
@@ -43,7 +43,7 @@ void Timer::SetTimerA(uint addr, uint data) {
 // ---------------------------------------------------------------------------
 //  タイマーB 周期設定
 //
-void Timer::SetTimerB(uint data) {
+void Timer::SetTimerB(uint32_t data) {
   timerb = (256 - data) * timer_step;
   //  LOG2("Timer B = %d   %d us\n", data, timerb >> 12);
 }
@@ -95,7 +95,7 @@ int32_t Timer::GetNextEvent() {
 // ---------------------------------------------------------------------------
 //  タイマー基準値設定
 //
-void Timer::SetTimerBase(uint clock) {
+void Timer::SetTimerBase(uint32_t clock) {
   timer_step = int32_t(1000000. * 65536 / clock);
 }
 
@@ -104,7 +104,7 @@ void Timer::SetTimerBase(uint clock) {
 // ---------------------------------------------------------------------------
 //  タイマーA 周期設定
 //
-void Timer::SetTimerA(uint addr, uint data) {
+void Timer::SetTimerA(uint32_t addr, uint32_t data) {
   regta[addr & 1] = uint8_t(data);
   timera = (1024 - ((regta[0] << 2) + (regta[1] & 3))) << 16;
 }
@@ -112,7 +112,7 @@ void Timer::SetTimerA(uint addr, uint data) {
 // ---------------------------------------------------------------------------
 //  タイマーB 周期設定
 //
-void Timer::SetTimerB(uint data) {
+void Timer::SetTimerB(uint32_t data) {
   timerb = (256 - data) << (16 + 4);
 }
 
@@ -165,7 +165,7 @@ int32_t Timer::GetNextEvent() {
 // ---------------------------------------------------------------------------
 //  タイマー基準値設定
 //
-void Timer::SetTimerBase(uint clock) {
+void Timer::SetTimerBase(uint32_t clock) {
   timer_step = clock * 1024 / 15625;
 }
 

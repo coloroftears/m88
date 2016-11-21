@@ -11,10 +11,10 @@
 //
 class PiccoloChip {
  public:
-  virtual int Init(uint c) = 0;
+  virtual int Init(uint32_t c) = 0;
   virtual void Reset() = 0;
-  virtual bool SetReg(uint32_t at, uint addr, uint data) = 0;
-  virtual void SetChannelMask(uint mask) = 0;
+  virtual bool SetReg(uint32_t at, uint32_t addr, uint32_t data) = 0;
+  virtual void SetChannelMask(uint32_t mask) = 0;
   virtual void SetVolume(int ch, int value) = 0;
 };
 
@@ -41,13 +41,13 @@ class Piccolo {
   static Piccolo* GetInstance();
 
   // 遅延バッファのサイズを設定
-  bool SetLatencyBufferSize(uint entry);
+  bool SetLatencyBufferSize(uint32_t entry);
 
   // 遅延時間の最大値を設定
   // SetReg が呼び出されたとき、nanosec 後以降のレジスタ書き込みを指示する at
   // の値を指定した場合
   // 呼び出しは却下されるかもしれない。
-  bool SetMaximumLatency(uint nanosec);
+  bool SetMaximumLatency(uint32_t nanosec);
 
   // メソッド呼び出し時点での時間を渡す(単位は nanosec)
   uint32_t GetCurrentTime();
@@ -62,7 +62,7 @@ class Piccolo {
     virtual bool IsAvailable() = 0;
     virtual void Reserve(bool r) = 0;
     virtual void Reset() = 0;
-    virtual void Set(uint a, uint d) = 0;
+    virtual void Set(uint32_t a, uint32_t d) = 0;
   };
 
   class ChipIF : public PiccoloChip {
@@ -70,12 +70,12 @@ class Piccolo {
     ChipIF(Piccolo* p, Driver* d) { pic = p, drv = d; }
     ~ChipIF() { pic->DrvRelease(drv); }
 
-    int Init(uint param) { return pic->DrvInit(drv, param); }
+    int Init(uint32_t param) { return pic->DrvInit(drv, param); }
     void Reset() { pic->DrvReset(drv); }
-    bool SetReg(uint32_t at, uint addr, uint data) {
+    bool SetReg(uint32_t at, uint32_t addr, uint32_t data) {
       return pic->DrvSetReg(drv, at, addr, data);
     }
-    void SetChannelMask(uint mask) {}
+    void SetChannelMask(uint32_t mask) {}
     void SetVolume(int ch, int value) {}
 
    private:
@@ -86,7 +86,7 @@ class Piccolo {
 
   class YMF288 : public Driver {
    public:
-    bool Init(Piccolo* p, uint _addr) {
+    bool Init(Piccolo* p, uint32_t _addr) {
       piccolo = p;
       addr = _addr;
       used = false;
@@ -96,7 +96,7 @@ class Piccolo {
 
     void Reserve(bool r) { used = r; }
     void Reset();
-    void Set(uint a, uint d);
+    void Set(uint32_t a, uint32_t d);
     void Mute();
 
    private:
@@ -116,9 +116,9 @@ class Piccolo {
 
   struct Event {
     Driver* drv;
-    uint at;
-    uint addr;
-    uint data;
+    uint32_t at;
+    uint32_t addr;
+    uint32_t data;
   };
 
   static Piccolo piccolo;
@@ -126,8 +126,8 @@ class Piccolo {
   Piccolo();
   int Init();
   void Cleanup();
-  static uint CALLBACK ThreadEntry(void* arg);
-  uint ThreadMain();
+  static uint32_t CALLBACK ThreadEntry(void* arg);
+  uint32_t ThreadMain();
 
   TimeKeeper timekeeper;
   CriticalSection cs;
@@ -136,8 +136,8 @@ class Piccolo {
   Event* Top();
   void Pop();
 
-  bool DrvSetReg(Driver* drv, uint32_t at, uint addr, uint data);
-  int DrvInit(Driver* drv, uint c);
+  bool DrvSetReg(Driver* drv, uint32_t at, uint32_t addr, uint32_t data);
+  int DrvInit(Driver* drv, uint32_t c);
   void DrvReset(Driver* drv);
   void DrvRelease(Driver* drv);
 
@@ -157,7 +157,7 @@ class Piccolo {
   volatile bool shouldterminate;
   volatile bool active;
   HANDLE hthread;
-  uint idthread;
+  uint32_t idthread;
 
   HANDLE hfile;
   bool islegacy;

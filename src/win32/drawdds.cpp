@@ -45,7 +45,7 @@ WinDrawDDS::~WinDrawDDS() {
 // ---------------------------------------------------------------------------
 //  èâä˙âª
 //
-bool WinDrawDDS::Init(HWND hwindow, uint w, uint h, GUID* drv) {
+bool WinDrawDDS::Init(HWND hwindow, uint32_t w, uint32_t h, GUID* drv) {
   HRESULT hr;
   hwnd = hwindow;
 
@@ -389,7 +389,7 @@ void WinDrawDDS::SetGUIMode(bool newguimode) {
 // ---------------------------------------------------------------------------
 //  ï\é¶óÃàÊÇê›íËÇ∑ÇÈ
 //
-bool WinDrawDDS::Resize(uint w, uint h) {
+bool WinDrawDDS::Resize(uint32_t w, uint32_t h) {
   height = h;
   return true;
 }

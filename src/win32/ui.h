@@ -33,7 +33,7 @@ class WinUI {
 
   bool InitWindow(int nwinmode);
   int Main(const char* cmdline);
-  uint GetMouseButton() { return mousebutton; }
+  uint32_t GetMouseButton() { return mousebutton; }
   HWND GetHWnd() { return hwnd; }
 
  private:
@@ -70,13 +70,13 @@ class WinUI {
                      int id,
                      bool create);
   void OpenDiskImage(const char* filename);
-  bool SelectDisk(uint drive, int id, bool menuonly);
-  bool CreateDiskMenu(uint drive);
+  bool SelectDisk(uint32_t drive, int id, bool menuonly);
+  bool CreateDiskMenu(uint32_t drive);
 
   void OpenTape();
 
   void ShowStatusWindow();
-  void ResizeWindow(uint width, uint height);
+  void ResizeWindow(uint32_t width, uint32_t height);
   void SetGUIFlag(bool);
 
   void SaveSnapshot(int n);
@@ -103,8 +103,8 @@ class WinUI {
   // ウインドウの状態
   bool background;
   bool fullscreen;
-  uint displaychangedtime;
-  uint resetwindowsize;
+  uint32_t displaychangedtime;
+  uint32_t resetwindowsize;
   DWORD wstyle;
   POINT point;
   int clipmode;
@@ -121,7 +121,7 @@ class WinUI {
 
   // PC88
   bool capturemouse;
-  uint mousebutton;
+  uint32_t mousebutton;
 
   WinCore core;
   WinDraw draw;
@@ -141,40 +141,40 @@ class WinUI {
 
  private:
   // メッセージ関数
-  uint M88ChangeDisplay(HWND, WPARAM, LPARAM);
-  uint M88ChangeVolume(HWND, WPARAM, LPARAM);
-  uint M88ApplyConfig(HWND, WPARAM, LPARAM);
-  uint M88SendKeyState(HWND, WPARAM, LPARAM);
-  uint M88ClipCursor(HWND, WPARAM, LPARAM);
-  uint WmDropFiles(HWND, WPARAM, LPARAM);
-  uint WmDisplayChange(HWND, WPARAM, LPARAM);
-  uint WmKeyDown(HWND, WPARAM, LPARAM);
-  uint WmKeyUp(HWND, WPARAM, LPARAM);
-  uint WmSysKeyDown(HWND, WPARAM, LPARAM);
-  uint WmSysKeyUp(HWND, WPARAM, LPARAM);
-  uint WmInitMenu(HWND, WPARAM, LPARAM);
-  uint WmQueryNewPalette(HWND, WPARAM, LPARAM);
-  uint WmPaletteChanged(HWND, WPARAM, LPARAM);
-  uint WmActivate(HWND, WPARAM, LPARAM);
-  uint WmTimer(HWND, WPARAM, LPARAM);
-  uint WmClose(HWND, WPARAM, LPARAM);
-  uint WmCreate(HWND, WPARAM, LPARAM);
-  uint WmDestroy(HWND, WPARAM, LPARAM);
-  uint WmPaint(HWND, WPARAM, LPARAM);
-  uint WmCommand(HWND, WPARAM, LPARAM);
-  uint WmSize(HWND, WPARAM, LPARAM);
-  uint WmDrawItem(HWND, WPARAM, LPARAM);
-  uint WmEnterMenuLoop(HWND, WPARAM, LPARAM);
-  uint WmExitMenuLoop(HWND, WPARAM, LPARAM);
-  uint WmLButtonDown(HWND, WPARAM, LPARAM);
-  uint WmLButtonUp(HWND, WPARAM, LPARAM);
-  uint WmRButtonDown(HWND, WPARAM, LPARAM);
-  uint WmRButtonUp(HWND, WPARAM, LPARAM);
-  uint WmEnterSizeMove(HWND, WPARAM, LPARAM);
-  uint WmExitSizeMove(HWND, WPARAM, LPARAM);
-  uint WmMove(HWND, WPARAM, LPARAM);
-  uint WmMouseMove(HWND, WPARAM, LPARAM);
-  uint WmSetCursor(HWND, WPARAM, LPARAM);
+  uint32_t M88ChangeDisplay(HWND, WPARAM, LPARAM);
+  uint32_t M88ChangeVolume(HWND, WPARAM, LPARAM);
+  uint32_t M88ApplyConfig(HWND, WPARAM, LPARAM);
+  uint32_t M88SendKeyState(HWND, WPARAM, LPARAM);
+  uint32_t M88ClipCursor(HWND, WPARAM, LPARAM);
+  uint32_t WmDropFiles(HWND, WPARAM, LPARAM);
+  uint32_t WmDisplayChange(HWND, WPARAM, LPARAM);
+  uint32_t WmKeyDown(HWND, WPARAM, LPARAM);
+  uint32_t WmKeyUp(HWND, WPARAM, LPARAM);
+  uint32_t WmSysKeyDown(HWND, WPARAM, LPARAM);
+  uint32_t WmSysKeyUp(HWND, WPARAM, LPARAM);
+  uint32_t WmInitMenu(HWND, WPARAM, LPARAM);
+  uint32_t WmQueryNewPalette(HWND, WPARAM, LPARAM);
+  uint32_t WmPaletteChanged(HWND, WPARAM, LPARAM);
+  uint32_t WmActivate(HWND, WPARAM, LPARAM);
+  uint32_t WmTimer(HWND, WPARAM, LPARAM);
+  uint32_t WmClose(HWND, WPARAM, LPARAM);
+  uint32_t WmCreate(HWND, WPARAM, LPARAM);
+  uint32_t WmDestroy(HWND, WPARAM, LPARAM);
+  uint32_t WmPaint(HWND, WPARAM, LPARAM);
+  uint32_t WmCommand(HWND, WPARAM, LPARAM);
+  uint32_t WmSize(HWND, WPARAM, LPARAM);
+  uint32_t WmDrawItem(HWND, WPARAM, LPARAM);
+  uint32_t WmEnterMenuLoop(HWND, WPARAM, LPARAM);
+  uint32_t WmExitMenuLoop(HWND, WPARAM, LPARAM);
+  uint32_t WmLButtonDown(HWND, WPARAM, LPARAM);
+  uint32_t WmLButtonUp(HWND, WPARAM, LPARAM);
+  uint32_t WmRButtonDown(HWND, WPARAM, LPARAM);
+  uint32_t WmRButtonUp(HWND, WPARAM, LPARAM);
+  uint32_t WmEnterSizeMove(HWND, WPARAM, LPARAM);
+  uint32_t WmExitSizeMove(HWND, WPARAM, LPARAM);
+  uint32_t WmMove(HWND, WPARAM, LPARAM);
+  uint32_t WmMouseMove(HWND, WPARAM, LPARAM);
+  uint32_t WmSetCursor(HWND, WPARAM, LPARAM);
 };
 
 #endif  // WIN_UI_H

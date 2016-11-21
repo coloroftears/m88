@@ -435,7 +435,7 @@ BOOL ConfigSound::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
   switch (id) {
     case IDC_SOUND_BUFFER:
       if (nc == EN_CHANGE) {
-        uint buf;
+        uint32_t buf;
         buf = Limit(GetDlgItemInt(hdlg, IDC_SOUND_BUFFER, 0, false), 1000, 50) /
               10 * 10;
         if (buf != config.soundbuffer)
@@ -447,7 +447,7 @@ BOOL ConfigSound::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
 
     case IDC_SOUND_LPFFC:
       if (nc == EN_CHANGE) {
-        uint buf =
+        uint32_t buf =
             Limit(GetDlgItemInt(hdlg, IDC_SOUND_LPFFC, 0, false), 24, 3) * 1000;
         if (buf != config.lpffc)
           base->PageChanged(hdlg);
@@ -458,7 +458,7 @@ BOOL ConfigSound::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
 
     case IDC_SOUND_LPFORDER:
       if (nc == EN_CHANGE) {
-        uint buf =
+        uint32_t buf =
             Limit(GetDlgItemInt(hdlg, IDC_SOUND_LPFORDER, 0, false), 16, 2) /
             2 * 2;
         if (buf != config.lpforder)

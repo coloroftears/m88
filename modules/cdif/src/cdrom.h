@@ -19,7 +19,7 @@ class CDROM {
  public:
   struct Track {
     uint32_t addr;
-    uint control;  // b2 = data/~audio
+    uint32_t control;  // b2 = data/~audio
   };
   struct MSF {
     uint8_t min;
@@ -35,17 +35,17 @@ class CDROM {
   int GetNumTracks();
   bool Init();
   bool PlayTrack(int tr, bool one = false);
-  bool PlayAudio(uint begin, uint stop);
+  bool PlayAudio(uint32_t begin, uint32_t stop);
   bool ReadSubCh(uint8_t* dest, bool msf);
   bool Pause(bool pause);
   bool Stop();
-  bool Read(uint sector, uint8_t* dest, int length);
-  bool Read2(uint sector, uint8_t* dest, int length);
-  bool ReadCDDA(uint sector, uint8_t* dest, int length);
+  bool Read(uint32_t sector, uint8_t* dest, int length);
+  bool Read2(uint32_t sector, uint8_t* dest, int length);
+  bool ReadCDDA(uint32_t sector, uint8_t* dest, int length);
   const Track* GetTrackInfo(int t);
   bool CheckMedia();
-  MSF ToMSF(uint lba);
-  uint ToLBA(MSF msf);
+  MSF ToMSF(uint32_t lba);
+  uint32_t ToLBA(MSF msf);
 
  private:
   bool FindDrive();
@@ -62,7 +62,7 @@ class CDROM {
 // ---------------------------------------------------------------------------
 //  LBA ŽžŠÔ‚ð MSF ŽžŠÔ‚É•ÏŠ·
 //
-inline CDROM::MSF CDROM::ToMSF(uint lba) {
+inline CDROM::MSF CDROM::ToMSF(uint32_t lba) {
   lba += trstart;
   MSF msf;
   msf.min = NtoBCD(lba / 75 / 60);
@@ -74,7 +74,7 @@ inline CDROM::MSF CDROM::ToMSF(uint lba) {
 // ---------------------------------------------------------------------------
 //  LBA ŽžŠÔ‚ð MSF ŽžŠÔ‚É•ÏŠ·
 //
-inline uint CDROM::ToLBA(MSF msf) {
+inline uint32_t CDROM::ToLBA(MSF msf) {
   return (BCDtoN(msf.min) * 60 + BCDtoN(msf.sec)) * 75 + BCDtoN(msf.frame) -
          trstart;
 }

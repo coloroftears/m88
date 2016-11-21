@@ -41,12 +41,12 @@ class Z80_x86 : public Device {
   static int GetCCount();
   int GetCount();
 
-  void IOCALL Reset(uint = 0, uint = 0);
-  void IOCALL IRQ(uint, uint d);
-  void IOCALL NMI(uint = 0, uint = 0);
+  void IOCALL Reset(uint32_t = 0, uint32_t = 0);
+  void IOCALL IRQ(uint32_t, uint32_t d);
+  void IOCALL NMI(uint32_t = 0, uint32_t = 0);
   void Wait(bool);
 
-  uint GetPC() { return (uint)inst + (uint)instbase; }
+  uint32_t GetPC() { return (uint32_t)inst + (uint32_t)instbase; }
 
   bool GetPages(MemoryPage** rd, MemoryPage** wr) {
     *rd = rdpages, *wr = wrpages;
@@ -55,7 +55,7 @@ class Z80_x86 : public Device {
   int* GetWaits() { return waittable; }
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
-  uint IFCALL GetStatusSize() { return sizeof(CPUState); }
+  uint32_t IFCALL GetStatusSize() { return sizeof(CPUState); }
   bool IFCALL LoadStatus(const uint8_t* status);
   bool IFCALL SaveStatus(uint8_t* status);
 
@@ -65,7 +65,7 @@ class Z80_x86 : public Device {
  public:
   // Debug Service Functions
   void TestIntr();
-  void SetPC(uint n) {
+  void SetPC(uint32_t n) {
     inst = (uint8_t*)n;
     instbase = 0;
     instpage = (uint8_t*)-1;
@@ -88,7 +88,7 @@ class Z80_x86 : public Device {
     uint8_t waitstate;
     uint8_t flagn;
     uint8_t rev;
-    uint execcount;
+    uint32_t execcount;
   };
 
  private:
@@ -97,7 +97,7 @@ class Z80_x86 : public Device {
   uint8_t* instbase;
   uint8_t* instlim;
   uint8_t* instpage;
-  uint instwait;
+  uint32_t instwait;
   const IOBus::InBank* ins;
   const IOBus::OutBank* outs;
   const uint8_t* ioflags;
@@ -107,7 +107,7 @@ class Z80_x86 : public Device {
   uint8_t flagn;
   uint8_t eshift;
 
-  uint execcount;
+  uint32_t execcount;
   int stopcount;
   int delaycount;
   int clockcount;

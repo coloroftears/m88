@@ -161,7 +161,7 @@ void Piccolo::Cleanup() {
 // ---------------------------------------------------------------------------
 //  Core Thread
 //
-uint Piccolo::ThreadMain() {
+uint32_t Piccolo::ThreadMain() {
   ::SetThreadPriority(hthread, THREAD_PRIORITY_TIME_CRITICAL);
   while (!shouldterminate) {
     Event* ev;
@@ -218,14 +218,14 @@ void Piccolo::Pop() {
 // ---------------------------------------------------------------------------
 //  サブスレッド開始点
 //
-uint CALLBACK Piccolo::ThreadEntry(void* arg) {
+uint32_t CALLBACK Piccolo::ThreadEntry(void* arg) {
   return reinterpret_cast<Piccolo*>(arg)->ThreadMain();
 }
 
 // ---------------------------------------------------------------------------
 //
 //
-bool Piccolo::SetLatencyBufferSize(uint entries) {
+bool Piccolo::SetLatencyBufferSize(uint32_t entries) {
   CriticalSection::Lock lock(cs);
   Event* ne = new Event[entries];
   if (!ne)
@@ -239,7 +239,7 @@ bool Piccolo::SetLatencyBufferSize(uint entries) {
   return true;
 }
 
-bool Piccolo::SetMaximumLatency(uint nanosec) {
+bool Piccolo::SetMaximumLatency(uint32_t nanosec) {
   maxlatency = nanosec;
   return true;
 }
@@ -265,7 +265,7 @@ int Piccolo::GetChip(PICCOLO_CHIPTYPE type, PiccoloChip** pc) {
 
 // ---------------------------------------------------------------------------
 
-int Piccolo::DrvInit(Driver* drv, uint param) {
+int Piccolo::DrvInit(Driver* drv, uint32_t param) {
   drv->Reset();
   return true;
 }
@@ -278,7 +278,10 @@ void Piccolo::DrvReset(Driver* drv) {
   evwrite = 0;
 }
 
-bool Piccolo::DrvSetReg(Driver* drv, uint32_t at, uint addr, uint data) {
+bool Piccolo::DrvSetReg(Driver* drv,
+                        uint32_t at,
+                        uint32_t addr,
+                        uint32_t data) {
   if (int32_t(at - GetCurrentTime()) > maxlatency) {
     //      statusdisplay.Show(100, 0, "Piccolo: Time %.6d", at -
     //      GetCurrentTime());
@@ -324,7 +327,7 @@ bool Piccolo::YMF288::IsBusy() {
 void Piccolo::YMF288::Mute() {
   Log("YMF288::Mute()\n");
   Set(0x007, 0x3f);
-  for (uint r = 0x40; r < 0x4f; r++) {
+  for (uint32_t r = 0x40; r < 0x4f; r++) {
     if (~r & 3) {
       Set(0x000 + r, 0x7f);
       Set(0x100 + r, 0x7f);
@@ -332,7 +335,7 @@ void Piccolo::YMF288::Mute() {
   }
 }
 
-void Piccolo::YMF288::Set(uint a, uint d) {
+void Piccolo::YMF288::Set(uint32_t a, uint32_t d) {
   if (piccolo->islegacy) {
     while (IsBusy())
       Sleep(0);

@@ -23,12 +23,12 @@ class GVRAMReverse : public Device {
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   // I/O port functions
-  void IOCALL Out32(uint, uint data);
-  void IOCALL Out35(uint, uint data);
-  void IOCALL Out5x(uint, uint data);
+  void IOCALL Out32(uint32_t, uint32_t data);
+  void IOCALL Out35(uint32_t, uint32_t data);
+  void IOCALL Out5x(uint32_t, uint32_t data);
 
-  static uint MEMCALL MRead(void*, uint);
-  static void MEMCALL MWrite(void*, uint, uint);
+  static uint32_t MEMCALL MRead(void*, uint32_t);
+  static void MEMCALL MWrite(void*, uint32_t, uint32_t);
 
  private:
   void Update();
@@ -36,7 +36,7 @@ class GVRAMReverse : public Device {
   IMemoryManager* mm;
   int mid;
 
-  uint p32, p35, p5x;
+  uint32_t p32, p35, p5x;
   bool gvram;
 
   static const Descriptor descriptor;

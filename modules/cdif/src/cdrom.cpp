@@ -56,11 +56,11 @@ bool CDROM::Init() {
 //  ドライブを見つける
 //
 bool CDROM::FindDrive() {
-  for (uint a = 0; a < aspi->GetNHostAdapters(); a++) {
-    uint ntargets;
+  for (uint32_t a = 0; a < aspi->GetNHostAdapters(); a++) {
+    uint32_t ntargets;
     if (aspi->InquiryAdapter(a, &ntargets, 0)) {
       LOG2("Adapter %d : %d IDs\n", a, ntargets);
-      for (uint i = 0; i < ntargets; i++) {
+      for (uint32_t i = 0; i < ntargets; i++) {
         int type = aspi->GetDeviceType(a, i, 0);
         if (type == 5) {
           LOG2("CDROM on %d:%d\n", a, i);
@@ -182,7 +182,7 @@ bool CDROM::PlayTrack(int t, bool one) {
 // --------------------------------------------------------------------------
 //  トラックの再生
 //
-bool CDROM::PlayAudio(uint begin, uint stop) {
+bool CDROM::PlayAudio(uint32_t begin, uint32_t stop) {
   if (stop < begin)
     return false;
 
@@ -259,7 +259,7 @@ bool CDROM::Stop() {
 // --------------------------------------------------------------------------
 //  CD 上のセクタを読み出す
 //
-bool CDROM::Read(uint sector, uint8_t* dest, int length) {
+bool CDROM::Read(uint32_t sector, uint8_t* dest, int length) {
   CDB_Read cdb;
 
   cdb.id = 0x28;
@@ -284,7 +284,7 @@ bool CDROM::Read(uint sector, uint8_t* dest, int length) {
 // --------------------------------------------------------------------------
 //  2340 バイト読む
 //
-bool CDROM::Read2(uint sector, uint8_t* dest, int length) {
+bool CDROM::Read2(uint32_t sector, uint8_t* dest, int length) {
   CDB_ReadCD cdb;
   memset(&cdb, 0, sizeof(cdb));
 
@@ -309,7 +309,7 @@ bool CDROM::Read2(uint sector, uint8_t* dest, int length) {
 // --------------------------------------------------------------------------
 //  CD-DA セクタの読み込み
 //
-bool CDROM::ReadCDDA(uint sector, uint8_t* dest, int length) {
+bool CDROM::ReadCDDA(uint32_t sector, uint8_t* dest, int length) {
   CDB_ReadCD cdb;
   memset(&cdb, 0, sizeof(cdb));
 

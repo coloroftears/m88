@@ -38,9 +38,9 @@ DriverDS2::~DriverDS2() {
 
 bool DriverDS2::Init(SoundSource* s,
                      HWND hwnd,
-                     uint rate,
-                     uint ch,
-                     uint buflen) {
+                     uint32_t rate,
+                     uint32_t ch,
+                     uint32_t buflen) {
   int i;
   HRESULT hr;
 
@@ -179,7 +179,7 @@ bool DriverDS2::Cleanup() {
 // ---------------------------------------------------------------------------
 //  Thread -------------------------------------------------------------------
 
-uint __stdcall DriverDS2::ThreadEntry(LPVOID arg) {
+uint32_t __stdcall DriverDS2::ThreadEntry(LPVOID arg) {
   DriverDS2* dd = reinterpret_cast<DriverDS2*>(arg);
 
   while (dd->playing) {

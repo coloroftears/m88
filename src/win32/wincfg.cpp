@@ -74,8 +74,8 @@ bool WinConfig::Show(HINSTANCE hinstance, HWND hwnd, Config* conf) {
     // 拡張モジュールの場合、headerのバージョンによって PROPSHEETPAGE
     // のサイズが違ったりする
     PROPSHEETPAGE
-        tmppage[2];  // 2個分確保するのは、拡張側の PROPSHEETPAGE のサイズが
-                     // M88 の PROPSHEETPAGE より大きいケースに備えている
+    tmppage[2];  // 2個分確保するのは、拡張側の PROPSHEETPAGE のサイズが
+                 // M88 の PROPSHEETPAGE より大きいケースに備えている
 
     int i = 0;
     for (PropSheets::iterator n = propsheets.begin();

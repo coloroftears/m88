@@ -23,17 +23,17 @@ bool GVRAMReverse::Init(IMemoryManager* _mm) {
 // ---------------------------------------------------------------------------
 //  I/O ポートを監視
 
-void IFCALL GVRAMReverse::Out32(uint, uint r) {
+void IFCALL GVRAMReverse::Out32(uint32_t, uint32_t r) {
   p32 = r;
   Update();
 }
 
-void IFCALL GVRAMReverse::Out35(uint, uint r) {
+void IFCALL GVRAMReverse::Out35(uint32_t, uint32_t r) {
   p35 = r;
   Update();
 }
 
-void IFCALL GVRAMReverse::Out5x(uint a, uint) {
+void IFCALL GVRAMReverse::Out5x(uint32_t a, uint32_t) {
   p5x = a & 3;
   Update();
 }
@@ -41,7 +41,7 @@ void IFCALL GVRAMReverse::Out5x(uint a, uint) {
 // ---------------------------------------------------------------------------
 //  GVRAM が選択されている時にかけられるフック関数
 
-uint MEMCALL GVRAMReverse::MRead(void* p, uint a) {
+uint32_t MEMCALL GVRAMReverse::MRead(void* p, uint32_t a) {
   GVRAMReverse* mp = reinterpret_cast<GVRAMReverse*>(p);
   if (a < 0xfe80)  // 表示領域内なら
   {
@@ -53,7 +53,7 @@ uint MEMCALL GVRAMReverse::MRead(void* p, uint a) {
   return mp->mm->Read8P(mp->mid, a);  // 本来のメモリ空間へとアクセス
 }
 
-void MEMCALL GVRAMReverse::MWrite(void* p, uint a, uint d) {
+void MEMCALL GVRAMReverse::MWrite(void* p, uint32_t a, uint32_t d) {
   GVRAMReverse* mp = reinterpret_cast<GVRAMReverse*>(p);
   if (a < 0xfe80) {
     a -= 0xc000;

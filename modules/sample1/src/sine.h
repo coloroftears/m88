@@ -21,15 +21,15 @@ class Sine : public Device, public ISoundSource {
 
   // ISoundSource method
   bool IFCALL Connect(ISoundControl* sc);
-  bool IFCALL SetRate(uint rate);
+  bool IFCALL SetRate(uint32_t rate);
   void IFCALL Mix(int32_t*, int);
 
   // IDevice Method
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   // I/O port functions
-  void IOCALL SetVolume(uint, uint data);
-  void IOCALL SetPitch(uint, uint data);
+  void IOCALL SetVolume(uint32_t, uint32_t data);
+  void IOCALL SetPitch(uint32_t, uint32_t data);
 
  private:
   ISoundControl* sc;

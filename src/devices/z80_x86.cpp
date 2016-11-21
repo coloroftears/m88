@@ -2259,7 +2259,8 @@ halt_1:
   }
 
 OPALU(ADD_A)
-OPALU(ADC_A) OPALU(SUB) OPALU(SBC_A) OPALU(AND) OPALU(XOR) OPALU(OR) OPALU(CP)
+OPALU(ADC_A)
+OPALU(SUB) OPALU(SBC_A) OPALU(AND) OPALU(XOR) OPALU(OR) OPALU(CP)
 
     static OPFUNC(INC_B) {
   MOVD(V, B);
@@ -5189,7 +5190,7 @@ bool Z80_x86::Init(MemoryManager* mm, IOBus* bus, int iack) {
 //  リセット
 //  bank - 割り込み番号
 //
-void IOCALL Z80_x86::Reset(uint, uint) {
+void IOCALL Z80_x86::Reset(uint32_t, uint32_t) {
   memset(&reg, 0, sizeof(reg));
 
   inst = instbase = instlim = 0;
@@ -5202,7 +5203,7 @@ void IOCALL Z80_x86::Reset(uint, uint) {
 // ---------------------------------------------------------------------------
 //  マスカブル割込み要求
 //
-void IOCALL Z80_x86::IRQ(uint, uint d) {
+void IOCALL Z80_x86::IRQ(uint32_t, uint32_t d) {
   intr = d;
 }
 
@@ -5210,7 +5211,7 @@ void IOCALL Z80_x86::IRQ(uint, uint d) {
 //  ノンマスカブル割込み要求
 //  未実装
 //
-void IOCALL Z80_x86::NMI(uint, uint) {}
+void IOCALL Z80_x86::NMI(uint32_t, uint32_t) {}
 
 // ---------------------------------------------------------------------------
 //  Exec してから経過したクロック数を取得

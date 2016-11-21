@@ -25,7 +25,7 @@ SIO::~SIO() {}
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool SIO::Init(IOBus* _bus, uint _prxrdy, uint _preq) {
+bool SIO::Init(IOBus* _bus, uint32_t _prxrdy, uint32_t _preq) {
   bus = _bus, prxrdy = _prxrdy, prequest = _preq;
   LOG0("SIO::Init\n");
 
@@ -35,7 +35,7 @@ bool SIO::Init(IOBus* _bus, uint _prxrdy, uint _preq) {
 // ---------------------------------------------------------------------------
 //  りせっと
 //
-void SIO::Reset(uint, uint) {
+void SIO::Reset(uint32_t, uint32_t) {
   mode = clear;
   status = TXRDY | TXE;
   baseclock = 1200 * 64;
@@ -44,7 +44,7 @@ void SIO::Reset(uint, uint) {
 // ---------------------------------------------------------------------------
 //  こんとろーるぽーと
 //
-void IOCALL SIO::SetControl(uint, uint d) {
+void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
   LOG1("[%.2x] ", d);
 
   switch (mode) {
@@ -118,14 +118,14 @@ void IOCALL SIO::SetControl(uint, uint d) {
 // ---------------------------------------------------------------------------
 //  でーたせっと
 //
-void IOCALL SIO::SetData(uint, uint d) {
+void IOCALL SIO::SetData(uint32_t, uint32_t d) {
   LOG1("<%.2x ", d);
 }
 
 // ---------------------------------------------------------------------------
 //  じょうたいしゅとく
 //
-uint IOCALL SIO::GetStatus(uint) {
+uint32_t IOCALL SIO::GetStatus(uint32_t) {
   //  LOG1("!%.2x ", status      );
   return status;
 }
@@ -133,7 +133,7 @@ uint IOCALL SIO::GetStatus(uint) {
 // ---------------------------------------------------------------------------
 //  でーたしゅとく
 //
-uint IOCALL SIO::GetData(uint) {
+uint32_t IOCALL SIO::GetData(uint32_t) {
   LOG1(">%.2x ", data);
 
   int f = status & RXRDY;
@@ -145,7 +145,7 @@ uint IOCALL SIO::GetData(uint) {
   return data;
 }
 
-void IOCALL SIO::AcceptData(uint, uint d) {
+void IOCALL SIO::AcceptData(uint32_t, uint32_t d) {
   LOG1("Accept: [%.2x]", d);
   if (rxen) {
     data = d;
@@ -164,7 +164,7 @@ void IOCALL SIO::AcceptData(uint, uint d) {
 // ---------------------------------------------------------------------------
 //  状態保存
 //
-uint IFCALL SIO::GetStatusSize() {
+uint32_t IFCALL SIO::GetStatusSize() {
   return sizeof(Status);
 }
 

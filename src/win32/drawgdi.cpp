@@ -29,7 +29,7 @@ WinDrawGDI::~WinDrawGDI() {
 // ---------------------------------------------------------------------------
 //  ‰Šú‰»ˆ—
 //
-bool WinDrawGDI::Init(HWND hwindow, uint w, uint h, GUID*) {
+bool WinDrawGDI::Init(HWND hwindow, uint32_t w, uint32_t h, GUID*) {
   hwnd = hwindow;
 
   if (!Resize(w, h))
@@ -40,7 +40,7 @@ bool WinDrawGDI::Init(HWND hwindow, uint w, uint h, GUID*) {
 // ---------------------------------------------------------------------------
 //  ‰æ–Ê—LŒø”ÍˆÍ‚ğ•ÏX
 //
-bool WinDrawGDI::Resize(uint w, uint h) {
+bool WinDrawGDI::Resize(uint32_t w, uint32_t h) {
   width = w;
   height = h;
 

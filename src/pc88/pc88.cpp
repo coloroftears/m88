@@ -129,7 +129,7 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 //  é∑çs
 //  1 tick = 10É s
 //
-int PC88::Proceed(uint ticks, uint clk, uint ecl) {
+int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
   clock = Max(1, clk);
   eclock = Max(1, ecl);
   return Scheduler::Proceed(ticks);

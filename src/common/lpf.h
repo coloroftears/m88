@@ -22,19 +22,19 @@ class IIR_LPF {
  public:
   IIR_LPF() : order(0) {}
 
-  void MakeFilter(uint cutoff, uint pcmrate, uint order);
-  int Filter(uint ch, int o);
+  void MakeFilter(uint32_t cutoff, uint32_t pcmrate, uint32_t order);
+  int Filter(uint32_t ch, int o);
 
  private:
-  uint order;
+  uint32_t order;
   int fn[maxorder][4];
   int b[nchs][maxorder][2];
 };
 
 // ---------------------------------------------------------------------------
 
-inline int IIR_LPF::Filter(uint ch, int o) {
-  for (uint j = 0; j < order; j++) {
+inline int IIR_LPF::Filter(uint32_t ch, int o) {
+  for (uint32_t j = 0; j < order; j++) {
     int p = o + (b[ch][j][0] * fn[j][0] + b[ch][j][1] * fn[j][1]) / F;
     o = (p * fn[j][2] + b[ch][j][0] * fn[j][3] + b[ch][j][1] * fn[j][2]) / F;
     b[ch][j][1] = b[ch][j][0];
