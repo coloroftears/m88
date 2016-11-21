@@ -1022,10 +1022,10 @@ void WinUI::OpenDiskImage(const char* path) {
 //
 static void GetFileNameTitle(char* title, const char* name) {
   if (name) {
-    uchar* ptr;
-    ptr = _mbsrchr((uchar*)name, '\\');
-    _mbscpy((uchar*)title, ptr ? ptr + 1 : (uchar*)(name));
-    ptr = _mbschr((uchar*)title, '.');
+    uint8* ptr;
+    ptr = _mbsrchr((uint8*)name, '\\');
+    _mbscpy((uint8*)title, ptr ? ptr + 1 : (uint8*)(name));
+    ptr = _mbschr((uint8*)title, '.');
     if (ptr)
       *ptr = 0;
   }
