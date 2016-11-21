@@ -6,18 +6,19 @@ Tuning/
 *.obj
 
 # Work files
-*.ini
-*.dmp
-*.suo
-*.dmp
 *.db
+*.dmp
+*.dmp
+*.ini
 *.opendb
+*.suo
+*.user
 
 # Binary files
-*.m88
-*.exe
-*.rom
+*.D88
 *.ROM
 *.WAV
 *.d88
-*.D88
+*.exe
+*.m88
+*.rom
