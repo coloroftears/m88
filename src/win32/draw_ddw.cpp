@@ -8,7 +8,7 @@
 //  $Id: drawddw.cpp,v 1.11 2002/04/07 05:40:10 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/drawddw.h"
+#include "win32/draw_ddw.h"
 #include "common/misc.h"
 
 #define LOGNAME "drawddw"

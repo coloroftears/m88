@@ -9,7 +9,7 @@
 //  bug:パレット～(T-T
 
 #include "win32/headers.h"
-#include "win32/drawgdi.h"
+#include "win32/draw_gdi.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅

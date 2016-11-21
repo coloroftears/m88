@@ -171,15 +171,6 @@
     <ClCompile Include="src\win32\diag.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\win32\drawdds.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\win32\drawddw.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\win32\drawgdi.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
     <ClCompile Include="src\win32\extdev.cpp">
       <Filter>win32</Filter>
     </ClCompile>
@@ -311,6 +302,15 @@
     </ClCompile>
     <ClCompile Include="src\win32\monitors\winmon.cpp">
       <Filter>win32\monitors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\draw_dds.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\draw_ddw.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\draw_gdi.cpp">
+      <Filter>win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,15 +491,6 @@
     <ClInclude Include="src\win32\diag.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\win32\DrawDDS.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\win32\DrawDDW.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\win32\DrawGDI.h">
-      <Filter>win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\win32\extdev.h">
       <Filter>win32</Filter>
     </ClInclude>
@@ -649,6 +640,15 @@
     </ClInclude>
     <ClInclude Include="src\win32\monitors\winmon.h">
       <Filter>win32\monitors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\draw_dds.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\draw_ddw.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\draw_gdi.h">
+      <Filter>win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

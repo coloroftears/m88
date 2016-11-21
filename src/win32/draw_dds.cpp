@@ -7,7 +7,7 @@
 //  $Id: DrawDDS.cpp,v 1.16 2003/11/04 13:14:21 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/drawdds.h"
+#include "win32/draw_dds.h"
 #include "common/misc.h"
 #include "win32/messages.h"
 
