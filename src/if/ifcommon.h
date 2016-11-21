@@ -27,8 +27,8 @@
 //
 interface IUnk {
   virtual long IFCALL QueryInterface(REFIID, void**) = 0;
-  virtual ulong IFCALL AddRef() = 0;
-  virtual ulong IFCALL Release() = 0;
+  virtual uint32 IFCALL AddRef() = 0;
+  virtual uint32 IFCALL Release() = 0;
 };
 
 // ----------------------------------------------------------------------------

@@ -22,7 +22,7 @@ SamplingRateConverter::~SamplingRateConverter() {
 
 bool SamplingRateConverter::Init(SoundSourceL* _source,
                                  int _buffersize,
-                                 ulong outrate) {
+                                 uint32 outrate) {
   CriticalSection::Lock lock(cs);
 
   delete[] buffer;
@@ -109,8 +109,8 @@ int SamplingRateConverter::FillMain(int samples) {
 // ---------------------------------------------------------------------------
 //  フィルタを構築
 //
-void SamplingRateConverter::MakeFilter(ulong out) {
-  ulong in = source->GetRate();
+void SamplingRateConverter::MakeFilter(uint32 out) {
+  uint32 in = source->GetRate();
 
   // 変換前、変換後レートの比を求める
   // ソースを ic 倍アップサンプリングして LPF を掛けた後

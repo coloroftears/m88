@@ -20,8 +20,8 @@ class WinMouseUI : public IMouseUI {
   bool Init(WinUI* ui);
 
   long IFCALL QueryInterface(REFIID, void**);
-  ulong IFCALL AddRef();
-  ulong IFCALL Release();
+  uint32 IFCALL AddRef();
+  uint32 IFCALL Release();
 
   bool IFCALL Enable(bool en);
   bool IFCALL GetMovement(POINT*);
@@ -37,7 +37,7 @@ class WinMouseUI : public IMouseUI {
   bool enable;
   int orgmouseparams[3];
 
-  ulong refcount;
+  uint32 refcount;
 };
 
 #endif  // !defined(win32_winmouse_h)

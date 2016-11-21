@@ -15,7 +15,7 @@
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
-typedef unsigned long ulong;
+typedef unsigned long uint32;
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
