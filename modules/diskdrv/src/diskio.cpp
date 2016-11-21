@@ -4,12 +4,12 @@
 // ---------------------------------------------------------------------------
 //  $Id: diskio.cpp,v 1.2 1999/09/25 03:13:51 cisc Exp $
 
-#include "headers.h"
-#include "misc.h"
-#include "diskio.h"
+#include "modules/diskdrv/src/headers.h"
+#include "common/misc.h"
+#include "modules/diskdrv/src/diskio.h"
 
 #define LOGNAME "DiskIO"
-#include "diag.h"
+#include "win32/diag.h"
 
 using namespace PC8801;
 

@@ -4,7 +4,7 @@
 #define incl_config_h
 
 #include "if/ifcommon.h"
-#include "instthnk.h"
+#include "win32/instthnk.h"
 
 class ConfigCDIF : public IConfigPropSheet {
  public:

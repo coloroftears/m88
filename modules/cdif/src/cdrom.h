@@ -7,8 +7,8 @@
 #ifndef incl_cdrom_h
 #define incl_cdrom_h
 
-#include "types.h"
-#include "misc.h"
+#include "win32/types.h"
+#include "common/misc.h"
 
 class ASPI;
 

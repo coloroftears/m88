@@ -3,7 +3,7 @@
 #ifndef incl_sine_h
 #define incl_sine_h
 
-#include "device.h"
+#include "common/device.h"
 #include "if/ifcommon.h"
 
 // ---------------------------------------------------------------------------

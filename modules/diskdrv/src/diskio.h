@@ -7,8 +7,8 @@
 #ifndef pc88_diskio_h
 #define pc88_diskio_h
 
-#include "device.h"
-#include "file.h"
+#include "common/device.h"
+#include "win32/file.h"
 
 namespace PC8801 {
 

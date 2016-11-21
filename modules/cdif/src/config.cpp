@@ -1,7 +1,7 @@
 // $Id: config.cpp,v 1.1 1999/12/28 11:25:53 cisc Exp $
 
-#include "headers.h"
-#include "config.h"
+#include "modules/cdif/src/headers.h"
+#include "modules/cdif/src/config.h"
 #include "resource.h"
 
 // ---------------------------------------------------------------------------

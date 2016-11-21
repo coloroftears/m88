@@ -1,7 +1,7 @@
 //  $Id: sine.cpp,v 1.1 1999/10/10 01:41:59 cisc Exp $
 
-#include "headers.h"
-#include "sine.h"
+#include "modules/sample1/src/headers.h"
+#include "modules/sample1/src/sine.h"
 
 Sine::Sine() : Device(0), volume(0), rate(0), pitch(0), pos(0), sc(0) {}
 

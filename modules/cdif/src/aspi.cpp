@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------------------
 //  $Id: aspi.cpp,v 1.1 1999/08/26 08:04:36 cisc Exp $
 
-#include "headers.h"
-#include "aspi.h"
-#include "aspidef.h"
+#include "modules/cdif/src/headers.h"
+#include "modules/cdif/src/aspi.h"
+#include "modules/cdif/src/aspidef.h"
 
 // --------------------------------------------------------------------------
 //  ç\íz

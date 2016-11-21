@@ -7,7 +7,7 @@
 #ifndef win32_aspi_h
 #define win32_aspi_h
 
-#include "types.h"
+#include "win32/types.h"
 
 class ASPI {
  public:

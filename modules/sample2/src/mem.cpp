@@ -1,7 +1,7 @@
 //  $Id: mem.cpp,v 1.1 1999/10/10 01:43:28 cisc Exp $
 
-#include "headers.h"
-#include "mem.h"
+#include "modules/sample2/src/headers.h"
+#include "modules/sample2/src/mem.h"
 
 GVRAMReverse::GVRAMReverse() : Device(0), mm(0), gvram(false) {}
 
