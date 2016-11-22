@@ -201,13 +201,13 @@ bool IFCALL SIO::LoadStatus(const uint8_t* s) {
 const Device::Descriptor SIO::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr SIO::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &SIO::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &SIO::SetControl),
-    STATIC_CAST(Device::OutFuncPtr, &SIO::SetData),
-    STATIC_CAST(Device::OutFuncPtr, &SIO::AcceptData),
+    static_cast<Device::OutFuncPtr>(&SIO::Reset),
+    static_cast<Device::OutFuncPtr>(&SIO::SetControl),
+    static_cast<Device::OutFuncPtr>(&SIO::SetData),
+    static_cast<Device::OutFuncPtr>(&SIO::AcceptData),
 };
 
 const Device::InFuncPtr SIO::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &SIO::GetStatus),
-    STATIC_CAST(Device::InFuncPtr, &SIO::GetData),
+    static_cast<Device::InFuncPtr>(&SIO::GetStatus),
+    static_cast<Device::InFuncPtr>(&SIO::GetData),
 };

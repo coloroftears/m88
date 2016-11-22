@@ -132,11 +132,11 @@ void Mouse::ApplyConfig(const Config* config) {
 const Device::Descriptor Mouse::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr Mouse::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &Mouse::Strobe),
-    STATIC_CAST(Device::OutFuncPtr, &Mouse::VSync),
+    static_cast<Device::OutFuncPtr>(&Mouse::Strobe),
+    static_cast<Device::OutFuncPtr>(&Mouse::VSync),
 };
 
 const Device::InFuncPtr Mouse::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &Mouse::GetMove),
-    STATIC_CAST(Device::InFuncPtr, &Mouse::GetButton),
+    static_cast<Device::InFuncPtr>(&Mouse::GetMove),
+    static_cast<Device::InFuncPtr>(&Mouse::GetButton),
 };

@@ -1529,13 +1529,13 @@ bool IFCALL Screen::LoadStatus(const uint8_t* s) {
 const Device::Descriptor Screen::descriptor = {0, Screen::outdef};
 
 const Device::OutFuncPtr Screen::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out30),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out31),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out32),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out33),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out52),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out53),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out54),
-    STATIC_CAST(Device::OutFuncPtr, &Screen::Out55to5b),
+    static_cast<Device::OutFuncPtr>(&Screen::Reset),
+    static_cast<Device::OutFuncPtr>(&Screen::Out30),
+    static_cast<Device::OutFuncPtr>(&Screen::Out31),
+    static_cast<Device::OutFuncPtr>(&Screen::Out32),
+    static_cast<Device::OutFuncPtr>(&Screen::Out33),
+    static_cast<Device::OutFuncPtr>(&Screen::Out52),
+    static_cast<Device::OutFuncPtr>(&Screen::Out53),
+    static_cast<Device::OutFuncPtr>(&Screen::Out54),
+    static_cast<Device::OutFuncPtr>(&Screen::Out55to5b),
 };

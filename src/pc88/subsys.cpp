@@ -279,23 +279,23 @@ bool IFCALL SubSystem::LoadStatus(const uint8_t* s) {
 const Device::Descriptor SubSystem::descriptor = {indef, outdef};
 
 const Device::InFuncPtr SubSystem::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::IntAck),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::M_Read0),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::M_Read1),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::M_Read2),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::S_Read0),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::S_Read1),
-    STATIC_CAST(Device::InFuncPtr, &SubSystem::S_Read2),
+    static_cast<Device::InFuncPtr>(&SubSystem::IntAck),
+    static_cast<Device::InFuncPtr>(&SubSystem::M_Read0),
+    static_cast<Device::InFuncPtr>(&SubSystem::M_Read1),
+    static_cast<Device::InFuncPtr>(&SubSystem::M_Read2),
+    static_cast<Device::InFuncPtr>(&SubSystem::S_Read0),
+    static_cast<Device::InFuncPtr>(&SubSystem::S_Read1),
+    static_cast<Device::InFuncPtr>(&SubSystem::S_Read2),
 };
 
 const Device::OutFuncPtr SubSystem::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::M_Set0),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::M_Set1),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::M_Set2),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::M_SetCW),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::S_Set0),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::S_Set1),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::S_Set2),
-    STATIC_CAST(Device::OutFuncPtr, &SubSystem::S_SetCW),
+    static_cast<Device::OutFuncPtr>(&SubSystem::Reset),
+    static_cast<Device::OutFuncPtr>(&SubSystem::M_Set0),
+    static_cast<Device::OutFuncPtr>(&SubSystem::M_Set1),
+    static_cast<Device::OutFuncPtr>(&SubSystem::M_Set2),
+    static_cast<Device::OutFuncPtr>(&SubSystem::M_SetCW),
+    static_cast<Device::OutFuncPtr>(&SubSystem::S_Set0),
+    static_cast<Device::OutFuncPtr>(&SubSystem::S_Set1),
+    static_cast<Device::OutFuncPtr>(&SubSystem::S_Set2),
+    static_cast<Device::OutFuncPtr>(&SubSystem::S_SetCW),
 };

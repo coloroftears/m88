@@ -3085,7 +3085,7 @@ bool IFCALL Z80C::LoadStatus(const uint8_t* s) {
 const Device::Descriptor Z80C::descriptor = {0, outdef};
 
 const Device::OutFuncPtr Z80C::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &Z80C::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &Z80C::IRQ),
-    STATIC_CAST(Device::OutFuncPtr, &Z80C::NMI),
+    static_cast<Device::OutFuncPtr>(&Z80C::Reset),
+    static_cast<Device::OutFuncPtr>(&Z80C::IRQ),
+    static_cast<Device::OutFuncPtr>(&Z80C::NMI),
 };

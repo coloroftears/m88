@@ -648,12 +648,12 @@ void Memory::Update80() {
 //  テキストウィンドウ(ラップアラウンド)のアクセス
 //
 void MEMCALL Memory::WrWindow(void* inst, uint32_t addr, uint32_t data) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->ram[(m->txtwnd + (addr & 0x3ff)) & 0xffff] = data;
 }
 
 uint32_t MEMCALL Memory::RdWindow(void* inst, uint32_t addr) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   return m->ram[(m->txtwnd + (addr & 0x3ff)) & 0xffff];
 }
 
@@ -787,35 +787,35 @@ void Memory::SelectGVRAM(uint32_t gvtop) {
     m->dirty[addr >> 4] = 1;
 
 void MEMCALL Memory::WrGVRAM0(void* inst, uint32_t addr, uint32_t data) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff].byte[0] = data;
   SETDIRTY(addr);
 }
 
 void MEMCALL Memory::WrGVRAM1(void* inst, uint32_t addr, uint32_t data) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff].byte[1] = data;
   SETDIRTY(addr);
 }
 
 void MEMCALL Memory::WrGVRAM2(void* inst, uint32_t addr, uint32_t data) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff].byte[2] = data;
   SETDIRTY(addr);
 }
 
 uint32_t MEMCALL Memory::RdGVRAM0(void* inst, uint32_t addr) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   return m->gvram[addr & 0x3fff].byte[0];
 }
 
 uint32_t MEMCALL Memory::RdGVRAM1(void* inst, uint32_t addr) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   return m->gvram[addr & 0x3fff].byte[1];
 }
 
 uint32_t MEMCALL Memory::RdGVRAM2(void* inst, uint32_t addr) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   return m->gvram[addr & 0x3fff].byte[2];
 }
 
@@ -840,7 +840,7 @@ void Memory::SelectALU(uint32_t gvtop) {
 //  GVRAM R/W thru ALU
 //
 uint32_t MEMCALL Memory::RdALU(void* inst, uint32_t addr) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   quadbyte q;
   m->alureg = m->gvram[addr & 0x3fff];
   q.pack = m->alureg.pack ^ m->aluread.pack;
@@ -848,7 +848,7 @@ uint32_t MEMCALL Memory::RdALU(void* inst, uint32_t addr) {
 }
 
 void MEMCALL Memory::WrALUSet(void* inst, uint32_t addr, uint32_t data) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
 
   quadbyte q;
   //  data &= 255;
@@ -861,19 +861,19 @@ void MEMCALL Memory::WrALUSet(void* inst, uint32_t addr, uint32_t data) {
 }
 
 void MEMCALL Memory::WrALURGB(void* inst, uint32_t addr, uint32_t) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff] = m->alureg;
   SETDIRTY(addr);
 }
 
 void MEMCALL Memory::WrALUR(void* inst, uint32_t addr, uint32_t) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff].byte[1] = m->alureg.byte[0];
   SETDIRTY(addr);
 }
 
 void MEMCALL Memory::WrALUB(void* inst, uint32_t addr, uint32_t) {
-  Memory* m = STATIC_CAST(Memory*, inst);
+  Memory* m = static_cast<Memory*>(inst);
   m->gvram[addr &= 0x3fff].byte[0] = m->alureg.byte[1];
   SETDIRTY(addr);
 }
@@ -1127,33 +1127,33 @@ bool IFCALL Memory::LoadStatus(const uint8_t* s) {
 const Device::Descriptor Memory::descriptor = {Memory::indef, Memory::outdef};
 
 const Device::OutFuncPtr Memory::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out31),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out32),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out34),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out35),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out40),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out5x),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out70),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out71),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out78),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out99),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Oute2),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Oute3),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Outf0),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Outf1),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::VRTC),
-    STATIC_CAST(Device::OutFuncPtr, &Memory::Out33),
+    static_cast<Device::OutFuncPtr>(&Memory::Reset),
+    static_cast<Device::OutFuncPtr>(&Memory::Out31),
+    static_cast<Device::OutFuncPtr>(&Memory::Out32),
+    static_cast<Device::OutFuncPtr>(&Memory::Out34),
+    static_cast<Device::OutFuncPtr>(&Memory::Out35),
+    static_cast<Device::OutFuncPtr>(&Memory::Out40),
+    static_cast<Device::OutFuncPtr>(&Memory::Out5x),
+    static_cast<Device::OutFuncPtr>(&Memory::Out70),
+    static_cast<Device::OutFuncPtr>(&Memory::Out71),
+    static_cast<Device::OutFuncPtr>(&Memory::Out78),
+    static_cast<Device::OutFuncPtr>(&Memory::Out99),
+    static_cast<Device::OutFuncPtr>(&Memory::Oute2),
+    static_cast<Device::OutFuncPtr>(&Memory::Oute3),
+    static_cast<Device::OutFuncPtr>(&Memory::Outf0),
+    static_cast<Device::OutFuncPtr>(&Memory::Outf1),
+    static_cast<Device::OutFuncPtr>(&Memory::VRTC),
+    static_cast<Device::OutFuncPtr>(&Memory::Out33),
 };
 
 const Device::InFuncPtr Memory::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &Memory::In32),
-    STATIC_CAST(Device::InFuncPtr, &Memory::In5c),
-    STATIC_CAST(Device::InFuncPtr, &Memory::In70),
-    STATIC_CAST(Device::InFuncPtr, &Memory::In71),
-    STATIC_CAST(Device::InFuncPtr, &Memory::Ine2),
-    STATIC_CAST(Device::InFuncPtr, &Memory::Ine3),
-    STATIC_CAST(Device::InFuncPtr, &Memory::In33),
+    static_cast<Device::InFuncPtr>(&Memory::In32),
+    static_cast<Device::InFuncPtr>(&Memory::In5c),
+    static_cast<Device::InFuncPtr>(&Memory::In70),
+    static_cast<Device::InFuncPtr>(&Memory::In71),
+    static_cast<Device::InFuncPtr>(&Memory::Ine2),
+    static_cast<Device::InFuncPtr>(&Memory::Ine3),
+    static_cast<Device::InFuncPtr>(&Memory::In33),
 };
 
 // ----------------------------------------------------------------------------

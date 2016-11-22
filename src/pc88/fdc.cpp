@@ -410,7 +410,7 @@ void FDC::SetTimer(Phase p, int ticks) {
   if (!diskwait)
     ticks = (ticks + 127) / 128;
   timerhandle = scheduler->AddEvent(ticks, this,
-                                    STATIC_CAST(TimeFunc, &FDC::PhaseTimer), p);
+                                    static_cast<TimeFunc>(&FDC::PhaseTimer), p);
 }
 
 void FDC::DelTimer() {
@@ -648,7 +648,7 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
     LOG3("Seek: %d -> %d (%d)\n", drive[dr].cyrinder, cy, seekcount);
     drive[dr].cyrinder = cy;
     seektime = seekcount && diskwait ? (400 * Abs(seekcount) + 500) : 10;
-    scheduler->AddEvent(seektime, this, STATIC_CAST(TimeFunc, &FDC::SeekEvent),
+    scheduler->AddEvent(seektime, this, static_cast<TimeFunc>(&FDC::SeekEvent),
                         dr);
     seekstate |= 1 << dr;
 
@@ -1199,7 +1199,7 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
   scheduler->DelEvent(this);
   if (st->t_phase != idlephase)
     timerhandle = scheduler->AddEvent(diskwait ? 100 : 10, this,
-                                      STATIC_CAST(TimeFunc, &FDC::PhaseTimer),
+                                      static_cast<TimeFunc>(&FDC::PhaseTimer),
                                       st->t_phase);
 
   fdstat = 0;
@@ -1208,7 +1208,7 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
     diskmgr->GetFDU(d)->Seek(drive[d].cyrinder);
     if (seekstate & (1 << d)) {
       scheduler->AddEvent(diskwait ? 100 : 10, this,
-                          STATIC_CAST(TimeFunc, &FDC::SeekEvent), d);
+                          static_cast<TimeFunc>(&FDC::SeekEvent), d);
       fdstat |= 0x10;
     }
     statusdisplay.FDAccess(d, drive[d].hd != 0, false);
@@ -1228,13 +1228,13 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
 const Device::Descriptor FDC::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr FDC::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &FDC::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &FDC::SetData),
-    STATIC_CAST(Device::OutFuncPtr, &FDC::DriveControl),
-    STATIC_CAST(Device::OutFuncPtr, &FDC::MotorControl)};
+    static_cast<Device::OutFuncPtr>(&FDC::Reset),
+    static_cast<Device::OutFuncPtr>(&FDC::SetData),
+    static_cast<Device::OutFuncPtr>(&FDC::DriveControl),
+    static_cast<Device::OutFuncPtr>(&FDC::MotorControl)};
 
 const Device::InFuncPtr FDC::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &FDC::Status),
-    STATIC_CAST(Device::InFuncPtr, &FDC::GetData),
-    STATIC_CAST(Device::InFuncPtr, &FDC::TC),
+    static_cast<Device::InFuncPtr>(&FDC::Status),
+    static_cast<Device::InFuncPtr>(&FDC::GetData),
+    static_cast<Device::InFuncPtr>(&FDC::TC),
 };

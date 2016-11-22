@@ -309,7 +309,7 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
             event = -1;
             sev = scheduler->AddEvent(
                 linetime * vretrace, this,
-                STATIC_CAST(TimeFunc, &CRTC::StartDisplay), 0);
+                static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
           }
         } else
           status &= ~0x10;
@@ -478,12 +478,12 @@ void IOCALL CRTC::ExpandLine(uint32_t) {
   if (e) {
     event = e + 1;
     sev = scheduler->AddEvent(linetime * e, this,
-                              STATIC_CAST(TimeFunc, &CRTC::ExpandLineEnd));
+                              static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
   } else {
     if (++column < height) {
       event = 1;
       sev = scheduler->AddEvent(linetime, this,
-                                STATIC_CAST(TimeFunc, &CRTC::ExpandLine));
+                                static_cast<TimeFunc>(&CRTC::ExpandLine));
     } else
       ExpandLineEnd();
   }
@@ -544,7 +544,7 @@ inline void IOCALL CRTC::ExpandLineEnd(uint32_t) {
   bus->Out(PC88::vrtc, 1);
   event = -1;
   sev = scheduler->AddEvent(linetime * vretrace, this,
-                            STATIC_CAST(TimeFunc, &CRTC::StartDisplay), 0);
+                            static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -614,7 +614,7 @@ void CRTC::ClearText(uint8_t* dest) {
 
   //  screenheight = 300;
   for (y = 0; y < screenheight; y++) {
-    packed* d = REINTERPRET_CAST(packed*, dest);
+    packed* d = reinterpret_cast<packed*>(dest);
     packed mask = pat_mask;
 
     for (uint32_t x = 640 / sizeof(packed) / 4; x > 0; x--) {
@@ -629,7 +629,7 @@ void CRTC::ClearText(uint8_t* dest) {
 
   packed pat0 = colorpattern[0] | TEXT_SETP;
   for (; y < 400; y++) {
-    packed* d = REINTERPRET_CAST(packed*, dest);
+    packed* d = reinterpret_cast<packed*>(dest);
     packed mask = pat_mask;
 
     for (uint32_t x = 640 / sizeof(packed) / 4; x > 0; x--) {
@@ -1129,13 +1129,13 @@ bool IFCALL CRTC::LoadStatus(const uint8_t* s) {
   scheduler->DelEvent(sev);
   if (event == 1)
     sev = scheduler->AddEvent(linetime, this,
-                              STATIC_CAST(TimeFunc, &CRTC::ExpandLine));
+                              static_cast<TimeFunc>(&CRTC::ExpandLine));
   else if (event > 1)
     sev = scheduler->AddEvent(linetime * (event - 1), this,
-                              STATIC_CAST(TimeFunc, &CRTC::ExpandLineEnd));
+                              static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
   else if (event == -1 || st->rev == 1)
     sev = scheduler->AddEvent(linetime * vretrace, this,
-                              STATIC_CAST(TimeFunc, &CRTC::StartDisplay), 0);
+                              static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 
   return true;
 }
@@ -1146,13 +1146,13 @@ bool IFCALL CRTC::LoadStatus(const uint8_t* s) {
 const Device::Descriptor CRTC::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr CRTC::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &CRTC::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &CRTC::Out),
-    STATIC_CAST(Device::OutFuncPtr, &CRTC::PCGOut),
-    STATIC_CAST(Device::OutFuncPtr, &CRTC::SetKanaMode),
+    static_cast<Device::OutFuncPtr>(&CRTC::Reset),
+    static_cast<Device::OutFuncPtr>(&CRTC::Out),
+    static_cast<Device::OutFuncPtr>(&CRTC::PCGOut),
+    static_cast<Device::OutFuncPtr>(&CRTC::SetKanaMode),
 };
 
 const Device::InFuncPtr CRTC::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &CRTC::In),
-    STATIC_CAST(Device::InFuncPtr, &CRTC::GetStatus),
+    static_cast<Device::InFuncPtr>(&CRTC::In),
+    static_cast<Device::InFuncPtr>(&CRTC::GetStatus),
 };

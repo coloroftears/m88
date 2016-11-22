@@ -28,21 +28,10 @@ typedef uint32_t packed;
 // x86 版の Z80 エンジンを使用する
 #define USE_Z80_X86
 
-// C++ の新しいキャストを使用する(但し win32 コードでは関係なく使用する)
-#define USE_NEW_CAST
-
 // ---------------------------------------------------------------------------
 
 #ifdef USE_Z80_X86
 #define MEMCALL __stdcall
 #else
 #define MEMCALL
-#endif
-
-#if defined(USE_NEW_CAST) && defined(__cplusplus)
-#define STATIC_CAST(t, o) static_cast<t>(o)
-#define REINTERPRET_CAST(t, o) reinterpret_cast<t>(o)
-#else
-#define STATIC_CAST(t, o) ((t)(o))
-#define REINTERPRET_CAST(t, o) (*(t*)(void*)&(o))
 #endif

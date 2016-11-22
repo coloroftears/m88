@@ -72,8 +72,8 @@ const int Sine::table[] = {
 const Device::Descriptor Sine::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr Sine::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &SetVolume),
-    STATIC_CAST(Device::OutFuncPtr, &SetPitch),
+    static_cast<Device::OutFuncPtr>(&SetVolume),
+    static_cast<Device::OutFuncPtr>(&SetPitch),
 };
 
 const Device::InFuncPtr Sine::indef[] = {

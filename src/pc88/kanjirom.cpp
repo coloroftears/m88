@@ -69,11 +69,11 @@ const Device::Descriptor KanjiROM::descriptor = {KanjiROM::indef,
                                                  KanjiROM::outdef};
 
 const Device::OutFuncPtr KanjiROM::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &KanjiROM::SetL),
-    STATIC_CAST(Device::OutFuncPtr, &KanjiROM::SetH),
+    static_cast<Device::OutFuncPtr>(&KanjiROM::SetL),
+    static_cast<Device::OutFuncPtr>(&KanjiROM::SetH),
 };
 
 const Device::InFuncPtr KanjiROM::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &KanjiROM::ReadL),
-    STATIC_CAST(Device::InFuncPtr, &KanjiROM::ReadH),
+    static_cast<Device::InFuncPtr>(&KanjiROM::ReadL),
+    static_cast<Device::InFuncPtr>(&KanjiROM::ReadH),
 };

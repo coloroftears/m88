@@ -294,14 +294,14 @@ bool IFCALL PD8257::LoadStatus(const uint8_t* s) {
 const Device::Descriptor PD8257::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr PD8257::outdef[] = {
-    STATIC_CAST(Device::OutFuncPtr, &PD8257::Reset),
-    STATIC_CAST(Device::OutFuncPtr, &PD8257::SetAddr),
-    STATIC_CAST(Device::OutFuncPtr, &PD8257::SetCount),
-    STATIC_CAST(Device::OutFuncPtr, &PD8257::SetMode),
+    static_cast<Device::OutFuncPtr>(&PD8257::Reset),
+    static_cast<Device::OutFuncPtr>(&PD8257::SetAddr),
+    static_cast<Device::OutFuncPtr>(&PD8257::SetCount),
+    static_cast<Device::OutFuncPtr>(&PD8257::SetMode),
 };
 
 const Device::InFuncPtr PD8257::indef[] = {
-    STATIC_CAST(Device::InFuncPtr, &PD8257::GetAddr),
-    STATIC_CAST(Device::InFuncPtr, &PD8257::GetCount),
-    STATIC_CAST(Device::InFuncPtr, &PD8257::GetStatus),
+    static_cast<Device::InFuncPtr>(&PD8257::GetAddr),
+    static_cast<Device::InFuncPtr>(&PD8257::GetCount),
+    static_cast<Device::InFuncPtr>(&PD8257::GetStatus),
 };
