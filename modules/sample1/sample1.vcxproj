@@ -164,10 +164,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\guid.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\guid.cpp" />
     <ClCompile Include="src\moduleif.cpp" />
     <ClCompile Include="src\sine.cpp" />
   </ItemGroup>
