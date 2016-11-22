@@ -271,11 +271,6 @@
     <ClCompile Include="src\win32\file.cpp" />
     <ClCompile Include="src\win32\filetest.cpp" />
     <ClCompile Include="src\win32\guid.cpp" />
-    <ClCompile Include="src\win32\keybconn.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tuning|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\win32\main.cpp" />
     <ClCompile Include="src\win32\module.cpp" />
     <ClCompile Include="src\win32\monitors\basmon.cpp" />
@@ -385,7 +380,6 @@
     <ClInclude Include="src\win32\extdev.h" />
     <ClInclude Include="src\win32\filetest.h" />
     <ClInclude Include="src\win32\headers.h" />
-    <ClInclude Include="src\win32\keybconn.h" />
     <ClInclude Include="src\win32\messages.h" />
     <ClInclude Include="src\win32\module.h" />
     <ClInclude Include="src\win32\monitors\basmon.h" />
