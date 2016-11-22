@@ -58,7 +58,7 @@ void OPNBase::SetParameter(Channel4* ch, uint32_t addr, uint32_t data) {
         break;
 
       case 4:  // 40-4E TL
-        op->SetTL(data & 0x7f, (regtc & 0x80) && (csmch == ch));
+        op->SetTL(data & 0x7f, ((regtc & 0xc0) == 0x80) && (csmch == ch));
         break;
 
       case 5:  // 50-5E KS/AR
@@ -142,7 +142,7 @@ void OPNBase::SetVolumeFM(int db) {
 
 //  タイマー時間処理
 void OPNBase::TimerA() {
-  if (regtc & 0x80) {
+  if ((regtc & 0xc0) ==  0x80) {
     csmch->KeyControl(0x00);
     csmch->KeyControl(0x0f);
   }
