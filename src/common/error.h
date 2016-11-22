@@ -4,8 +4,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: error.h,v 1.2 1999/12/07 00:14:14 cisc Exp $
 
-#ifndef common_error_h
-#define common_error_h
+#pragma once
 
 class Error {
  public:
@@ -30,5 +29,3 @@ class Error {
   static Errno err;
   static const char* ErrorText[nerrors];
 };
-
-#endif  // common_error_h

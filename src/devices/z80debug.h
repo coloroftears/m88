@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: Z80Debug.h,v 1.2 1999/04/02 04:34:13 cisc Exp $
 
-#ifndef Z80debug_h
-#define Z80debug_h
+#pragma once
 
 #include "common/device.h"
 #include "devices/z80.h"
@@ -70,5 +69,3 @@ class Z80Debug : public Device {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-
-#endif  // Z80debug_h

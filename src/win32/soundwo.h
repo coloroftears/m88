@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundwo.h,v 1.5 2002/05/31 09:45:21 cisc Exp $
 
-#if !defined(win32_soundwo_h)
-#define win32_soundwo_h
+#pragma once
 
 #include "win32/sounddrv.h"
 #include "win32/critsect.h"
@@ -43,6 +42,4 @@ class DriverWO : public Driver {
   WAVEHDR* wavehdr;  // WAVEHDR の配列
   bool dontmix;      // WAVE を送る際に音声の合成をしない
 };
-}
-
-#endif  // win32_soundwo_h
+}  // namespace WinSoundDriver

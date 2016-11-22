@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: mouse.h,v 1.1 2002/04/07 05:40:10 cisc Exp $
 
-#if !defined(pc88_mouse_h)
-#define pc88_mouse_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifui.h"
@@ -58,6 +57,4 @@ class Mouse : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}
-
-#endif  // !defined(pc88_mouse_h)
+}  // namespace PC8801

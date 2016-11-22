@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: wincore.h,v 1.34 2003/05/15 13:15:36 cisc Exp $
 
-#if !defined(win32_wincore_h)
-#define win32_wincore_h
+#pragma once
 
 // ---------------------------------------------------------------------------
 
@@ -103,5 +102,3 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   typedef vector<PC8801::ExternalDevice*> ExternalDevices;
   ExternalDevices extdevices;
 };
-
-#endif  // !defined(win32_wincore_h)

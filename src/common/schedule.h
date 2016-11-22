@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: schedule.h,v 1.12 2002/04/07 05:40:08 cisc Exp $
 
-#ifndef common_schedule_h
-#define common_schedule_h
+#pragma once
 
 #include "common/device.h"
 
@@ -66,5 +65,3 @@ class Scheduler : public IScheduler, public ITime {
 inline int IFCALL Scheduler::GetTime() {
   return time + GetTicks();
 }
-
-#endif  // common_schedule_h

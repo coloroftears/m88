@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: ui.h,v 1.33 2002/05/31 09:45:21 cisc Exp $
 
-#ifndef win_ui_h
-#define win_ui_h
+#pragma once
 
 #include "win32/types.h"
 #include "win32/wincore.h"
@@ -176,5 +175,3 @@ class WinUI {
   uint32_t WmMouseMove(HWND, WPARAM, LPARAM);
   uint32_t WmSetCursor(HWND, WPARAM, LPARAM);
 };
-
-#endif  // WIN_UI_H

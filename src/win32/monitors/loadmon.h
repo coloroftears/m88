@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: loadmon.h,v 1.1 2001/02/21 11:58:54 cisc Exp $
 
-#if !defined(win32_loadmon_h)
-#define win32_loadmon_h
+#pragma once
 
 #include "common/device.h"
 #include "win32/monitors/winmon.h"
@@ -81,5 +80,3 @@ class LoadMonitor {
 #define LOADEND(a)
 
 #endif
-
-#endif  // !defined(win32_loadmon_h)

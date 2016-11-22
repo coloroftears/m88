@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: sound.h,v 1.28 2003/05/12 22:26:35 cisc Exp $
 
-#ifndef PC88_SOUND_H
-#define PC88_SOUND_H
+#pragma once
 
 #include "common/device.h"
 #include "common/sndbuf2.h"
@@ -79,6 +78,4 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
   SSNode* sslist;
   CriticalSection cs_ss;
 };
-}
-
-#endif  // PC88_SOUND_H
+}  // namespace PC8801

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: beep.h,v 1.2 1999/10/10 01:47:04 cisc Exp $
 
-#ifndef PC88_BEEP_H
-#define PC88_BEEP_H
+#pragma once
 
 #include "common/device.h"
 
@@ -72,5 +71,3 @@ class Beep : public Device, public ISoundSource {
   static const OutFuncPtr outdef[];
 };
 }
-
-#endif  // PC88_BEEP_H

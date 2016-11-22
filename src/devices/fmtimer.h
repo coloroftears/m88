@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: fmtimer.h,v 1.2 2003/04/22 13:12:53 cisc Exp $
 
-#ifndef FM_TIMER_H
-#define FM_TIMER_H
+#pragma once
 
 #include "win32/types.h"
 
@@ -48,5 +47,3 @@ inline void Timer::Reset() {
 }
 
 }  // namespace FM
-
-#endif  // FM_TIMER_H

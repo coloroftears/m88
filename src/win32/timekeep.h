@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: timekeep.h,v 1.1 2002/04/07 05:40:11 cisc Exp $
 
-#if !defined(win32_timekeep_h)
-#define win32_timekeep_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -35,5 +34,3 @@ class TimeKeeper {
   uint32_t base;  // 最後の呼び出しの際の元クロックの値
   uint32_t time;  // 最後の呼び出しに返した値
 };
-
-#endif  // !defined(win32_timekeep_h)

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: config.h,v 1.23 2003/09/28 14:35:35 cisc Exp $
 
-#ifndef pc88_config_h
-#define pc88_config_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -113,5 +112,3 @@ class Config {
   bool IsFV15k() const { return (basicmode & 2) || (flags & fv15k); }
 };
 }
-
-#endif  // pc88_config_h

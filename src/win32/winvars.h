@@ -1,7 +1,6 @@
 //  $Id: winvars.h,v 1.1 2000/11/02 12:43:52 cisc Exp $
 
-#ifndef incl_winvars_h
-#define incl_winvars_h
+#pragma once
 
 class WinVars {
  public:
@@ -18,5 +17,3 @@ class WinVars {
 };
 
 #define WINVAR(a) WinVars::Var(WinVars::a)
-
-#endif  // incl_winvars_h

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: psg.h,v 1.8 2003/04/22 13:12:53 cisc Exp $
 
-#ifndef PSG_H
-#define PSG_H
+#pragma once
 
 #include "win32/types.h"
 
@@ -89,5 +88,3 @@ class PSG {
   static uint32_t noisetable[noisetablesize];
   static int EmitTable[32];
 };
-
-#endif  // PSG_H

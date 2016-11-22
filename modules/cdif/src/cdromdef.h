@@ -1,7 +1,6 @@
 //  $Id: cdromdef.h,v 1.1 1999/08/26 08:04:37 cisc Exp $
 
-#ifndef incl_cdromdef_h
-#define incl_cdromdef_h
+#pragma once
 
 // --------------------------------------------------------------------------
 //  commands
@@ -125,5 +124,3 @@ struct SubcodeQ {
   LONGBE absaddr;
   LONGBE reladdr;
 };
-
-#endif  // incl_cdromdef_h

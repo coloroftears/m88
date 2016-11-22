@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: fmgeninl.h,v 1.27 2003/09/10 13:22:50 cisc Exp $
 
-#ifndef FM_GEN_INL_H
-#define FM_GEN_INL_H
+#pragma once
 
 // ---------------------------------------------------------------------------
 //  定数その２
@@ -229,5 +228,3 @@ inline void Chip::SetPML(uint32_t l) {
   pml_ = l & (FM_LFOENTS - 1);
 }
 }
-
-#endif  // FM_GEN_INL_H

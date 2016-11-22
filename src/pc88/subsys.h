@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: subsys.h,v 1.7 2000/09/08 15:04:14 cisc Exp $
 
-#ifndef pc88_subsys_h
-#define pc88_subsys_h
+#pragma once
 
 #include "common/device.h"
 #include "pc88/fdc.h"
@@ -94,7 +93,4 @@ class SubSystem : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-
 }  // namespace PC8801
-
-#endif  // pc88_subsys_h

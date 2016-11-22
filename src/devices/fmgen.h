@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: fmgen.h,v 1.37 2003/08/25 13:33:11 cisc Exp $
 
-#ifndef FM_GEN_H
-#define FM_GEN_H
+#pragma once
 
 #include "win32/types.h"
 
@@ -261,5 +260,3 @@ class Chip {
   uint32_t multable_[4][16];
 };
 }
-
-#endif  // FM_GEN_H

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: Z80_x86.h,v 1.15 2000/11/02 12:43:44 cisc Exp $
 
-#ifndef z80_x86_h
-#define z80_x86_h
+#pragma once
 
 #include "common/device.h"
 #include "common/memmgr.h"
@@ -128,5 +127,3 @@ class Z80_x86 : public Device {
 inline int Z80_x86::GetCount() {
   return execcount + (clockcount << eshift);
 }
-
-#endif  // z80_x86_h

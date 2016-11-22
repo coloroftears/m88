@@ -5,8 +5,7 @@
 //  Z80 エンジン比較実行用クラス
 //  $Id: Z80Test.h,v 1.2 1999/08/01 14:18:10 cisc Exp $
 
-#ifndef Z80Test_h
-#define Z80Test_h
+#pragma once
 
 #include "common/device.h"
 #include "devices/z80.h"
@@ -88,5 +87,3 @@ class Z80Test : public Device {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-
-#endif  // Z80Test_h

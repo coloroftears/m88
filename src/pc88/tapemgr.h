@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: tapemgr.h,v 1.2 2000/06/26 14:05:30 cisc Exp $
 
-#ifndef pc88_tapemgr_h
-#define pc88_tapemgr_h
+#pragma once
 
 #include "common/device.h"
 #include "devices/opna.h"
@@ -124,5 +123,3 @@ class TapeManager : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-
-#endif  // pc88_tapemgr_h

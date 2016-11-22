@@ -1,7 +1,6 @@
 //  $Id: mem.h,v 1.1 1999/10/10 01:43:28 cisc Exp $
 
-#ifndef incl_mem_h
-#define incl_mem_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifcommon.h"
@@ -43,5 +42,3 @@ class GVRAMReverse : public Device {
   //  static const InFuncPtr  indef[];
   static const OutFuncPtr outdef[];
 };
-
-#endif  // incl_mem_h

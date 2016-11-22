@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: diskio.h,v 1.3 1999/10/10 01:38:05 cisc Exp $
 
-#ifndef pc88_diskio_h
-#define pc88_diskio_h
+#pragma once
 
 #include "common/device.h"
 #include "win32/file.h"
@@ -71,6 +70,4 @@ class DiskIO : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}
-
-#endif  // pc88_diskio_h
+}  // namespace PC8801

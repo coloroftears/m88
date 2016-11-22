@@ -7,8 +7,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: pio.h,v 1.2 1999/03/24 23:27:13 cisc Exp $
 
-#ifndef PC88_FDIF_PIO_H
-#define PC88_FDIF_PIO_H
+#pragma once
 
 #include "common/device.h"
 
@@ -62,5 +61,3 @@ inline uint32_t PC8801::PIO::Read2() {
   data = ((data << 4) & 0xf0) + ((data >> 4) & 0x0f);  // rotate 4 bits
   return (data & readmask[2]) | (port[2] & ~readmask[2]);
 }
-
-#endif  // FDIF_PIO_H

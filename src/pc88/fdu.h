@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: fdu.h,v 1.2 1999/03/25 11:29:20 cisc Exp $
 
-#ifndef FDU_H
-#define FDU_H
+#pragma once
 
 #include "pc88/floppy.h"
 
@@ -75,5 +74,3 @@ class FDU {
   int track;
 };
 }
-
-#endif  // FDU_H

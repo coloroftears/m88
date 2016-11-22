@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: device.h,v 1.21 1999/12/28 10:33:53 cisc Exp $
 
-#ifndef common_device_h
-#define common_device_h
+#pragma once
 
 #include "win32/types.h"
 #include "interface/ifcommon.h"
@@ -262,5 +261,3 @@ public:
 inline bool IOBus::IsSyncPort(uint32_t port) {
   return (flags[port >> iobankbits] & 1) != 0;
 }
-
-#endif  // common_device_h

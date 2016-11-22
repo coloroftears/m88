@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: DrawGDI.h,v 1.6 2001/02/21 11:58:53 cisc Exp $
 
-#if !defined(win32_drawgdi_h)
-#define win32_drawgdi_h
+#pragma once
 
 // ---------------------------------------------------------------------------
 
@@ -46,5 +45,3 @@ class WinDrawGDI : public WinDrawSub {
   bool updatepal;
   BI256 binfo;
 };
-
-#endif  // !defined(win32_drawgdi_h)

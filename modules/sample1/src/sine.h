@@ -1,7 +1,6 @@
 //  $Id: sine.h,v 1.1 1999/10/10 01:41:59 cisc Exp $
 
-#ifndef incl_sine_h
-#define incl_sine_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifcommon.h"
@@ -46,5 +45,3 @@ class Sine : public Device, public ISoundSource {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-
-#endif  // incl_sine_h

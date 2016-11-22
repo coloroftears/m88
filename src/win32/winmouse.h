@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: winmouse.h,v 1.5 2002/04/07 05:40:11 cisc Exp $
 
-#if !defined(win32_winmouse_h)
-#define win32_winmouse_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifui.h"
@@ -39,5 +38,3 @@ class WinMouseUI : public IMouseUI {
 
   uint32_t refcount;
 };
-
-#endif  // !defined(win32_winmouse_h)

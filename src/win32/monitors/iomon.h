@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: iomon.h,v 1.1 2001/02/21 11:58:54 cisc Exp $
 
-#if !defined(win32_iomon_h)
-#define win32_iomon_h
+#pragma once
 
 #include "common/device.h"
 #include "win32/monitors/mvmon.h"
@@ -36,6 +35,4 @@ class IOMonitor : public WinMonitor {
 
   static COLORREF ctbl[0x100];
 };
-}
-
-#endif  // !defined(win32_iomon_h)
+}  // namespace PC8801

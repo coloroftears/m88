@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: drawddw.h,v 1.7 2002/04/07 05:40:10 cisc Exp $
 
-#if !defined(win32_drawddw_h)
-#define win32_drawddw_h
+#pragma once
 
 #include "win32/windraw.h"
 
@@ -65,5 +64,3 @@ class WinDrawDDW : public WinDrawSub {
 
   PALETTEENTRY palentry[256];
 };
-
-#endif  // !defined(win32_drawddw_h)

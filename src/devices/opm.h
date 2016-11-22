@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: opm.h,v 1.14 2003/06/07 08:25:53 cisc Exp $
 
-#ifndef FM_OPM_H
-#define FM_OPM_H
+#pragma once
 
 #include "devices/fmgen.h"
 #include "devices/fmtimer.h"
@@ -153,5 +152,3 @@ class OPM : public Timer {
   Channel4* dbgGetCh(int c) { return &ch[c]; }
 };
 }
-
-#endif  // FM_OPM_H

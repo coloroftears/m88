@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundds2.h,v 1.2 2002/05/31 09:45:21 cisc Exp $
 
-#if !defined(win32_soundds2_h)
-#define win32_soundds2_h
+#pragma once
 
 #include "win32/sounddrv.h"
 
@@ -47,6 +46,4 @@ class DriverDS2 : public Driver {
   HANDLE hevent;
   uint32_t nextwrite;
 };
-}
-
-#endif  // !defined(win32_soundds2_h)
+}  // namespace WinSoundDriver

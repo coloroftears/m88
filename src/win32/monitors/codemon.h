@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: codemon.h,v 1.7 2003/05/19 02:33:56 cisc Exp $
 
-#if !defined(win32_codemon_h)
-#define win32_codemon_h
+#pragma once
 
 #include "win32/monitors/mvmon.h"
 #include "common/device.h"
@@ -35,6 +34,4 @@ class CodeMonitor : public MemViewMonitor {
 
   Z80Diag diag;
 };
-}
-
-#endif  // !defined(win32_codemon_h)
+}  // namespace PC8801

@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: file.h,v 1.6 1999/11/26 10:14:09 cisc Exp $
 
-#if !defined(win32_file_h)
-#define win32_file_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -98,5 +97,3 @@ class FileFinder {
   HANDLE hff;
   WIN32_FIND_DATA wfd;
 };
-
-#endif  //

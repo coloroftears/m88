@@ -1,7 +1,6 @@
 //  $Id: piccolo.h,v 1.2 2002/05/31 09:45:22 cisc Exp $
 
-#ifndef incl_romeo_piccolo_h
-#define incl_romeo_piccolo_h
+#pragma once
 
 #include "win32/types.h"
 #include "win32/timekeep.h"
@@ -162,5 +161,3 @@ class Piccolo {
   HANDLE hfile;
   bool islegacy;
 };
-
-#endif  // incl_romeo_piccolo_h

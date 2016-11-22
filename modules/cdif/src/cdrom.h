@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: cdrom.h,v 1.1 1999/08/26 08:04:37 cisc Exp $
 
-#ifndef incl_cdrom_h
-#define incl_cdrom_h
+#pragma once
 
 #include "win32/types.h"
 #include "common/misc.h"
@@ -96,5 +95,3 @@ inline const CDROM::Track* CDROM::GetTrackInfo(int t) {
 inline int CDROM::GetNumTracks() {
   return ntracks;
 }
-
-#endif  // incl_cdrom_h

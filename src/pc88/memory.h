@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: memory.h,v 1.26 2003/09/28 14:58:54 cisc Exp $
 
-#ifndef pc88_memory_h
-#define pc88_memory_h
+#pragma once
 
 #include "common/device.h"
 #include "pc88/config.h"
@@ -223,7 +222,4 @@ class Memory : public Device, public IGetMemoryBank {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-
-};  // namespace PC8801
-
-#endif
+}  // namespace PC8801

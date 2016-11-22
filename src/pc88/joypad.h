@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: joypad.h,v 1.3 2003/05/19 01:10:31 cisc Exp $
 
-#if !defined(pc88_joypad_h)
-#define pc88_joypad_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifui.h"
@@ -51,5 +50,3 @@ class JoyPad : public Device {
   static const OutFuncPtr outdef[];
 };
 }
-
-#endif  // !defined(pc88_joypad_h)

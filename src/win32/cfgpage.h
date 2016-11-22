@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: cfgpage.h,v 1.3 2002/05/15 21:38:02 cisc Exp $
 
-#if !defined(win32_cfgpage_h)
-#define win32_cfgpage_h
+#pragma once
 
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
@@ -142,6 +141,4 @@ class ConfigROMEO : public ConfigPage {
   static void InitSlider(HWND hdlg, UINT id, int val);
   static void SetText(HWND hdlg, int id, int val);
 };
-}
-
-#endif
+}  // namespace PC8801

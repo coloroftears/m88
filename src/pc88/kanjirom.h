@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: kanjirom.h,v 1.5 1999/10/10 01:47:07 cisc Exp $
 
-#if !defined(pc88_kanjirom_h)
-#define pc88_kanjirom_h
+#pragma once
 
 #include "common/device.h"
 
@@ -50,6 +49,4 @@ class KanjiROM : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-};
-
-#endif  // !defined(pc88_kanjirom_h)
+}

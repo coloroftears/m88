@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: pc88.h,v 1.45 2003/04/22 13:16:34 cisc Exp $
 
-#ifndef pc88_h
-#define pc88_h
+#pragma once
 
 #include "common/schedule.h"
 #include "common/device.h"
@@ -203,5 +202,3 @@ class PC88 : public Scheduler, public ICPUTime {
 inline bool PC88::IsCDSupported() {
   return devlist.Find(DEV_ID('c', 'd', 'i', 'f')) != 0;
 }
-
-#endif  // pc88_h

@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: cdif.h,v 1.2 1999/10/10 01:39:00 cisc Exp $
 
-#ifndef pc88_cdif_h
-#define pc88_cdif_h
+#pragma once
 
 #include "common/device.h"
 #include "cdif/src/cdctrl.h"
@@ -166,6 +165,4 @@ class CDIF : public Device {
   static const OutFuncPtr outdef[];
 };
 
-};  // namespace PC8801
-
-#endif  // pc88_cdif_h
+}  // namespace PC8801

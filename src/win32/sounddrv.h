@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: sounddrv.h,v 1.3 2002/05/31 09:45:21 cisc Exp $
 
-#if !defined(win32_sounddrv_h)
-#define win32_sounddrv_h
+#pragma once
 
 #include "win32/types.h"
 #include "common/sndbuf2.h"
@@ -38,6 +37,4 @@ class Driver {
   volatile bool playing;
   bool mixalways;
 };
-}
-
-#endif  // !defined(win32_sounddrv_h)
+}  // namespace WinSoundDriver

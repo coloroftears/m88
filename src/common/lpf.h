@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: lpf.h,v 1.1 2002/04/07 05:40:08 cisc Exp $
 
-#ifndef incl_lpf_h
-#define incl_lpf_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -42,5 +41,3 @@ inline int IIR_LPF::Filter(uint32_t ch, int o) {
   }
   return o;
 }
-
-#endif  // incl_lpf_h

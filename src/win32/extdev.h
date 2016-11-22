@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: extdev.h,v 1.6 1999/11/26 10:14:09 cisc Exp $
 
-#ifndef win32_extdev_h
-#define win32_extdev_h
+#pragma once
 
 #include "common/device.h"
 #include "pc88/pcinfo.h"
@@ -88,6 +87,4 @@ class ExternalDevice : public Device, public ISoundSource {
   static uint32_t S_GetTime(void*);
   static void S_SoundUpdate(void*);
 };
-}
-
-#endif  // win32_extdev_h
+}  // namespace PC8801

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: wincfg.h,v 1.4 2003/05/12 22:26:35 cisc Exp $
 
-#if !defined(win32_wincfg_h)
-#define win32_wincfg_h
+#pragma once
 
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
@@ -61,6 +60,4 @@ class WinConfig : public IConfigPropBase {
   ConfigEnv cenv;
   ConfigROMEO cromeo;
 };
-}
-
-#endif  // !defined(win32_wincfg_h)
+}  // namespace PC8801

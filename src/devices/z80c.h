@@ -4,8 +4,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: Z80c.h,v 1.26 2001/02/21 11:57:16 cisc Exp $
 
-#ifndef Z80C_h
-#define Z80C_h
+#pragma once
 
 #include "win32/types.h"
 #include "common/device.h"
@@ -255,5 +254,3 @@ inline Z80C::Statistics* Z80C::GetStatistics() {
   return 0;
 #endif
 }
-
-#endif  // Z80C.h

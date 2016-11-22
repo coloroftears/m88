@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: memmon.h,v 1.9 2003/05/19 02:33:56 cisc Exp $
 
-#if !defined(win32_memmon_h)
-#define win32_memmon_h
+#pragma once
 
 #include "common/device.h"
 #include "win32/monitors/mvmon.h"
@@ -66,6 +65,4 @@ class MemoryMonitor : public MemViewMonitor {
 
   static COLORREF col[0x100];
 };
-}
-
-#endif  // !defined(win32_memmon_h)
+}  // namespace PC8801

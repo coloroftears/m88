@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: winsound.h,v 1.17 2003/05/12 22:26:36 cisc Exp $
 
-#if !defined(win32_winsound_h)
-#define win32_winsound_h
+#pragma once
 
 #include "win32/types.h"
 #include "pc88/sound.h"
@@ -87,6 +86,4 @@ class WinSound : public Sound {
 
   SoundDumpPipe dumper;
 };
-}
-
-#endif  // !defined(win32_winsound_h)
+}  // namespace PC8801

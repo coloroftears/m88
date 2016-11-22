@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: WinJoy.h,v 1.5 2003/04/22 13:16:35 cisc Exp $
 
-#if !defined(win32_winjoy_h)
-#define win32_winjoy_h
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifui.h"
@@ -22,5 +21,3 @@ class WinPadIF : public IPadInput {
  private:
   bool enabled;
 };
-
-#endif  // !defined(win32_winjoy_h)

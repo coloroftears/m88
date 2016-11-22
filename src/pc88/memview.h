@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: memview.h,v 1.3 2001/02/21 11:57:57 cisc Exp $
 
-#ifndef pc88_memview_h
-#define pc88_memview_h
+#pragma once
 
 #include "common/device.h"
 #include "pc88/memory.h"
@@ -96,6 +95,4 @@ inline uint32_t* MemoryViewer::StatExecBuf() {
 #endif
   return 0;
 }
-};
-
-#endif  // pc88_memview_h
+}  // namespace PC8801

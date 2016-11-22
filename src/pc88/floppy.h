@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: floppy.h,v 1.5 2000/02/29 12:29:52 cisc Exp $
 
-#ifndef floppy_h
-#define floppy_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -86,5 +85,3 @@ class FloppyDisk {
   Sector* cursector;
   uint32_t curtracknum;
 };
-
-#endif  // floppy_h

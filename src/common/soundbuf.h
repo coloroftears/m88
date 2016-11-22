@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundbuf.h,v 1.7 2002/04/07 05:40:08 cisc Exp $
 
-#ifndef common_soundbuf_h
-#define common_soundbuf_h
+#pragma once
 
 #include "win32/types.h"
 #include "win32/critsect.h"
@@ -52,5 +51,3 @@ class SoundBuffer {
 inline void SoundBuffer::FillWhenEmpty(bool f) {
   fillwhenempty = f;
 }
-
-#endif  // common_soundbuf_h

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: opnif.h,v 1.19 2003/09/28 14:35:35 cisc Exp $
 
-#ifndef PC88_OPNIF_H
-#define PC88_OPNIF_H
+#pragma once
 
 #include "common/device.h"
 #include "devices/opna.h"
@@ -170,6 +169,4 @@ class OPNIF : public Device, public ISoundSource {
 inline void OPNIF::SetChannelMask(uint32_t ch) {
   opn.SetChannelMask(ch);
 }
-}
-
-#endif  // PC88_OPNIF_H
+}  // namespace PC8801

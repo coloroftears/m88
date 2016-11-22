@@ -1,5 +1,4 @@
-#ifndef _ROMEO_ROMEO_H
-#define _ROMEO_ROMEO_H
+#pragma once
 
 #define ROMEO_VENDORID 0x6809
 #define ROMEO_DEVICEID 0x2151
@@ -49,5 +48,3 @@ typedef ULONG(WINAPI* PCIMEMRD32)(ULONG addr);
 
 #define pciBusDevFunc(Bus, Dev, Func) \
   (((Bus & 0xff) << 8) | ((Dev & 0x1f) << 3) | (Func & 7))
-
-#endif /* _ROMEO_ROMEO_H */

@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------------------
 //  $Id
 
-#ifndef incl_winexapi_h
-#define incl_winexapi_h
+#pragma once
 
 class ExtendedAPIAccessBase {
  public:
@@ -91,5 +90,3 @@ DECLARE_EXDLL(DDEnumerateEx,
               "ddraw.dll",
               "DirectDrawEnumerateExA",
               S_OK)
-
-#endif  // incl_winexapi_h

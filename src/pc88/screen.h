@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: screen.h,v 1.17 2003/09/28 14:35:35 cisc Exp $
 
-#if !defined(pc88_screen_h)
-#define pc88_screen_h
+#pragma once
 
 #include "win32/types.h"
 #include "common/device.h"
@@ -149,6 +148,4 @@ class Screen : public Device {
   static const OutFuncPtr outdef[];
   static const int16_t RegionTable[];
 };
-}
-
-#endif  // !defined(pc88_screen_h)
+}  // namespace PC8801

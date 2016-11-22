@@ -1,7 +1,6 @@
 //  $Id: soundsrc.h,v 1.2 2003/05/12 22:26:34 cisc Exp $
 
-#ifndef common_soundsrc_h
-#define common_soundsrc_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -24,5 +23,3 @@ class SoundSourceL {
   virtual int GetChannels() = 0;
   virtual int GetAvail() = 0;
 };
-
-#endif  // common_soundsrc_h

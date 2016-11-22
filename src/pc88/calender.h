@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: calender.h,v 1.3 1999/10/10 01:47:04 cisc Exp $
 
-#if !defined(pc88_calender_h)
-#define pc88_calender_h
+#pragma once
 
 #include "common/device.h"
 
@@ -71,5 +70,3 @@ class Calender : public Device {
   static const OutFuncPtr outdef[];
 };
 }
-
-#endif  // !defined(pc88_calender_h)

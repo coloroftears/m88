@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: module.h,v 1.2 1999/10/10 15:59:54 cisc Exp $
 
-#ifndef win32_module_h
-#define win32_module_h
+#pragma once
 
 #include "interface/ifcommon.h"
 
@@ -35,6 +34,4 @@ class ExtendModule {
 inline void* ExtendModule::QueryIF(REFIID iid) {
   return mod ? mod->QueryIF(iid) : 0;
 }
-}
-
-#endif
+}  // namespace PC8801

@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: pd8257.h,v 1.10 1999/10/10 01:47:10 cisc Exp $
 
-#if !defined(PC88_PD8257_H)
-#define PC88_PD8257_H
+#pragma once
 
 #include "common/device.h"
 #include "interface/ifpc88.h"
@@ -72,7 +71,4 @@ class PD8257 : public Device, public IDMAAccess {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-
 }  // namespace PC8801
-
-#endif  // PC88_PD8257_H

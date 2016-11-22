@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: newdisk.h,v 1.4 1999/12/28 10:34:52 cisc Exp $
 
-#if !defined(WIN32_NEWDISK_H)
-#define WIN32_NEWDISK_H
+#pragma once
 
 #include "win32/types.h"
 
@@ -38,5 +37,3 @@ class WinNewDisk {
 
   DiskInfo info;
 };
-
-#endif  // !defined(WIN32_NEWDISK_H)

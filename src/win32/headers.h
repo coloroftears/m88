@@ -5,8 +5,7 @@
 //  $Id: headers.h,v 1.13 2003/05/12 22:26:35 cisc Exp $
 //
 
-#ifndef WIN_HEADERS_H
-#define WIN_HEADERS_H
+#pragma once
 
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
@@ -69,5 +68,3 @@ struct OFNV5 : public OPENFILENAME {
 #define OFNV5 OPENFILENAME
 #define OFNV4SIZE OPENFILENAME_SIZE_VERSION_400
 #endif
-
-#endif  // WIN_HEADERS_H

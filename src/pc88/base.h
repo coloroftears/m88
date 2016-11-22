@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: base.h,v 1.10 2000/06/26 14:05:30 cisc Exp $
 
-#ifndef pc88_base_h
-#define pc88_base_h
+#pragma once
 
 #include "common/schedule.h"
 #include "common/device.h"
@@ -61,5 +60,3 @@ class Base : public Device {
   static const OutFuncPtr outdef[];
 };
 }
-
-#endif  // pc88_base_h

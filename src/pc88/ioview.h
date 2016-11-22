@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------------
 //  $Id: ioview.h,v 1.1 2001/02/21 11:57:57 cisc Exp $
 
-#ifndef pc88_ioview_h
-#define pc88_ioview_h
+#pragma once
 
 #include "common/device.h"
 #include "pc88/memory.h"
@@ -55,5 +54,3 @@ class IOViewer : public Device {
   static const OutFuncPtr outdef[];
 };
 }
-
-#endif  // pc88_ioview_h

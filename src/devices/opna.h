@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: opna.h,v 1.33 2003/06/12 13:14:37 cisc Exp $
 
-#ifndef FM_OPNA_H
-#define FM_OPNA_H
+#pragma once
 
 #include "devices/fmgen.h"
 #include "devices/fmtimer.h"
@@ -406,5 +405,3 @@ inline void FM::OPNBase::RebuildTimeTable() {
 inline void FM::OPNBase::SetVolumePSG(int db) {
   psg.SetVolume(db);
 }
-
-#endif  // FM_OPNA_H

@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: Z80.h,v 1.1.1.1 1999/02/19 09:00:40 cisc Exp $
 
-#ifndef Z80_H
-#define Z80_H
+#pragma once
 
 #include "win32/types.h"
 
@@ -75,5 +74,3 @@ struct Z80Reg {
 };
 
 #undef PAD
-
-#endif /* Z80_H */

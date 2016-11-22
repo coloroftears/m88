@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: status.h,v 1.6 2002/04/07 05:40:10 cisc Exp $
 
-#ifndef win32_status_h
-#define win32_status_h
+#pragma once
 
 #include "win32/types.h"
 #include "win32/critsect.h"
@@ -67,5 +66,3 @@ class StatusDisplay {
 };
 
 extern StatusDisplay statusdisplay;
-
-#endif  // win32_status_h

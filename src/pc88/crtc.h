@@ -6,8 +6,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: crtc.h,v 1.19 2002/04/07 05:40:09 cisc Exp $
 
-#if !defined(PC88_CRTC_H)
-#define PC88_CRTC_H
+#pragma once
 
 #include "common/device.h"
 #include "common/draw.h"
@@ -217,5 +216,3 @@ inline int CRTC::GetFramePeriod() {
   return linetime * (height + vretrace);
 }
 }
-
-#endif  // !defined(PC88_CRTC_H)

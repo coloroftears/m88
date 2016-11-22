@@ -3,8 +3,7 @@
 //  $Id: ifguid.h,v 1.4 2002/04/07 05:40:09 cisc Exp $
 //
 
-#ifndef incl_ifguid_h
-#define incl_ifguid_h
+#pragma once
 
 // ----------------------------------------------------------------------------
 //  M88 interface GUID
@@ -268,5 +267,3 @@ DEFINE_GUID(ChIID_PadInput,
             0xad,
             0x34,
             0xe3);
-
-#endif

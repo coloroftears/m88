@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundmon.h,v 1.11 2003/06/12 13:14:37 cisc Exp $
 
-#if !defined(win32_soundmon_h)
-#define win32_soundmon_h
+#pragma once
 
 #include "common/device.h"
 #include "win32/monitors/winmon.h"
@@ -15,7 +14,7 @@
 
 namespace PC8801 {
 class OPNIF;
-};
+}
 
 class OPNMonitor : public WinMonitor, public ISoundSource {
  public:
@@ -54,5 +53,3 @@ class OPNMonitor : public WinMonitor, public ISoundSource {
   int width;
   int buf[2][bufsize];
 };
-
-#endif  // !defined(win32_soundmon_h)

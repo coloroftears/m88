@@ -1,7 +1,6 @@
 //  $Id: pcinfo.h,v 1.1 1999/08/26 08:09:59 cisc Exp $
 
-#ifndef incl_pcinfo_h
-#define incl_pcinfo_h
+#pragma once
 
 #include "win32/types.h"
 
@@ -54,5 +53,3 @@ struct PCInfo {
   // Sound
   void (*SoundUpdate)(void*);
 };
-
-#endif  // incl_pcinfo_h

@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: basmon.h,v 1.1 2000/06/26 14:05:44 cisc Exp $
 
-#if !defined(win32_basmon_h)
-#define win32_basmon_h
+#pragma once
 
 #include "win32/monitors/winmon.h"
 #include "common/device.h"
@@ -44,6 +43,4 @@ class BasicMonitor : public WinMonitor {
 
   static const char* rsvdword[];
 };
-}
-
-#endif  // !defined(win32_basmon_h)
+}  // namespace PC8801
