@@ -9,7 +9,6 @@
 
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
-#include "win32/instthnk.h"
 
 namespace PC8801 {
 void SaveConfig(Config* cfg, const char* inifile, bool writedefault);
