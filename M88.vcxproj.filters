@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="common">
@@ -81,13 +81,7 @@
     <ClCompile Include="src\devices\z80c.cpp">
       <Filter>devices</Filter>
     </ClCompile>
-    <ClCompile Include="src\devices\z80debug.cpp">
-      <Filter>devices</Filter>
-    </ClCompile>
     <ClCompile Include="src\devices\z80diag.cpp">
-      <Filter>devices</Filter>
-    </ClCompile>
-    <ClCompile Include="src\devices\z80test.cpp">
       <Filter>devices</Filter>
     </ClCompile>
     <ClCompile Include="src\pc88\base.cpp">
@@ -392,13 +386,7 @@
     <ClInclude Include="src\devices\z80c.h">
       <Filter>devices</Filter>
     </ClInclude>
-    <ClInclude Include="src\devices\z80debug.h">
-      <Filter>devices</Filter>
-    </ClInclude>
     <ClInclude Include="src\devices\z80diag.h">
-      <Filter>devices</Filter>
-    </ClInclude>
-    <ClInclude Include="src\devices\z80test.h">
       <Filter>devices</Filter>
     </ClInclude>
     <ClInclude Include="src\pc88\base.h">

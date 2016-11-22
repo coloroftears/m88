@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -226,17 +226,7 @@
     <ClCompile Include="src\devices\z80c.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\devices\z80debug.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tuning|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\devices\z80diag.cpp" />
-    <ClCompile Include="src\devices\z80test.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tuning|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\devices\z80_x86.cpp" />
     <ClCompile Include="src\pc88\base.cpp" />
     <ClCompile Include="src\pc88\beep.cpp" />
@@ -353,9 +343,7 @@
     <ClInclude Include="src\devices\psg.h" />
     <ClInclude Include="src\devices\z80.h" />
     <ClInclude Include="src\devices\z80c.h" />
-    <ClInclude Include="src\devices\z80debug.h" />
     <ClInclude Include="src\devices\z80diag.h" />
-    <ClInclude Include="src\devices\z80test.h" />
     <ClInclude Include="src\devices\z80_x86.h" />
     <ClInclude Include="src\if\ifcommon.h" />
     <ClInclude Include="src\if\ifguid.h" />

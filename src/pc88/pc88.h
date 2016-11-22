@@ -18,21 +18,11 @@
 #ifdef USE_Z80_X86
 #define CPU_Z80X86  // x86 版の Z80 エンジンを使用する
 #endif
-//#define   CPU_TEST            // 2 つの Z80 エンジンを比較実行する
-//#define   CPU_DEBUG           // Z80 エンジンテスト用
 
 #ifdef CPU_Z80X86
 #include "devices/z80_x86.h"
 #else
 #include "devices/z80c.h"
-#endif
-
-#ifdef CPU_TEST
-#include "devices/z80test.h"
-#endif
-
-#ifdef CPU_DEBUG
-#include "devices/z80debug.h"
 #endif
 
 // ---------------------------------------------------------------------------
