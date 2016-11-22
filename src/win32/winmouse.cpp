@@ -28,7 +28,7 @@ bool WinMouseUI::Init(WinUI* _ui) {
 // ---------------------------------------------------------------------------
 //  COM IUnk
 //
-long IFCALL WinMouseUI::QueryInterface(REFIID id, void** ppi) {
+int32_t IFCALL WinMouseUI::QueryInterface(REFIID id, void** ppi) {
   if (id == IID_IUnknown)
     *ppi = this;
   else if (id == ChIID_MouseUI)

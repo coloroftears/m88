@@ -714,7 +714,7 @@ uint32_t WinUI::WmTimer(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (wparam == timerid) {
     // 実効周波数,表示フレーム数を取得
     int fcount = draw.GetDrawCount();
-    int icount = core.GetExecCount();
+    int32_t icount = core.GetExecCount();
 
     // レポートする場合はタイトルバーを更新
     if (report) {

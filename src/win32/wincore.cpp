@@ -186,7 +186,7 @@ bool WinCore::SaveShapshot(const char* filename) {
         delete[] buf;
         return false;
       }
-      *(int32_t*)(buf + size) = -(long)esize;
+      *(int32_t*)(buf + size) = -(int32_t)esize;
       esize += 4;
     }
 

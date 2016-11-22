@@ -18,7 +18,7 @@ class WinMouseUI : public IMouseUI {
 
   bool Init(WinUI* ui);
 
-  long IFCALL QueryInterface(REFIID, void**);
+  int32_t IFCALL QueryInterface(REFIID, void**);
   uint32_t IFCALL AddRef();
   uint32_t IFCALL Release();
 

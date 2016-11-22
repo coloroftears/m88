@@ -47,7 +47,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
 
   PC8801::WinSound* GetSound() { return &sound; }
 
-  long GetExecCount() { return seq.GetExecCount(); }
+  int32_t GetExecCount() { return seq.GetExecCount(); }
   void Wait(bool dowait) { seq.Activate(!dowait); }
   void* IFCALL QueryIF(REFIID iid);
   void IFCALL Lock() { seq.Lock(); }
