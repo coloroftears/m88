@@ -7,7 +7,7 @@
 //  $Id: kanjirom.cpp,v 1.6 2000/02/29 12:29:52 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "pc88/kanjirom.h"
 
 using namespace PC8801;

@@ -11,7 +11,7 @@
 #include "win32/monitors/iomon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "win32/winvars.h"
 #include "interface/ifguid.h"
 

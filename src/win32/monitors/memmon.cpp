@@ -10,12 +10,12 @@
 #include "win32/monitors/memmon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "win32/winvars.h"
 #include "interface/ifguid.h"
 
 #define LOGNAME "memmon"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

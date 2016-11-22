@@ -14,7 +14,7 @@
 #include "interface/ifguid.h"
 
 //#define LOGNAME "mouse"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

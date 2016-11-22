@@ -24,7 +24,7 @@
 //#define NO_BITTYPE_EMULATION
 
 #ifdef BUILD_OPNA
-#include "win32/file.h"
+#include "common/file.h"
 #endif
 
 namespace FM {

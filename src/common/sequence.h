@@ -8,9 +8,9 @@
 
 // ---------------------------------------------------------------------------
 
-#include "win32/types.h"
-#include "win32/critsect.h"
-#include "win32/timekeep.h"
+#include "common/types.h"
+#include "common/critsect.h"
+#include "common/timekeep.h"
 
 class PC88;
 

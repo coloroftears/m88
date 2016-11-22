@@ -14,12 +14,12 @@
 #include "common/schedule.h"
 #include "common/draw.h"
 #include "common/misc.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "common/error.h"
 #include "win32/status.h"
 
 //#define LOGNAME "crtc"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

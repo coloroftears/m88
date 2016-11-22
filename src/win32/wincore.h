@@ -8,12 +8,12 @@
 
 // ---------------------------------------------------------------------------
 
-#include "win32/types.h"
-#include "win32/critsect.h"
+#include "common/types.h"
+#include "common/critsect.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
 #include "win32/winsound.h"
-#include "win32/sequence.h"
+#include "common/sequence.h"
 #include "win32/winjoy.h"
 
 namespace PC8801 {

@@ -7,9 +7,9 @@
 #pragma once
 
 #include "pc88/floppy.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "pc88/fdu.h"
-#include "win32/critsect.h"
+#include "common/critsect.h"
 
 namespace D88 {
 struct ImageHeader {

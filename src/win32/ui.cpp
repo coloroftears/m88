@@ -13,7 +13,7 @@
 #include "win32/ui.h"
 #include "win32/about.h"
 #include "common/misc.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "win32/messages.h"
 #include "common/error.h"
 #include "win32/88config.h"
@@ -26,7 +26,7 @@
 #include "win32/winexapi.h"
 
 #define LOGNAME "ui"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 extern char m88dir[MAX_PATH];
 extern char m88ini[MAX_PATH];

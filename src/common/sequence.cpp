@@ -5,12 +5,12 @@
 //  $Id: sequence.cpp,v 1.3 2003/05/12 22:26:35 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/sequence.h"
+#include "common/sequence.h"
 #include "pc88/pc88.h"
 #include "common/misc.h"
 
 #define LOGNAME "sequence"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅

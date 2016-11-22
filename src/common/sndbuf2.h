@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "win32/critsect.h"
+#include "common/critsect.h"
 #include "interface/ifcommon.h"
 #include "common/soundsrc.h"
 

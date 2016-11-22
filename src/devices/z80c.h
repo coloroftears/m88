@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "win32/types.h"
+#include "common/types.h"
 #include "common/device.h"
 #include "common/memmgr.h"
 #include "devices/z80.h"

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "win32/sounddrv.h"
-#include "win32/critsect.h"
+#include "common/critsect.h"
 
 // ---------------------------------------------------------------------------
 

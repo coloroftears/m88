@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "win32/types.h"
+#include "common/types.h"
 #include "interface/ifcommon.h"
 
 #ifndef IFCALL

@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "win32/types.h"
-#include "win32/critsect.h"
+#include "common/types.h"
+#include "common/critsect.h"
 
 class StatusDisplay {
  public:

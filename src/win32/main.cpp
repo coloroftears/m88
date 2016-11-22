@@ -6,7 +6,7 @@
 
 #include "win32/headers.h"
 #include "win32/ui.h"
-#include "win32/file.h"
+#include "common/file.h"
 
 // ---------------------------------------------------------------------------
 

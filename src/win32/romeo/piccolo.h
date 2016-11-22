@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "win32/types.h"
-#include "win32/timekeep.h"
-#include "win32/critsect.h"
+#include "common/types.h"
+#include "common/timekeep.h"
+#include "common/critsect.h"
 
 //  遅延送信対応 ROMEO ドライバ
 //

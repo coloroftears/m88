@@ -41,7 +41,7 @@
 #include <utility>
 #include <algorithm>
 
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace std;
 

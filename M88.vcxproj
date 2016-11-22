@@ -206,13 +206,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\common\device.cpp" />
+    <ClCompile Include="src\common\diag.cpp" />
     <ClCompile Include="src\common\error.cpp" />
     <ClCompile Include="src\common\lpf.cpp" />
     <ClCompile Include="src\common\memmgr.cpp" />
     <ClCompile Include="src\common\schedule.cpp" />
+    <ClCompile Include="src\common\sequence.cpp" />
     <ClCompile Include="src\common\sndbuf2.cpp" />
     <ClCompile Include="src\common\soundbuf.cpp" />
     <ClCompile Include="src\common\srcbuf.cpp" />
+    <ClCompile Include="src\common\timekeep.cpp" />
     <ClCompile Include="src\devices\fmgen.cpp" />
     <ClCompile Include="src\devices\fmtimer.cpp" />
     <ClCompile Include="src\devices\opm.cpp">
@@ -271,7 +274,6 @@
     <ClCompile Include="src\win32\about.cpp" />
     <ClCompile Include="src\win32\cfgpage.cpp" />
     <ClCompile Include="src\win32\dderr.cpp" />
-    <ClCompile Include="src\win32\diag.cpp" />
     <ClCompile Include="src\win32\draw_dds.cpp" />
     <ClCompile Include="src\win32\draw_ddw.cpp" />
     <ClCompile Include="src\win32\draw_gdi.cpp" />
@@ -297,13 +299,11 @@
     <ClCompile Include="src\win32\monitors\winmon.cpp" />
     <ClCompile Include="src\win32\newdisk.cpp" />
     <ClCompile Include="src\win32\romeo\piccolo.cpp" />
-    <ClCompile Include="src\win32\sequence.cpp" />
     <ClCompile Include="src\win32\soundds.cpp" />
     <ClCompile Include="src\win32\soundds2.cpp" />
     <ClCompile Include="src\win32\soundwo.cpp" />
     <ClCompile Include="src\win32\status.cpp" />
-    <ClCompile Include="src\win32\timekeep.cpp" />
-    <ClCompile Include="src\win32\Ui.cpp" />
+    <ClCompile Include="src\win32\ui.cpp" />
     <ClCompile Include="src\win32\wincfg.cpp" />
     <ClCompile Include="src\win32\wincore.cpp" />
     <ClCompile Include="src\win32\windraw.cpp" />
@@ -327,18 +327,24 @@
     <ClCompile Include="src\zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\common\critsect.h" />
     <ClInclude Include="src\common\device.h" />
     <ClInclude Include="src\common\device_i.h" />
+    <ClInclude Include="src\common\diag.h" />
     <ClInclude Include="src\common\draw.h" />
     <ClInclude Include="src\common\error.h" />
+    <ClInclude Include="src\common\file.h" />
     <ClInclude Include="src\common\lpf.h" />
     <ClInclude Include="src\common\memmgr.h" />
     <ClInclude Include="src\common\misc.h" />
     <ClInclude Include="src\common\schedule.h" />
+    <ClInclude Include="src\common\sequence.h" />
     <ClInclude Include="src\common\sndbuf2.h" />
     <ClInclude Include="src\common\soundbuf.h" />
     <ClInclude Include="src\common\soundsrc.h" />
     <ClInclude Include="src\common\srcbuf.h" />
+    <ClInclude Include="src\common\timekeep.h" />
+    <ClInclude Include="src\common\types.h" />
     <ClInclude Include="src\devices\fmgen.h" />
     <ClInclude Include="src\devices\fmgeninl.h" />
     <ClInclude Include="src\devices\fmtimer.h" />
@@ -384,14 +390,11 @@
     <ClInclude Include="src\win32\88config.h" />
     <ClInclude Include="src\win32\about.h" />
     <ClInclude Include="src\win32\cfgpage.h" />
-    <ClInclude Include="src\win32\CritSect.h" />
     <ClInclude Include="src\win32\dderr.h" />
-    <ClInclude Include="src\win32\diag.h" />
     <ClInclude Include="src\win32\draw_dds.h" />
     <ClInclude Include="src\win32\draw_ddw.h" />
     <ClInclude Include="src\win32\draw_gdi.h" />
     <ClInclude Include="src\win32\extdev.h" />
-    <ClInclude Include="src\win32\file.h" />
     <ClInclude Include="src\win32\filetest.h" />
     <ClInclude Include="src\win32\headers.h" />
     <ClInclude Include="src\win32\keybconn.h" />
@@ -411,14 +414,11 @@
     <ClInclude Include="src\win32\romeo\juliet.h" />
     <ClInclude Include="src\win32\romeo\piccolo.h" />
     <ClInclude Include="src\win32\romeo\romeo.h" />
-    <ClInclude Include="src\win32\sequence.h" />
     <ClInclude Include="src\win32\sounddrv.h" />
     <ClInclude Include="src\win32\soundds.h" />
     <ClInclude Include="src\win32\soundds2.h" />
     <ClInclude Include="src\win32\soundwo.h" />
     <ClInclude Include="src\win32\status.h" />
-    <ClInclude Include="src\win32\timekeep.h" />
-    <ClInclude Include="src\win32\types.h" />
     <ClInclude Include="src\win32\ui.h" />
     <ClInclude Include="src\win32\version.h" />
     <ClInclude Include="src\win32\wincfg.h" />

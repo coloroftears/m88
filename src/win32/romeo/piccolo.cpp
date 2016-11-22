@@ -9,7 +9,7 @@
 #include "piccolo/piioctl.h"
 
 #define LOGNAME "piccolo"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 struct PCIDRV {
   HMODULE mod;

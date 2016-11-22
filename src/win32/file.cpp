@@ -7,7 +7,7 @@
 //  $Id: file.cpp,v 1.6 1999/12/28 11:14:05 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/file.h"
+#include "common/file.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅

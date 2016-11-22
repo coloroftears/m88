@@ -12,7 +12,7 @@
 #include "win32/status.h"
 #include "common/device.h"
 #include "win32/version.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "pc88/diskmgr.h"
 #include "pc88/opnif.h"
 #include "pc88/beep.h"
@@ -26,7 +26,7 @@
 #include "zlib/zlib.h"
 
 #define LOGNAME "wincore"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

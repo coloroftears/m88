@@ -12,7 +12,7 @@
 //
 
 #include "win32/headers.h"
-#include "win32/types.h"
+#include "common/types.h"
 
 #ifdef USE_Z80_X86
 

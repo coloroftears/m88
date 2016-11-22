@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "win32/types.h"
+#include "common/types.h"
 
 #define Z80_WORDREG_IN_INT
 

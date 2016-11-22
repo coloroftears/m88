@@ -13,7 +13,7 @@
 #include "common/misc.h"
 
 //#define LOGNAME "keyif"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

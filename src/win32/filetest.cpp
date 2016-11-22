@@ -5,7 +5,7 @@
 //  $Id: filetest.cpp,v 1.3 1999/12/28 11:14:06 cisc Exp $
 
 #include "win32/headers.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "common/error.h"
 
 // ---------------------------------------------------------------------------

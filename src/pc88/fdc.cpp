@@ -11,13 +11,13 @@
 #include "pc88/fdc.h"
 #include "pc88/fdu.h"
 #include "common/misc.h"
-#include "win32/critsect.h"
+#include "common/critsect.h"
 #include "pc88/diskmgr.h"
 #include "win32/status.h"
 #include "pc88/config.h"
 
 #define LOGNAME "fdc"
-#include "win32/diag.h"
+#include "common/diag.h"
 
 using namespace PC8801;
 

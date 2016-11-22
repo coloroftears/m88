@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "win32/types.h"
+#include "common/types.h"
 #include "common/draw.h"
-#include "win32/critsect.h"
+#include "common/critsect.h"
 
 // ---------------------------------------------------------------------------
 

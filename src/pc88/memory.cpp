@@ -9,7 +9,7 @@
 //  MemoryPage size should be equal to or less than 0x400.
 
 #include "win32/headers.h"
-#include "win32/file.h"
+#include "common/file.h"
 #include "common/device.h"
 #include "common/device_i.h"
 #include "common/memmgr.h"
