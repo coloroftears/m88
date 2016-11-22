@@ -106,7 +106,7 @@ void Z80C::SetPC(uint32_t newpc) {
   MemoryPage& page = rdpages[(newpc >> pagebits) & PAGESMASK];
 
 #ifdef PTR_IDBIT
-  if (!(intpointer(page.ptr) & idbit))
+  if (!(intptr_t(page.ptr) & idbit))
 #else
   if (!page.func)
 #endif
@@ -435,7 +435,7 @@ inline uint32_t Z80C::Read8(uint32_t addr) {
   addr &= 0xffff;
   MemoryPage& page = rdpages[addr >> pagebits];
 #ifdef PTR_IDBIT
-  if (!(intpointer(page.ptr) & idbit))
+  if (!(intptr_t(page.ptr) & idbit))
 #else
   if (!page.func)
 #endif
@@ -444,7 +444,7 @@ inline uint32_t Z80C::Read8(uint32_t addr) {
     return ((uint8_t*)page.ptr)[addr & pagemask];
   } else {
     DEBUGCOUNT(8);
-    return (*MemoryManager::RdFunc(intpointer(page.ptr) & ~idbit))(page.inst,
+    return (*MemoryManager::RdFunc(intptr_t(page.ptr) & ~idbit))(page.inst,
                                                                    addr);
   }
 }
@@ -453,7 +453,7 @@ inline void Z80C::Write8(uint32_t addr, uint32_t data) {
   addr &= 0xffff;
   MemoryPage& page = wrpages[addr >> pagebits];
 #ifdef PTR_IDBIT
-  if (!(intpointer(page.ptr) & idbit))
+  if (!(intptr_t(page.ptr) & idbit))
 #else
   if (!page.func)
 #endif
@@ -462,7 +462,7 @@ inline void Z80C::Write8(uint32_t addr, uint32_t data) {
     ((uint8_t*)page.ptr)[addr & pagemask] = data;
   } else {
     DEBUGCOUNT(16);
-    (*MemoryManager::WrFunc(intpointer(page.ptr) & ~idbit))(page.inst, addr,
+    (*MemoryManager::WrFunc(intptr_t(page.ptr) & ~idbit))(page.inst, addr,
                                                             data);
   }
 }
@@ -472,7 +472,7 @@ inline uint32_t Z80C::Read16(uint32_t addr) {
   addr &= 0xffff;
   MemoryPage& page = rdpages[addr >> pagebits];
 #ifdef PTR_IDBIT
-  if (!(intpointer(page.ptr) & idbit))
+  if (!(intptr_t(page.ptr) & idbit))
 #else
   if (!page.func)
 #endif
@@ -492,7 +492,7 @@ inline void Z80C::Write16(uint32_t addr, uint32_t data) {
   addr &= 0xffff;
   MemoryPage& page = wrpages[addr >> pagebits];
 #ifdef PTR_IDBIT
-  if (!(intpointer(page.ptr) & idbit))
+  if (!(intptr_t(page.ptr) & idbit))
 #else
   if (!page.func)
 #endif
