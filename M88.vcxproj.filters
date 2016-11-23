@@ -300,7 +300,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\critical_section.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\device.h">
       <Filter>common</Filter>
@@ -309,7 +309,7 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\diag.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\draw.h">
       <Filter>common</Filter>
@@ -318,7 +318,7 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\file.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\lpf.h">
       <Filter>common</Filter>
@@ -333,7 +333,7 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sequence.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sndbuf2.h">
       <Filter>common</Filter>
@@ -348,10 +348,10 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\timekeep.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\types.h">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\devices\fmgen.h">
       <Filter>devices</Filter>
