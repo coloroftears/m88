@@ -14,6 +14,8 @@
 #include "win32/soundwo.h"
 #include "win32/monitors/soundmon.h"
 
+#include <algorithm>
+
 //#define LOGNAME "winsound"
 #include "common/diag.h"
 
@@ -262,7 +264,7 @@ int SoundDumpPipe::Get(Sample* dest, int samples) {
   int actual_samples = source_->Get(dest, Min(avail, samples));
 
   int nch = GetChannels();
-  fill(dest + actual_samples * nch, dest + samples * nch, 0);
+  std::fill(dest + actual_samples * nch, dest + samples * nch, 0);
 
   CriticalSection::Lock lock(cs_);
   if (dumpstate_ != IDLE) {

@@ -7,6 +7,8 @@
 #include "win32/headers.h"
 #include "win32/status.h"
 
+#include <assert.h>
+
 //#define LOGNAME "status"
 #include "common/diag.h"
 

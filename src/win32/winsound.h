@@ -13,6 +13,8 @@
 #include "win32/sounddrv.h"
 #include "common/critical_section.h"
 
+#include <string>
+
 class PC88;
 class OPNMonitor;
 
@@ -36,7 +38,7 @@ class SoundDumpPipe : public SoundSource {
   void Dump(Sample* dest, int samples);
 
   SoundSource* source_;
-  string dumpfile_;
+  std::string dumpfile_;
 
   HMMIO hmmio_;        // mmio handle
   MMCKINFO ckparent_;  // RIFF チャンク

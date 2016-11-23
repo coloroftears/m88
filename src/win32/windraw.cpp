@@ -18,6 +18,8 @@
 #include "win32/monitors/loadmon.h"
 #include "win32/winexapi.h"
 
+#include <assert.h>
+
 #define LOGNAME "windraw"
 #include "common/diag.h"
 //#define DRAW_THREAD

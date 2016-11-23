@@ -7,6 +7,8 @@
 #include "win32/headers.h"
 #include "common/time_keeper.h"
 
+#include <assert.h>
+
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //

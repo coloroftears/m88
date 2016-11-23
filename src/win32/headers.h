@@ -27,23 +27,6 @@
 #include <ddraw.h>
 #include <dsound.h>
 #include <commctrl.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <math.h>
-#include <string.h>
-#include <process.h>
-#include <assert.h>
-#include <time.h>
-
-#include <map>
-#include <string>
-#include <vector>
-#include <utility>
-#include <algorithm>
-
-#include "common/diag.h"
-
-using namespace std;
 
 // --- STL 関係
 

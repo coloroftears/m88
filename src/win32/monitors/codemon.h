@@ -11,6 +11,8 @@
 #include "pc88/memview.h"
 #include "devices/z80diag.h"
 
+#include <stdio.h>
+
 // ---------------------------------------------------------------------------
 
 class PC88;

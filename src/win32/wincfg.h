@@ -10,6 +10,8 @@
 #include "pc88/config.h"
 #include "win32/cfgpage.h"
 
+#include <vector>
+
 namespace PC8801 {
 
 class WinConfig : public IConfigPropBase {
@@ -40,7 +42,7 @@ class WinConfig : public IConfigPropBase {
   static int CALLBACK PropProcGate(HWND, UINT, LPARAM);
 
   PPNode* pplist;
-  typedef vector<IConfigPropSheet*> PropSheets;
+  typedef std::vector<IConfigPropSheet*> PropSheets;
   PropSheets propsheets;
 
   HWND hwndparent;

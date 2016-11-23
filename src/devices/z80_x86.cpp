@@ -14,6 +14,8 @@
 #include "win32/headers.h"
 #include "common/types.h"
 
+#include <assert.h>
+
 #ifdef USE_Z80_X86
 
 #include "devices/z80_x86.h"

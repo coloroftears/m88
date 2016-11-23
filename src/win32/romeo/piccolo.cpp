@@ -8,6 +8,8 @@
 #include "win32/status.h"
 #include "piccolo/piioctl.h"
 
+#include <process.h>
+
 #define LOGNAME "piccolo"
 #include "common/diag.h"
 

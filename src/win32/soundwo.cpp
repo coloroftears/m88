@@ -10,6 +10,8 @@
 #include "win32/soundwo.h"
 #include "win32/status.h"
 
+#include <process.h>
+
 using namespace WinSoundDriver;
 
 // ---------------------------------------------------------------------------

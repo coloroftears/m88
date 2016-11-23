@@ -9,6 +9,9 @@
 #include "win32/monitors/winmon.h"
 #include "common/misc.h"
 
+#include <assert.h>
+#include <stdio.h>
+
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //

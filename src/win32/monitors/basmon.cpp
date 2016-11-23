@@ -9,6 +9,9 @@
 #include "common/misc.h"
 #include "win32/resource.h"
 
+#include <math.h>
+#include <stdio.h>
+
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------

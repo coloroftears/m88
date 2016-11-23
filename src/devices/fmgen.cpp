@@ -26,6 +26,9 @@
 #include "devices/fmgen.h"
 #include "devices/fmgeninl.h"
 
+#include <assert.h>
+#include <math.h>
+
 #define LOGNAME "fmgen"
 
 // ---------------------------------------------------------------------------

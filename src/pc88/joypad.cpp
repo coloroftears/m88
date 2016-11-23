@@ -8,6 +8,8 @@
 #include "pc88/joypad.h"
 #include "interface/ifguid.h"
 
+#include <algorithm>
+
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------
@@ -63,7 +65,7 @@ void JoyPad::SetButtonMode(ButtonMode mode) {
 
   switch (mode) {
     case SWAPPED:
-      swap(button1, button2);
+      std::swap(button1, button2);
       break;
     case DISABLED:
       button1 = 0;

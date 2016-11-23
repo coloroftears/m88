@@ -11,6 +11,8 @@
 #include "pc88/calender.h"
 #include "common/misc.h"
 
+#include <time.h>
+
 //#define LOGNAME "calender"
 #include "common/diag.h"
 

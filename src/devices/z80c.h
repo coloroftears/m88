@@ -12,6 +12,8 @@
 #include "devices/z80.h"
 #include "devices/z80diag.h"
 
+#include <stdio.h>
+
 class IOBus;
 
 #define Z80C_STATISTICS

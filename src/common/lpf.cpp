@@ -8,6 +8,8 @@
 #include "common/lpf.h"
 #include "common/misc.h"
 
+#include <math.h>
+
 // ---------------------------------------------------------------------------
 //  バタワース特性 IIR IIR_LPF
 //

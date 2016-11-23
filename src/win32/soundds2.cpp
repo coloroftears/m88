@@ -9,6 +9,8 @@
 #include "win32/headers.h"
 #include "win32/soundds2.h"
 
+#include <process.h>
+
 #define LOGNAME "soundds2"
 #include "common/diag.h"
 

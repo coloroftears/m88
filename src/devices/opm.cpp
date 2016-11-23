@@ -9,6 +9,9 @@
 #include "devices/opm.h"
 #include "devices/fmgeninl.h"
 
+#include <assert.h>
+#include <math.h>
+
 //#define LOGNAME "opm"
 
 namespace FM {

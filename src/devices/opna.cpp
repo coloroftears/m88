@@ -9,6 +9,9 @@
 #include "devices/opna.h"
 #include "devices/fmgeninl.h"
 
+#include <assert.h>
+#include <math.h>
+
 #define BUILD_OPN
 #define BUILD_OPNA
 #define BUILD_OPNB

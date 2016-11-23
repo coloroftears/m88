@@ -9,6 +9,8 @@
 #include "pc88/pc88.h"
 #include "common/misc.h"
 
+#include <process.h>
+
 #define LOGNAME "sequence"
 #include "common/diag.h"
 
