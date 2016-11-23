@@ -212,7 +212,6 @@
     <ClCompile Include="src\common\memory_manager.cpp" />
     <ClCompile Include="src\common\scheduler.cpp" />
     <ClCompile Include="src\common\sequencer.cpp" />
-    <ClCompile Include="src\common\sound_buffer.cpp" />
     <ClCompile Include="src\common\sound_buffer2.cpp" />
     <ClCompile Include="src\common\sampling_rate_converter.cpp" />
     <ClCompile Include="src\common\time_keeper.cpp" />
@@ -323,7 +322,6 @@
     <ClInclude Include="src\common\misc.h" />
     <ClInclude Include="src\common\scheduler.h" />
     <ClInclude Include="src\common\sequencer.h" />
-    <ClInclude Include="src\common\sound_buffer.h" />
     <ClInclude Include="src\common\sound_buffer2.h" />
     <ClInclude Include="src\common\soundsrc.h" />
     <ClInclude Include="src\common\sampling_rate_converter.h" />

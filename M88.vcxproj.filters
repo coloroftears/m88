@@ -48,9 +48,6 @@
     <ClCompile Include="src\common\sequencer.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\sound_buffer.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\sound_buffer2.cpp">
       <Filter>common</Filter>
     </ClCompile>
@@ -333,9 +330,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sequencer.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\sound_buffer.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sound_buffer2.h">
