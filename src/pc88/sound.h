@@ -7,8 +7,8 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/sndbuf2.h"
-#include "common/srcbuf.h"
+#include "common/sound_buffer2.h"
+#include "common/sampling_rate_converter.h"
 #include "common/lpf.h"
 
 // ---------------------------------------------------------------------------

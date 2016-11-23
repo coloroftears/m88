@@ -10,7 +10,7 @@
 #include "pc88/subsys.h"
 #include "common/file.h"
 #include "win32/status.h"
-#include "common/memmgr.h"
+#include "common/memory_manager.h"
 
 //#define LOGNAME "subsys"
 #include "common/diag.h"

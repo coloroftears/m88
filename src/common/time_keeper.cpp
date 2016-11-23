@@ -5,7 +5,7 @@
 //  $Id: timekeep.cpp,v 1.1 2002/04/07 05:40:11 cisc Exp $
 
 #include "win32/headers.h"
-#include "common/timekeep.h"
+#include "common/time_keeper.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅

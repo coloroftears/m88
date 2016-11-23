@@ -10,7 +10,7 @@
 
 #include "common/types.h"
 #include "common/critical_section.h"
-#include "common/timekeep.h"
+#include "common/time_keeper.h"
 
 class PC88;
 

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "common/types.h"
-#include "common/sndbuf2.h"
+#include "common/sound_buffer2.h"
 
 // ---------------------------------------------------------------------------
 

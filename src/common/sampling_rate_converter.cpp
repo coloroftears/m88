@@ -1,7 +1,7 @@
 //  $Id: srcbuf.cpp,v 1.2 2003/05/12 22:26:34 cisc Exp $
 
 #include "win32/headers.h"
-#include "common/srcbuf.h"
+#include "common/sampling_rate_converter.h"
 #include "common/misc.h"
 
 #ifndef PI
