@@ -11,7 +11,7 @@
 #include "pc88/pd8257.h"
 #include "pc88/config.h"
 #include "pc88/pc88.h"
-#include "common/schedule.h"
+#include "common/scheduler.h"
 #include "common/draw.h"
 #include "common/misc.h"
 #include "common/file.h"

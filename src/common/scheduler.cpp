@@ -5,7 +5,7 @@
 //  $Id: schedule.cpp,v 1.16 2002/04/07 05:40:08 cisc Exp $
 
 #include "win32/headers.h"
-#include "common/schedule.h"
+#include "common/scheduler.h"
 #include "common/misc.h"
 
 // ---------------------------------------------------------------------------

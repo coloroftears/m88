@@ -42,10 +42,10 @@
     <ClCompile Include="src\common\memory_manager.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\schedule.cpp">
+    <ClCompile Include="src\common\scheduler.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\sequence.cpp">
+    <ClCompile Include="src\common\sequencer.cpp">
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="src\common\sound_buffer.cpp">
@@ -329,10 +329,10 @@
     <ClInclude Include="src\common\misc.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\schedule.h">
+    <ClInclude Include="src\common\scheduler.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\sequence.h">
+    <ClInclude Include="src\common\sequencer.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sound_buffer.h">

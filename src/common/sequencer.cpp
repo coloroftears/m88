@@ -5,7 +5,7 @@
 //  $Id: sequence.cpp,v 1.3 2003/05/12 22:26:35 cisc Exp $
 
 #include "win32/headers.h"
-#include "common/sequence.h"
+#include "common/sequencer.h"
 #include "pc88/pc88.h"
 #include "common/misc.h"
 

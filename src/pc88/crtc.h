@@ -10,9 +10,7 @@
 
 #include "common/device.h"
 #include "common/draw.h"
-#include "common/schedule.h"
-
-class Scheduler;
+#include "common/scheduler.h"
 
 namespace PC8801 {
 class PD8257;

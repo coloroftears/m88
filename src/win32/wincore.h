@@ -13,7 +13,7 @@
 #include "pc88/pc88.h"
 #include "pc88/config.h"
 #include "win32/winsound.h"
-#include "common/sequence.h"
+#include "common/sequencer.h"
 #include "win32/winjoy.h"
 
 namespace PC8801 {

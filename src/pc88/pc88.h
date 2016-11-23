@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "common/schedule.h"
+#include "common/scheduler.h"
 #include "common/device.h"
 #include "common/draw.h"
 
