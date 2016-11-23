@@ -9,7 +9,7 @@
 #include "pc88/base.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
-#include "pc88/tapemgr.h"
+#include "pc88/tape_manager.h"
 #include "win32/status.h"
 
 #define LOGNAME "base"

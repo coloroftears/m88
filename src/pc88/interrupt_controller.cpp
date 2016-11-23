@@ -8,7 +8,7 @@
 
 #include "win32/headers.h"
 #include "common/misc.h"
-#include "pc88/intc.h"
+#include "pc88/interrupt_controller.h"
 
 //#define LOGNAME "intc"
 #include "common/diag.h"

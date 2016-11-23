@@ -8,7 +8,7 @@
 #include "win32/resource.h"
 #include "win32/monitors/soundmon.h"
 #include "common/misc.h"
-#include "pc88/opnif.h"
+#include "pc88/opn_interface.h"
 
 using namespace PC8801;
 

@@ -5,7 +5,7 @@
 //  $Id: opnif.cpp,v 1.24 2003/09/28 14:35:35 cisc Exp $
 
 #include "win32/headers.h"
-#include "pc88/opnif.h"
+#include "pc88/opn_interface.h"
 #include "pc88/config.h"
 #include "common/misc.h"
 #include "common/schedule.h"

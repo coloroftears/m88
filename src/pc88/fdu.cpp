@@ -9,7 +9,7 @@
 #include "common/misc.h"
 #include "pc88/fdc.h"
 #include "pc88/fdu.h"
-#include "pc88/diskmgr.h"
+#include "pc88/disk_manager.h"
 
 using namespace PC8801;
 

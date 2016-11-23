@@ -238,11 +238,11 @@
       <OmitFramePointers Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</OmitFramePointers>
       <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
-    <ClCompile Include="src\pc88\diskmgr.cpp" />
+    <ClCompile Include="src\pc88\disk_manager.cpp" />
     <ClCompile Include="src\pc88\fdc.cpp" />
     <ClCompile Include="src\pc88\fdu.cpp" />
     <ClCompile Include="src\pc88\floppy.cpp" />
-    <ClCompile Include="src\pc88\intc.cpp" />
+    <ClCompile Include="src\pc88\interrupt_controller.cpp" />
     <ClCompile Include="src\pc88\ioview.cpp" />
     <ClCompile Include="src\pc88\joypad.cpp" />
     <ClCompile Include="src\pc88\kanjirom.cpp" />
@@ -251,7 +251,7 @@
     </ClCompile>
     <ClCompile Include="src\pc88\memview.cpp" />
     <ClCompile Include="src\pc88\mouse.cpp" />
-    <ClCompile Include="src\pc88\opnif.cpp" />
+    <ClCompile Include="src\pc88\opn_interface.cpp" />
     <ClCompile Include="src\pc88\pc88.cpp" />
     <ClCompile Include="src\pc88\pd8257.cpp" />
     <ClCompile Include="src\pc88\pio.cpp" />
@@ -259,7 +259,7 @@
     <ClCompile Include="src\pc88\sio.cpp" />
     <ClCompile Include="src\pc88\sound.cpp" />
     <ClCompile Include="src\pc88\subsys.cpp" />
-    <ClCompile Include="src\pc88\tapemgr.cpp" />
+    <ClCompile Include="src\pc88\tape_manager.cpp" />
     <ClCompile Include="src\win32\88config.cpp" />
     <ClCompile Include="src\win32\about.cpp" />
     <ClCompile Include="src\win32\cfgpage.cpp" />
@@ -349,18 +349,18 @@
     <ClInclude Include="src\pc88\calender.h" />
     <ClInclude Include="src\pc88\config.h" />
     <ClInclude Include="src\pc88\crtc.h" />
-    <ClInclude Include="src\pc88\diskmgr.h" />
+    <ClInclude Include="src\pc88\disk_manager.h" />
     <ClInclude Include="src\pc88\fdc.h" />
     <ClInclude Include="src\pc88\fdu.h" />
     <ClInclude Include="src\pc88\floppy.h" />
-    <ClInclude Include="src\pc88\intc.h" />
+    <ClInclude Include="src\pc88\interrupt_controller.h" />
     <ClInclude Include="src\pc88\ioview.h" />
     <ClInclude Include="src\pc88\joypad.h" />
     <ClInclude Include="src\pc88\kanjirom.h" />
     <ClInclude Include="src\pc88\memory.h" />
     <ClInclude Include="src\pc88\memview.h" />
     <ClInclude Include="src\pc88\mouse.h" />
-    <ClInclude Include="src\pc88\opnif.h" />
+    <ClInclude Include="src\pc88\opn_interface.h" />
     <ClInclude Include="src\pc88\pc88.h" />
     <ClInclude Include="src\pc88\pcinfo.h" />
     <ClInclude Include="src\pc88\pd8257.h" />
@@ -369,7 +369,7 @@
     <ClInclude Include="src\pc88\sio.h" />
     <ClInclude Include="src\pc88\sound.h" />
     <ClInclude Include="src\pc88\subsys.h" />
-    <ClInclude Include="src\pc88\tapemgr.h" />
+    <ClInclude Include="src\pc88\tape_manager.h" />
     <ClInclude Include="src\win32\88config.h" />
     <ClInclude Include="src\win32\about.h" />
     <ClInclude Include="src\win32\cfgpage.h" />

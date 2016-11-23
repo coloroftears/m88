@@ -96,7 +96,7 @@
     <ClCompile Include="src\pc88\crtc.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
-    <ClCompile Include="src\pc88\diskmgr.cpp">
+    <ClCompile Include="src\pc88\disk_manager.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
     <ClCompile Include="src\pc88\fdc.cpp">
@@ -108,7 +108,7 @@
     <ClCompile Include="src\pc88\floppy.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
-    <ClCompile Include="src\pc88\intc.cpp">
+    <ClCompile Include="src\pc88\interrupt_controller.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
     <ClCompile Include="src\pc88\ioview.cpp">
@@ -129,7 +129,7 @@
     <ClCompile Include="src\pc88\mouse.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
-    <ClCompile Include="src\pc88\opnif.cpp">
+    <ClCompile Include="src\pc88\opn_interface.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
     <ClCompile Include="src\pc88\pc88.cpp">
@@ -153,7 +153,7 @@
     <ClCompile Include="src\pc88\subsys.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
-    <ClCompile Include="src\pc88\tapemgr.cpp">
+    <ClCompile Include="src\pc88\tape_manager.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
     <ClCompile Include="src\win32\romeo\piccolo.cpp">
@@ -401,7 +401,7 @@
     <ClInclude Include="src\pc88\crtc.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\diskmgr.h">
+    <ClInclude Include="src\pc88\disk_manager.h">
       <Filter>pc88</Filter>
     </ClInclude>
     <ClInclude Include="src\pc88\fdc.h">
@@ -413,7 +413,7 @@
     <ClInclude Include="src\pc88\floppy.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\intc.h">
+    <ClInclude Include="src\pc88\interrupt_controller.h">
       <Filter>pc88</Filter>
     </ClInclude>
     <ClInclude Include="src\pc88\ioview.h">
@@ -434,7 +434,7 @@
     <ClInclude Include="src\pc88\mouse.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\opnif.h">
+    <ClInclude Include="src\pc88\opn_interface.h">
       <Filter>pc88</Filter>
     </ClInclude>
     <ClInclude Include="src\pc88\pc88.h">
@@ -461,7 +461,7 @@
     <ClInclude Include="src\pc88\subsys.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\tapemgr.h">
+    <ClInclude Include="src\pc88\tape_manager.h">
       <Filter>pc88</Filter>
     </ClInclude>
     <ClInclude Include="src\win32\romeo\juliet.h">
