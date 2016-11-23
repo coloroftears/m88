@@ -1,6 +1,6 @@
 //  $Id: winvars.cpp,v 1.1 2000/11/02 12:43:52 cisc Exp $
 
-#include "win32/headers.h"
+#include <windows.h>
 #include "win32/winvars.h"
 
 static WinVars winvars;
@@ -15,8 +15,4 @@ void WinVars::Init() {
   GetVersionEx(&vi);
   var[MajorVer] = vi.dwMajorVersion;
   var[MinorVer] = vi.dwMinorVersion;
-
-  // 構造体とか
-  var[OFNSIZE] = Var(MajorVer) <= 4 ? OFNV4SIZE : sizeof(OPENFILENAME);
-  var[MIISIZE] = Var(MajorVer) <= 4 ? 44 : sizeof(MENUITEMINFO);
 }

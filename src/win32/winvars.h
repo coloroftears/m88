@@ -4,7 +4,7 @@
 
 class WinVars {
  public:
-  enum Type { MajorVer = 0, MinorVer, OFNSIZE, MIISIZE, nparam };
+  enum Type { MajorVer = 0, MinorVer, nparam };
 
   WinVars() { Init(); }
 

@@ -53,18 +53,3 @@ using namespace std;
 #undef min
 #define min _MIN
 #endif
-
-// --- OPENFILENAME 関係
-
-#if _WIN32_WINNT < 0x500
-struct OFNV5 : public OPENFILENAME {
-  void* pvReserved;
-  DWORD dwReserved;
-  DWORD FlagsEx;
-};
-#define OFNV4SIZE sizeof(OPENFILENAME)
-#define OFN_EX_NOPLACESBAR 0x00000001
-#else
-#define OFNV5 OPENFILENAME
-#define OFNV4SIZE OPENFILENAME_SIZE_VERSION_400
-#endif

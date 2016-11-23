@@ -147,9 +147,9 @@ bool CodeMonitor::Dump(FILE* fp, int from, int to) {
 //
 bool CodeMonitor::DumpImage() {
   // ダイアログ
-  OFNV5 ofn;
-  memset(&ofn, 0, sizeof(ofn));
-  ofn.lStructSize = WINVAR(OFNSIZE);
+  OPENFILENAME ofn;
+  memset(&ofn, 0, sizeof(OPENFILENAME));
+  ofn.lStructSize = sizeof(OPENFILENAME);
   ofn.FlagsEx = OFN_EX_NOPLACESBAR;
 
   char filename[MAX_PATH];

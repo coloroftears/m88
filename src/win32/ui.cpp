@@ -678,8 +678,8 @@ uint32_t WinUI::WmClose(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 
   // 拡張メニューを破壊する
   MENUITEMINFO mii;
-  memset(&mii, 0, sizeof(mii));
-  mii.cbSize = WINVAR(MIISIZE);
+  memset(&mii, 0, sizeof(MENUITEMINFO));
+  mii.cbSize = sizeof(MENUITEMINFO);
   mii.fMask = MIIM_SUBMENU;
   mii.hSubMenu = 0;
 
@@ -883,8 +883,8 @@ void WinUI::ApplyConfig() {
   draw.SetPriorityLow((config.flags & Config::drawprioritylow) != 0);
 
   MENUITEMINFO mii;
-  memset(&mii, 0, sizeof(mii));
-  mii.cbSize = WINVAR(MIISIZE);
+  memset(&mii, 0, sizeof(MENUITEMINFO));
+  mii.cbSize = sizeof(MENUITEMINFO);
   mii.fMask = MIIM_TYPE;
   mii.fType = MFT_STRING;
   mii.dwTypeData =
@@ -946,9 +946,9 @@ void WinUI::ChangeDiskImage(HWND hwnd, int drive) {
                "M88", MB_ICONERROR | MB_OK);
   }
 
-  OFNV5 ofn;
-  memset(&ofn, 0, sizeof(ofn));
-  ofn.lStructSize = WINVAR(OFNSIZE);
+  OPENFILENAME ofn;
+  memset(&ofn, 0, sizeof(OPENFILENAME));
+  ofn.lStructSize = sizeof(OPENFILENAME);
   ofn.FlagsEx = config.flag2 & Config::showplacesbar ? 0 : OFN_EX_NOPLACESBAR;
 
   char filename[MAX_PATH];
@@ -1123,8 +1123,8 @@ bool WinUI::CreateDiskMenu(uint32_t drive) {
   }
 
   MENUITEMINFO mii;
-  memset(&mii, 0, sizeof(mii));
-  mii.cbSize = WINVAR(MIISIZE);
+  memset(&mii, 0, sizeof(MENUITEMINFO));
+  mii.cbSize = sizeof(MENUITEMINFO);
   mii.fType = MFT_STRING;
   mii.fMask = MIIM_TYPE | MIIM_SUBMENU;
   mii.dwTypeData = buf;
@@ -1163,9 +1163,9 @@ void WinUI::OpenTape() {
 
   tapemgr->Close();
 
-  OFNV5 ofn;
-  memset(&ofn, 0, sizeof(ofn));
-  ofn.lStructSize = WINVAR(OFNSIZE);
+  OPENFILENAME ofn;
+  memset(&ofn, 0, sizeof(OPENFILENAME));
+  ofn.lStructSize = sizeof(OPENFILENAME);
   ofn.FlagsEx = config.flag2 & Config::showplacesbar ? 0 : OFN_EX_NOPLACESBAR;
 
   char filename[MAX_PATH];
@@ -1187,8 +1187,8 @@ void WinUI::OpenTape() {
 
   char buf[MAX_PATH + 32];
   MENUITEMINFO mii;
-  memset(&mii, 0, sizeof(mii));
-  mii.cbSize = WINVAR(MIISIZE);
+  memset(&mii, 0, sizeof(MENUITEMINFO));
+  mii.cbSize = sizeof(MENUITEMINFO);
   mii.fMask = MIIM_TYPE;
   mii.fType = MFT_STRING;
 
@@ -1428,9 +1428,9 @@ void WinUI::CaptureScreen() {
     } else {
       filename[0] = 0;
 
-      OFNV5 ofn;
-      memset(&ofn, 0, sizeof(ofn));
-      ofn.lStructSize = WINVAR(OFNSIZE);
+      OPENFILENAME ofn;
+      memset(&ofn, 0, sizeof(OPENFILENAME));
+      ofn.lStructSize = sizeof(OPENFILENAME);
       ofn.hwndOwner = hwnd;
       ofn.lpstrFilter = "bitmap image [4bpp] (*.bmp)\0*.bmp\0";
       ofn.lpstrFile = filename;
@@ -1673,8 +1673,8 @@ bool WinUI::MakeSnapshotMenu() {
 
     // メニューを元に戻す
     MENUITEMINFO mii;
-    memset(&mii, 0, sizeof(mii));
-    mii.cbSize = WINVAR(MIISIZE);
+    memset(&mii, 0, sizeof(MENUITEMINFO));
+    mii.cbSize = sizeof(MENUITEMINFO);
     mii.fMask = MIIM_SUBMENU;
     mii.hSubMenu = 0;
     SetMenuItemInfo(GetMenu(hwnd), IDM_SNAPSHOT_LOAD, false, &mii);
