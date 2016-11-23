@@ -10,7 +10,6 @@
 #include "win32/monitors/codemon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
-#include "win32/winvars.h"
 
 using namespace PC8801;
 

@@ -22,7 +22,6 @@
 #include "pc88/disk_manager.h"
 #include "pc88/tape_manager.h"
 #include "win32/filetest.h"
-#include "win32/winvars.h"
 #include "win32/winexapi.h"
 
 #define LOGNAME "ui"

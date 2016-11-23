@@ -11,7 +11,6 @@
 #include "common/misc.h"
 #include "common/device_i.h"
 #include "common/file.h"
-#include "win32/winvars.h"
 #include "interface/ifguid.h"
 
 #define LOGNAME "memmon"

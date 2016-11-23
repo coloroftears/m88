@@ -8,7 +8,6 @@
 #include "win32/resource.h"
 #include "win32/cfgpage.h"
 #include "common/misc.h"
-#include "win32/winvars.h"
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)
 
@@ -807,7 +806,6 @@ void ConfigEnv::Update(HWND hdlg) {
   CheckDlgButton(hdlg, item[(config.keytype) & 1], BSTATE(true));
   CheckDlgButton(hdlg, IDC_ENV_PLACESBAR,
                  BSTATE(config.flag2 & Config::showplacesbar));
-  EnableWindow(GetDlgItem(hdlg, IDC_ENV_PLACESBAR), WINVAR(MajorVer) >= 5);
 }
 
 // ---------------------------------------------------------------------------
