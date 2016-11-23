@@ -8,7 +8,7 @@
 
 #include "common/device.h"
 #include "win32/monitors/winmon.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 
 //#define ENABLE_LOADMONITOR
 

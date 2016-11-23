@@ -9,7 +9,7 @@
 #include "pc88/floppy.h"
 #include "common/file.h"
 #include "pc88/fdu.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 
 namespace D88 {
 struct ImageHeader {

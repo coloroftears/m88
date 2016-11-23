@@ -10,7 +10,7 @@
 
 #include "common/types.h"
 #include "common/draw.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 
 // ---------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@
 // ---------------------------------------------------------------------------
 
 #include "common/types.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 #include "common/timekeep.h"
 
 class PC88;

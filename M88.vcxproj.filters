@@ -299,7 +299,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common\critsect.h">
+    <ClInclude Include="src\common\critical_section.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="src\common\device.h">

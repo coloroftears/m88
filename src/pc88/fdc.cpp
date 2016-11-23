@@ -11,7 +11,7 @@
 #include "pc88/fdc.h"
 #include "pc88/fdu.h"
 #include "common/misc.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 #include "pc88/disk_manager.h"
 #include "win32/status.h"
 #include "pc88/config.h"

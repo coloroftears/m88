@@ -11,7 +11,7 @@
 #include "common/types.h"
 #include "pc88/sound.h"
 #include "win32/sounddrv.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 
 class PC88;
 class OPNMonitor;

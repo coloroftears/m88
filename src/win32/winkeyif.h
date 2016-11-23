@@ -9,7 +9,7 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 
 // ---------------------------------------------------------------------------
 namespace PC8801 {

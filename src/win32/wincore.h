@@ -9,7 +9,7 @@
 // ---------------------------------------------------------------------------
 
 #include "common/types.h"
-#include "common/critsect.h"
+#include "common/critical_section.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
 #include "win32/winsound.h"
