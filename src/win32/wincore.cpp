@@ -11,7 +11,6 @@
 #include "pc88/config.h"
 #include "win32/status.h"
 #include "common/device.h"
-#include "win32/version.h"
 #include "common/file.h"
 #include "pc88/disk_manager.h"
 #include "pc88/opn_interface.h"

@@ -9,7 +9,7 @@
 #include "win32/headers.h"
 #include "win32/resource.h"
 #include "win32/about.h"
-#include "win32/version.h"
+#include "common/version.h"
 #include "win32/filetest.h"
 
 // ---------------------------------------------------------------------------

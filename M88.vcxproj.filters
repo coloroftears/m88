@@ -353,6 +353,9 @@
     <ClInclude Include="src\common\types.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\version.h">
+      <Filter>common</Filter>
+    </ClInclude>
     <ClInclude Include="src\devices\fmgen.h">
       <Filter>devices</Filter>
     </ClInclude>
@@ -519,9 +522,6 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="src\win32\ui.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\win32\version.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="src\win32\wincfg.h">
