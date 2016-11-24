@@ -24,7 +24,7 @@
 // ----------------------------------------------------------------------------
 //
 //
-interface IUnk {
+struct IUnk {
   virtual int32_t IFCALL QueryInterface(REFIID, void**) = 0;
   virtual uint32_t IFCALL AddRef() = 0;
   virtual uint32_t IFCALL Release() = 0;
