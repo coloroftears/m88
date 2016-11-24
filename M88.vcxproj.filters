@@ -87,7 +87,7 @@
     <ClCompile Include="src\pc88\beep.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
-    <ClCompile Include="src\pc88\calender.cpp">
+    <ClCompile Include="src\pc88\calendar.cpp">
       <Filter>pc88</Filter>
     </ClCompile>
     <ClCompile Include="src\pc88\crtc.cpp">
@@ -386,7 +386,7 @@
     <ClInclude Include="src\pc88\beep.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\calender.h">
+    <ClInclude Include="src\pc88\calendar.h">
       <Filter>pc88</Filter>
     </ClInclude>
     <ClInclude Include="src\pc88\config.h">

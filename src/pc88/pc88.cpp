@@ -26,7 +26,7 @@
 #include "pc88/tape_manager.h"
 #include "pc88/beep.h"
 #include "pc88/joypad.h"
-#include "pc88/calender.h"
+#include "pc88/calendar.h"
 #include "win32/monitors/loadmon.h"
 
 #include "win32/status.h"

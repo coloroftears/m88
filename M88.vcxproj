@@ -229,7 +229,7 @@
     <ClCompile Include="src\devices\z80_x86.cpp" />
     <ClCompile Include="src\pc88\base.cpp" />
     <ClCompile Include="src\pc88\beep.cpp" />
-    <ClCompile Include="src\pc88\calender.cpp" />
+    <ClCompile Include="src\pc88\calendar.cpp" />
     <ClCompile Include="src\pc88\crtc.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Speed</FavorSizeOrSpeed>
@@ -344,7 +344,7 @@
     <ClInclude Include="src\interface\ifui.h" />
     <ClInclude Include="src\pc88\base.h" />
     <ClInclude Include="src\pc88\beep.h" />
-    <ClInclude Include="src\pc88\calender.h" />
+    <ClInclude Include="src\pc88\calendar.h" />
     <ClInclude Include="src\pc88\config.h" />
     <ClInclude Include="src\pc88\crtc.h" />
     <ClInclude Include="src\pc88\disk_manager.h" />
