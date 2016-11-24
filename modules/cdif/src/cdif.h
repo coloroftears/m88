@@ -40,7 +40,7 @@ class CDIF : public Device {
   };
 
  public:
-  CDIF(const ID& id);
+  explicit CDIF(const ID& id);
   ~CDIF();
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
   bool Init(IDMAAccess* mdev);
