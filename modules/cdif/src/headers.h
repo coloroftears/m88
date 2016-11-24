@@ -7,10 +7,6 @@
 
 #pragma once
 
-#define STRICT
-#define WIN32_LEAN_AND_MEAN
-#define _WIN32_IE 0x200
-
 #include <windows.h>
 #include <objbase.h>
 #include <commdlg.h>
