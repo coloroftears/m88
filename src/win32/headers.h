@@ -10,17 +10,6 @@
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 
-#define DIRECTSOUND_VERSION 0x500  // for pre-DirectX7 environment
-
-#define FORW2K  // W2K 用の SDK を使用
-
-#ifdef FORW2K
-#define WINVER 0x500  // for Win2000
-#define _WIN32_WINNT 0x500
-#endif
-
-#pragma warning(disable : 4786)
-
 #include <windows.h>
 #include <commdlg.h>
 #include <mmsystem.h>
