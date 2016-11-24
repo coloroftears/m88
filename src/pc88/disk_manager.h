@@ -30,7 +30,7 @@ struct SectorHeader {
   uint8_t reserved[5];
   uint16_t length;
 };
-}
+}  // namespace D88
 
 // ---------------------------------------------------------------------------
 

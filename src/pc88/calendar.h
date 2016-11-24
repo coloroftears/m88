@@ -71,4 +71,4 @@ class Calender : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}
+}  // namespace PC8801

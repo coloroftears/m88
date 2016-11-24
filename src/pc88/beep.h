@@ -70,4 +70,4 @@ class Beep : public Device, public ISoundSource {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-}
+}  // namespace PC8801

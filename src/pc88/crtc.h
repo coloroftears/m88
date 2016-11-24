@@ -213,4 +213,4 @@ class CRTC : public Device {
 inline int CRTC::GetFramePeriod() {
   return linetime * (height + vretrace);
 }
-}
+}  // namespace PC8801

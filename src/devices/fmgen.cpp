@@ -155,7 +155,7 @@ int pmtable[2][8][FM_LFOENTS];
 uint32_t amtable[2][4][FM_LFOENTS];
 
 static bool tablemade = false;
-}
+}  // namespace FM
 
 namespace FM {
 

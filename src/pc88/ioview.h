@@ -53,4 +53,4 @@ class IOViewer : public Device {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-}
+}  // namespace PC8801

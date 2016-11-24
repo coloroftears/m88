@@ -151,4 +151,4 @@ class OPM : public Timer {
   int dbgGetOpOut(int c, int s) { return ch[c].op[s].dbgopout_; }
   Channel4* dbgGetCh(int c) { return &ch[c]; }
 };
-}
+}  // namespace FM

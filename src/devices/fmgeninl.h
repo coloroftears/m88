@@ -229,4 +229,4 @@ inline void Chip::SetAML(uint32_t l) {
 inline void Chip::SetPML(uint32_t l) {
   pml_ = l & (FM_LFOENTS - 1);
 }
-}
+}  // namespace FM

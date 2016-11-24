@@ -259,4 +259,4 @@ class Chip {
   OpType optype_;
   uint32_t multable_[4][16];
 };
-}
+}  // namespace FM
