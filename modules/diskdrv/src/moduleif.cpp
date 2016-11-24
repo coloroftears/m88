@@ -55,7 +55,7 @@ bool DiskDrvModule::Init(ISystem* _sys) {
   if (!bus)
     return false;
 
-  const static IIOBus::Connector c_diskio[] = {
+  static const IIOBus::Connector c_diskio[] = {
       {pres, IIOBus::portout, DiskIO::reset},
       {0xd0, IIOBus::portout, DiskIO::setcommand},
       {0xd1, IIOBus::portout, DiskIO::setdata},

@@ -58,7 +58,7 @@ bool SineModule::Init(ISystem* _sys) {
   if (!bus || !sc)
     return false;
 
-  const static IIOBus::Connector c_sine[] = {
+  static const IIOBus::Connector c_sine[] = {
       {0xd8, IIOBus::portout, Sine::setvolume},
       {0xd9, IIOBus::portout, Sine::setpitch},
       {0, 0, 0}};

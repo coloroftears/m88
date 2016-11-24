@@ -66,7 +66,7 @@ bool GRModule::Init(ISystem* _sys) {
   if (!bus || !mm || !pb)
     return false;
 
-  const static IIOBus::Connector c_mp[] = {
+  static const IIOBus::Connector c_mp[] = {
       {0x32, IIOBus::portout, GVRAMReverse::out32},
       {0x35, IIOBus::portout, GVRAMReverse::out35},
       {0x5c, IIOBus::portout, GVRAMReverse::out5x},

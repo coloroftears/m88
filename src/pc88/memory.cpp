@@ -469,7 +469,7 @@ uint32_t IOCALL Memory::In33(uint32_t) {
 }
 
 uint32_t IOCALL Memory::In5c(uint32_t) {
-  const static uint32_t res[4] = {0xf9, 0xfa, 0xfc, 0xf8};
+  static const uint32_t res[4] = {0xf9, 0xfa, 0xfc, 0xf8};
   return res[port5x & 3];
 }
 

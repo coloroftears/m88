@@ -67,7 +67,7 @@ bool CDROMModule::Init(ISystem* _sys) {
   if (!bus || !dmac || !pb)
     return false;
 
-  const static IIOBus::Connector c_cdif[] = {
+  static const IIOBus::Connector c_cdif[] = {
       {pres, IIOBus::portout, CDIF::reset},
       {0x90, IIOBus::portout, CDIF::out90},
       {0x91, IIOBus::portout, CDIF::out91},

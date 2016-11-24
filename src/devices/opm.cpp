@@ -283,10 +283,10 @@ void OPM::SetReg(uint32_t addr, uint32_t data) {
 //  パラメータセット
 //
 void OPM::SetParameter(uint32_t addr, uint32_t data) {
-  const static uint8_t sltable[16] = {
+  static const uint8_t sltable[16] = {
       0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 124,
   };
-  const static uint8_t slottable[4] = {0, 2, 1, 3};
+  static const uint8_t slottable[4] = {0, 2, 1, 3};
 
   uint32_t slot = slottable[(addr >> 3) & 3];
   Operator* op = &ch[addr & 7].op[slot];

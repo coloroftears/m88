@@ -45,8 +45,8 @@ OPNBase::OPNBase() {
 
 //  パラメータセット
 void OPNBase::SetParameter(Channel4* ch, uint32_t addr, uint32_t data) {
-  const static uint32_t slottable[4] = {0, 2, 1, 3};
-  const static uint8_t sltable[16] = {
+  static const uint32_t slottable[4] = {0, 2, 1, 3};
+  static const uint8_t sltable[16] = {
       0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 124,
   };
 
@@ -1718,7 +1718,7 @@ uint32_t OPNB::ReadStatusEx() {
 int OPNB::jedi_table[(48 + 1) * 16];
 
 void OPNB::InitADPCMATable() {
-  const static int8_t table2[] = {
+  static const int8_t table2[] = {
       1, 3, 5, 7, 9, 11, 13, 15, -1, -3, -5, -7, -9, -11, -13, -15,
   };
 
@@ -1734,7 +1734,7 @@ void OPNB::InitADPCMATable() {
 //  ADPCMA 合成
 //
 void OPNB::ADPCMAMix(Sample* buffer, uint32_t count) {
-  const static int decode_tableA1[16] = {
+  static const int decode_tableA1[16] = {
       -1 * 16, -1 * 16, -1 * 16, -1 * 16, 2 * 16, 5 * 16, 7 * 16, 9 * 16,
       -1 * 16, -1 * 16, -1 * 16, -1 * 16, 2 * 16, 5 * 16, 7 * 16, 9 * 16};
 

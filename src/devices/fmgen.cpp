@@ -688,7 +688,7 @@ void Channel4::SetFNum(uint32_t f) {
 
 //  KC/KF を設定
 void Channel4::SetKCKF(uint32_t kc, uint32_t kf) {
-  const static uint32_t kctable[16] = {
+  static const uint32_t kctable[16] = {
       5197, 5506, 5833, 6180, 6180, 6547, 6937, 7349,
       7349, 7786, 8249, 8740, 8740, 9259, 9810, 10394,
   };
