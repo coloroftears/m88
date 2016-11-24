@@ -55,8 +55,7 @@ INT_PTR ConfigMP::PageGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
     PROPSHEETPAGE* pPage = (PROPSHEETPAGE*)l;
     if (config = reinterpret_cast<ConfigMP*>(pPage->lParam))
       ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)config);
-  }
-  else {
+  } else {
     config = (ConfigMP*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }
   if (!config)
