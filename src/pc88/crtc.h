@@ -28,7 +28,7 @@ class CRTC : public Device {
   };
 
  public:
-  CRTC(const ID& id);
+  explicit CRTC(const ID& id);
   ~CRTC();
   bool Init(IOBus* bus, Scheduler* s, PD8257* dmac, Draw* draw);
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }

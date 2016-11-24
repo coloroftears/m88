@@ -26,7 +26,7 @@ class SIO : public Device {
   };
 
  public:
-  SIO(const ID& id);
+  explicit SIO(const ID& id);
   ~SIO();
   bool Init(IOBus* bus, uint32_t prxrdy, uint32_t prequest);
 

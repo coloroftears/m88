@@ -47,7 +47,7 @@ class OPNIF : public Device, public ISoundSource {
   };
 
  public:
-  OPNIF(const ID& id);
+  explicit OPNIF(const ID& id);
   ~OPNIF();
 
   bool Init(IOBus* bus, int intrport, int io, Scheduler* s);

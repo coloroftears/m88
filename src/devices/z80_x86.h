@@ -25,7 +25,7 @@ class Z80_x86 : public Device {
   };
 
  public:
-  Z80_x86(const ID& id);
+  explicit Z80_x86(const ID& id);
   ~Z80_x86();
 
   bool Init(MemoryManager* mm, IOBus* bus, int iack);

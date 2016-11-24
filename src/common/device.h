@@ -14,7 +14,7 @@
 //
 class Device : public IDevice {
  public:
-  Device(const ID& _id) : id(_id) {}
+  explicit Device(const ID& _id) : id(_id) {}
   virtual ~Device() {}
 
   const ID& IFCALL GetID() const { return id; }

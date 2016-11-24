@@ -82,7 +82,7 @@ class FDC : public Device {
   };
 
  public:
-  FDC(const ID& id);
+  explicit FDC(const ID& id);
   ~FDC();
 
   bool Init(DiskManager* dm,

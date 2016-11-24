@@ -19,7 +19,7 @@ class INTC : public Device {
   enum { reset = 0, request, setmask, setreg, intack = 0 };
 
  public:
-  INTC(const ID& id);
+  explicit INTC(const ID& id);
   ~INTC();
   bool Init(IOBus* bus, uint32_t irqport, uint32_t ipbase);
 

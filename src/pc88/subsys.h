@@ -30,7 +30,7 @@ class SubSystem : public Device {
   enum { intack = 0, m_read0, m_read1, m_read2, s_read0, s_read1, s_read2 };
 
  public:
-  SubSystem(const ID& id);
+  explicit SubSystem(const ID& id);
   ~SubSystem();
 
   bool Init(MemoryManager* mmgr);

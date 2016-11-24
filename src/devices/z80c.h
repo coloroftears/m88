@@ -75,7 +75,7 @@ class Z80C : public Device {
   };
 
  public:
-  Z80C(const ID& id);
+  explicit Z80C(const ID& id);
   ~Z80C();
 
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }

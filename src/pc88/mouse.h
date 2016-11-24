@@ -25,7 +25,7 @@ class Mouse : public Device {
   };
 
  public:
-  Mouse(const ID& id);
+  explicit Mouse(const ID& id);
   ~Mouse();
 
   bool Init(PC88* pc);

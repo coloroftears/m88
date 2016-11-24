@@ -19,7 +19,7 @@ class KanjiROM : public Device {
   enum { readl = 0, readh };
 
  public:
-  KanjiROM(const ID& id);
+  explicit KanjiROM(const ID& id);
   ~KanjiROM();
 
   bool Init(const char* filename);

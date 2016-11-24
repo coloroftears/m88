@@ -27,7 +27,7 @@
 
 class WinUI {
  public:
-  WinUI(HINSTANCE hinst);
+  explicit WinUI(HINSTANCE hinst);
   ~WinUI();
 
   bool InitWindow(int nwinmode);

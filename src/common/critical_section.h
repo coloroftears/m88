@@ -16,7 +16,7 @@ class CriticalSection {
     CriticalSection& cs;
 
    public:
-    Lock(CriticalSection& c) : cs(c) { cs.lock(); }
+    explicit Lock(CriticalSection& c) : cs(c) { cs.lock(); }
     ~Lock() { cs.unlock(); }
   };
 

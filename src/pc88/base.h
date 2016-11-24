@@ -23,7 +23,7 @@ class Base : public Device {
   enum IDIn { in30 = 0, in31, in40, in6e };
 
  public:
-  Base(const ID& id);
+  explicit Base(const ID& id);
   ~Base();
 
   bool Init(PC88* pc88);

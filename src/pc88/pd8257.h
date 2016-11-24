@@ -21,7 +21,7 @@ class PD8257 : public Device, public IDMAAccess {
   enum IDIn { getaddr, getcount, getstat };
 
  public:
-  PD8257(const ID&);
+  explicit PD8257(const ID&);
   ~PD8257();
 
   bool ConnectRd(uint8_t* mem, uint32_t addr, uint32_t length);

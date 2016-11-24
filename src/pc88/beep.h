@@ -27,7 +27,7 @@ class Beep : public Device, public ISoundSource {
   };
 
  public:
-  Beep(const ID& id);
+  explicit Beep(const ID& id);
   ~Beep();
 
   bool Init();

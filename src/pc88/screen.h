@@ -45,7 +45,7 @@ class Screen : public Device {
   };
 
  public:
-  Screen(const ID& id);
+  explicit Screen(const ID& id);
   ~Screen();
 
   bool Init(IOBus* bus, Memory* memory, CRTC* crtc);

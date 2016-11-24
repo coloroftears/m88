@@ -81,7 +81,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
     WinCore* b;
 
    public:
-    LockObj(WinCore* _b) : b(_b) { b->Lock(); }
+    explicit LockObj(WinCore* _b) : b(_b) { b->Lock(); }
     ~LockObj() { b->Unlock(); }
   };
 

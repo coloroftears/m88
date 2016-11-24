@@ -24,7 +24,7 @@ class Calender : public Device {
   };
 
  public:
-  Calender(const ID& id);
+  explicit Calender(const ID& id);
   ~Calender();
   bool Init() { return true; }
 

@@ -74,7 +74,7 @@ class Memory : public Device, public IGetMemoryBank {
   };
 
  public:
-  Memory(const ID& id);
+  explicit Memory(const ID& id);
   ~Memory();
   const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
