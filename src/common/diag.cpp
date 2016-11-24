@@ -7,6 +7,8 @@
 #define INCLDIAG
 #include "common/diag.h"
 
+#include <stdarg.h>
+
 #if defined(_DEBUG)
 
 // Z80C* Diag::cpu = 0;

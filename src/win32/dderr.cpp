@@ -1,5 +1,8 @@
 // $Id: dderr.cpp,v 1.1 2000/02/09 10:47:38 cisc Exp $
 
+#include <windows.h>
+#include <ddraw.h>
+
 #include "win32/dderr.h"
 
 #include "common/types.h"
