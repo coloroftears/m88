@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: wincore.cpp,v 1.42 2003/05/15 13:15:35 cisc Exp $
 
-#include "win32/headers.h"
 #include "win32/wincore.h"
+
 #include "win32/winkeyif.h"
 #include "common/misc.h"
 #include "pc88/config.h"

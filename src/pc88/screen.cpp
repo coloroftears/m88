@@ -6,8 +6,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: screen.cpp,v 1.26 2003/09/28 14:35:35 cisc Exp $
 
-#include "win32/headers.h"
 #include "pc88/screen.h"
+
 #include "pc88/memory.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"

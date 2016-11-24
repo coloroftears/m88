@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: basmon.cpp,v 1.1 2000/06/26 14:05:44 cisc Exp $
 
-#include "win32/headers.h"
 #include "win32/monitors/basmon.h"
+
 #include "common/misc.h"
 #include "win32/resource.h"
 

@@ -4,10 +4,10 @@
 // ---------------------------------------------------------------------------
 //  $Id: mvmon.cpp,v 1.3 2001/02/21 11:58:55 cisc Exp $
 
-#include "win32/headers.h"
+#include "win32/monitors/memmon.h"
+
 #include "win32/resource.h"
 #include "pc88/pc88.h"
-#include "win32/monitors/memmon.h"
 #include "common/misc.h"
 #include "common/device_i.h"
 

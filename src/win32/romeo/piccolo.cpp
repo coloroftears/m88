@@ -1,14 +1,14 @@
 //  $Id: piccolo.cpp,v 1.3 2003/04/22 13:16:36 cisc Exp $
 
-#include "win32/headers.h"
-#include <winioctl.h>
 #include "win32/romeo/piccolo.h"
+
 #include "win32/romeo/romeo.h"
 #include "common/misc.h"
 #include "win32/status.h"
 #include "piccolo/piioctl.h"
 
 #include <process.h>
+#include <winioctl.h>
 
 #define LOGNAME "piccolo"
 #include "common/diag.h"

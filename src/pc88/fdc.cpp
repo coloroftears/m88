@@ -6,9 +6,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: fdc.cpp,v 1.20 2003/05/12 22:26:35 cisc Exp $
 
-#include "win32/headers.h"
-
 #include "pc88/fdc.h"
+
 #include "pc88/fdu.h"
 #include "common/misc.h"
 #include "common/critical_section.h"

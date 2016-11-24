@@ -4,9 +4,13 @@
 // ---------------------------------------------------------------------------
 //  $Id: main.cpp,v 1.9 2001/02/21 11:58:55 cisc Exp $
 
-#include "win32/headers.h"
+#include <windows.h>
+
 #include "win32/ui.h"
 #include "common/file.h"
+
+#include <objbase.h>
+#include <stdio.h>
 
 // ---------------------------------------------------------------------------
 

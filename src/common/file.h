@@ -8,7 +8,11 @@
 
 #pragma once
 
+#include <windows.h>
+
 #include "common/types.h"
+
+#include <stdlib.h>
 
 // ---------------------------------------------------------------------------
 

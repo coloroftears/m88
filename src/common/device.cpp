@@ -4,8 +4,6 @@
 // ---------------------------------------------------------------------------
 //  $Id: device.cpp,v 1.21 2000/06/20 23:53:03 cisc Exp $
 
-#include "win32/headers.h"
-
 #include "common/device.h"
 #include "common/device_i.h"
 

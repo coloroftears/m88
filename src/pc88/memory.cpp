@@ -8,12 +8,12 @@
 
 //  MemoryPage size should be equal to or less than 0x400.
 
-#include "win32/headers.h"
+#include "pc88/memory.h"
+
 #include "common/file.h"
 #include "common/device.h"
 #include "common/device_i.h"
 #include "common/memory_manager.h"
-#include "pc88/memory.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"
 #include "common/error.h"

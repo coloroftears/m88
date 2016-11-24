@@ -11,7 +11,6 @@
 //  Memory 関数は __cdecl, IO 関数は __stdcall (IOCALL) を想定しています
 //
 
-#include "win32/headers.h"
 #include "common/types.h"
 
 #include <assert.h>

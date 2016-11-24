@@ -6,14 +6,14 @@
 // ---------------------------------------------------------------------------
 //  $Id: windraw.cpp,v 1.34 2003/04/22 13:16:36 cisc Exp $
 
-#include "win32/headers.h"
-#include "common/misc.h"
 #include "win32/windraw.h"
+
+#include "common/error.h"
+#include "common/misc.h"
 #include "win32/draw_gdi.h"
 #include "win32/draw_dds.h"
 #include "win32/draw_ddw.h"
 #include "win32/messages.h"
-#include "common/error.h"
 #include "win32/status.h"
 #include "win32/monitors/loadmon.h"
 #include "win32/winexapi.h"

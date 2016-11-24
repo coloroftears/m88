@@ -6,8 +6,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: winmouse.cpp,v 1.9 2002/04/07 05:40:11 cisc Exp $
 
-#include "win32/headers.h"
 #include "win32/winmouse.h"
+
 #include "win32/ui.h"
 #include "interface/ifguid.h"
 #include "win32/messages.h"

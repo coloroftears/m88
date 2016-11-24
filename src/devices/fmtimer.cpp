@@ -4,8 +4,9 @@
 // ---------------------------------------------------------------------------
 //  $Id: fmtimer.cpp,v 1.2 2004/02/06 13:13:39 cisc Exp $
 
-#include "win32/headers.h"
 #include "devices/fmtimer.h"
+
+#include <limits.h>
 
 using namespace FM;
 

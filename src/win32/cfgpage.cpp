@@ -4,10 +4,12 @@
 // ---------------------------------------------------------------------------
 //  $Id: cfgpage.cpp,v 1.14 2003/08/25 13:54:11 cisc Exp $
 
-#include "win32/headers.h"
-#include "win32/resource.h"
 #include "win32/cfgpage.h"
+
+#include "win32/resource.h"
 #include "common/misc.h"
+
+#include <commctrl.h>
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)
 

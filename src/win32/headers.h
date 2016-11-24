@@ -7,13 +7,6 @@
 
 #pragma once
 
-#include <windows.h>
-#include <commdlg.h>
-#include <mmsystem.h>
-#include <ddraw.h>
-#include <dsound.h>
-#include <commctrl.h>
-
 // --- STL 関係
 
 #ifdef _MSC_VER

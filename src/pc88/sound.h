@@ -11,6 +11,8 @@
 #include "common/sampling_rate_converter.h"
 #include "common/lpf.h"
 
+#include <limits.h>
+
 // ---------------------------------------------------------------------------
 
 class PC88;

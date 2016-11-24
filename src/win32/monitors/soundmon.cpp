@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundmon.cpp,v 1.15 2003/06/12 14:03:44 cisc Exp $
 
-#include "win32/headers.h"
-#include "win32/resource.h"
 #include "win32/monitors/soundmon.h"
+
+#include "win32/resource.h"
 #include "common/misc.h"
 #include "pc88/opn_interface.h"
 

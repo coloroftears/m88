@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: joypad.cpp,v 1.3 2003/05/19 01:10:31 cisc Exp $
 
-#include "win32/headers.h"
 #include "pc88/joypad.h"
+
 #include "interface/ifguid.h"
 
 #include <algorithm>

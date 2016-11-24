@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: tapemgr.cpp,v 1.3 2000/08/06 09:58:51 cisc Exp $
 
-#include "win32/headers.h"
 #include "pc88/tape_manager.h"
+
 #include "common/file.h"
 #include "win32/status.h"
 #include "common/misc.h"

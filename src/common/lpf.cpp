@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: lpf.cpp,v 1.1 2002/04/07 05:40:08 cisc Exp $
 
-#include "win32/headers.h"
 #include "common/lpf.h"
+
 #include "common/misc.h"
 
 #include <math.h>

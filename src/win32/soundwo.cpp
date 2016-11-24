@@ -6,8 +6,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: soundwo.cpp,v 1.7 2002/05/31 09:45:21 cisc Exp $
 
-#include "win32/headers.h"
 #include "win32/soundwo.h"
+
 #include "win32/status.h"
 
 #include <process.h>

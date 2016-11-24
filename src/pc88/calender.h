@@ -10,6 +10,8 @@
 
 #include "common/device.h"
 
+#include <time.h>
+
 namespace PC8801 {
 
 class Calender : public Device {

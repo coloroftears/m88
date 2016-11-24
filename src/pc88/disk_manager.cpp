@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: diskmgr.cpp,v 1.13 1999/11/26 10:13:46 cisc Exp $
 
-#include "win32/headers.h"
 #include "pc88/disk_manager.h"
+
 #include "win32/status.h"
 #include "common/misc.h"
 

@@ -6,8 +6,12 @@
 
 #pragma once
 
+#include <windows.h>
+
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
+
+#include <commctrl.h>
 
 namespace PC8801 {
 

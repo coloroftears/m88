@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include <windows.h>
+#include <commdlg.h>
+
 #include "common/types.h"
 
 #ifndef IFCALL

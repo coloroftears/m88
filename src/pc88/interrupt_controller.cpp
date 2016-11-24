@@ -6,9 +6,9 @@
 // ---------------------------------------------------------------------------
 //  $Id: intc.cpp,v 1.15 2000/06/22 16:22:18 cisc Exp $
 
-#include "win32/headers.h"
-#include "common/misc.h"
 #include "pc88/interrupt_controller.h"
+
+#include "common/misc.h"
 
 //#define LOGNAME "intc"
 #include "common/diag.h"

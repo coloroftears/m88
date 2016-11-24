@@ -8,9 +8,11 @@
 
 #pragma once
 
-#include "common/types.h"
-#include "common/draw.h"
+#include <windows.h>
+
 #include "common/critical_section.h"
+#include "common/draw.h"
+#include "common/types.h"
 
 // ---------------------------------------------------------------------------
 

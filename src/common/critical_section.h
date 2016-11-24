@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <windows.h>
+
 class CriticalSection {
  public:
   class Lock {

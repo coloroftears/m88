@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: winsound.cpp,v 1.27 2003/05/12 22:26:36 cisc Exp $
 
-#include "win32/headers.h"
 #include "win32/winsound.h"
+
 #include "common/misc.h"
 #include "pc88/config.h"
 #include "win32/status.h"

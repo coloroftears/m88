@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include <windows.h>
+#include <mmsystem.h>
+
 #include "win32/sounddrv.h"
 #include "common/critical_section.h"
 

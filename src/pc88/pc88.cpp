@@ -8,8 +8,8 @@
 
 //  Memory Bus Banksize <= 0x400
 
-#include "win32/headers.h"
 #include "pc88/pc88.h"
+
 #include "pc88/config.h"
 #include "pc88/memory.h"
 #include "pc88/pd8257.h"
