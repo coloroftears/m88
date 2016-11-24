@@ -37,9 +37,9 @@ void PSG::Reset() {
 //  クロック周波数の設定
 //
 void PSG::SetClock(int clock, int rate) {
-  tperiodbase = int((1 << toneshift) / 4.0 * clock / rate);
-  eperiodbase = int((1 << envshift) / 4.0 * clock / rate);
-  nperiodbase = int((1 << noiseshift) / 4.0 * clock / rate);
+  tperiodbase = static_cast<int>((1 << toneshift) / 4.0 * clock / rate);
+  eperiodbase = static_cast<int>((1 << envshift) / 4.0 * clock / rate);
+  nperiodbase = static_cast<int>((1 << noiseshift) / 4.0 * clock / rate);
 
   // 各データの更新
   int tmp;
@@ -79,7 +79,7 @@ void PSG::MakeNoiseTable() {
 void PSG::SetVolume(int volume) {
   double base = 0x4000 / 3.0 * pow(10.0, volume / 40.0);
   for (int i = 31; i >= 2; i--) {
-    EmitTable[i] = int(base);
+    EmitTable[i] = static_cast<int>(base);
     base /= 1.189207115;
   }
   EmitTable[1] = 0;

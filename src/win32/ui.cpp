@@ -1520,7 +1520,7 @@ uint32_t WinUI::WmMove(HWND hwnd, WPARAM, LPARAM) {
 //  WM_M88_CLIPCURSOR
 //
 uint32_t WinUI::M88ClipCursor(HWND hwnd, WPARAM op, LPARAM) {
-  if (int(op) > 0)
+  if (static_cast<int>(op) > 0)
     clipmode |= op;
   else
     clipmode &= ~(-op);

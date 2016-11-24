@@ -93,7 +93,7 @@ void IOCALL Mouse::Strobe(uint32_t, uint32_t data) {
   if (port40 ^ data) {
     port40 = data;
 
-    if (phase <= 0 || int(pc->GetTime() - triggertime) > 18 * 4) {
+    if (phase <= 0 || static_cast<int>(pc->GetTime() - triggertime) > 18 * 4) {
       if (data) {
         triggertime = pc->GetTime();
         if (ui)

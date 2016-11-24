@@ -202,7 +202,7 @@ void MakeLFOTable() {
             0.6 * pmb * sin(2 * j * 3.14159265358979323846 / FM_LFOENTS) + 1;
         //              pmtable[type][i][j] = int(0x10000 * (v - 1));
         //              if (type == 0)
-        pmtable[type][i][j] = int(0x10000 * (w - 1));
+        pmtable[type][i][j] = static_cast<int>(0x10000 * (w - 1));
         //              else
         //                  pmtable[type][i][j] = int(0x10000 * (v - 1));
 
@@ -238,8 +238,8 @@ void Chip::MakeTable() {
   static const float dt2lv[4] = {1.f, 1.414f, 1.581f, 1.732f};
   for (h = 0; h < 4; h++) {
     assert(2 + FM_RATIOBITS - FM_PGBITS >= 0);
-    double rr =
-        dt2lv[h] * double(ratio_) / (1 << (2 + FM_RATIOBITS - FM_PGBITS));
+    double rr = dt2lv[h] * static_cast<double>(ratio_) /
+                (1 << (2 + FM_RATIOBITS - FM_PGBITS));
     for (l = 0; l < 16; l++) {
       int mul = l ? l * 2 : 1;
       multable_[h][l] = uint32_t(mul * rr);
@@ -304,7 +304,7 @@ void Operator::MakeTable() {
   int* p = cltable;
   int i;
   for (i = 0; i < 256; i++) {
-    int v = int(floor(pow(2., 13. - i / 256.)));
+    int v = static_cast<int>(floor(pow(2., 13. - i / 256.)));
     v = (v + 2) & ~3;
     *p++ = v;
     *p++ = -v;
@@ -651,7 +651,7 @@ Channel4::Channel4() {
 void Channel4::MakeTable() {
   // 100/64 cent =  2^(i*100/64*1200)
   for (int i = 0; i < 64; i++) {
-    kftable[i] = int(0x10000 * pow(2., i / 768.));
+    kftable[i] = static_cast<int>(0x10000 * pow(2., i / 768.));
   }
 }
 

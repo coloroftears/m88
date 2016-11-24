@@ -138,14 +138,14 @@ bool OPNBase::Init(uint32_t c, uint32_t r) {
 void OPNBase::SetVolumeFM(int db) {
   db = Min(db, 20);
   if (db > -192)
-    fmvolume = int(16384.0 * pow(10.0, db / 40.0));
+    fmvolume = static_cast<int>(16384.0 * pow(10.0, db / 40.0));
   else
     fmvolume = 0;
 }
 
 //  タイマー時間処理
 void OPNBase::TimerA() {
-  if ((regtc & 0xc0) ==  0x80) {
+  if ((regtc & 0xc0) == 0x80) {
     csmch->KeyControl(0x00);
     csmch->KeyControl(0x0f);
   }
@@ -469,7 +469,7 @@ bool OPNABase::SetRate(uint32_t c, uint32_t r, bool) {
 
   OPNBase::Init(c, r);
 
-  adplbase = int(8192. * (clock / 72.) / r);
+  adplbase = static_cast<int>(8192. * (clock / 72.) / r);
   adpld = deltan * adplbase >> 16;
 
   RebuildTimeTable();
@@ -1418,7 +1418,7 @@ void OPNA::SetVolumeRhythm(int index, int db) {
 void OPNA::SetVolumeADPCM(int db) {
   db = Min(db, 20);
   if (db > -192)
-    adpcmvol = int(65536.0 * pow(10.0, db / 40.0));
+    adpcmvol = static_cast<int>(65536.0 * pow(10.0, db / 40.0));
   else
     adpcmvol = 0;
 
@@ -1550,7 +1550,7 @@ bool OPNB::SetRate(uint32_t c, uint32_t r, bool ipflag) {
   if (!OPNABase::SetRate(c, r, ipflag))
     return false;
 
-  adpcmastep = int(double(c) / 54 * 8192 / r);
+  adpcmastep = static_cast<int>(static_cast<double>(c) / 54 * 8192 / r);
   return true;
 }
 
@@ -1723,7 +1723,7 @@ void OPNB::InitADPCMATable() {
   };
 
   for (int i = 0; i <= 48; i++) {
-    int s = int(16.0 * pow(1.1, i) * 3);
+    int s = static_cast<int>(16.0 * pow(1.1, i) * 3);
     for (int j = 0; j < 16; j++) {
       jedi_table[i * 16 + j] = s * table2[j] / 8;
     }
@@ -1801,7 +1801,7 @@ void OPNB::SetVolumeADPCMA(int index, int db) {
 void OPNB::SetVolumeADPCMB(int db) {
   db = Min(db, 20);
   if (db > -192)
-    adpcmvol = int(65536.0 * pow(10, db / 40.0));
+    adpcmvol = static_cast<int>(65536.0 * pow(10, db / 40.0));
   else
     adpcmvol = 0;
 }

@@ -163,7 +163,8 @@ void CRTC::HotReset() {
   screenwidth = 640;
   screenheight = 400;
 
-  linetime = line200 ? int(6.258 * 8) : int(4.028 * 16);
+  linetime =
+      line200 ? static_cast<int>(6.258 * 8) : static_cast<int>(4.028 * 16);
   height = 25;
   vretrace = line200 ? 7 : 3;
   mode = clear | resize;
@@ -251,7 +252,8 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
           cursormode = (data >> 5) & 3;
           linesperchar = (data & 0x1f) + 1;
 
-          linetime = (line200 ? int(6.258 * 1024) : int(4.028 * 1024)) *
+          linetime = (line200 ? static_cast<int>(6.258 * 1024)
+                              : static_cast<int>(4.028 * 1024)) *
                      linesperchar / 1024;
           if (data & 0x80)
             mode |= skipline;

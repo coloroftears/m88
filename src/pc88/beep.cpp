@@ -51,7 +51,7 @@ bool Beep::SetRate(uint32_t rate) {
   pslice = 0;
   bslice = 0;
   bcount = 0;
-  bperiod = int(2400.0 / rate * (1 << 14));
+  bperiod = static_cast<int>(2400.0 / rate * (1 << 14));
   return true;
 }
 

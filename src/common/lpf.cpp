@@ -17,7 +17,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define FX(f) int((f)*F)
+#define FX(f) static_cast<int>((f)*F)
 
 void IIR_LPF::MakeFilter(uint32_t fc, uint32_t samplingrate, uint32_t _order) {
   order = Limit(_order, maxorder, 1);
