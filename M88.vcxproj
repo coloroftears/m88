@@ -377,7 +377,6 @@
     <ClInclude Include="src\win32\draw_gdi.h" />
     <ClInclude Include="src\win32\extdev.h" />
     <ClInclude Include="src\win32\filetest.h" />
-    <ClInclude Include="src\win32\headers.h" />
     <ClInclude Include="src\win32\messages.h" />
     <ClInclude Include="src\win32\module.h" />
     <ClInclude Include="src\win32\monitors\basmon.h" />
