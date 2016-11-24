@@ -31,7 +31,7 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\common\diag.cpp">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\common\error.cpp">
       <Filter>common</Filter>
@@ -46,7 +46,7 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\common\sequencer.cpp">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\common\sound_buffer2.cpp">
       <Filter>common</Filter>
@@ -55,7 +55,7 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\common\time_keeper.cpp">
-      <Filter>win32</Filter>
+      <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="src\devices\fmgen.cpp">
       <Filter>devices</Filter>
@@ -539,16 +539,16 @@
     <ClInclude Include="src\win32\winsound.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\if\ifcommon.h">
+    <ClInclude Include="src\interface\ifcommon.h">
       <Filter>interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\if\ifguid.h">
+    <ClInclude Include="src\interface\ifguid.h">
       <Filter>interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\if\ifpc88.h">
+    <ClInclude Include="src\interface\ifpc88.h">
       <Filter>interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\if\ifui.h">
+    <ClInclude Include="src\interface\ifui.h">
       <Filter>interface</Filter>
     </ClInclude>
     <ClInclude Include="src\zlib\deflate.h">
