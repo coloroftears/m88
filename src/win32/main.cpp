@@ -6,11 +6,12 @@
 
 #include <windows.h>
 
-#include "win32/ui.h"
-#include "common/file.h"
-
 #include <objbase.h>
 #include <stdio.h>
+#include <memory>
+
+#include "win32/ui.h"
+#include "common/file.h"
 
 // ---------------------------------------------------------------------------
 
@@ -44,12 +45,11 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE, LPSTR cmdline, int nwinmode) {
   InitCommonControls();
 
   int r = -1;
-
-  WinUI* ui = new WinUI(hinst);
-  if (ui && ui->InitWindow(nwinmode)) {
-    r = ui->Main(cmdline);
+  {
+    std::unique_ptr<WinUI> ui(new WinUI(hinst));
+    if (ui && ui->InitWindow(nwinmode))
+      r = ui->Main(cmdline);
   }
-  delete ui;
 
   CoUninitialize();
   return r;
