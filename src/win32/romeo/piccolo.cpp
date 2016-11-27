@@ -2,13 +2,12 @@
 
 #include "win32/romeo/piccolo.h"
 
-#include "win32/romeo/romeo.h"
-#include "common/misc.h"
-#include "win32/status.h"
-#include "piccolo/piioctl.h"
-
 #include <process.h>
 #include <winioctl.h>
+
+#include "piccolo/piioctl.h"
+#include "win32/romeo/romeo.h"
+#include "win32/status.h"
 
 #define LOGNAME "piccolo"
 #include "common/diag.h"

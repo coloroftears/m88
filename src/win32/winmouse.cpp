@@ -8,9 +8,12 @@
 
 #include "win32/winmouse.h"
 
-#include "win32/ui.h"
+#include <stdlib.h>
+
+#include "common/misc.h"
 #include "interface/ifguid.h"
 #include "win32/messages.h"
+#include "win32/ui.h"
 
 WinMouseUI::WinMouseUI() : enable(false), ui(0), refcount(0) {
   activetime = 0;
@@ -100,7 +103,7 @@ bool WinMouseUI::GetMovement(POINT* move) {
       move->y = (c.y - point.y) / 2;
 
       SetCursorPos(c.x, c.y);
-      if (Abs(move->x) < 320 && Abs(move->y) < 200) {
+      if (abs(move->x) < 320 && abs(move->y) < 200) {
         move->x = Limit(move->x, 127, -127);
         move->y = Limit(move->y, 127, -127);
       } else

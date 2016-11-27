@@ -8,7 +8,7 @@
 
 #include "pc88/interrupt_controller.h"
 
-#include "common/misc.h"
+#include <algorithm>
 
 //#define LOGNAME "intc"
 #include "common/diag.h"
@@ -106,7 +106,7 @@ void IOCALL INTC::SetMask(uint32_t, uint32_t data) {
 //  レジスタ設定(porte4)
 //
 void IOCALL INTC::SetRegister(uint32_t, uint32_t data) {
-  stat.mask = ~(-1 << Min(8, data));
+  stat.mask = ~(-1 << std::min(8U, data));
   //  mode = (data & 7) != 0;
   LOG1("p[e4] = %.2x  : ", data);
   IRQ((stat.irq & stat.mask & stat.mask2) != 0);

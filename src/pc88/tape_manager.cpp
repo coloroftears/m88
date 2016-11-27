@@ -6,11 +6,11 @@
 
 #include "pc88/tape_manager.h"
 
+#include <inttypes.h>
+#include <algorithm>
+
 #include "common/file.h"
 #include "win32/status.h"
-#include "common/misc.h"
-
-#include <inttypes.h>
 
 #define LOGNAME "tape"
 #include "common/diag.h"
@@ -138,7 +138,7 @@ bool TapeManager::Motor(bool s) {
   } else {
     if (timercount) {
       int td = (scheduler->GetTime() - time) * 6 / 125;
-      timerremain = Max(10, timerremain - td);
+      timerremain = std::max(10, static_cast<int>(timerremain) - td);
       scheduler->DelEvent(event), event = 0;
       statusdisplay.Show(10, 2000, "Motor off: %d %d", timerremain, timercount);
     }

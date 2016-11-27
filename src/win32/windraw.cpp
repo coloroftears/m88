@@ -8,17 +8,17 @@
 
 #include "win32/windraw.h"
 
+#include <assert.h>
+#include <algorithm>
+
 #include "common/error.h"
-#include "common/misc.h"
 #include "win32/draw_gdi.h"
 #include "win32/draw_dds.h"
 #include "win32/draw_ddw.h"
 #include "win32/messages.h"
-#include "win32/status.h"
 #include "win32/monitors/loadmon.h"
+#include "win32/status.h"
 #include "win32/winexapi.h"
-
-#include <assert.h>
 
 #define LOGNAME "windraw"
 #include "common/diag.h"
@@ -173,10 +173,10 @@ void WinDraw::DrawScreen(const Region& region) {
   if (!drawing) {
     LOG2("Draw %d to %d\n", region.top, region.bottom);
     drawing = true;
-    drawarea.left = Max(0, region.left);
-    drawarea.top = Max(0, region.top);
-    drawarea.right = Min(width, region.right);
-    drawarea.bottom = Min(height, region.bottom + 1);
+    drawarea.left = std::max(0, region.left);
+    drawarea.top = std::max(0, region.top);
+    drawarea.right = std::min(width, region.right);
+    drawarea.bottom = std::min(height, region.bottom + 1);
 #ifdef DRAW_THREAD
     SetEvent(hevredraw);
 #else
@@ -194,8 +194,8 @@ void WinDraw::PaintWindow() {
   if (drawing && draw && active) {
     RECT rect = drawarea;
     if (palcngbegin <= palcngend) {
-      palrgnbegin = Min(palcngbegin, palrgnbegin);
-      palrgnend = Max(palcngend, palrgnend);
+      palrgnbegin = std::min(palcngbegin, palrgnbegin);
+      palrgnend = std::max(palcngend, palrgnend);
       draw->SetPalette(palette + palcngbegin, palcngbegin,
                        palcngend - palcngbegin + 1);
       palcngbegin = 0x100;
@@ -224,8 +224,8 @@ void WinDraw::SetPalette(uint32_t index, uint32_t nents, const Palette* pal) {
   assert(pal);
 
   memcpy(palette + index, pal, nents * sizeof(Palette));
-  palcngbegin = Min(palcngbegin, index);
-  palcngend = Max(palcngend, index + nents - 1);
+  palcngbegin = std::min(palcngbegin, static_cast<int>(index));
+  palcngend = std::max(palcngend, static_cast<int>(index + nents) - 1);
 }
 
 // ---------------------------------------------------------------------------
@@ -352,8 +352,8 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
     }
 
     drawall = true, refresh = true;
-    palrgnbegin = Min(palcngbegin, palrgnbegin);
-    palrgnend = Max(palcngend, palrgnend);
+    palrgnbegin = std::min(palcngbegin, palrgnbegin);
+    palrgnend = std::max(palcngend, palrgnend);
     if (draw)
       draw->Resize(width, height);
 

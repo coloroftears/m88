@@ -6,8 +6,6 @@
 
 #include "common/scheduler.h"
 
-#include "common/misc.h"
-
 #include <assert.h>
 
 // ---------------------------------------------------------------------------

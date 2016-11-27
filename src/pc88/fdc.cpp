@@ -8,12 +8,14 @@
 
 #include "pc88/fdc.h"
 
-#include "pc88/fdu.h"
-#include "common/misc.h"
+#include <stdlib.h>
+#include <algorithm>
+
 #include "common/critical_section.h"
-#include "pc88/disk_manager.h"
-#include "win32/status.h"
 #include "pc88/config.h"
+#include "pc88/disk_manager.h"
+#include "pc88/fdu.h"
+#include "win32/status.h"
 
 #define LOGNAME "fdc"
 #include "common/diag.h"
@@ -458,7 +460,7 @@ void FDC::CmdReadData() {
 
     case commandphase:
       GetSectorParameters();
-      SetTimer(executephase, 250 << Min(7, idr.n));
+      SetTimer(executephase, 250 << std::min(7, static_cast<int>(idr.n)));
       return;
 
     case executephase:
@@ -476,7 +478,7 @@ void FDC::CmdReadData() {
         SetTimer(timerphase, 20);
         return;
       }
-      SetTimer(executephase, 250 << Min(7, idr.n));
+      SetTimer(executephase, 250 << std::min(7, static_cast<int>(idr.n)));
       return;
 
     case tcphase:
@@ -582,7 +584,7 @@ void FDC::ReadData(bool deleted, bool scan) {
     SetTimer(timerphase, 1000);
     return;
   }
-  int xbyte = idr.n ? (0x80 << Min(8, idr.n)) : (Min(dtl, 0x80));
+  int xbyte = idr.n ? (0x80 << std::min(8, static_cast<int>(idr.n))) : (std::min(dtl, 0x80U));
 
   if (!scan)
     ShiftToExecReadPhase(xbyte);
@@ -636,7 +638,8 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
   dr &= 3;
 
   cy <<= drive[dr].dd;
-  int seekcount = Abs(cy - drive[dr].cyrinder);
+  int seekcount =
+      abs(static_cast<int>(cy) - static_cast<int>(drive[dr].cyrinder));
   if (GetDeviceStatus(dr) & 0x80) {
     // FAULT
     LOG1("\tSeek on unconnected drive (%d)\n", dr);
@@ -646,7 +649,7 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
   } else {
     LOG3("Seek: %d -> %d (%d)\n", drive[dr].cyrinder, cy, seekcount);
     drive[dr].cyrinder = cy;
-    seektime = seekcount && diskwait ? (400 * Abs(seekcount) + 500) : 10;
+    seektime = seekcount && diskwait ? (400 * seekcount + 500) : 10;
     scheduler->AddEvent(seektime, this, static_cast<TimeFunc>(&FDC::SeekEvent),
                         dr);
     seekstate |= 1 << dr;
@@ -801,9 +804,9 @@ void FDC::CmdWriteData() {
           ShiftToResultPhase7();
           return;
         }
-        int xbyte = 0x80 << Min(8, idr.n);
+        int xbyte = 0x80 << std::min(8, static_cast<int>(idr.n));
         if (!idr.n) {
-          xbyte = Min(dtl, 0x80);
+          xbyte = std::min(dtl, 0x80U);
           memset(buffer + xbyte, 0, 0x80 - xbyte);
         }
         ShiftToExecWritePhase(xbyte);
@@ -1013,8 +1016,9 @@ void FDC::CmdReadDiagnostic() {
         ShiftToResultPhase7();
         return;
       }
-      xbyte = idr.n ? 0x80 << Min(8, idr.n) : Min(dtl, 0x80);
-      ct = Min(readdiaglim - readdiagptr, xbyte);
+      xbyte = idr.n ? 0x80 << std::min(8, static_cast<int>(idr.n))
+                    : std::min(dtl, 0x80U);
+      ct = std::min(readdiaglim - readdiagptr, static_cast<int>(xbyte));
       readdiagcount = ct;
       ShiftToExecReadPhase(ct, readdiagptr);
       readdiagptr += ct, xbyte -= ct;
@@ -1024,7 +1028,7 @@ void FDC::CmdReadDiagnostic() {
 
     case execreadphase:
       if (xbyte > 0) {
-        ct = Min(readdiaglim - readdiagptr, xbyte);
+        ct = std::min(readdiaglim - readdiagptr, static_cast<int>(xbyte));
         readdiagcount += ct;
         ShiftToExecReadPhase(ct, readdiagptr);
         readdiagptr += ct, xbyte -= ct;

@@ -6,10 +6,11 @@
 
 #include "win32/monitors/memmon.h"
 
-#include "win32/resource.h"
-#include "pc88/pc88.h"
-#include "common/misc.h"
+#include <algorithm>
+
 #include "common/device_i.h"
+#include "pc88/pc88.h"
+#include "win32/resource.h"
 
 using namespace PC8801;
 
@@ -155,7 +156,7 @@ uint32_t MemViewMonitor::StatExec(uint32_t a) {
   int ex = mv.StatExec(a);
   if (!ex)
     return 0;
-  return ex < 0x4 ? (ex + 4) * 0x10 : Min(ex + 0x80 - 0x04, 0xc0);
+  return ex < 0x4 ? (ex + 4) * 0x10 : std::min(ex + 0x80 - 0x04, 0xc0);
 }
 
 void MemViewMonitor::StatClear() {

@@ -6,11 +6,10 @@
 
 #include "win32/monitors/basmon.h"
 
-#include "common/misc.h"
-#include "win32/resource.h"
-
 #include <math.h>
 #include <stdio.h>
+
+#include "win32/resource.h"
 
 using namespace PC8801;
 

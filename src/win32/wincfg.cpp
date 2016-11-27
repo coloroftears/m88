@@ -6,9 +6,10 @@
 
 #include "win32/wincfg.h"
 
-#include "win32/resource.h"
-#include "common/misc.h"
+#include <algorithm>
+
 #include "win32/messages.h"
+#include "win32/resource.h"
 
 using namespace PC8801;
 
@@ -102,7 +103,7 @@ bool WinConfig::Show(HINSTANCE hinstance, HWND hwnd, Config* conf) {
       psh.hInstance = hinst;
       psh.pszCaption = "設定";
       psh.nPages = i;
-      psh.nStartPage = Min(page, i - 1);
+      psh.nStartPage = std::min(page, i - 1);
       psh.ppsp = psp;
       psh.pfnCallback = (PFNPROPSHEETCALLBACK)(void*)PropProcGate;
 

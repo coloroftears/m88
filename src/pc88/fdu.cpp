@@ -6,9 +6,10 @@
 
 #include "pc88/fdu.h"
 
-#include "common/misc.h"
-#include "pc88/fdc.h"
+#include <algorithm>
+
 #include "pc88/disk_manager.h"
+#include "pc88/fdc.h"
 
 using namespace PC8801;
 
@@ -123,7 +124,7 @@ uint32_t FDU::ReadSector(uint32_t flags, IDR id, uint8_t* data) {
     cy = rid.c;
 
     if (rid == id) {
-      memcpy(data, sector->image, Min(0x2000, sector->size));
+      memcpy(data, sector->image, std::min(0x2000U, sector->size));
 
       if (sector->flags & FloppyDisk::datacrc)
         return FDC::ST0_AT | FDC::ST1_DE | FDC::ST2_DD;
@@ -171,7 +172,7 @@ uint32_t FDU::WriteSector(uint32_t flags,
     cy = rid.c;
 
     if (rid == id) {
-      uint32_t writesize = 0x80 << Min(8, id.n);
+      uint32_t writesize = 0x80 << std::min(8, static_cast<int>(id.n));
 
       if (writesize > sector->size) {
         if (!disk->Resize(sector, writesize))
@@ -221,7 +222,7 @@ uint32_t FDU::WriteID(uint32_t flags, WIDDESC* wid) {
 
   // トラックサイズ計算
   uint32_t sot = 0;
-  uint32_t sos = 0x80 << Min(8, wid->n);
+  uint32_t sos = 0x80 << std::min(8, static_cast<int>(wid->n));
 
   for (i = wid->sc; i > 0; i--) {
     if (sot + sos + 0x40 > disk->GetTrackCapacity())

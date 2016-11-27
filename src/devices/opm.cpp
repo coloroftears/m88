@@ -6,12 +6,11 @@
 
 #include "devices/opm.h"
 
-#include "common/misc.h"
-#include "devices/fmgeninl.h"
-
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+
+#include "devices/fmgeninl.h"
 
 //#define LOGNAME "opm"
 

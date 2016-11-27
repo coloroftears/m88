@@ -6,13 +6,14 @@
 
 #include "win32/monitors/iomon.h"
 
-#include "win32/resource.h"
-#include "pc88/pc88.h"
-#include "pc88/ioview.h"
-#include "common/misc.h"
+#include <algorithm>
+
 #include "common/device_i.h"
 #include "common/file.h"
 #include "interface/ifguid.h"
+#include "pc88/ioview.h"
+#include "pc88/pc88.h"
+#include "win32/resource.h"
 
 using namespace PC8801;
 
@@ -27,7 +28,7 @@ IOMonitor::IOMonitor() {
     for (int i = 1; i < 256; i++) {
       int r = 0x40 + 0xbf * pow((i / 256.), 8.0);
       int g = 0x20 + 0xdf * pow((i / 256.), 24.0);
-      ctbl[0xff - i] = RGB(Min(r, 0xff), Min(g, 0xff), 0xff);
+      ctbl[0xff - i] = RGB(std::min(r, 0xff), std::min(g, 0xff), 0xff);
     }
   }
 }

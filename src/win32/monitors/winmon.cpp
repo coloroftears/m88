@@ -8,13 +8,14 @@
 
 #include "win32/monitors/winmon.h"
 
-#include "win32/resource.h"
-#include "common/misc.h"
-
 #include <assert.h>
 #include <commctrl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
+
+#include "common/misc.h"
+#include "win32/resource.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -262,8 +263,8 @@ void WinMonitor::UpdateText() {
 //  書き込み位置の変更
 //
 void WinMonitor::Locate(int x, int y) {
-  txp.x = Min(x, width);
-  txp.y = Min(y, height);
+  txp.x = std::min(x, width);
+  txp.y = std::min(y, height);
   txtbufptr = txtbuf + txp.x + txp.y * width;
 }
 
@@ -374,7 +375,7 @@ void WinMonitor::SetLines(int nl) {
     si.cbSize = sizeof(SCROLLINFO);
     si.fMask = SIF_PAGE | SIF_POS | SIF_RANGE | SIF_DISABLENOSCROLL;
     si.nMin = 0;
-    si.nMax = Max(1, nlines + height - 2);
+    si.nMax = std::max(1, nlines + height - 2);
     si.nPage = height;
     si.nPos = line;
     SetScrollInfo(hwnd, SB_VERT, &si, true);
@@ -391,7 +392,7 @@ void WinMonitor::SetLine(int nl) {
     si.cbSize = sizeof(SCROLLINFO);
     si.fMask = SIF_POS | SIF_DISABLENOSCROLL;
     si.nMin = 0;
-    si.nMax = Max(1, nlines + height - 2);
+    si.nMax = std::max(1, nlines + height - 2);
     si.nPage = height;
     si.nPos = line;
     SetScrollInfo(hwnd, SB_VERT, &si, true);
@@ -412,17 +413,17 @@ int WinMonitor::VerticalScroll(int msg) {
 
     case SB_LINEDOWN:
       if (++line >= nlines)
-        line = Max(0, nlines - 1);
+        line = std::max(0, nlines - 1);
       else
         ScrollUp();
       break;
 
     case SB_PAGEUP:
-      line = Max(line - Max(1, height - 1), 0);
+      line = std::max(line - std::max(1, height - 1), 0);
       break;
 
     case SB_PAGEDOWN:
-      line = Min(line + Max(1, height - 1), nlines - 1);
+      line = std::min(line + std::max(1, height - 1), nlines - 1);
       break;
 
     case SB_TOP:
@@ -430,7 +431,7 @@ int WinMonitor::VerticalScroll(int msg) {
       break;
 
     case SB_BOTTOM:
-      line = Max(0, nlines - 1);
+      line = std::max(0, nlines - 1);
       break;
 
     case SB_THUMBTRACK:

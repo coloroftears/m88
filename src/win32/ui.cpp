@@ -10,19 +10,20 @@
 
 #include <mbstring.h>
 #include <shellapi.h>
+#include <algorithm>
 
-#include "common/misc.h"
-#include "common/file.h"
 #include "common/error.h"
-#include "pc88/opn_interface.h"
+#include "common/file.h"
+#include "common/misc.h"
 #include "pc88/disk_manager.h"
+#include "pc88/opn_interface.h"
 #include "pc88/tape_manager.h"
-#include "win32/resource.h"
-#include "win32/about.h"
-#include "win32/messages.h"
 #include "win32/88config.h"
-#include "win32/status.h"
+#include "win32/about.h"
 #include "win32/filetest.h"
+#include "win32/messages.h"
+#include "win32/resource.h"
+#include "win32/status.h"
 #include "win32/winexapi.h"
 
 #define LOGNAME "ui"
@@ -1095,7 +1096,7 @@ bool WinUI::CreateDiskMenu(uint32_t drive) {
   HMENU hmenuprev = dinfo.hmenu;
   dinfo.currentdisk = -1;
 
-  int ndisks = Min(diskmgr->GetNumDisks(drive), 60);
+  int ndisks = std::min(diskmgr->GetNumDisks(drive), 60U);
   if (ndisks) {
     // メニュー作成
     dinfo.hmenu = CreatePopupMenu();

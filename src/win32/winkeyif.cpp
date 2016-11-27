@@ -8,9 +8,10 @@
 
 #include "win32/winkeyif.h"
 
-#include "win32/messages.h"
+#include <algorithm>
+
 #include "pc88/config.h"
-#include "common/misc.h"
+#include "win32/messages.h"
 
 //#define LOGNAME "keyif"
 #include "common/diag.h"
@@ -222,7 +223,7 @@ void IOCALL WinKeyIF::VSync(uint32_t, uint32_t d) {
     }
 
     if (keytable == KeyTable106[0]) {
-      keystate[0xf4] = Max(keystate[0xf4] - 1, 0);
+      keystate[0xf4] = std::max(keystate[0xf4] - 1, 0);
     }
     for (int i = 0; i < 16; i++) {
       keyport[i] = -1;

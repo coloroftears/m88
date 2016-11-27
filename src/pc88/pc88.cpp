@@ -10,6 +10,8 @@
 
 #include "pc88/pc88.h"
 
+#include <algorithm>
+
 #include "pc88/config.h"
 #include "pc88/memory.h"
 #include "pc88/pd8257.h"
@@ -130,8 +132,8 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 //  1 tick = 10μs
 //
 int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
-  clock = Max(1, clk);
-  eclock = Max(1, ecl);
+  clock = std::max(1U, clk);
+  eclock = std::max(1U, ecl);
   return Scheduler::Proceed(ticks);
 }
 

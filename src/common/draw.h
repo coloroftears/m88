@@ -6,8 +6,9 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include "common/types.h"
-#include "common/misc.h"
 
 // ---------------------------------------------------------------------------
 
@@ -24,8 +25,8 @@ class Draw {
     }
     bool Valid() { return top <= bottom; }
     void Update(int l, int t, int r, int b) {
-      left = Min(left, l), right = Max(right, r);
-      top = Min(top, t), bottom = Max(bottom, b);
+      left = std::min(left, l), right = std::max(right, r);
+      top = std::min(top, t), bottom = std::max(bottom, b);
     }
     void Update(int t, int b) { Update(0, t, 640, b); }
 

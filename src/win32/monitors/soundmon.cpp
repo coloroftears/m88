@@ -6,9 +6,11 @@
 
 #include "win32/monitors/soundmon.h"
 
-#include "win32/resource.h"
+#include <algorithm>
+
 #include "common/misc.h"
 #include "pc88/opn_interface.h"
+#include "win32/resource.h"
 
 using namespace PC8801;
 
@@ -64,7 +66,7 @@ void OPNMonitor::DrawMain(HDC hdc, bool) {
   MoveToEx(hdc, 0, rect.bottom / 2, 0);
   //  SetPixel(hdc, 0, rect.bottom/2, 0x000f0f * (16-dim));
 
-  int r = Min(rect.right, width);
+  int r = std::min(static_cast<int>(rect.right), width);
   int j, x;
   for (j = 1; j < width - r; j++) {
     int y0 = buf[read][j];
@@ -113,7 +115,7 @@ BOOL OPNMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
       break;
 
     case WM_SIZE:
-      width = Min(LOWORD(lp) + 128, bufsize);
+      width = std::min(LOWORD(lp) + 128, static_cast<int>(bufsize));
       SetFont(hdlg, Limit(HIWORD(lp) / 11, 24, 8));
       break;
 

@@ -9,11 +9,10 @@
 
 #include "win32/draw_ddw.h"
 
-#include "common/misc.h"
+#include "win32/dderr.h"
 
 #define LOGNAME "drawddw"
 #include "common/diag.h"
-#include "win32/dderr.h"
 
 #define RELCOM(x)        \
   if (x)                 \

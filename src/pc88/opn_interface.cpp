@@ -6,9 +6,8 @@
 
 #include "pc88/opn_interface.h"
 
-#include "pc88/config.h"
-#include "common/misc.h"
 #include "common/scheduler.h"
+#include "pc88/config.h"
 #include "win32/status.h"
 
 #include "win32/romeo/piccolo.h"

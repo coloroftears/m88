@@ -6,11 +6,10 @@
 
 #include "win32/monitors/loadmon.h"
 
-#include "win32/resource.h"
-#include "common/misc.h"
-
 #include <algorithm>
 #include <numeric>
+
+#include "win32/resource.h"
 
 #ifdef ENABLE_LOADMONITOR
 

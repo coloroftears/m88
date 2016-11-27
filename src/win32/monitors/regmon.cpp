@@ -6,9 +6,8 @@
 
 #include "win32/monitors/regmon.h"
 
-#include "win32/resource.h"
-#include "common/misc.h"
 #include "pc88/pc88.h"
+#include "win32/resource.h"
 
 using namespace PC8801;
 

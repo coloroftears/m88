@@ -6,6 +6,8 @@
 
 #include "pc88/sound.h"
 
+#include <algorithm>
+
 #include "common/types.h"
 #include "common/misc.h"
 #include "pc88/pc88.h"
@@ -105,7 +107,7 @@ void Sound::Cleanup() {
 //  音合成
 //
 int Sound::Get(Sample* dest, int nsamples) {
-  int mixsamples = Min(nsamples, buffersize);
+  int mixsamples = std::min(nsamples, buffersize);
   if (mixsamples > 0) {
     // 合成
     {

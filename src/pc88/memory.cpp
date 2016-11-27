@@ -10,6 +10,8 @@
 
 #include "pc88/memory.h"
 
+#include <algorithm>
+
 #include "common/file.h"
 #include "common/device.h"
 #include "common/device_i.h"
@@ -114,7 +116,7 @@ void Memory::Reset(uint32_t, uint32_t newmode) {
 
   // 拡張 RAM の設定
   if (n80mode)
-    neweram = Max(1, neweram);
+    neweram = std::max(1U, neweram);
   if (erambanks != neweram) {
     mm->AllocR(mid, 0, 0x8000, ram);
     mm->AllocW(mid, 0, 0x8000, ram);

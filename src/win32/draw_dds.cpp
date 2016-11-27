@@ -8,12 +8,13 @@
 
 #include "win32/draw_dds.h"
 
-#include "common/misc.h"
+#include <algorithm>
+
+#include "win32/dderr.h"
 #include "win32/messages.h"
 
 #define LOGNAME "drawdds"
 #include "common/diag.h"
-#include "win32/dderr.h"
 
 #define RELCOM(x)        \
   if (x)                 \
@@ -299,7 +300,7 @@ bool WinDrawDDS::SetScreenMode() {
     return false;
 
   ltc.x = 0;
-  ltc.y = Max(0, (lines - height) / 2);
+  ltc.y = std::max(0U, (lines - height) / 2);
 
   delete[] image;
   image = new uint8_t[height * width];

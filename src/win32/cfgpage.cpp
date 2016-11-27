@@ -6,10 +6,10 @@
 
 #include "win32/cfgpage.h"
 
-#include "win32/resource.h"
-#include "common/misc.h"
-
 #include <commctrl.h>
+
+#include "common/misc.h"
+#include "win32/resource.h"
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)
 
