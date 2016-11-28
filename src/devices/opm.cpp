@@ -10,6 +10,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <algorithm>
+
 #include "devices/fmgeninl.h"
 
 //#define LOGNAME "opm"
@@ -122,7 +124,7 @@ void OPM::TimerA() {
 //  音量設定
 //
 void OPM::SetVolume(int db) {
-  db = Min(db, 20);
+  db = std::min(db, 20);
   if (db > -192)
     fmvolume = static_cast<int>(16384.0 * pow(10, db / 40.0));
   else

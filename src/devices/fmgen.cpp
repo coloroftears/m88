@@ -27,6 +27,8 @@
 #include <assert.h>
 #include <math.h>
 
+#include <algorithm>
+
 #define LOGNAME "fmgen"
 
 // ---------------------------------------------------------------------------
@@ -353,17 +355,17 @@ void Operator::Prepare() {
 
     switch (eg_phase_) {
       case attack:
-        SetEGRate(ar_ ? Min(63, ar_ + key_scale_rate_) : 0);
+        SetEGRate(ar_ ? std::min(63U, ar_ + key_scale_rate_) : 0);
         break;
       case decay:
-        SetEGRate(dr_ ? Min(63, dr_ + key_scale_rate_) : 0);
+        SetEGRate(dr_ ? std::min(63U, dr_ + key_scale_rate_) : 0);
         eg_level_on_next_phase_ = sl_ * 8;
         break;
       case sustain:
-        SetEGRate(sr_ ? Min(63, sr_ + key_scale_rate_) : 0);
+        SetEGRate(sr_ ? std::min(63U, sr_ + key_scale_rate_) : 0);
         break;
       case release:
-        SetEGRate(Min(63, rr_ + key_scale_rate_));
+        SetEGRate(std::min(63U, rr_ + key_scale_rate_));
         break;
     }
 
@@ -405,16 +407,16 @@ void Operator::ShiftPhase(EGPhase nextphase) {
         ssg_vector_ = table[1];
       }
       if ((ar_ + key_scale_rate_) < 62) {
-        SetEGRate(ar_ ? Min(63, ar_ + key_scale_rate_) : 0);
+        SetEGRate(ar_ ? std::min(63U, ar_ + key_scale_rate_) : 0);
         eg_phase_ = attack;
         break;
       }
     case decay:  // Decay Phase
       if (sl_) {
         eg_level_ = 0;
-        eg_level_on_next_phase_ = ssg_type_ ? Min(sl_ * 8, 0x200) : sl_ * 8;
+        eg_level_on_next_phase_ = ssg_type_ ? std::min(sl_ * 8, 0x200U) : sl_ * 8;
 
-        SetEGRate(dr_ ? Min(63, dr_ + key_scale_rate_) : 0);
+        SetEGRate(dr_ ? std::min(63U, dr_ + key_scale_rate_) : 0);
         eg_phase_ = decay;
         break;
       }
@@ -422,7 +424,7 @@ void Operator::ShiftPhase(EGPhase nextphase) {
       eg_level_ = sl_ * 8;
       eg_level_on_next_phase_ = ssg_type_ ? 0x200 : 0x400;
 
-      SetEGRate(sr_ ? Min(63, sr_ + key_scale_rate_) : 0);
+      SetEGRate(sr_ ? std::min(63U, sr_ + key_scale_rate_) : 0);
       eg_phase_ = sustain;
       break;
 
@@ -436,7 +438,7 @@ void Operator::ShiftPhase(EGPhase nextphase) {
           (eg_level_ < FM_EG_BOTTOM))  // 0x400/* && eg_phase_ != off*/))
       {
         eg_level_on_next_phase_ = 0x400;
-        SetEGRate(Min(63, rr_ + key_scale_rate_));
+        SetEGRate(std::min(63U, rr_ + key_scale_rate_));
         eg_phase_ = release;
         break;
       }
@@ -479,9 +481,9 @@ inline FM::ISample Operator::LogToLin(uint32_t a) {
 
 inline void Operator::EGUpdate() {
   if (!ssg_type_) {
-    eg_out_ = Min(tl_out_ + eg_level_, 0x3ff) << (1 + 2);
+    eg_out_ = std::min(tl_out_ + eg_level_, 0x3ff) << (1 + 2);
   } else {
-    eg_out_ = Min(tl_out_ + eg_level_ * ssg_vector_ + ssg_offset_, 0x3ff)
+    eg_out_ = std::min(tl_out_ + eg_level_ * ssg_vector_ + ssg_offset_, 0x3ff)
               << (1 + 2);
   }
 }
@@ -583,7 +585,7 @@ inline FM::ISample FM::Operator::CalcL(ISample in) {
 inline FM::ISample FM::Operator::CalcN(uint32_t noise) {
   EGStep();
 
-  int lv = Max(0, 0x3ff - (tl_out_ + eg_level_)) << 1;
+  int lv = std::max(0, 0x3ff - (tl_out_ + eg_level_)) << 1;
 
   // noise & 1 ? lv : -lv と等価
   noise = (noise & 1) - 1;

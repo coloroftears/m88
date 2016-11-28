@@ -261,7 +261,7 @@ int SoundDumpPipe::Get(Sample* dest, int samples) {
 
   int avail = source_->GetAvail();
 
-  int actual_samples = source_->Get(dest, Min(avail, samples));
+  int actual_samples = source_->Get(dest, std::min(avail, samples));
 
   int nch = GetChannels();
   std::fill(dest + actual_samples * nch, dest + samples * nch, 0);

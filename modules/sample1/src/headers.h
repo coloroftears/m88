@@ -17,10 +17,3 @@
 #include <string.h>
 #include <process.h>
 #include <assert.h>
-
-#ifdef _MSC_VER
-#undef max
-#define max _MAX
-#undef min
-#define min _MIN
-#endif

@@ -9,6 +9,8 @@
 #include "cdif/src/headers.h"
 #include "cdif/src/cdif.h"
 
+#include <algorithm>
+
 #define LOGNAME "cdif"
 #include "common/diag.h"
 
@@ -373,7 +375,7 @@ void CDIF::ReadSubcodeQ() {
       datbuf[7] = NtoBCD(tmpbuf[9]);
       datbuf[8] = NtoBCD(tmpbuf[10]);
       datbuf[9] = NtoBCD(tmpbuf[11]);
-      SendPhase(Min(cmdbuf[1], 10), 0, 0);
+      SendPhase(std::min(cmdbuf[1], static_cast<uint8_t>(10)), 0, 0);
       break;
   }
 }
