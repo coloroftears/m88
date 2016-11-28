@@ -6,7 +6,7 @@
 
 #include <windows.h>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "win32/88config.h"
 
 static const char* AppName = "M88p2 for Windows";

@@ -6,10 +6,6 @@
 
 #pragma once
 
-inline int Limit(int v, int max, int min) {
-  return v > max ? max : (v < min ? min : v);
-}
-
 inline unsigned int NtoBCD(unsigned int a) {
   return ((a / 10) << 4) + (a % 10);
 }

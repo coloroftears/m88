@@ -6,7 +6,7 @@
 
 #include "common/lpf.h"
 
-#include "common/misc.h"
+#include "common/clamp.h"
 
 #include <math.h>
 

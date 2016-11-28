@@ -310,6 +310,8 @@
     <ClCompile Include="src\zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\common\bcd.h" />
+    <ClInclude Include="src\common\clamp.h" />
     <ClInclude Include="src\common\critical_section.h" />
     <ClInclude Include="src\common\device.h" />
     <ClInclude Include="src\common\device_i.h" />
@@ -319,7 +321,6 @@
     <ClInclude Include="src\common\file.h" />
     <ClInclude Include="src\common\lpf.h" />
     <ClInclude Include="src\common\memory_manager.h" />
-    <ClInclude Include="src\common\misc.h" />
     <ClInclude Include="src\common\scheduler.h" />
     <ClInclude Include="src\common\sequencer.h" />
     <ClInclude Include="src\common\sound_buffer2.h" />

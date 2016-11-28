@@ -12,9 +12,9 @@
 #include <shellapi.h>
 #include <algorithm>
 
+#include "common/clamp.h"
 #include "common/error.h"
 #include "common/file.h"
-#include "common/misc.h"
 #include "pc88/disk_manager.h"
 #include "pc88/opn_interface.h"
 #include "pc88/tape_manager.h"

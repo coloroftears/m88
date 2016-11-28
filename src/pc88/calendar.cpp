@@ -9,7 +9,7 @@
 
 #include "pc88/calendar.h"
 
-#include "common/misc.h"
+#include "common/bcd.h"
 
 //#define LOGNAME "calender"
 #include "common/diag.h"

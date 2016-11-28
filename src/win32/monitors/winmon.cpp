@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "win32/resource.h"
 
 // ---------------------------------------------------------------------------

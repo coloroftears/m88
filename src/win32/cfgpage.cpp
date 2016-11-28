@@ -8,7 +8,7 @@
 
 #include <commctrl.h>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "win32/resource.h"
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)

@@ -6,7 +6,7 @@
 #include <math.h>
 #include <algorithm>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 
 #ifndef PI
 #define PI 3.14159265358979323846

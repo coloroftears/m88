@@ -8,8 +8,8 @@
 
 #include <algorithm>
 
+#include "common/clamp.h"
 #include "common/types.h"
-#include "common/misc.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
 

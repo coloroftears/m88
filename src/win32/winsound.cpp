@@ -6,7 +6,7 @@
 
 #include "win32/winsound.h"
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "pc88/config.h"
 #include "win32/status.h"
 #include "win32/soundds.h"

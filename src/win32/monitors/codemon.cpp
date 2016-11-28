@@ -6,7 +6,7 @@
 
 #include "win32/monitors/codemon.h"
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "common/device_i.h"
 #include "pc88/pc88.h"
 #include "win32/resource.h"

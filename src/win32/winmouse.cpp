@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "interface/ifguid.h"
 #include "win32/messages.h"
 #include "win32/ui.h"

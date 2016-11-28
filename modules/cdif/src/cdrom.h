@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "common/bcd.h"
 #include "common/types.h"
-#include "common/misc.h"
 
 class ASPI;
 

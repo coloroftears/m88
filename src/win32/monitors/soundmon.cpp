@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-#include "common/misc.h"
+#include "common/clamp.h"
 #include "pc88/opn_interface.h"
 #include "win32/resource.h"
 
