@@ -100,7 +100,7 @@ void LoadMonitor::UpdateText() {
 void LoadMonitor::ProcBegin(const char* name) {
   CriticalSection::Lock lock(cs);
 
-  string key(name);
+  std::string key(name);
   States::iterator i = states.find(key);
 
   LARGE_INTEGER t;
@@ -126,7 +126,7 @@ void LoadMonitor::ProcEnd(const char* name) {
 
   CriticalSection::Lock lock(cs);
 
-  States::iterator i = states.find(string(name));
+  States::iterator i = states.find(std::string(name));
 
   if (i != states.end()) {
     i->second.total[tidx] += (t.LowPart - i->second.timeentered) / base;

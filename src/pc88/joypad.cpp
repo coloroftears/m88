@@ -6,9 +6,9 @@
 
 #include "pc88/joypad.h"
 
-#include "interface/ifguid.h"
+#include <utility>
 
-#include <algorithm>
+#include "interface/ifguid.h"
 
 using namespace PC8801;
 

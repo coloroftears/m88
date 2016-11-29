@@ -6,9 +6,12 @@
 
 #pragma once
 
+#include <map>
+#include <string>
+
+#include "common/critical_section.h"
 #include "common/device.h"
 #include "win32/monitors/winmon.h"
-#include "common/critical_section.h"
 
 //#define ENABLE_LOADMONITOR
 
@@ -37,7 +40,7 @@ class LoadMonitor : public WinMonitor {
     DWORD timeentered;  // 開始時刻
   };
 
-  typedef map<string, State> States;
+  typedef std::map<std::string, State> States;
 
   void UpdateText();
   BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
