@@ -314,6 +314,9 @@
     <ClInclude Include="src\common\file.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\guid.h">
+      <Filter>common</Filter>
+    </ClInclude>
     <ClInclude Include="src\common\lpf.h">
       <Filter>common</Filter>
     </ClInclude>

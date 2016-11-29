@@ -8,8 +8,7 @@
 
 #pragma once
 
-#include <windows.h>
-
+#include "common/guid.h"
 #include "common/types.h"
 
 #define RELEASE(r) \
