@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "common/device.h"
-
 #include <time.h>
+
+#include "common/device.h"
 
 namespace PC8801 {
 

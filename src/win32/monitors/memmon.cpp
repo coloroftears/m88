@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-#include "common/device_i.h"
 #include "common/file.h"
 #include "interface/ifguid.h"
 #include "pc88/pc88.h"

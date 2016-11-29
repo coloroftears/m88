@@ -10,8 +10,8 @@
 
 #include "common/device.h"
 #include "common/scheduler.h"
-#include "pc88/floppy.h"
 #include "pc88/fdu.h"
+#include "pc88/floppy.h"
 
 class DiskManager;
 

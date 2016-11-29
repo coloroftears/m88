@@ -6,10 +6,9 @@
 
 #include "win32/extdev.h"
 
-#include "common/device_i.h"
+#include "pc88/memory.h"
 #include "pc88/pc88.h"
 #include "pc88/pd8257.h"
-#include "pc88/memory.h"
 #include "pc88/sound.h"
 
 using namespace PC8801;

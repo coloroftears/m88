@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-#include "common/device_i.h"
 #include "pc88/pc88.h"
 #include "win32/resource.h"
 

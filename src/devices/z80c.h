@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdio.h>
+
 #include "common/device.h"
 #include "common/memory_manager.h"
+#include "common/types.h"
 #include "devices/z80.h"
 #include "devices/z80diag.h"
-
-#include <stdio.h>
 
 class IOBus;
 

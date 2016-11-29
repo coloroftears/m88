@@ -6,8 +6,6 @@
 
 #include "devices/z80diag.h"
 
-#include "common/device_i.h"
-
 #include "common/diag.h"
 
 // ---------------------------------------------------------------------------

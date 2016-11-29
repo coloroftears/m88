@@ -12,13 +12,11 @@
 
 #include <algorithm>
 
+#include "common/error.h"
 #include "common/file.h"
-#include "common/device.h"
-#include "common/device_i.h"
 #include "common/memory_manager.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"
-#include "common/error.h"
 #include "win32/status.h"
 
 // using namespace std;
