@@ -332,7 +332,7 @@
     <ClInclude Include="src\common\sound_buffer2.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\soundsrc.h">
+    <ClInclude Include="src\common\sound_source.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\sampling_rate_converter.h">

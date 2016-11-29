@@ -3,8 +3,8 @@
 #pragma once
 
 #include "common/critical_section.h"
+#include "common/sound_source.h"
 #include "interface/ifcommon.h"
-#include "common/soundsrc.h"
 
 // ---------------------------------------------------------------------------
 //  SoundBuffer2

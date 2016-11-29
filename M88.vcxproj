@@ -324,7 +324,7 @@
     <ClInclude Include="src\common\scheduler.h" />
     <ClInclude Include="src\common\sequencer.h" />
     <ClInclude Include="src\common\sound_buffer2.h" />
-    <ClInclude Include="src\common\soundsrc.h" />
+    <ClInclude Include="src\common\sound_source.h" />
     <ClInclude Include="src\common\sampling_rate_converter.h" />
     <ClInclude Include="src\common\time_keeper.h" />
     <ClInclude Include="src\common\types.h" />

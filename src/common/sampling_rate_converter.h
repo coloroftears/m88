@@ -3,7 +3,7 @@
 #pragma once
 
 #include "common/critical_section.h"
-#include "common/soundsrc.h"
+#include "common/sound_source.h"
 
 // ---------------------------------------------------------------------------
 //  SamplingRateConverter
