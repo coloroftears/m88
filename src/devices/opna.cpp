@@ -11,8 +11,6 @@
 
 #include <algorithm>
 
-#include "devices/fmgeninl.h"
-
 #define BUILD_OPN
 #define BUILD_OPNA
 #define BUILD_OPNB

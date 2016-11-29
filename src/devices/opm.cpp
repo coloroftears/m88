@@ -12,8 +12,6 @@
 
 #include <algorithm>
 
-#include "devices/fmgeninl.h"
-
 //#define LOGNAME "opm"
 
 namespace FM {
