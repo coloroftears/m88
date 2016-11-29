@@ -10,6 +10,7 @@
 
 #include <mbstring.h>
 #include <shellapi.h>
+
 #include <algorithm>
 
 #include "common/clamp.h"
@@ -1548,29 +1549,25 @@ uint32_t WinUI::M88ClipCursor(HWND hwnd, WPARAM op, LPARAM) {
 }
 
 uint32_t WinUI::WmMouseMove(HWND hwnd, WPARAM wp, LPARAM lp) {
-  /*  if (fullscreen)
-    {
-        POINTS p;
-        p = MAKEPOINTS(lp);
-        uint32_t menu = p.y < 8;
-        if (!guimodebymouse)
-        {
-            if (menu)
-            {
-                guimodebymouse = true;
-                SetGUIFlag(true);
-            }
-        }
-        else
-        {
-            if (!menu)
-            {
-                guimodebymouse = false;
-                SetGUIFlag(false);
-            }
-        }
+#if 0
+  if (fullscreen) {
+    POINTS p;
+    p = MAKEPOINTS(lp);
+    uint32_t menu = p.y < 8;
+    if (!guimodebymouse) {
+      if (menu) {
+        guimodebymouse = true;
+        SetGUIFlag(true);
+      }
+    } else {
+      if (!menu) {
+        guimodebymouse = false;
+        SetGUIFlag(false);
+      }
     }
-*/ return 0;
+  }
+#endif
+  return 0;
 }
 
 uint32_t WinUI::WmSetCursor(HWND hwnd, WPARAM wp, LPARAM lp) {

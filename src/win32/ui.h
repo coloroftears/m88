@@ -9,19 +9,20 @@
 #pragma once
 
 #include "common/types.h"
+#include "interface/if_win.h"
+#include "win32/88config.h"
+#include "win32/monitors/basmon.h"
+#include "win32/monitors/codemon.h"
+#include "win32/monitors/iomon.h"
+#include "win32/monitors/loadmon.h"
+#include "win32/monitors/memmon.h"
+#include "win32/monitors/regmon.h"
+#include "win32/monitors/soundmon.h"
+#include "win32/newdisk.h"
+#include "win32/wincfg.h"
 #include "win32/wincore.h"
 #include "win32/windraw.h"
 #include "win32/winkeyif.h"
-#include "win32/88config.h"
-#include "win32/wincfg.h"
-#include "win32/newdisk.h"
-#include "win32/monitors/soundmon.h"
-#include "win32/monitors/memmon.h"
-#include "win32/monitors/codemon.h"
-#include "win32/monitors/basmon.h"
-#include "win32/monitors/regmon.h"
-#include "win32/monitors/loadmon.h"
-#include "win32/monitors/iomon.h"
 
 // ---------------------------------------------------------------------------
 

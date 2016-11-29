@@ -8,13 +8,14 @@
 
 // ---------------------------------------------------------------------------
 
-#include "common/types.h"
 #include "common/critical_section.h"
-#include "pc88/pc88.h"
-#include "pc88/config.h"
-#include "win32/winsound.h"
 #include "common/sequencer.h"
+#include "common/types.h"
+#include "interface/if_win.h"
+#include "pc88/config.h"
+#include "pc88/pc88.h"
 #include "win32/winjoy.h"
+#include "win32/winsound.h"
 
 #include <vector>
 

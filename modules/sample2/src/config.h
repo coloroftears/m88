@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "interface/if_win.h"
 #include "interface/ifcommon.h"
 
 class ConfigMP : public IConfigPropSheet {

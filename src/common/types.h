@@ -35,3 +35,10 @@ typedef uint32_t packed;
 #else
 #define MEMCALL
 #endif
+
+#ifndef IFCALL
+#define IFCALL __stdcall
+#endif
+#ifndef IOCALL
+#define IOCALL __stdcall
+#endif

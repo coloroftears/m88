@@ -8,6 +8,7 @@
 
 #include <windows.h>
 
+#include "interface/if_win.h"
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
 

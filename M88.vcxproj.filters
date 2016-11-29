@@ -530,6 +530,9 @@
     <ClInclude Include="src\win32\winsound.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\if_win.h">
+      <Filter>interface</Filter>
+    </ClInclude>
     <ClInclude Include="src\interface\ifcommon.h">
       <Filter>interface</Filter>
     </ClInclude>

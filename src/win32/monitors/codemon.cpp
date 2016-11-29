@@ -6,6 +6,8 @@
 
 #include "win32/monitors/codemon.h"
 
+#include <commdlg.h>
+
 #include "common/clamp.h"
 #include "pc88/pc88.h"
 #include "win32/resource.h"
