@@ -2767,7 +2767,7 @@ void Z80C::SingleStep(uint32_t m) {
 //  CB 系
 //
 void Z80C::CodeCB() {
-  typedef uint8_t (Z80C::*RotFuncPtr)(uint8_t);
+  using RotFuncPtr = uint8_t (Z80C::*)(uint8_t);
 
   static const RotFuncPtr func[8] = {&Z80C::RLC, &Z80C::RRC, &Z80C::RL,
                                      &Z80C::RR,  &Z80C::SLA, &Z80C::SRA,

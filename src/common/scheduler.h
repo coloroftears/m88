@@ -20,7 +20,7 @@ struct SchedulerEvent {
 
 class Scheduler : public IScheduler, public ITime {
  public:
-  typedef SchedulerEvent Event;
+  using Event = SchedulerEvent;
   enum {
     maxevents = 16,
   };

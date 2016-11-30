@@ -23,7 +23,7 @@ struct MemoryPage {
 
 class MemoryManagerBase {
  public:
-  typedef MemoryPage Page;
+  using Page = MemoryPage;
   enum {
     ndevices = 8,
     pagebits = 10,
@@ -77,7 +77,7 @@ class MemoryManagerBase {
 
 class ReadMemManager : public MemoryManagerBase {
  public:
-  typedef uint32_t(MEMCALL* RdFunc)(void* inst, uint32_t addr);
+  using RdFunc = uint32_t(MEMCALL*)(void* inst, uint32_t addr);
 
   bool Init(uint32_t sas, Page* pages = 0);
   bool AllocR(uint32_t pid, uint32_t addr, uint32_t length, uint8_t* ptr);
@@ -94,7 +94,7 @@ class ReadMemManager : public MemoryManagerBase {
 
 class WriteMemManager : public MemoryManagerBase {
  public:
-  typedef void(MEMCALL* WrFunc)(void* inst, uint32_t addr, uint32_t data);
+  using WrFunc = void(MEMCALL*)(void* inst, uint32_t addr, uint32_t data);
 
  public:
   bool Init(uint32_t sas, Page* pages = 0);
@@ -120,8 +120,8 @@ class MemoryManager : public IMemoryManager,
     pagemask = ::MemoryManagerBase::pagemask,
     idbit = ::MemoryManagerBase::idbit,
   };
-  typedef ReadMemManager::RdFunc RdFunc;
-  typedef WriteMemManager::WrFunc WrFunc;
+  using RdFunc = ReadMemManager::RdFunc;
+  using WrFunc = WriteMemManager::WrFunc;
 
   bool Init(uint32_t sas, Page* read = 0, Page* write = 0);
   int IFCALL Connect(void* inst, bool highpriority = false);

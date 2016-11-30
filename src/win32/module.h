@@ -25,7 +25,7 @@ class ExtendModule {
   void* QueryIF(REFIID iid);
 
  private:
-  typedef IModule*(__cdecl* F_CONNECT2)(ISystem*);
+  using F_CONNECT2 = IModule*(__cdecl*)(ISystem*);
 
   HMODULE hdll;
   IModule* mod;

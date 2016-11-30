@@ -96,12 +96,12 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   Sequencer seq;
   WinPadIF padif;
 
-  typedef std::vector<PC8801::ExtendModule*> ExtendModules;
+  using ExtendModules = std::vector<PC8801::ExtendModule*>;
   ExtendModules extmodules;
 
   PC8801::WinSound sound;
   PC8801::Config config;
 
-  typedef std::vector<PC8801::ExternalDevice*> ExternalDevices;
+  using ExternalDevices = std::vector<PC8801::ExternalDevice*>;
   ExternalDevices extdevices;
 };

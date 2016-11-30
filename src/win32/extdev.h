@@ -38,8 +38,8 @@ class ExternalDevice : public Device, public ISoundSource {
   bool IFCALL LoadStatus(const uint8_t* status);
 
  private:
-  typedef void*(__cdecl* F_CONNECT)(void*, const PCInfo*, DeviceInfo*);
-  typedef bool(__cdecl* F_DISCONNECT)(void*);
+  using F_CONNECT = void*(__cdecl*)(void*, const PCInfo*, DeviceInfo*);
+  using F_DISCONNECT = bool(__cdecl*)(void*);
 
  private:
   bool InitPCInfo();

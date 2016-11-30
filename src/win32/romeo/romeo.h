@@ -28,14 +28,14 @@ enum {
 
 #define PCIDEBUG_DLL "pcidebug.dll"
 
-typedef ULONG(WINAPI* PCIFINDDEV)(ULONG ven, ULONG dev, ULONG index);
-typedef ULONG(WINAPI* PCICFGREAD32)(ULONG pciaddr, ULONG regaddr);
-typedef void(WINAPI* PCIMEMWR8)(ULONG addr, UCHAR param);
-typedef void(WINAPI* PCIMEMWR16)(ULONG addr, USHORT param);
-typedef void(WINAPI* PCIMEMWR32)(ULONG addr, ULONG param);
-typedef UCHAR(WINAPI* PCIMEMRD8)(ULONG addr);
-typedef USHORT(WINAPI* PCIMEMRD16)(ULONG addr);
-typedef ULONG(WINAPI* PCIMEMRD32)(ULONG addr);
+using PCIFINDDEV = ULONG(WINAPI*)(ULONG ven, ULONG dev, ULONG index);
+using PCICFGREAD32 = ULONG(WINAPI*)(ULONG pciaddr, ULONG regaddr);
+using PCIMEMWR8 = void(WINAPI*)(ULONG addr, UCHAR param);
+using PCIMEMWR16 = void(WINAPI*)(ULONG addr, USHORT param);
+using PCIMEMWR32 = void(WINAPI*)(ULONG addr, ULONG param);
+using PCIMEMRD8 = UCHAR(WINAPI*)(ULONG addr);
+using PCIMEMRD16 = USHORT(WINAPI*)(ULONG addr);
+using PCIMEMRD32 = ULONG(WINAPI*)(ULONG addr);
 
 #define FN_PCIFINDDEV "_pciFindPciDevice"
 #define FN_PCICFGREAD32 "_pciConfigReadLong"

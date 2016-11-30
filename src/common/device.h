@@ -50,8 +50,8 @@ class Device : public IDevice {
 //
 class MemoryBus : public IMemoryAccess {
  public:
-  typedef uint32_t(MEMCALL* ReadFuncPtr)(void* inst, uint32_t addr);
-  typedef void(MEMCALL* WriteFuncPtr)(void* inst, uint32_t addr, uint32_t data);
+  using ReadFuncPtr = uint32_t(MEMCALL*)(void* inst, uint32_t addr);
+  using WriteFuncPtr = void(MEMCALL*)(void* inst, uint32_t addr, uint32_t data);
 
   struct Page {
     void* read;
@@ -134,7 +134,7 @@ class MemoryBus : public IMemoryAccess {
 
 class DeviceList {
  public:
-  typedef IDevice::ID ID;
+  using ID = IDevice::ID;
 
  private:
   struct Node {
@@ -175,8 +175,8 @@ class DeviceList {
 //
 class IOBus : public IIOAccess, public IIOBus {
  public:
-  typedef Device::InFuncPtr InFuncPtr;
-  typedef Device::OutFuncPtr OutFuncPtr;
+  using InFuncPtr = Device::InFuncPtr;
+  using OutFuncPtr = Device::OutFuncPtr;
 
   enum {
     iobankbits = 0,  // 1 バンクのサイズ(ビット数)

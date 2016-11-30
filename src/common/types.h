@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 // 8 bit 数値をまとめて処理するときに使う型
-typedef uint32_t packed;
+using packed = uint32_t;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
 
 // 関数へのポインタにおいて 常に 0 となるビット (1 bit のみ)

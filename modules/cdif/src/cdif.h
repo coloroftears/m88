@@ -85,7 +85,7 @@ class CDIF : public Device {
     endphase,
     recvphase
   };
-  typedef void (CDIF::*CommandFunc)();
+  using CommandFunc = void (CDIF::*)();
 
  private:
   void DataIn();

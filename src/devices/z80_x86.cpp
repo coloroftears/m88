@@ -1305,7 +1305,7 @@ looop:
 //
 #define OPFUNC(label) void __declspec(naked) O_##label()
 #define OPEND __asm { ret}
-typedef void (*OpFuncPtr)();
+using OpFuncPtr = void (*)();
 
 // ---------------------------------------------------------------------------
 //  アキュムレータ操作命令命令 -----------------------------------------------

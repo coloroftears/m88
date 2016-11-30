@@ -42,7 +42,7 @@ class WinConfig : public IConfigPropBase {
   static int CALLBACK PropProcGate(HWND, UINT, LPARAM);
 
   PPNode* pplist;
-  typedef std::vector<IConfigPropSheet*> PropSheets;
+  using PropSheets = std::vector<IConfigPropSheet*>;
   PropSheets propsheets;
 
   HWND hwndparent;

@@ -35,7 +35,7 @@ class CDControl {
     uint8_t frame;
   };
 
-  typedef void (Device::*DONEFUNC)(int result);
+  using DONEFUNC = void (Device::*)(int result);
 
  public:
   CDControl();

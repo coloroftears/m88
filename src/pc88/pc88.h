@@ -57,13 +57,13 @@ class JoyPad;
 class PC88 : public Scheduler, public ICPUTime {
  public:
 #if defined(CPU_DEBUG)
-  typedef Z80Debug Z80;
+  using Z80 = Z80Debug;
 #elif defined(CPU_TEST)
-  typedef Z80Test Z80;
+  using Z80 = Z80Test;
 #elif defined(CPU_Z80X86) && defined(USE_Z80_X86)
-  typedef Z80_x86 Z80;
+  using Z80 = Z80_x86;
 #else
-  typedef Z80C Z80;
+  using Z80 = Z80C;
 #endif
 
  public:

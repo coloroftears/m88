@@ -40,8 +40,8 @@
 
 namespace FM {
 //  Types ----------------------------------------------------------------
-typedef FM_SAMPLETYPE Sample;
-typedef int32_t ISample;
+using Sample = FM_SAMPLETYPE;
+using ISample = int32_t;
 
 enum OpType { typeN = 0, typeM = 1 };
 
@@ -99,7 +99,7 @@ class Operator {
   }
 
  private:
-  typedef uint32_t Counter;
+  using Counter = uint32_t;
 
   Chip* chip_;
   ISample out_, out2_;

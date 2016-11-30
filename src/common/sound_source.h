@@ -4,7 +4,7 @@
 
 #include "common/types.h"
 
-typedef int16_t Sample;
+using Sample = int16_t;
 
 class SoundSource {
  public:
@@ -14,7 +14,7 @@ class SoundSource {
   virtual int GetAvail() = 0;
 };
 
-typedef int32_t SampleL;
+using SampleL = int32_t;
 
 class SoundSourceL {
  public:

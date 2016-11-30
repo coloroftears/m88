@@ -40,7 +40,7 @@ class LoadMonitor : public WinMonitor {
     DWORD timeentered;  // 開始時刻
   };
 
-  typedef std::map<std::string, State> States;
+  using States = std::map<std::string, State>;
 
   void UpdateText();
   BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);

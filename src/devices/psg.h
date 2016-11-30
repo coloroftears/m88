@@ -42,7 +42,7 @@
 //
 class PSG {
  public:
-  typedef PSG_SAMPLETYPE Sample;
+  using Sample = PSG_SAMPLETYPE;
 
   enum {
     noisetablesize = 1 << 11,  // ←メモリ使用量を減らしたいなら減らして

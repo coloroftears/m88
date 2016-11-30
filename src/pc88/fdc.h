@@ -66,8 +66,8 @@ class FDC : public Device {
     ST3_WP = 0x40,
     ST3_FT = 0x80,
   };
-  typedef FloppyDisk::IDR IDR;
-  typedef FDU::WIDDESC WIDDESC;
+  using IDR = FloppyDisk::IDR;
+  using WIDDESC = FDU::WIDDESC;
 
  protected:
   enum Stat {
@@ -162,7 +162,7 @@ class FDC : public Device {
     uint8_t buf[0x4000];
   };
 
-  typedef void (FDC::*CommandFunc)();
+  using CommandFunc = void (FDC::*)();
 
   void Seek(uint32_t dr, uint32_t cy);
   void IOCALL SeekEvent(uint32_t dr);

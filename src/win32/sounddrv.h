@@ -17,7 +17,7 @@ namespace WinSoundDriver {
 
 class Driver {
  public:
-  //  typedef SoundBuffer::Sample Sample;
+  //  using Sample = SoundBuffer::Sample;
 
   Driver() {}
   virtual ~Driver() {}
