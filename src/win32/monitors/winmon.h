@@ -18,7 +18,7 @@
 class WinMonitor {
  public:
   WinMonitor();
-  ~WinMonitor();
+  virtual ~WinMonitor();
 
   bool Init(LPCTSTR tmpl);
   void Show(HINSTANCE, HWND, bool show);

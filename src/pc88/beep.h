@@ -20,7 +20,7 @@ class OPNIF;
 // ---------------------------------------------------------------------------
 //
 //
-class Beep : public Device, public ISoundSource {
+class Beep final : public Device, public ISoundSource {
  public:
   enum IDFunc {
     out40 = 0,
@@ -37,14 +37,16 @@ class Beep : public Device, public ISoundSource {
     port40 &= p40mask;
   }
 
-  bool IFCALL Connect(ISoundControl* sc);
-  bool IFCALL SetRate(uint32_t rate);
-  void IFCALL Mix(int32_t*, int);
+  // Overrides ISoundSource.
+  bool IFCALL Connect(ISoundControl* sc) final;
+  bool IFCALL SetRate(uint32_t rate) final;
+  void IFCALL Mix(int32_t*, int) final;
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
   void IOCALL Out40(uint32_t, uint32_t data);
 

@@ -16,34 +16,38 @@ namespace PC8801 {
 class OPNIF;
 }
 
-class OPNMonitor : public WinMonitor, public ISoundSource {
+class OPNMonitor final : public WinMonitor, public ISoundSource {
  public:
   OPNMonitor();
-  ~OPNMonitor();
+  ~OPNMonitor() final;
 
   bool Init(PC8801::OPNIF* opn, ISoundControl* soundcontrol);
 
-  bool IFCALL SetRate(uint32_t rate) { return true; }
-  void IFCALL Mix(int32_t* s, int length);
+  // Overrides ISoundSource.
+  bool IFCALL SetRate(uint32_t rate) final { return true; }
+  void IFCALL Mix(int32_t* s, int length) final;
 
  private:
   enum {
     bufsize = 2048,
   };
 
-  void UpdateText();
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
-  void DrawMain(HDC, bool);
+  // Overrides WinMonitor.
+  void DrawMain(HDC, bool) final;
+  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  void UpdateText() final;
 
+  // Overrides ISoundSource.
   bool IFCALL Connect(ISoundControl* sc);
+
+  // Overrides WinMonitor.
+  void Start() final;
+  void Stop() final;
 
   PC8801::OPNIF* opn;
   const uint8_t* regs;
 
   ISoundControl* soundcontrol;
-
-  void Start();
-  void Stop();
 
   uint32_t mask;
   uint32_t read;

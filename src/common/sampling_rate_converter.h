@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------------
 //  SamplingRateConverter
 //
-class SamplingRateConverter : public SoundSource {
+class SamplingRateConverter final : public SoundSource {
  public:
   SamplingRateConverter();
   ~SamplingRateConverter();
@@ -18,10 +18,11 @@ class SamplingRateConverter : public SoundSource {
             uint32_t outrate);  // bufsize はサンプル単位
   void Cleanup();
 
-  int Get(Sample* dest, int size);
-  uint32_t GetRate();
-  int GetChannels();
-  int GetAvail();
+  // Overrides SoundSource.
+  int Get(Sample* dest, int size) final;
+  uint32_t GetRate() final;
+  int GetChannels() final;
+  int GetAvail() final;
 
   int Fill(int samples);  // バッファに最大 sample 分データを追加
   bool IsEmpty();

@@ -30,7 +30,7 @@ class CRTC;
 // ---------------------------------------------------------------------------
 //  88 の画面に関するクラス
 //
-class Screen : public Device {
+class Screen final : public Device {
  public:
   enum IDOut {
     reset = 0,
@@ -66,11 +66,11 @@ class Screen : public Device {
   void IOCALL Out54(uint32_t port, uint32_t data);
   void IOCALL Out55to5b(uint32_t port, uint32_t data);
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
-
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
  private:
   struct Pal {

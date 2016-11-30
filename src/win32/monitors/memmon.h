@@ -17,25 +17,26 @@ class PC88;
 
 namespace PC8801 {
 
-class MemoryMonitor : public MemViewMonitor {
+class MemoryMonitor final : public MemViewMonitor {
  public:
   MemoryMonitor();
-  ~MemoryMonitor();
+  ~MemoryMonitor() final;
 
   bool Init(WinCore*);
 
  private:
-  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
+  // Overrides WinMonitor.
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  void UpdateText() final;
+  void Start() final;
+  void Stop() final;
+
   INT_PTR EDlgProc(HWND, UINT, WPARAM, LPARAM);
   static INT_PTR CALLBACK EDlgProcGate(HWND, UINT, WPARAM, LPARAM);
 
   static uint32_t MEMCALL MemRead(void* p, uint32_t a);
   static void MEMCALL MemWrite(void* p, uint32_t a, uint32_t d);
 
-  void Start();
-  void Stop();
-
-  void UpdateText();
   bool SaveImage();
 
   void SetWatch(uint32_t, uint32_t);
@@ -43,7 +44,8 @@ class MemoryMonitor : public MemViewMonitor {
   void ExecCommand();
   void Search(uint32_t key, int bytes);
 
-  void SetBank();
+  // Overrides MemViewMonotor.
+  void SetBank() final;
 
   WinCore* core;
   IMemoryManager* mm;

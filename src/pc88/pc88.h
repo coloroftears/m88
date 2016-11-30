@@ -77,8 +77,10 @@ class PC88 : public Scheduler, public ICPUTime {
   void ApplyConfig(PC8801::Config*);
   void SetVolume(PC8801::Config*);
 
-  uint32_t IFCALL GetCPUTick() { return cpu1.GetCount(); }
-  uint32_t IFCALL GetCPUSpeed() { return clock; }
+  // Override ICPUTime.
+  uint32_t IFCALL GetCPUTick() final { return cpu1.GetCount(); }
+  uint32_t IFCALL GetCPUSpeed() final { return clock; }
+
   uint32_t GetEffectiveSpeed() { return eclock; }
   void TimeSync();
 
@@ -131,11 +133,13 @@ class PC88 : public Scheduler, public ICPUTime {
  private:
   void VSync();
 
-  int Execute(int ticks);
-  void Shorten(int ticks);
+  // Overrides Scheduler.
+  int Execute(int ticks) final;
+  void Shorten(int ticks) final;
+  int GetTicks() final;
+
   bool ConnectDevices();
   bool ConnectDevices2();
-  int GetTicks();
 
  private:
   enum CPUMode {

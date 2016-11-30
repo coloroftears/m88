@@ -21,7 +21,7 @@ class Config;
 // ---------------------------------------------------------------------------
 //  FDC (765)
 //
-class FDC : public Device {
+class FDC final : public Device {
  public:
   enum {
     num_drives = 2,
@@ -102,11 +102,11 @@ class FDC : public Device {
   uint32_t IOCALL Status(uint32_t);                     // ステータス入力
   uint32_t IOCALL GetData(uint32_t);                    // データ取得
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
  private:
   enum Phase {

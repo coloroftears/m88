@@ -25,11 +25,12 @@ class Device : public IDevice {
   explicit Device(const ID& _id) : id(_id) {}
   virtual ~Device() {}
 
-  const ID& IFCALL GetID() const { return id; }
-  const Descriptor* IFCALL GetDesc() const { return 0; }
-  uint32_t IFCALL GetStatusSize() { return 0; }
-  bool IFCALL LoadStatus(const uint8_t* status) { return false; }
-  bool IFCALL SaveStatus(uint8_t* status) { return false; }
+  // Overrides IDevice.
+  const ID& IFCALL GetID() const final { return id; }
+  const Descriptor* IFCALL GetDesc() const override { return 0; }
+  uint32_t IFCALL GetStatusSize() override { return 0; }
+  bool IFCALL LoadStatus(const uint8_t* status) override { return false; }
+  bool IFCALL SaveStatus(uint8_t* status) override { return false; }
 
  protected:
   void SetID(const ID& i) { id = i; }
@@ -116,8 +117,9 @@ class MemoryBus : public IMemoryAccess {
   void SetWait(uint32_t addr, uint32_t wait);
   void SetWaits(uint32_t addr, uint32_t length, uint32_t wait);
 
-  uint32_t IFCALL Read8(uint32_t addr);
-  void IFCALL Write8(uint32_t addr, uint32_t data);
+  // Overrides IMemoryAccess.
+  uint32_t IFCALL Read8(uint32_t addr) override;
+  void IFCALL Write8(uint32_t addr, uint32_t data) override;
 
   const Page* GetPageTable();
 
@@ -207,10 +209,12 @@ class IOBus : public IIOAccess, public IIOBus {
 
   bool IsSyncPort(uint32_t port);
 
-  bool IFCALL Connect(IDevice* device, const Connector* connector);
-  bool IFCALL Disconnect(IDevice* device);
-  uint32_t IFCALL In(uint32_t port);
-  void IFCALL Out(uint32_t port, uint32_t data);
+  // Overrides IIOBus.
+  bool IFCALL Connect(IDevice* device, const Connector* connector) override;
+  bool IFCALL Disconnect(IDevice* device) override;
+  // Overrides IIOAccess.
+  uint32_t IFCALL In(uint32_t port) override;
+  void IFCALL Out(uint32_t port, uint32_t data) override;
 
   // inactive line is high
   static uint32_t Active(uint32_t data, uint32_t bits) { return data | ~bits; }

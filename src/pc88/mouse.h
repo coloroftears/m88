@@ -15,7 +15,7 @@ namespace PC8801 {
 
 class Config;
 
-class Mouse : public Device {
+class Mouse final : public Device {
  public:
   enum {
     strobe = 0,
@@ -31,7 +31,8 @@ class Mouse : public Device {
   bool Init(PC88* pc);
   bool Connect(IUnk* ui);
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
   uint32_t IOCALL GetMove(uint32_t);
   uint32_t IOCALL GetButton(uint32_t);

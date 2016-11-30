@@ -14,7 +14,7 @@ namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 
-class INTC : public Device {
+class INTC final : public Device {
  public:
   enum { reset = 0, request, setmask, setreg, intack = 0 };
 
@@ -29,11 +29,11 @@ class INTC : public Device {
   void IOCALL SetRegister(uint32_t, uint32_t data);
   uint32_t IOCALL IntAck(uint32_t);
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
  private:
   struct Status {

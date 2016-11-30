@@ -21,7 +21,7 @@ namespace PC8801 {
 //  C0  RAM GV0 GV1 GV2
 //  F0  RAM TV
 //
-class IOViewer : public Device {
+class IOViewer final : public Device {
  public:
   enum ConnID {
     out = 0,
@@ -43,7 +43,8 @@ class IOViewer : public Device {
 
   void IOCALL Out(uint32_t = 0, uint32_t = 0);
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
  private:
   IIOBus* bus;

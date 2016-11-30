@@ -17,17 +17,18 @@ namespace PC8801 {
 
 class Config;
 
-class Base : public Device {
+class Base final : public Device {
  public:
   enum IDOut { reset = 0, vrtc };
   enum IDIn { in30 = 0, in31, in40, in6e };
 
  public:
   explicit Base(const ID& id);
-  ~Base();
+  ~Base() final;
 
   bool Init(PC88* pc88);
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
   void SetSwitch(const Config* cfg);
   uint32_t GetBasicMode() { return bmode; }

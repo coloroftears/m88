@@ -19,14 +19,14 @@
 
 #ifdef ENABLE_LOADMONITOR
 
-class LoadMonitor : public WinMonitor {
+class LoadMonitor final : public WinMonitor {
  public:
   enum {
     presis = 10,
   };
 
   LoadMonitor();
-  ~LoadMonitor();
+  ~LoadMonitor() final;
 
   bool Init();
 
@@ -42,9 +42,10 @@ class LoadMonitor : public WinMonitor {
 
   using States = std::map<std::string, State>;
 
-  void UpdateText();
+  // Overrides WinMonitor.
   BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
   void DrawMain(HDC, bool);
+  void UpdateText();
 
   States states;
   int base;

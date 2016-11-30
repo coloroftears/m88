@@ -35,10 +35,11 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
 
   void IOCALL UpdateCounter(uint32_t);
 
-  bool IFCALL Connect(ISoundSource* src);
-  bool IFCALL Disconnect(ISoundSource* src);
-  bool IFCALL Update(ISoundSource* src = 0);
-  int IFCALL GetSubsampleTime(ISoundSource* src);
+  // Overrides ISoundControl.
+  bool IFCALL Connect(ISoundSource* src) final;
+  bool IFCALL Disconnect(ISoundSource* src) final;
+  bool IFCALL Update(ISoundSource* src = 0) final;
+  int IFCALL GetSubsampleTime(ISoundSource* src) final;
 
   void FillWhenEmpty(bool f) { soundbuf.FillWhenEmpty(f); }
 

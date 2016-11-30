@@ -60,7 +60,7 @@ class IOBus;
 //  in:     wait    止める場合 true
 //                  wait 状態の場合 Exec が命令を実行しないようになる
 //
-class Z80C : public Device {
+class Z80C final : public Device {
  public:
   enum {
     reset = 0,
@@ -78,7 +78,11 @@ class Z80C : public Device {
   explicit Z80C(const ID& id);
   ~Z80C();
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
   bool Init(MemoryManager* mem, IOBus* bus, int iack);
 
@@ -102,10 +106,6 @@ class Z80C : public Device {
   void IOCALL IRQ(uint32_t, uint32_t d) { intr = d; }
   void IOCALL NMI(uint32_t = 0, uint32_t = 0);
   void Wait(bool flag);
-
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
 
   uint32_t GetPC();
   void SetPC(uint32_t newpc);

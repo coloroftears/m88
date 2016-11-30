@@ -18,17 +18,19 @@ class PC88;
 
 namespace PC8801 {
 
-class BasicMonitor : public WinMonitor {
+class BasicMonitor final : public WinMonitor {
  public:
   BasicMonitor();
-  ~BasicMonitor();
+  ~BasicMonitor() final;
 
   bool Init(PC88*);
 
  private:
   void Decode(bool always);
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
-  void UpdateText();
+
+  // Overrides WinMonitor.
+  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  void UpdateText() final;
 
   char basictext[0x10000];
   int line[0x4000];

@@ -8,10 +8,6 @@
 #include "common/types.h"
 #include "interface/ifcommon.h"
 
-#ifndef IFCALL
-#define IFCALL __stdcall
-#endif
-
 struct IMouseUI : public IUnk {
   virtual bool IFCALL Enable(bool en) = 0;
   virtual bool IFCALL GetMovement(POINT*) = 0;

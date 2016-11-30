@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "interface/ifcommon.h"
+#include "interface/if_win.h"
 #include "pc88/config.h"
 #include "win32/cfgpage.h"
 
@@ -14,7 +14,7 @@
 
 namespace PC8801 {
 
-class WinConfig : public IConfigPropBase {
+class WinConfig final : public IConfigPropBase {
  public:
   WinConfig();
   ~WinConfig();
@@ -30,13 +30,13 @@ class WinConfig : public IConfigPropBase {
     IConfigPropSheet* sheet;
   };
 
-  bool IFCALL Add(IConfigPropSheet* sheet);
-  bool IFCALL Remove(IConfigPropSheet* sheet);
-
-  bool IFCALL Apply();
-  bool IFCALL PageSelected(IConfigPropSheet*);
-  bool IFCALL PageChanged(HWND);
-  void IFCALL _ChangeVolume(bool);
+  // Overrides IConfigPropBase.
+  bool IFCALL Add(IConfigPropSheet* sheet) final;
+  bool IFCALL Remove(IConfigPropSheet* sheet) final;
+  bool IFCALL Apply() final;
+  bool IFCALL PageSelected(IConfigPropSheet*) final;
+  bool IFCALL PageChanged(HWND) final;
+  void IFCALL _ChangeVolume(bool) final;
 
   int PropProc(HWND, UINT, LPARAM);
   static int CALLBACK PropProcGate(HWND, UINT, LPARAM);

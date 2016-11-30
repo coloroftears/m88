@@ -19,13 +19,15 @@ namespace PC8801 {
 class MemViewMonitor : public WinMonitor {
  public:
   MemViewMonitor();
-  ~MemViewMonitor();
+  ~MemViewMonitor() override;
 
   bool Init(LPCTSTR tmpl, PC88*);
 
  protected:
   MemoryBus* GetBus() { return bus; }
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
+
+  // Overrides WinMonitor.
+  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) override;
 
   void StatClear();
   uint32_t StatExec(uint32_t a);

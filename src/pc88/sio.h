@@ -14,7 +14,7 @@ class Scheduler;
 
 namespace PC8801 {
 
-class SIO : public Device {
+class SIO final : public Device {
  public:
   enum {
     reset = 0,
@@ -38,11 +38,11 @@ class SIO : public Device {
 
   void IOCALL AcceptData(uint32_t, uint32_t);
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* s);
-  bool IFCALL LoadStatus(const uint8_t* s);
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* s) final;
+  bool IFCALL LoadStatus(const uint8_t* s) final;
 
  private:
   enum Mode { clear = 0, async, sync1, sync2, sync };

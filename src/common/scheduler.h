@@ -32,21 +32,23 @@ class Scheduler : public IScheduler, public ITime {
   bool Init();
   int Proceed(int ticks);
 
+  // Overrides IScheduler.
   Event* IFCALL AddEvent(int count,
                          IDevice* dev,
                          IDevice::TimeFunc func,
                          int arg = 0,
-                         bool repeat = false);
+                         bool repeat = false) override;
   void IFCALL SetEvent(Event* ev,
                        int count,
                        IDevice* dev,
                        IDevice::TimeFunc func,
                        int arg = 0,
-                       bool repeat = false);
-  bool IFCALL DelEvent(IDevice* dev);
-  bool IFCALL DelEvent(Event* ev);
+                       bool repeat = false) override;
+  bool IFCALL DelEvent(IDevice* dev) override;
+  bool IFCALL DelEvent(Event* ev) override;
 
-  int IFCALL GetTime();
+  // Overrides ITime
+  int IFCALL GetTime() override;
 
  private:
   virtual int Execute(int ticks) = 0;

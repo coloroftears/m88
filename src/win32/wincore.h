@@ -33,6 +33,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
  public:
   WinCore();
   ~WinCore();
+
   bool Init(WinUI* ui,
             HWND hwnd,
             Draw* draw,
@@ -42,9 +43,9 @@ class WinCore : public PC88, public ISystem, public ILockCore {
             TapeManager* tapemgr);
   bool Cleanup();
 
+  // Overrides PC88.
   void Reset();
   void ApplyConfig(PC8801::Config* config);
-
   bool SaveShapshot(const char* filename);
   bool LoadShapshot(const char* filename, const char* diskname = 0);
 
@@ -52,9 +53,13 @@ class WinCore : public PC88, public ISystem, public ILockCore {
 
   int32_t GetExecCount() { return seq.GetExecCount(); }
   void Wait(bool dowait) { seq.Activate(!dowait); }
-  void* IFCALL QueryIF(REFIID iid);
-  void IFCALL Lock() { seq.Lock(); }
-  void IFCALL Unlock() { seq.Unlock(); }
+
+  // Overrides ISystem.
+  void* IFCALL QueryIF(REFIID iid) final;
+
+  // Overrides ILockCore.
+  void IFCALL Lock() final { seq.Lock(); }
+  void IFCALL Unlock() final { seq.Unlock(); }
 
  private:
   //  Snapshot ヘッダー

@@ -19,7 +19,7 @@ class PC88;
 
 namespace PC8801 {
 
-class CodeMonitor : public MemViewMonitor {
+class CodeMonitor final : public MemViewMonitor {
  public:
   CodeMonitor();
   ~CodeMonitor();
@@ -27,9 +27,10 @@ class CodeMonitor : public MemViewMonitor {
   bool Init(PC88*);
 
  private:
-  void UpdateText();
-  int VerticalScroll(int msg);
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
+  // Overrides WinMonitor
+  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  void UpdateText() final;
+  int VerticalScroll(int msg) final;
 
   bool Dump(FILE* fp, int from, int to);
   bool DumpImage();

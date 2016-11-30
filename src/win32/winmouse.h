@@ -11,20 +11,22 @@
 
 class WinUI;
 
-class WinMouseUI : public IMouseUI {
+class WinMouseUI final : public IMouseUI {
  public:
   WinMouseUI();
   ~WinMouseUI();
 
   bool Init(WinUI* ui);
 
-  int32_t IFCALL QueryInterface(REFIID, void**);
-  uint32_t IFCALL AddRef();
-  uint32_t IFCALL Release();
+  // Overrides IUnk.
+  int32_t IFCALL QueryInterface(REFIID, void**) final;
+  uint32_t IFCALL AddRef() final;
+  uint32_t IFCALL Release() final;
 
-  bool IFCALL Enable(bool en);
-  bool IFCALL GetMovement(POINT*);
-  uint32_t IFCALL GetButton();
+  // Overrides IMouseUI.
+  bool IFCALL Enable(bool en) final;
+  bool IFCALL GetMovement(POINT*) final;
+  uint32_t IFCALL GetButton() final;
 
  private:
   POINT GetWindowCenter();

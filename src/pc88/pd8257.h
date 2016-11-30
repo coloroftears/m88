@@ -15,7 +15,7 @@
 
 namespace PC8801 {
 
-class PD8257 : public Device, public IDMAAccess {
+class PD8257 final : public Device, public IDMAAccess {
  public:
   enum IDOut { reset = 0, setaddr, setcount, setmode };
   enum IDIn { getaddr, getcount, getstat };
@@ -35,14 +35,19 @@ class PD8257 : public Device, public IDMAAccess {
   uint32_t IOCALL GetCount(uint32_t port);
   uint32_t IOCALL GetStatus(uint32_t);
 
-  uint32_t IFCALL RequestRead(uint32_t bank, uint8_t* data, uint32_t nbytes);
-  uint32_t IFCALL RequestWrite(uint32_t bank, uint8_t* data, uint32_t nbytes);
+  // Overrides IDMAAccess.
+  uint32_t IFCALL RequestRead(uint32_t bank,
+                              uint8_t* data,
+                              uint32_t nbytes) final;
+  uint32_t IFCALL RequestWrite(uint32_t bank,
+                               uint8_t* data,
+                               uint32_t nbytes) final;
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
  private:
   enum {

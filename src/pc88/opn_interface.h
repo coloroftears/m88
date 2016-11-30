@@ -23,7 +23,7 @@ class Config;
 // ---------------------------------------------------------------------------
 //  88 用の OPN Unit
 //
-class OPNIF : public Device, public ISoundSource {
+class OPNIF final : public Device, public ISoundSource {
  public:
   enum IDFunc {
     reset = 0,
@@ -53,16 +53,19 @@ class OPNIF : public Device, public ISoundSource {
   bool Init(IOBus* bus, int intrport, int io, Scheduler* s);
   void SetIMask(uint32_t port, uint32_t bit);
 
-  bool IFCALL Connect(ISoundControl* c);
-  bool IFCALL SetRate(uint32_t rate);
-  void IFCALL Mix(int32_t* buffer, int nsamples);
+  // Overrides ISoundSource.
+  bool IFCALL Connect(ISoundControl* c) final;
+  bool IFCALL SetRate(uint32_t rate) final;
+  void IFCALL Mix(int32_t* buffer, int nsamples) final;
 
   void SetVolume(const Config* config);
   void SetFMMixMode(bool);
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
   void Enable(bool en) { enable = en; }
   void SetOPNMode(bool _opna) { opnamode = _opna; }
@@ -80,8 +83,6 @@ class OPNIF : public Device, public ISoundSource {
   uint32_t IOCALL ReadStatus(uint32_t);
   uint32_t IOCALL ReadStatusEx(uint32_t);
   void IOCALL Sync(uint32_t, uint32_t);
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
  private:
   class OPNUnit :

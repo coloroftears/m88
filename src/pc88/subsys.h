@@ -14,7 +14,7 @@ class MemoryManager;
 
 namespace PC8801 {
 
-class SubSystem : public Device {
+class SubSystem final : public Device {
  public:
   enum {
     reset = 0,
@@ -34,10 +34,12 @@ class SubSystem : public Device {
   ~SubSystem();
 
   bool Init(MemoryManager* mmgr);
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
   uint8_t* GetRAM() { return ram; }
   uint8_t* GetROM() { return rom; }

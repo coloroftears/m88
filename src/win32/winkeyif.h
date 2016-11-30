@@ -16,7 +16,7 @@ namespace PC8801 {
 
 class Config;
 
-class WinKeyIF : public Device {
+class WinKeyIF final : public Device {
  public:
   enum {
     reset = 0,
@@ -39,7 +39,8 @@ class WinKeyIF : public Device {
   void KeyDown(uint32_t, uint32_t);
   void KeyUp(uint32_t, uint32_t);
 
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
  private:
   enum KeyState {

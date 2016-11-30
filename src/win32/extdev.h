@@ -20,7 +20,7 @@ class PD8257;
 
 namespace PC8801 {
 
-class ExternalDevice : public Device, public ISoundSource {
+class ExternalDevice final : public Device, public ISoundSource {
  public:
   ExternalDevice();
   ~ExternalDevice();
@@ -33,9 +33,10 @@ class ExternalDevice : public Device, public ISoundSource {
             IMemoryManager* mm);
   bool Cleanup();
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+  // Overrides Device.
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
  private:
   using F_CONNECT = void*(__cdecl*)(void*, const PCInfo*, DeviceInfo*);
@@ -49,9 +50,10 @@ class ExternalDevice : public Device, public ISoundSource {
   uint32_t IOCALL In(uint32_t port);
   void IOCALL Out(uint32_t port, uint32_t data);
 
-  bool IFCALL SetRate(uint32_t r);
-  void IFCALL Mix(int32_t* s, int len);
-  bool IFCALL Connect(ISoundControl* sound) { return false; }
+  // Overrides ISoundSource.
+  bool IFCALL SetRate(uint32_t r) final;
+  void IFCALL Mix(int32_t* s, int len) final;
+  bool IFCALL Connect(ISoundControl* sound) final { return false; }
 
   HMODULE hdll;
   IOBus* bus;

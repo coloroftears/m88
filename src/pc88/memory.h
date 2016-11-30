@@ -16,7 +16,7 @@ class MemoryManager;
 namespace PC8801 {
 class CRTC;
 
-class Memory : public Device, public IGetMemoryBank {
+class Memory final : public Device, public IGetMemoryBank {
  public:
   enum IDOut {
     reset = 0,
@@ -76,7 +76,6 @@ class Memory : public Device, public IGetMemoryBank {
  public:
   explicit Memory(const ID& id);
   ~Memory();
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   void ApplyConfig(const Config* cfg);
   uint8_t* GetRAM() { return ram; }
@@ -85,12 +84,16 @@ class Memory : public Device, public IGetMemoryBank {
   uint8_t* GetROM() { return rom; }
   uint8_t* GetDirtyFlag() { return dirty; }
 
-  uint32_t IFCALL GetRdBank(uint32_t addr);
-  uint32_t IFCALL GetWrBank(uint32_t addr);
+  // Overrides IGetMemoryBank.
+  uint32_t IFCALL GetRdBank(uint32_t addr) final;
+  uint32_t IFCALL GetWrBank(uint32_t addr) final;
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL LoadStatus(const uint8_t* status);
-  bool IFCALL SaveStatus(uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+
   bool IsCDBIOSReady() { return !!cdbios; }
 
   bool Init(MemoryManager* mgr, IOBus* bus, CRTC* crtc, int* waittbl);

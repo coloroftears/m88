@@ -16,7 +16,7 @@
 
 // ---------------------------------------------------------------------------
 
-class Z80_x86 : public Device {
+class Z80_x86 final : public Device {
  public:
   enum {
     reset = 0,
@@ -52,11 +52,12 @@ class Z80_x86 : public Device {
     return true;
   }
   int* GetWaits() { return waittable; }
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
-  uint32_t IFCALL GetStatusSize() { return sizeof(CPUState); }
-  bool IFCALL LoadStatus(const uint8_t* status);
-  bool IFCALL SaveStatus(uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final { return sizeof(CPUState); }
+  bool IFCALL LoadStatus(const uint8_t* status) final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
 
   bool EnableDump(bool) { return false; }
   int GetDumpState() { return -1; }

@@ -9,14 +9,15 @@
 #include "common/device.h"
 #include "interface/ifui.h"
 
-class WinPadIF : public IPadInput {
+class WinPadIF final : public IPadInput {
  public:
   WinPadIF();
   ~WinPadIF();
 
   bool Init();
 
-  void IFCALL GetState(PadState*);
+  // Overrides IPadInput
+  void IFCALL GetState(PadState*) final;
 
  private:
   bool enabled;

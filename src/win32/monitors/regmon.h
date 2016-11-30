@@ -14,7 +14,7 @@ class PC88;
 
 // ---------------------------------------------------------------------------
 
-class Z80RegMonitor : public WinMonitor {
+class Z80RegMonitor final : public WinMonitor {
  public:
   Z80RegMonitor();
   ~Z80RegMonitor();
@@ -22,6 +22,7 @@ class Z80RegMonitor : public WinMonitor {
   bool Init(PC88* pc);
 
  private:
+  // Overrides WinMonitor.
   void UpdateText();
   BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
   void DrawMain(HDC, bool);

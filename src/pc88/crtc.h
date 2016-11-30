@@ -19,7 +19,7 @@ class Config;
 // ---------------------------------------------------------------------------
 //  CRTC (μPD3301) 及びテキスト画面合成
 //
-class CRTC : public Device {
+class CRTC final : public Device {
  public:
   enum IDOut { reset = 0, out, pcgout, setkanamode };
   enum IDIn {
@@ -31,7 +31,6 @@ class CRTC : public Device {
   explicit CRTC(const ID& id);
   ~CRTC();
   bool Init(IOBus* bus, Scheduler* s, PD8257* dmac, Draw* draw);
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
   void UpdateScreen(uint8_t* image,
                     int bpl,
@@ -41,9 +40,11 @@ class CRTC : public Device {
   void ApplyConfig(const Config* config);
   int GetFramePeriod();
 
-  uint32_t IFCALL GetStatusSize();
-  bool IFCALL SaveStatus(uint8_t* status);
-  bool IFCALL LoadStatus(const uint8_t* status);
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final;
+  bool IFCALL SaveStatus(uint8_t* status) final;
+  bool IFCALL LoadStatus(const uint8_t* status) final;
 
   // CRTC Control
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);

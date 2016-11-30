@@ -12,7 +12,7 @@
 
 namespace PC8801 {
 
-class KanjiROM : public Device {
+class KanjiROM final : public Device {
  public:
   enum { setl = 0, seth };
 
@@ -29,17 +29,17 @@ class KanjiROM : public Device {
   uint32_t IOCALL ReadL(uint32_t p);
   uint32_t IOCALL ReadH(uint32_t p);
 
-  uint32_t IFCALL GetStatusSize() { return sizeof(uint32_t); }
-  bool IFCALL SaveStatus(uint8_t* status) {
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
+  uint32_t IFCALL GetStatusSize() final { return sizeof(uint32_t); }
+  bool IFCALL SaveStatus(uint8_t* status) final {
     *(uint32_t*)status = adr;
     return true;
   }
-  bool IFCALL LoadStatus(const uint8_t* status) {
+  bool IFCALL LoadStatus(const uint8_t* status) final {
     adr = *(const uint32_t*)status;
     return true;
   }
-
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
 
  private:
   uint32_t adr;

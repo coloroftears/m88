@@ -11,7 +11,7 @@
 
 namespace PC8801 {
 
-class JoyPad : public Device {
+class JoyPad final : public Device {
  public:
   enum {
     vsync = 0,
@@ -25,7 +25,9 @@ class JoyPad : public Device {
   ~JoyPad();
 
   bool Connect(IPadInput* ui);
-  const Descriptor* IFCALL GetDesc() const { return &descriptor; }
+
+  // Overrides Device.
+  const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
   void IOCALL Reset() {}
   uint32_t IOCALL GetDirection(uint32_t port);
