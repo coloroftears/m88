@@ -43,26 +43,24 @@ class WinDrawSub {
 
 // ---------------------------------------------------------------------------
 
-class WinDraw : public Draw {
+class WinDraw final : public Draw {
  public:
   WinDraw();
   ~WinDraw();
   bool Init0(HWND hwindow);
 
   // - Draw Common Interface
-  bool Init(uint32_t w, uint32_t h, uint32_t bpp);
-  bool Cleanup();
-
-  bool Lock(uint8_t** pimage, int* pbpl);
-  bool Unlock();
-
-  void Resize(uint32_t width, uint32_t height);
-  void SetPalette(uint32_t index, uint32_t nents, const Palette* pal);
-  void DrawScreen(const Region& region);
-
-  uint32_t GetStatus();
-  void Flip();
-  bool SetFlipMode(bool f);
+  // Overrides Draw.
+  bool Init(uint32_t w, uint32_t h, uint32_t bpp) final;
+  bool Cleanup() final;
+  bool Lock(uint8_t** pimage, int* pbpl) final;
+  bool Unlock() final;
+  uint32_t GetStatus() final;
+  void Resize(uint32_t width, uint32_t height) final;
+  void DrawScreen(const Region& region) final;
+  void SetPalette(uint32_t index, uint32_t nents, const Palette* pal) final;
+  void Flip() final;
+  bool SetFlipMode(bool f) final;
 
   // - Unique Interface
   int GetDrawCount() {

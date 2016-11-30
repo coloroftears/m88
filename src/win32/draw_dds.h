@@ -14,23 +14,23 @@
 
 // ---------------------------------------------------------------------------
 
-class WinDrawDDS : public WinDrawSub {
+class WinDrawDDS final : public WinDrawSub {
  public:
   WinDrawDDS(bool force480 = true);
   ~WinDrawDDS();
 
-  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID* drv);
-  bool Resize(uint32_t w, uint32_t h);
-  bool Cleanup();
-
-  void SetPalette(PALETTEENTRY* pal, int index, int nentries);
-  void QueryNewPalette();
-  void DrawScreen(const RECT& rect, bool refresh);
-  bool Lock(uint8_t** pimage, int* pbpl);
-  bool Unlock();
-  void SetGUIMode(bool guimode);
-  void Flip();
-  bool SetFlipMode(bool f);
+  // Overrides WinDrawSub.
+  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID* drv) final;
+  bool Resize(uint32_t w, uint32_t h) final;
+  bool Cleanup() final;
+  void SetPalette(PALETTEENTRY* pal, int index, int nentries) final;
+  void QueryNewPalette() final;
+  void DrawScreen(const RECT& rect, bool refresh) final;
+  bool Lock(uint8_t** pimage, int* pbpl) final;
+  bool Unlock() final;
+  void SetGUIMode(bool guimode) final;
+  void Flip() final;
+  bool SetFlipMode(bool f) final;
 
  private:
   void FillBlankArea();

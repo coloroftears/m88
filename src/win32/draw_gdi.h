@@ -12,18 +12,19 @@
 
 #include "win32/windraw.h"
 
-class WinDrawGDI : public WinDrawSub {
+class WinDrawGDI final : public WinDrawSub {
  public:
   WinDrawGDI();
   ~WinDrawGDI();
 
-  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID*);
-  bool Resize(uint32_t width, uint32_t height);
-  bool Cleanup();
-  void SetPalette(PALETTEENTRY* pal, int index, int nentries);
-  void DrawScreen(const RECT& rect, bool refresh);
-  bool Lock(uint8_t** pimage, int* pbpl);
-  bool Unlock();
+  // Overrides WinDrawSub.
+  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID*) final;
+  bool Resize(uint32_t width, uint32_t height) final;
+  bool Cleanup() final;
+  void SetPalette(PALETTEENTRY* pal, int index, int nentries) final;
+  void DrawScreen(const RECT& rect, bool refresh) final;
+  bool Lock(uint8_t** pimage, int* pbpl) final;
+  bool Unlock() final;
 
  private:
   struct BI256  // BITMAPINFO

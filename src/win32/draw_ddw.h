@@ -14,20 +14,20 @@
 
 // ---------------------------------------------------------------------------
 
-class WinDrawDDW : public WinDrawSub {
+class WinDrawDDW final : public WinDrawSub {
  public:
   WinDrawDDW();
   ~WinDrawDDW();
 
-  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID*);
-  bool Resize(uint32_t width, uint32_t height);
-  bool Cleanup();
-
-  void SetPalette(PALETTEENTRY* pal, int index, int nentries);
-  void QueryNewPalette();
-  void DrawScreen(const RECT& rect, bool refresh);
-  bool Lock(uint8_t** pimage, int* pbpl);
-  bool Unlock();
+  // Overrides WinDrawSub.
+  bool Init(HWND hwnd, uint32_t w, uint32_t h, GUID*) final;
+  bool Resize(uint32_t width, uint32_t height) final;
+  bool Cleanup() final;
+  void SetPalette(PALETTEENTRY* pal, int index, int nentries) final;
+  void QueryNewPalette() final;
+  void DrawScreen(const RECT& rect, bool refresh) final;
+  bool Lock(uint8_t** pimage, int* pbpl) final;
+  bool Unlock() final;
 
  private:
   bool CreateDDPalette();
