@@ -18,7 +18,7 @@
 
 namespace WinSoundDriver {
 
-class DriverDS : public Driver {
+class DriverDS final : public Driver {
   static const uint32_t num_blocks;
   static const uint32_t timer_resolution;
 
@@ -26,12 +26,13 @@ class DriverDS : public Driver {
   DriverDS();
   ~DriverDS();
 
+  // Overrides Driver.
   bool Init(SoundSource* sb,
             HWND hwnd,
             uint32_t rate,
             uint32_t ch,
-            uint32_t buflen);
-  bool Cleanup();
+            uint32_t buflen) final;
+  bool Cleanup() final;
 
  private:
   static void CALLBACK TimeProc(UINT, UINT, DWORD, DWORD, DWORD);

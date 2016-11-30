@@ -18,17 +18,18 @@
 
 namespace WinSoundDriver {
 
-class DriverWO : public Driver {
+class DriverWO final : public Driver {
  public:
   DriverWO();
   ~DriverWO();
 
+  // Overrides Driver.
   bool Init(SoundSource* sb,
             HWND hwnd,
             uint32_t rate,
             uint32_t ch,
-            uint32_t buflen);
-  bool Cleanup();
+            uint32_t buflen) final;
+  bool Cleanup() final;
 
  private:
   bool SendBlock(WAVEHDR*);
