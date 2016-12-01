@@ -42,7 +42,7 @@ bool Sequencer::Init(PC88* _vm) {
 
   if (!hthread) {
     hthread = (HANDLE)_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread);
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread);
   }
   return !!hthread;
 }
@@ -117,7 +117,8 @@ void Sequencer::ExecuteAsynchronus() {
     } while (ms < 1000);
     vm->UpdateScreen();
 
-    effclock = std::min((std::min(1000, eclk) * effclock * 100 / ms) + 1, 10000UL);
+    effclock =
+        std::min((std::min(1000, eclk) * effclock * 100 / ms) + 1, 10000UL);
   } else {
     int texec = vm->GetFramePeriod();
     int twork = texec * 100 / speed;

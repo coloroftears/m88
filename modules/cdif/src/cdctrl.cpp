@@ -38,7 +38,7 @@ bool CDControl::Init(CDROM* cd, Device* dev, DONEFUNC func) {
 
   if (!hthread)
     hthread = HANDLE(_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
   if (!hthread)
     return false;
 

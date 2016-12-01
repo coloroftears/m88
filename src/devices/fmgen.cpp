@@ -413,7 +413,8 @@ void Operator::ShiftPhase(EGPhase nextphase) {
     case decay:  // Decay Phase
       if (sl_) {
         eg_level_ = 0;
-        eg_level_on_next_phase_ = ssg_type_ ? std::min(sl_ * 8, 0x200U) : sl_ * 8;
+        eg_level_on_next_phase_ =
+            ssg_type_ ? std::min(sl_ * 8, 0x200U) : sl_ * 8;
 
         SetEGRate(dr_ ? std::min(63U, dr_ + key_scale_rate_) : 0);
         eg_phase_ = decay;

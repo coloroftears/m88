@@ -55,7 +55,7 @@ bool WinDraw::Init0(HWND hwindow) {
   drawtype = None;
 
   hthread = 0;
-  hevredraw = CreateEvent(NULL, FALSE, FALSE, NULL);
+  hevredraw = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
   HDC hdc = GetDC(hwnd);
   haspalette = !!(GetDeviceCaps(hdc, RASTERCAPS) & RC_PALETTE);
@@ -64,7 +64,7 @@ bool WinDraw::Init0(HWND hwindow) {
 #ifdef DRAW_THREAD
   if (!hthread)
     hthread = HANDLE(_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
   if (!hthread) {
     Error::SetError(Error::ThreadInitFailed);
     return false;

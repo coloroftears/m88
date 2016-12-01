@@ -24,7 +24,7 @@ struct PCIDRV {
   PCIMEMRD32 in32;
 };
 
-#define ROMEO_TPTR(member) (int)&(((PCIDRV*)NULL)->member)
+#define ROMEO_TPTR(member) (int)&(((PCIDRV*)nullptr)->member)
 
 struct DLLPROCESS {
   char* symbol;
@@ -89,9 +89,9 @@ Piccolo* Piccolo::GetInstance() {
 //
 int Piccolo::Init() {
   // piccolo.sys はいますか？
-  hfile =
-      CreateFile("\\\\.\\Romeo",  // Open the Device "file"
-                 GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+  hfile = CreateFile("\\\\.\\Romeo",  // Open the Device "file"
+                     GENERIC_WRITE | GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0,
+                     nullptr);
   islegacy = false;
 
   if (hfile == INVALID_HANDLE_VALUE) {
@@ -131,7 +131,7 @@ int Piccolo::Init() {
   shouldterminate = false;
   if (!hthread) {
     hthread = (HANDLE)_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread);
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread);
   }
   if (!hthread)
     return PICCOLOE_THREAD_ERROR;
@@ -362,10 +362,10 @@ void Piccolo::YMF288::Set(uint32_t a, uint32_t d) {
         ioctlcode,        // IO Control code for Write
         &rwi,             // Buffer to driver.  Holds port & data.
         datalength,       // Length of buffer in bytes.
-        NULL,             // Buffer from driver.   Not used.
+        nullptr,          // Buffer from driver.   Not used.
         0,                // Length of buffer in bytes.
         &returnedlength,  // Bytes placed in outbuf.  Should be 0.
-        NULL              // NULL means wait till I/O completes.
+        nullptr           // nullptr means wait till I/O completes.
         );
   }
 }

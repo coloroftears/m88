@@ -97,7 +97,7 @@ bool DriverDS::Init(SoundSource* s,
   dsbd.dwBufferBytes = buffersize;
   dsbd.lpwfxFormat = &wf;
 
-  HRESULT res = lpds->CreateSoundBuffer(&dsbd, &lpdsb, NULL);
+  HRESULT res = lpds->CreateSoundBuffer(&dsbd, &lpdsb, nullptr);
   if (DS_OK != res)
     return false;
 

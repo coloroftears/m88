@@ -175,7 +175,7 @@ bool WinUI::InitWindow(int nwinmode) {
   wcl.lpfnWndProc = WNDPROC((void*)(WinProcGate));
   wcl.style = 0;
   wcl.hIcon = LoadIcon(hinst, MAKEINTRESOURCE(IDI_ICON_M88));
-  wcl.hCursor = LoadCursor(NULL, IDC_ARROW);
+  wcl.hCursor = LoadCursor(nullptr, IDC_ARROW);
   wcl.cbClsExtra = 0;
   wcl.cbWndExtra = 0;
   //  wcl.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
@@ -195,7 +195,7 @@ bool WinUI::InitWindow(int nwinmode) {
                         CW_USEDEFAULT,  // y
                         640,            // w
                         400,            // h
-                        NULL, NULL, hinst, NULL);
+                        nullptr, nullptr, hinst, nullptr);
 
   //  SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0xc0, LWA_ALPHA);
 
@@ -228,7 +228,7 @@ int WinUI::Main(const char* cmdline) {
   }
 
   MSG msg;
-  while (GetMessage(&msg, NULL, 0, 0)) {
+  while (GetMessage(&msg, nullptr, 0, 0)) {
     if (winconfig.ProcMsg(msg)) {
       if (!winconfig.IsOpen())
         SetGUIFlag(false);

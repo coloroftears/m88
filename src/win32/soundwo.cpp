@@ -73,7 +73,7 @@ bool DriverWO::Init(SoundSource* s,
   // スレッド起動
   if (!hthread) {
     hthread = HANDLE(_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
     if (!hthread) {
       DeleteBuffers();
       return false;
@@ -162,7 +162,7 @@ bool DriverWO::SendBlock(WAVEHDR* whdr) {
     whdr->dwUser = 0;
     whdr->dwFlags = 0;
     whdr->dwLoops = 0;
-    whdr->lpNext = NULL;
+    whdr->lpNext = nullptr;
     whdr->reserved = 0;
 
     if (!dontmix)  // && (mixalways || !src->IsEmpty()))
@@ -206,7 +206,7 @@ uint32_t __stdcall DriverWO::ThreadEntry(LPVOID arg) {
   DriverWO* dw = reinterpret_cast<DriverWO*>(arg);
   MSG msg;
 
-  while (GetMessage(&msg, NULL, 0, 0)) {
+  while (GetMessage(&msg, nullptr, 0, 0)) {
     switch (msg.message) {
       case MM_WOM_DONE:
         dw->BlockDone((WAVEHDR*)msg.lParam);

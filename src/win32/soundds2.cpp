@@ -103,7 +103,7 @@ bool DriverDS2::Init(SoundSource* s,
   dsbd.dwBufferBytes = buffersize;
   dsbd.lpwfxFormat = &wf;
 
-  hr = lpds->CreateSoundBuffer(&dsbd, &lpdsb, NULL);
+  hr = lpds->CreateSoundBuffer(&dsbd, &lpdsb, nullptr);
   if (hr != DS_OK)
     return false;
 
@@ -135,7 +135,7 @@ bool DriverDS2::Init(SoundSource* s,
   // スレッド起動
   if (!hthread) {
     hthread = HANDLE(_beginthreadex(
-        NULL, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
+        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
     if (!hthread)
       return false;
     SetThreadPriority(hthread, THREAD_PRIORITY_ABOVE_NORMAL);

@@ -6,8 +6,7 @@
 
 // ---------------------------------------------------------------------------
 
-ConfigCDIF::ConfigCDIF() {
-}
+ConfigCDIF::ConfigCDIF() {}
 
 bool ConfigCDIF::Init(HINSTANCE _hinst) {
   hinst = _hinst;
@@ -24,7 +23,7 @@ bool IFCALL ConfigCDIF::Setup(IConfigPropBase* _base, PROPSHEETPAGE* psp) {
   psp->pszTemplate = MAKEINTRESOURCE(IDD_CONFIG);
   psp->pszIcon = 0;
   psp->pfnDlgProc = (DLGPROC)(void*)PageGate;
-  psp->lParam = (LPARAM)this;
+  psp->lParam = (LPARAM) this;
   return true;
 }
 

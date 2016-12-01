@@ -584,7 +584,8 @@ void FDC::ReadData(bool deleted, bool scan) {
     SetTimer(timerphase, 1000);
     return;
   }
-  int xbyte = idr.n ? (0x80 << std::min(8, static_cast<int>(idr.n))) : (std::min(dtl, 0x80U));
+  int xbyte = idr.n ? (0x80 << std::min(8, static_cast<int>(idr.n)))
+                    : (std::min(dtl, 0x80U));
 
   if (!scan)
     ShiftToExecReadPhase(xbyte);

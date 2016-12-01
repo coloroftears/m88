@@ -38,7 +38,7 @@ static void InitPathInfo() {
 //  WinMain
 //
 int WINAPI WinMain(HINSTANCE hinst, HINSTANCE, LPSTR cmdline, int nwinmode) {
-  if (FAILED(CoInitialize(NULL)))
+  if (FAILED(CoInitialize(nullptr)))
     return -1;
 
   InitPathInfo();
