@@ -18,7 +18,7 @@ using namespace PC8801;
 //
 FDU::FDU() {
   disk = 0;
-  cyrinder = 0;
+  cylinder = 0;
 }
 
 FDU::~FDU() {
@@ -60,7 +60,7 @@ bool FDU::Unmount() {
 //
 inline void FDU::SetHead(uint32_t hd) {
   head = hd & 1;
-  track = (cyrinder << 1) + (hd & 1);
+  track = (cylinder << 1) + (hd & 1);
   disk->Seek(track);
 }
 
@@ -92,10 +92,10 @@ uint32_t FDU::ReadID(uint32_t flags, IDR* id) {
 //  FDU::Seek
 //  指定されたシリンダー番号へシークする
 //
-//  cyrinder シーク先
+//  cylinder シーク先
 //
 uint32_t FDU::Seek(uint32_t cy) {
-  cyrinder = cy;
+  cylinder = cy;
   return 0;
 }
 
@@ -201,7 +201,7 @@ uint32_t FDU::WriteSector(uint32_t flags,
 //  デバイス・スタータスを得る
 //
 uint32_t FDU::SenceDeviceStatus() {
-  uint32_t result = 0x20 | (cyrinder ? 0 : 0x10) | (head ? 4 : 0);
+  uint32_t result = 0x20 | (cylinder ? 0 : 0x10) | (head ? 4 : 0);
   if (disk)
     result |= disk->IsReadOnly() ? 0x48 : 8;
   return result;

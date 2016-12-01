@@ -32,7 +32,7 @@ FDC::FDC(const ID& id) : Device(id) {
   litdrive = 0;
   seektime = 0;
   for (int i = 0; i < num_drives; i++) {
-    drive[i].cyrinder = 0;
+    drive[i].cylinder = 0;
     drive[i].result = 0;
     drive[i].hd = 0;
     drive[i].dd = 1;
@@ -641,7 +641,7 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
 
   cy <<= drive[dr].dd;
   int seekcount =
-      abs(static_cast<int>(cy) - static_cast<int>(drive[dr].cyrinder));
+      abs(static_cast<int>(cy) - static_cast<int>(drive[dr].cylinder));
   if (GetDeviceStatus(dr) & 0x80) {
     // FAULT
     LOG1("\tSeek on unconnected drive (%d)\n", dr);
@@ -649,8 +649,8 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
     Intr(true);
     int_requested = true;
   } else {
-    LOG3("Seek: %d -> %d (%d)\n", drive[dr].cyrinder, cy, seekcount);
-    drive[dr].cyrinder = cy;
+    LOG3("Seek: %d -> %d (%d)\n", drive[dr].cylinder, cy, seekcount);
+    drive[dr].cylinder = cy;
     seektime = seekcount && diskwait ? (400 * seekcount + 500) : 10;
     scheduler->AddEvent(seektime, this, static_cast<TimeFunc>(&FDC::SeekEvent),
                         dr);
@@ -675,11 +675,11 @@ void IOCALL FDC::SeekEvent(uint32_t dr) {
   }
 
   seektime = 0;
-  if (dr > num_drives || !diskmgr->GetFDU(dr)->Seek(drive[dr].cyrinder)) {
+  if (dr > num_drives || !diskmgr->GetFDU(dr)->Seek(drive[dr].cylinder)) {
     drive[dr].result = (dr & 3) | ST0_SE;
     LOG0("success.\n");
-    //      statusdisplay.Show(1000, 0, "0:%.2d 1:%.2d", drive[0].cyrinder,
-    //      drive[1].cyrinder);
+    //      statusdisplay.Show(1000, 0, "0:%.2d 1:%.2d", drive[0].cylinder,
+    //      drive[1].cylinder);
   } else {
     drive[dr].result = (dr & 3) | ST0_SE | ST0_NR | ST0_AT;
     LOG0("failed.\n");
@@ -728,7 +728,7 @@ void FDC::CmdSenceIntStatus() {
     for (i = 0; i < 4; i++) {
       if (drive[i].result) {
         buffer[0] = uint8_t(drive[i].result);
-        buffer[1] = uint8_t(drive[i].cyrinder >> drive[i].dd);
+        buffer[1] = uint8_t(drive[i].cylinder >> drive[i].dd);
         drive[i].result = 0;
         ShiftToResultPhase(2);
         break;
@@ -988,7 +988,7 @@ void FDC::WriteID() {
   if (showstatus)
     statusdisplay.Show(
         85, 0, "WriteID dr:%d tr:%d sec:%.2d N:%.2x", dr,
-        (drive[dr].cyrinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1), wid.sc,
+        (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1), wid.sc,
         wid.n);
 
   idr.n = wid.n;
@@ -1079,7 +1079,7 @@ void FDC::ReadDiagnostic() {
     uint32_t flags =
         ((hdu >> 2) & 1) | (command & 0x40) | (drive[dr].hd & 0x80);
     uint32_t size;
-    int tr = (drive[dr].cyrinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1);
+    int tr = (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1);
     statusdisplay.Show(84, showstatus ? 1000 : 2000,
                        "ReadDiagnostic (Dr%d Tr%d)", dr, tr);
 
@@ -1210,7 +1210,7 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
   fdstat = 0;
   for (int d = 0; d < num_drives; d++) {
     drive[d] = st->dr[d];
-    diskmgr->GetFDU(d)->Seek(drive[d].cyrinder);
+    diskmgr->GetFDU(d)->Seek(drive[d].cylinder);
     if (seekstate & (1 << d)) {
       scheduler->AddEvent(diskwait ? 100 : 10, this,
                           static_cast<TimeFunc>(&FDC::SeekEvent), d);

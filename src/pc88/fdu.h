@@ -49,7 +49,7 @@ class FDU {
                        IDR id,
                        const uint8_t* data,
                        bool deleted);
-  uint32_t Seek(uint32_t cyrinder);
+  uint32_t Seek(uint32_t cylinder);
   uint32_t SenceDeviceStatus();
   uint32_t ReadID(uint32_t flags, IDR* id);
   uint32_t WriteID(uint32_t flags, WIDDESC* wid);
@@ -68,7 +68,7 @@ class FDU {
   FloppyDisk* disk;
   FloppyDisk::Sector* sector;
   DiskManager* diskmgr;
-  int cyrinder;
+  int cylinder;
   int head;
   int drive;
   int track;

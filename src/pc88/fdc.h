@@ -122,7 +122,7 @@ class FDC final : public Device {
   };
 
   struct Drive {
-    uint32_t cyrinder;
+    uint32_t cylinder;
     uint32_t result;
     uint8_t hd;
     uint8_t dd;
