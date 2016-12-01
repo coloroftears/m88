@@ -16,10 +16,6 @@
 //  なっているので注意！
 //
 #ifdef USE_Z80_X86
-#define CPU_Z80X86  // x86 版の Z80 エンジンを使用する
-#endif
-
-#ifdef CPU_Z80X86
 #include "devices/z80_x86.h"
 #else
 #include "devices/z80c.h"
@@ -56,11 +52,7 @@ class JoyPad;
 //
 class PC88 : public Scheduler, public ICPUTime {
  public:
-#if defined(CPU_DEBUG)
-  using Z80 = Z80Debug;
-#elif defined(CPU_TEST)
-  using Z80 = Z80Test;
-#elif defined(CPU_Z80X86) && defined(USE_Z80_X86)
+#if defined(USE_Z80_X86)
   using Z80 = Z80_x86;
 #else
   using Z80 = Z80C;
