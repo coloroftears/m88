@@ -88,9 +88,6 @@ class PC88 : public Scheduler, public ICPUTime {
   PC8801::PD8257* GetDMAC() { return dmac; }
   PC8801::Beep* GetBEEP() { return beep; }
 
-  bool SaveShapshot(const char* filename);
-  bool LoadShapshot(const char* filename);
-
   int GetFramePeriod();
 
  public:
