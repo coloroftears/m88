@@ -794,6 +794,7 @@ uint8_t Z80C::Dec8(uint8_t y) {
 }
 
 uint32_t Z80C::ADD16(uint32_t x, uint32_t y) {
+  GetSF(), GetZF(), GetPF();
   fx32 = (x & 0xffff) * 2;
   fy32 = (y & 0xffff) * 2;
   uf = CF | HF | WF;
