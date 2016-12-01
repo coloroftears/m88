@@ -8,8 +8,6 @@
 
 #include <utility>
 
-#include "interface/ifguid.h"
-
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------

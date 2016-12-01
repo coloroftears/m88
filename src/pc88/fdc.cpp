@@ -9,6 +9,7 @@
 #include "pc88/fdc.h"
 
 #include <stdlib.h>
+
 #include <algorithm>
 
 #include "common/critical_section.h"

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <algorithm>
+#include <stdint.h>
 
-#include "common/types.h"
+#include <algorithm>
 
 // ---------------------------------------------------------------------------
 

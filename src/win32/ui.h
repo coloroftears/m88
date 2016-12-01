@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdint.h>
+
 #include "interface/if_win.h"
 #include "win32/88config.h"
 #include "win32/monitors/basmon.h"

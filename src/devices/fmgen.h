@@ -12,8 +12,9 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "common/clamp.h"
-#include "common/types.h"
 
 // ---------------------------------------------------------------------------
 //  出力サンプルの型

@@ -6,8 +6,6 @@
 
 #include "win32/cfgpage.h"
 
-#include <commctrl.h>
-
 #include "common/clamp.h"
 #include "win32/resource.h"
 

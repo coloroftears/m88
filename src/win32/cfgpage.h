@@ -8,11 +8,11 @@
 
 #include <windows.h>
 
+#include <commctrl.h>
+
 #include "interface/if_win.h"
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
-
-#include <commctrl.h>
 
 namespace PC8801 {
 

@@ -8,9 +8,9 @@
 
 #include "pc88/screen.h"
 
-#include "pc88/memory.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"
+#include "pc88/memory.h"
 #include "win32/status.h"
 
 #define LOGNAME "screen"

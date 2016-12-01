@@ -6,12 +6,13 @@
 
 #include "pc88/sound.h"
 
+#include <stdint.h>
+
 #include <algorithm>
 
 #include "common/clamp.h"
-#include "common/types.h"
-#include "pc88/pc88.h"
 #include "pc88/config.h"
+#include "pc88/pc88.h"
 
 //#define LOGNAME "sound"
 #include "common/diag.h"

@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdint.h>
+
 #include "interface/ifcommon.h"
 
 struct IMouseUI : public IUnk {

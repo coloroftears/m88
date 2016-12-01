@@ -13,8 +13,8 @@
 #pragma once
 
 #include <assert.h>
+#include <stdint.h>
 
-#include "common/types.h"
 #include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------

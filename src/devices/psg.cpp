@@ -6,9 +6,9 @@
 
 #include "devices/psg.h"
 
-#include "common/clamp.h"
-
 #include <math.h>
+
+#include "common/clamp.h"
 
 // ---------------------------------------------------------------------------
 //  コンストラクタ・デストラクタ

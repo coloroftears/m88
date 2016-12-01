@@ -4,6 +4,8 @@
 
 #ifdef LOGGING
 
+#include <windows.h>
+
 const char* GetDDERR(HRESULT hr);
 
 inline void LOGDDERR(const char* text, HRESULT hr) {

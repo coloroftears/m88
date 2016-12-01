@@ -9,7 +9,9 @@
 #pragma once
 
 #include <windows.h>
+
 #include <commdlg.h>
+#include <stdint.h>
 
 #include "common/types.h"
 

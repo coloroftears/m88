@@ -8,16 +8,17 @@
 
 // ---------------------------------------------------------------------------
 
+#include <stdint.h>
+
+#include <vector>
+
 #include "common/critical_section.h"
 #include "common/sequencer.h"
-#include "common/types.h"
 #include "interface/if_win.h"
 #include "pc88/config.h"
 #include "pc88/pc88.h"
 #include "win32/winjoy.h"
 #include "win32/winsound.h"
-
-#include <vector>
 
 namespace PC8801 {
 class WinKeyIF;

@@ -28,23 +28,23 @@ class DiskManager;
 class TapeManager;
 
 namespace PC8801 {
-class Config;
-class Memory;
-class PD8257;
-class KanjiROM;
-class Screen;
-class INTC;
-class CRTC;
 class Base;
-class FDC;
-class SubSystem;
-class SIO;
-class CDIF;
-class OPNIF;
-class Calender;
-class DiskIO;
 class Beep;
+class CDIF;
+class CRTC;
+class Calender;
+class Config;
+class DiskIO;
+class FDC;
+class INTC;
 class JoyPad;
+class KanjiROM;
+class Memory;
+class OPNIF;
+class PD8257;
+class SIO;
+class Screen;
+class SubSystem;
 }
 
 // ---------------------------------------------------------------------------

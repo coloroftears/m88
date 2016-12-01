@@ -2,4 +2,6 @@
 
 #pragma once
 
+#include <stdint.h>
+
 bool SanityCheck(uint32_t* = 0);

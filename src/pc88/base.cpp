@@ -7,6 +7,7 @@
 #include "pc88/base.h"
 
 #include <stdlib.h>
+
 #include <algorithm>
 
 #include "common/draw.h"

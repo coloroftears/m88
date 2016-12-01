@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "common/guid.h"
 #include "common/types.h"
 

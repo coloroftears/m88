@@ -8,7 +8,8 @@
 
 // ---------------------------------------------------------------------------
 
-#include "common/types.h"
+#include <stdint.h>
+
 #include "common/critical_section.h"
 #include "common/time_keeper.h"
 

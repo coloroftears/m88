@@ -10,9 +10,11 @@
 
 #include <windows.h>
 
+#include <stdint.h>
+
 #include "common/critical_section.h"
 #include "common/draw.h"
-#include "common/types.h"
+#include "common/guid.h"
 
 // ---------------------------------------------------------------------------
 

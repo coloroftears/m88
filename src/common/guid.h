@@ -8,7 +8,7 @@
 
 #else  // !WIN32
 
-#include "common/types.h"
+#include <stdint.h>
 
 struct GUID {
   GUID(int32_t d1,

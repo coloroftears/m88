@@ -9,14 +9,16 @@
 #pragma once
 
 #include <windows.h>
+
 #include <mmsystem.h>
 #include <dsound.h>
+#include <stdint.h>
+
 #include <string>
 
-#include "common/types.h"
+#include "common/critical_section.h"
 #include "pc88/sound.h"
 #include "win32/sounddrv.h"
-#include "common/critical_section.h"
 
 class PC88;
 class OPNMonitor;

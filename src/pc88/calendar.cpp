@@ -9,6 +9,8 @@
 
 #include "pc88/calendar.h"
 
+#include <stdlib.h>
+
 #include "common/bcd.h"
 
 //#define LOGNAME "calender"

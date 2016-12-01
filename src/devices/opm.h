@@ -8,7 +8,6 @@
 
 #include "devices/fmgen.h"
 #include "devices/fmtimer.h"
-#include "devices/psg.h"
 
 // ---------------------------------------------------------------------------
 //  class OPM

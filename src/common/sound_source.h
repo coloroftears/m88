@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdint.h>
 
 using Sample16 = int16_t;
 using Sample32 = int32_t;

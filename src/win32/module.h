@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <windows.h>
+
 #include "interface/ifcommon.h"
 
 namespace PC8801 {

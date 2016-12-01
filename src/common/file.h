@@ -10,8 +10,7 @@
 
 #include <windows.h>
 
-#include "common/types.h"
-
+#include <stdint.h>
 #include <stdlib.h>
 
 // ---------------------------------------------------------------------------

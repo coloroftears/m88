@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "common/device.h"
 #include "common/critical_section.h"
+#include "common/device.h"
 
 // ---------------------------------------------------------------------------
 namespace PC8801 {

@@ -4,10 +4,13 @@
 // ---------------------------------------------------------------------------
 //  $Id: 88config.cpp,v 1.28 2003/09/28 14:35:35 cisc Exp $
 
+#include "win32/88config.h"
+
 #include <windows.h>
 
 #include "common/clamp.h"
-#include "win32/88config.h"
+#include "interface/ifcommon.h"
+#include "pc88/config.h"
 
 static const char* AppName = "M88p2 for Windows";
 

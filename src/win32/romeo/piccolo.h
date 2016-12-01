@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "common/types.h"
-#include "common/time_keeper.h"
+#include <stdint.h>
+
 #include "common/critical_section.h"
+#include "common/time_keeper.h"
 
 //  遅延送信対応 ROMEO ドライバ
 //

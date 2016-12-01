@@ -11,6 +11,7 @@
 #include "common/device.h"
 #include "common/draw.h"
 #include "common/scheduler.h"
+#include "common/types.h"
 
 namespace PC8801 {
 class PD8257;

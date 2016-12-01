@@ -6,7 +6,8 @@
 
 #include "pc88/tape_manager.h"
 
-#include <inttypes.h>
+#include <stdint.h>
+
 #include <algorithm>
 
 #include "common/file.h"

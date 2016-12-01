@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdint.h>
 #include "common/sound_source.h"
 
 // ---------------------------------------------------------------------------

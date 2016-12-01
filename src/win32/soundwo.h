@@ -9,6 +9,7 @@
 #pragma once
 
 #include <windows.h>
+
 #include <mmsystem.h>
 
 #include "common/critical_section.h"

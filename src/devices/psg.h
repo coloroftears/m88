@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "common/types.h"
+#include <stdint.h>
 
 #define PSG_SAMPLETYPE int32_t  // int32_t or int16_t
 

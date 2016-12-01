@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "common/types.h"
 #include "common/device.h"
 #include "common/draw.h"
+#include "common/types.h"
 #include "pc88/config.h"
 
 // ---------------------------------------------------------------------------

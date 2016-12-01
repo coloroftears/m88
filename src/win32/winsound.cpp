@@ -6,6 +6,8 @@
 
 #include "win32/winsound.h"
 
+#include <algorithm>
+
 #include "common/clamp.h"
 #include "pc88/config.h"
 #include "win32/status.h"
@@ -13,8 +15,6 @@
 #include "win32/soundds2.h"
 #include "win32/soundwo.h"
 #include "win32/monitors/soundmon.h"
-
-#include <algorithm>
 
 //#define LOGNAME "winsound"
 #include "common/diag.h"

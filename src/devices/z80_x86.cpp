@@ -11,13 +11,13 @@
 //  Memory 関数は __cdecl, IO 関数は __stdcall (IOCALL) を想定しています
 //
 
-#include "common/types.h"
+#include "devices/z80_x86.h"
 
 #include <assert.h>
 
-#ifdef USE_Z80_X86
+#include "common/types.h"
 
-#include "devices/z80_x86.h"
+#ifdef USE_Z80_X86
 
 //#define NO_UNOFFICIALFLAGS
 
