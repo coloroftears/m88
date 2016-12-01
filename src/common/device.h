@@ -84,16 +84,10 @@ class MemoryBus : public IMemoryAccess {
   void SetWriteMemory(uint32_t addr, void* ptr);
   void SetReadMemory(uint32_t addr, void* ptr);
   void SetMemory(uint32_t addr, void* ptr);
-  void SetFunc(uint32_t addr, void* inst, ReadFuncPtr rd, WriteFuncPtr wr);
 
   void SetWriteMemorys(uint32_t addr, uint32_t length, uint8_t* ptr);
   void SetReadMemorys(uint32_t addr, uint32_t length, uint8_t* ptr);
   void SetMemorys(uint32_t addr, uint32_t length, uint8_t* ptr);
-  void SetFuncs(uint32_t addr,
-                uint32_t length,
-                void* inst,
-                ReadFuncPtr rd,
-                WriteFuncPtr wr);
 
   void SetWriteMemorys2(uint32_t addr,
                         uint32_t length,
@@ -104,11 +98,6 @@ class MemoryBus : public IMemoryAccess {
                        uint8_t* ptr,
                        void* inst);
   void SetMemorys2(uint32_t addr, uint32_t length, uint8_t* ptr, void* inst);
-  void SetFuncs2(uint32_t addr,
-                 uint32_t length,
-                 void* inst,
-                 ReadFuncPtr rd,
-                 WriteFuncPtr wr);
 
   void SetReadOwner(uint32_t addr, uint32_t length, void* inst);
   void SetWriteOwner(uint32_t addr, uint32_t length, void* inst);
@@ -298,21 +287,6 @@ inline void MemoryBus::SetMemory(uint32_t addr, void* ptr) {
 }
 
 // ---------------------------------------------------------------------------
-//  バンク読み書きに関数を割り当てる
-//
-inline void MemoryBus::SetFunc(uint32_t addr,
-                               void* inst,
-                               ReadFuncPtr rd,
-                               WriteFuncPtr wr) {
-  assert((addr & pagemask) == 0);
-  assert((intptr_t(rd) & idbit) == 0 && (intptr_t(wr) & idbit) == 0);
-  Page* page = &pages[addr >> pagebits];
-  page->read = (void*)(intptr_t(rd) | idbit);
-  page->write = (void*)(intptr_t(wr) | idbit);
-  page->inst = inst;
-}
-
-// ---------------------------------------------------------------------------
 //  複数のバンク書き込みに連続したメモリを割り当てる
 //  npages は固定の方が好ましいかも
 //
@@ -487,89 +461,6 @@ inline void MemoryBus::SetMemorys2(uint32_t addr,
     owner++;
     page++;
     ptr += 1 << pagebits;
-  }
-}
-
-// ---------------------------------------------------------------------------
-//  複数のバンク読み書きに関数を割り当てる
-//  npages は固定の方が好ましいかも
-//
-inline void MemoryBus::SetFuncs(uint32_t addr,
-                                uint32_t length,
-                                void* inst,
-                                ReadFuncPtr rd,
-                                WriteFuncPtr wr) {
-  assert((addr & pagemask) == 0 && (length & pagemask) == 0);
-  assert((intptr_t(rd) & idbit) == 0 && (intptr_t(wr) & idbit) == 0);
-
-  void* r = (void*)(intptr_t(rd) | idbit);
-  void* w = (void*)(intptr_t(wr) | idbit);
-
-  Page* page = pages + (addr >> pagebits);
-  uint32_t npages = length >> pagebits;
-
-  if (!(npages & 3) || npages >= 16) {
-    for (int i = npages & 3; i > 0; i--) {
-      page->read = r;
-      page->write = w;
-      page->inst = inst;
-      page++;
-    }
-    for (npages >>= 2; npages > 0; npages--) {
-      page[0].read = r;
-      page[0].write = w;
-      page[0].inst = inst;
-      page[1].read = r;
-      page[1].write = w;
-      page[1].inst = inst;
-      page[2].read = r;
-      page[2].write = w;
-      page[2].inst = inst;
-      page[3].read = r;
-      page[3].write = w;
-      page[3].inst = inst;
-      page += 4;
-    }
-  } else {
-    for (; npages > 0; npages--) {
-      page->read = r;
-      page->write = w;
-      page->inst = inst;
-      page++;
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-//  複数のバンク読み書きに関数を割り当てる
-//
-inline void MemoryBus::SetFuncs2(uint32_t addr,
-                                 uint32_t length,
-                                 void* inst,
-                                 ReadFuncPtr rd,
-                                 WriteFuncPtr wr) {
-  assert((addr & pagemask) == 0 && (length & pagemask) == 0);
-  assert((intptr_t(rd) & idbit) == 0 && (intptr_t(wr) & idbit) == 0);
-
-  void* r = (void*)(intptr_t(rd) | idbit);
-  void* w = (void*)(intptr_t(wr) | idbit);
-
-  Page* page = pages + (addr >> pagebits);
-  Owner* owner = owners + (addr >> pagebits);
-  uint32_t npages = length >> pagebits;
-
-  for (; npages > 0; npages--) {
-    if (owner->read == inst) {
-      page->read = r;
-      if (owner->write == inst)
-        page->write = w;
-      page->inst = inst;
-    } else if (owner->write == inst) {
-      page->write = w;
-      page->inst = inst;
-    }
-    page++;
-    owner++;
   }
 }
 
