@@ -15,7 +15,7 @@ SoundBuffer2::~SoundBuffer2() {
   Cleanup();
 }
 
-bool SoundBuffer2::Init(SoundSource* _source, int _buffersize) {
+bool SoundBuffer2::Init(SoundSource<Sample16>* _source, int _buffersize) {
   CriticalSection::Lock lock(cs);
 
   delete[] buffer;
@@ -34,11 +34,11 @@ bool SoundBuffer2::Init(SoundSource* _source, int _buffersize) {
   if (!ch || buffersize <= 0)
     return false;
 
-  buffer = new Sample[ch * buffersize];
+  buffer = new Sample16[ch * buffersize];
   if (!buffer)
     return false;
 
-  memset(buffer, 0, ch * buffersize * sizeof(Sample));
+  memset(buffer, 0, ch * buffersize * sizeof(Sample16));
   source = _source;
   return true;
 }
@@ -94,7 +94,7 @@ int SoundBuffer2::FillMain(int samples) {
 // ---------------------------------------------------------------------------
 //  バッファから音を貰う
 //
-int SoundBuffer2::Get(Sample* dest, int samples) {
+int SoundBuffer2::Get(Sample16* dest, int samples) {
   CriticalSection::Lock lock(cs);
   if (!buffer)
     return 0;
@@ -108,16 +108,16 @@ int SoundBuffer2::Get(Sample* dest, int samples) {
     if (xsize <= avail || fillwhenempty) {
       if (xsize > avail)
         FillMain(xsize - avail);
-      memcpy(dest, buffer + read * ch, xsize * ch * sizeof(Sample));
+      memcpy(dest, buffer + read * ch, xsize * ch * sizeof(Sample16));
       dest += xsize * ch;
       read += xsize;
     } else {
       if (avail > 0) {
-        memcpy(dest, buffer + read * ch, avail * ch * sizeof(Sample));
+        memcpy(dest, buffer + read * ch, avail * ch * sizeof(Sample16));
         dest += avail * ch;
         read += avail;
       }
-      memset(dest, 0, (xsize - avail) * ch * sizeof(Sample));
+      memset(dest, 0, (xsize - avail) * ch * sizeof(Sample16));
       dest += (xsize - avail) * ch;
     }
 

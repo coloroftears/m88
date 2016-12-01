@@ -11,8 +11,9 @@
 #include <windows.h>
 #include <mmsystem.h>
 
-#include "win32/sounddrv.h"
 #include "common/critical_section.h"
+#include "common/sound_source.h"
+#include "win32/sounddrv.h"
 
 // ---------------------------------------------------------------------------
 
@@ -24,7 +25,7 @@ class DriverWO final : public Driver {
   ~DriverWO();
 
   // Overrides Driver.
-  bool Init(SoundSource* sb,
+  bool Init(SoundSource<Sample16>* sb,
             HWND hwnd,
             uint32_t rate,
             uint32_t ch,

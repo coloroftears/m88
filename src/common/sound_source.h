@@ -4,22 +4,15 @@
 
 #include "common/types.h"
 
-using Sample = int16_t;
+using Sample16 = int16_t;
+using Sample32 = int32_t;
 
+template <class T>
 class SoundSource {
  public:
-  virtual int Get(Sample* dest, int size) = 0;
-  virtual uint32_t GetRate() = 0;
-  virtual int GetChannels() = 0;
-  virtual int GetAvail() = 0;
-};
-
-using SampleL = int32_t;
-
-class SoundSourceL {
- public:
-  virtual int Get(SampleL* dest, int size) = 0;
-  virtual uint32_t GetRate() = 0;
-  virtual int GetChannels() = 0;
-  virtual int GetAvail() = 0;
+  virtual ~SoundSource() {}
+  virtual int Get(T* dest, int size) = 0;
+  virtual uint32_t GetRate() const = 0;
+  virtual int GetChannels() const = 0;
+  virtual int GetAvail() const = 0;
 };

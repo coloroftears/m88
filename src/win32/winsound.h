@@ -21,15 +21,17 @@
 class PC88;
 class OPNMonitor;
 
-class SoundDumpPipe : public SoundSource {
+class SoundDumpPipe final : public SoundSource<Sample16> {
  public:
   SoundDumpPipe();
 
   void SetSource(SoundSource* source) { source_ = source; }
-  uint32_t GetRate() { return source_ ? source_->GetRate() : 0; }
-  int GetChannels() { return source_ ? source_->GetChannels() : 0; }
-  int Get(Sample* dest, int samples);
-  int GetAvail() { return INT_MAX; }
+
+  // Overrides SoundSource<Sample16>
+  int Get(Sample16* dest, int samples) final;
+  uint32_t GetRate() const final { return source_ ? source_->GetRate() : 0; }
+  int GetChannels() const final { return source_ ? source_->GetChannels() : 0; }
+  int GetAvail() const final { return INT_MAX; }
 
   bool DumpStart(char* filename);
   bool DumpStop();
@@ -38,7 +40,7 @@ class SoundDumpPipe : public SoundSource {
  private:
   enum DumpState { IDLE, STANDBY, DUMPING };
 
-  void Dump(Sample* dest, int samples);
+  void Dump(Sample16* dest, int samples);
 
   SoundSource* source_;
   std::string dumpfile_;
@@ -76,7 +78,7 @@ class WinSound : public Sound {
  private:
   bool InitSoundBuffer(LPDIRECTSOUND lpds, uint32_t rate);
   void Cleanup();
-  //  int Get(Sample* dest, int samples);
+  //  int Get(Sample16* dest, int samples);
 
   WinSoundDriver::Driver* driver;
 

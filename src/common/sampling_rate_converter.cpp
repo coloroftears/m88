@@ -51,7 +51,7 @@ SamplingRateConverter::~SamplingRateConverter() {
   Cleanup();
 }
 
-bool SamplingRateConverter::Init(SoundSourceL* _source,
+bool SamplingRateConverter::Init(SoundSource<Sample32>* _source,
                                  int _buffersize,
                                  uint32_t outrate) {
   CriticalSection::Lock lock(cs);
@@ -73,11 +73,11 @@ bool SamplingRateConverter::Init(SoundSourceL* _source,
   if (!ch || buffersize <= 0)
     return false;
 
-  buffer = new SampleL[ch * buffersize];
+  buffer = new Sample32[ch * buffersize];
   if (!buffer)
     return false;
 
-  memset(buffer, 0, ch * buffersize * sizeof(SampleL));
+  memset(buffer, 0, ch * buffersize * sizeof(Sample32));
   source = _source;
 
   outputrate = outrate;
@@ -147,8 +147,8 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
   // ソースを ic 倍アップサンプリングして LPF を掛けた後
   // oc 分の 1 にダウンサンプリングする
 
-  if (in == 55467)  // FM 音源対策(w
-  {
+  // FM 音源対策(w
+  if (in == 55467) {
     in = 166400;
     out *= 3;
   }
@@ -203,7 +203,7 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
 // ---------------------------------------------------------------------------
 //  バッファから音を貰う
 //
-int SamplingRateConverter::Get(Sample* dest, int samples) {
+int SamplingRateConverter::Get(Sample16* dest, int samples) {
   CriticalSection::Lock lock(cs);
   if (!buffer)
     return 0;

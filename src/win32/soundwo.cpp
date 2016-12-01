@@ -38,7 +38,7 @@ DriverWO::~DriverWO() {
 //  ch          チャネル数(2 以外は未テスト)
 //  buflen      バッファ長(単位: ms)
 //
-bool DriverWO::Init(SoundSource* s,
+bool DriverWO::Init(SoundSource<Sample16>* s,
                     HWND,
                     uint32_t rate,
                     uint32_t ch,
@@ -54,7 +54,7 @@ bool DriverWO::Init(SoundSource* s,
   DeleteBuffers();
 
   // バッファ作成
-  buffersize = (rate * ch * sizeof(Sample) * buflen / 1000 / 4) & ~7;
+  buffersize = (rate * ch * sizeof(Sample16) * buflen / 1000 / 4) & ~7;
   wavehdr = new WAVEHDR[numblocks];
   if (!wavehdr)
     return false;
@@ -166,7 +166,7 @@ bool DriverWO::SendBlock(WAVEHDR* whdr) {
     whdr->reserved = 0;
 
     if (!dontmix)  // && (mixalways || !src->IsEmpty()))
-      src->Get((Sample*)whdr->lpData, buffersize >> sampleshift);
+      src->Get((Sample16*)whdr->lpData, buffersize >> sampleshift);
     else
       memset(whdr->lpData, 0, buffersize);
 

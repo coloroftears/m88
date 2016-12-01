@@ -106,7 +106,7 @@ void Sound::Cleanup() {
 // ---------------------------------------------------------------------------
 //  音合成
 //
-int Sound::Get(Sample* dest, int nsamples) {
+int Sound::Get(Sample16* dest, int nsamples) {
   int mixsamples = std::min(nsamples, buffersize);
   if (mixsamples > 0) {
     // 合成
@@ -129,7 +129,7 @@ int Sound::Get(Sample* dest, int nsamples) {
 // ---------------------------------------------------------------------------
 //  音合成
 //
-int Sound::Get(SampleL* dest, int nsamples) {
+int Sound::Get(Sample32* dest, int nsamples) {
   // 合成
   memset(dest, 0, nsamples * 2 * sizeof(int32_t));
   CriticalSection::Lock lock(cs_ss);

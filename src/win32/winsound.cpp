@@ -168,7 +168,7 @@ bool WinSound::DumpEnd() {
 // ---------------------------------------------------------------------------
 //  合成の場合
 //
-// int WinSound::Get(Sample* dest, int samples)
+// int WinSound::Get(Sample16* dest, int samples)
 //{
 //  return samples;
 //}
@@ -253,7 +253,7 @@ bool SoundDumpPipe::DumpStop() {
   return true;
 }
 
-int SoundDumpPipe::Get(Sample* dest, int samples) {
+int SoundDumpPipe::Get(Sample16* dest, int samples) {
   if (!source_)
     return 0;
 
@@ -275,7 +275,7 @@ int SoundDumpPipe::Get(Sample* dest, int samples) {
   return actual_samples;
 }
 
-void SoundDumpPipe::Dump(Sample* dest, int samples) {
+void SoundDumpPipe::Dump(Sample16* dest, int samples) {
   int nch = GetChannels();
 
   // 冒頭の無音部をカットする
@@ -291,7 +291,7 @@ void SoundDumpPipe::Dump(Sample* dest, int samples) {
   }
 
   if (samples) {
-    mmioWrite(hmmio_, (char*)dest, samples * sizeof(Sample) * nch);
+    mmioWrite(hmmio_, (char*)dest, samples * sizeof(Sample16) * nch);
 
     // 録音時間表示
     int prevtime = dumpedsample_ / dumprate_;

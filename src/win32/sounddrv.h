@@ -9,7 +9,7 @@
 #pragma once
 
 #include "common/types.h"
-#include "common/sound_buffer2.h"
+#include "common/sound_source.h"
 
 // ---------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ class Driver {
   Driver() {}
   virtual ~Driver() {}
 
-  virtual bool Init(SoundSource* sb,
+  virtual bool Init(SoundSource<Sample16>* sb,
                     HWND hwnd,
                     uint32_t rate,
                     uint32_t ch,
@@ -31,7 +31,7 @@ class Driver {
   void MixAlways(bool yes) { mixalways = yes; }
 
  protected:
-  SoundSource* src;
+  SoundSource<Sample16>* src;
   uint32_t buffersize;
   uint32_t sampleshift;
   volatile bool playing;

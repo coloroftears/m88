@@ -12,6 +12,7 @@
 #include <mmsystem.h>
 #include <dsound.h>
 
+#include "common/sound_source.h"
 #include "win32/sounddrv.h"
 
 // ---------------------------------------------------------------------------
@@ -29,7 +30,7 @@ class DriverDS2 final : public Driver {
   ~DriverDS2();
 
   // Overrides Driver.
-  bool Init(SoundSource* sb,
+  bool Init(SoundSource<Sample16>* sb,
             HWND hwnd,
             uint32_t rate,
             uint32_t ch,

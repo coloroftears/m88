@@ -8,24 +8,24 @@
 // ---------------------------------------------------------------------------
 //  SamplingRateConverter
 //
-class SamplingRateConverter final : public SoundSource {
+class SamplingRateConverter final : public SoundSource<Sample16> {
  public:
   SamplingRateConverter();
   ~SamplingRateConverter();
 
-  bool Init(SoundSourceL* source,
+  bool Init(SoundSource<Sample32>* source,
             int bufsize,
             uint32_t outrate);  // bufsize はサンプル単位
   void Cleanup();
 
   // Overrides SoundSource.
-  int Get(Sample* dest, int size) final;
-  uint32_t GetRate() final;
-  int GetChannels() final;
-  int GetAvail() final;
+  int Get(Sample16* dest, int size) final;
+  uint32_t GetRate() const final;
+  int GetChannels() const final;
+  int GetAvail() const final;
 
   int Fill(int samples);  // バッファに最大 sample 分データを追加
-  bool IsEmpty();
+  bool IsEmpty() const;
   void FillWhenEmpty(bool f);  // バッファが空になったら補充するか
 
  private:
@@ -37,10 +37,10 @@ class SamplingRateConverter final : public SoundSource {
 
   int FillMain(int samples);
   void MakeFilter(uint32_t outrate);
-  int Avail();
+  int Avail() const;
 
-  SoundSourceL* source;
-  SampleL* buffer;
+  SoundSource<Sample32>* source;
+  Sample32* buffer;
   float* h2;
 
   int buffersize;  // バッファのサイズ (in samples)
@@ -57,7 +57,7 @@ class SamplingRateConverter final : public SoundSource {
 
   int outputrate;
 
-  CriticalSection cs;
+  mutable CriticalSection cs;
 };
 
 // ---------------------------------------------------------------------------
@@ -66,29 +66,28 @@ inline void SamplingRateConverter::FillWhenEmpty(bool f) {
   fillwhenempty = f;
 }
 
-inline uint32_t SamplingRateConverter::GetRate() {
+inline uint32_t SamplingRateConverter::GetRate() const {
   return source ? outputrate : 0;
 }
 
-inline int SamplingRateConverter::GetChannels() {
+inline int SamplingRateConverter::GetChannels() const {
   return source ? ch : 0;
 }
 
 // ---------------------------------------------------------------------------
 //  バッファが空か，空に近い状態か?
 //
-inline int SamplingRateConverter::Avail() {
+inline int SamplingRateConverter::Avail() const {
   if (write >= read)
     return write - read;
-  else
-    return buffersize + write - read;
+  return buffersize + write - read;
 }
 
-inline int SamplingRateConverter::GetAvail() {
+inline int SamplingRateConverter::GetAvail() const {
   CriticalSection::Lock lock(cs);
   return Avail();
 }
 
-inline bool SamplingRateConverter::IsEmpty() {
+inline bool SamplingRateConverter::IsEmpty() const {
   return GetAvail() == 0;
 }

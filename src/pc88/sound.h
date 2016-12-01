@@ -7,9 +7,9 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/sound_buffer2.h"
-#include "common/sampling_rate_converter.h"
 #include "common/lpf.h"
+#include "common/sampling_rate_converter.h"
+#include "common/sound_source.h"
 
 #include <limits.h>
 
@@ -22,7 +22,9 @@ namespace PC8801 {
 class Sound;
 class Config;
 
-class Sound : public Device, public ISoundControl, protected SoundSourceL {
+class Sound : public Device,
+              public ISoundControl,
+              protected SoundSource<Sample32> {
  public:
   Sound();
   ~Sound();
@@ -38,19 +40,20 @@ class Sound : public Device, public ISoundControl, protected SoundSourceL {
   // Overrides ISoundControl.
   bool IFCALL Connect(ISoundSource* src) final;
   bool IFCALL Disconnect(ISoundSource* src) final;
-  bool IFCALL Update(ISoundSource* src = 0) final;
+  bool IFCALL Update(ISoundSource* src = nullptr) final;
   int IFCALL GetSubsampleTime(ISoundSource* src) final;
 
   void FillWhenEmpty(bool f) { soundbuf.FillWhenEmpty(f); }
 
-  SoundSource* GetSoundSource() { return &soundbuf; }
+  SoundSource<Sample16>* GetSoundSource() { return &soundbuf; }
 
-  int Get(Sample* dest, int size);
-  int Get(SampleL* dest, int size);
-  uint32_t GetRate() { return mixrate; }
-  int GetChannels() { return 2; }
+  int Get(Sample16* dest, int size);
 
-  int GetAvail() { return INT_MAX; }
+  // Overrides SoundSource<Sample32>.
+  int Get(Sample32* dest, int size) final;
+  uint32_t GetRate() const final { return mixrate; }
+  int GetChannels() const final { return 2; }
+  int GetAvail() const final { return INT_MAX; }
 
  protected:
   uint32_t mixrate;

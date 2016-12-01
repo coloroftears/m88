@@ -38,7 +38,7 @@ DriverDS::~DriverDS() {
 // ---------------------------------------------------------------------------
 //  初期化 -------------------------------------------------------------------
 
-bool DriverDS::Init(SoundSource* s,
+bool DriverDS::Init(SoundSource<Sample16>* s,
                     HWND hwnd,
                     uint32_t rate,
                     uint32_t ch,
@@ -51,7 +51,7 @@ bool DriverDS::Init(SoundSource* s,
   sampleshift = 1 + (ch == 2 ? 1 : 0);
 
   // 計算
-  buffersize = (rate * ch * sizeof(Sample) * buffer_length / 1000) & ~7;
+  buffersize = (rate * ch * sizeof(Sample16) * buffer_length / 1000) & ~7;
 
   // DirectSound object 作成
   if (FAILED(CoCreateInstance(CLSID_DirectSound, 0, CLSCTX_ALL,
@@ -206,9 +206,9 @@ void DriverDS::Send() {
       //      if (mixalways || !src->IsEmpty())
       {
         if (a1)
-          src->Get((Sample*)a1, al1 >> sampleshift);
+          src->Get((Sample16*)a1, al1 >> sampleshift);
         if (a2)
-          src->Get((Sample*)a2, al2 >> sampleshift);
+          src->Get((Sample16*)a2, al2 >> sampleshift);
       }
 
       // Unlock
