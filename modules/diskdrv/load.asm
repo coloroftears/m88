@@ -226,9 +226,9 @@ load_newvectors:
         jp  load_errhook        ; EDC9
 
 
-loadsub_blk equ $
+loadsub_blk:    equ $
         org block1end
-loadsub_ptr
+loadsub_ptr:
 load_errhook:
         exx
         ex  af,af'
@@ -248,8 +248,8 @@ loadsetvector:
         ldir
         ret
 
-loadsub_len equ $-loadsub_ptr
-load_oldvectors equ 0e000h
+loadsub_len:    equ $-loadsub_ptr
+load_oldvectors:    equ 0e000h
         org loadsub_blk + loadsub_len
         
 ; ----------------------------------------------------------------------------

@@ -153,7 +153,7 @@ savedata_init:
         pop hl
         ret
 
-savedatasub_blk equ $
+savedatasub_blk:    equ $
         org RAMCodeArea
         
 savedatasub:
@@ -210,7 +210,7 @@ bsavesub:
 
         jp  EROMRET
         
-savedatasub_len equ $-RAMCodeArea
+savedatasub_len:    equ $-RAMCodeArea
         org savedatasub_blk + savedatasub_len
 
 

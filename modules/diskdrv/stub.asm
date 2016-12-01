@@ -15,9 +15,9 @@ SetupRAMRoutine:
 ; ----------------------------------------------------------------------------
 ;   常駐スタブ
 ;
-block0start equ $
+block0start:    equ $
         org 0f310h
-block0      equ $
+block0:     equ $
 
 CMDStub:
         ld  a,0
@@ -27,15 +27,15 @@ CMDStub:
         out (71h),a
         ret
 
-block0len   equ $-block0
+block0len:  equ $-block0
         org block0start + block0len
 
 ; ----------------------------------------------------------------------------
 ;   非常駐 RAM ルーチン
 ;
-block1start equ $
+block1start:    equ $
         org tempramworkarea
-block1      equ $
+block1:     equ $
         
 ROMCALL:
         ex  (sp),hl
@@ -53,12 +53,12 @@ ROMCALL:
 ROMCALL_1:  call    0
 EROMRET:    push    af
         ld  a,0
-ROMBank     equ $-1
+ROMBank:        equ $-1
         out (71h),a
         pop af
         ret
 
-block1end   equ $
-block1len   equ $-block1
+block1end:  equ $
+block1len:  equ $-block1
         org block1start + block1len
 

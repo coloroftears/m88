@@ -25,26 +25,26 @@
 ;       機械語ファイルの保存
 ;
 
-SNERR       equ 0393h
-FCERR       equ 0b06h
+SNERR:      equ 0393h
+FCERR:      equ 0b06h
 
-DIOPORT     equ 0d0h
-DIOCMD      equ DIOPORT+0
-DIOSTAT     equ DIOPORT+0
-DIODAT      equ DIOPORT+1
+DIOPORT:        equ 0d0h
+DIOCMD:     equ DIOPORT+0
+DIOSTAT:        equ DIOPORT+0
+DIODAT:     equ DIOPORT+1
 
-LINKER      equ 05bdh
-LINEA2N     equ 01bbbh
-TEXTW2R     equ 44d5h
-TEXTR2W     equ 44a4h
+LINKER:     equ 05bdh
+LINEA2N:        equ 01bbbh
+TEXTW2R:        equ 44d5h
+TEXTR2W:        equ 44a4h
 
-TXTTAB      equ 0e658h
-TXTEND      equ 0eb18h
+TXTTAB:     equ 0e658h
+TXTEND:     equ 0eb18h
 
-temp0       equ 0eab9h
+temp0:      equ 0eab9h
 
-tempramworkarea equ 0f04fh
-RAMCodeArea equ 0e9b9h
+tempramworkarea:    equ 0f04fh
+RAMCodeArea:    equ 0e9b9h
 
         org 6000h
 
@@ -53,7 +53,7 @@ RAMCodeArea equ 0e9b9h
 ;       dw  codeend
 
 
-eromid      db  'R4'
+eromid:     db  'R4'
 
 ; ----------------------------------------------------------------------------
 ;   初期化処理
@@ -61,7 +61,7 @@ eromid      db  'R4'
 erominit:
         jr  initialize
 
-TitleMsg    db  "M88 Disk I/O Extention 0.23",13,10,0
+TitleMsg:   db  "M88 Disk I/O Extension 0.23",13,10,0
 
 initialize:
         call    DetectHW
@@ -97,9 +97,9 @@ init_err:
         call    putmsg
         ret
 
-InstallFailMsg  db  "CMD extention is alredy in use. Installation aborted.",13,10,0
+InstallFailMsg: db  "CMD extention is alredy in use. Installation aborted.",13,10,0
 
-    incl "stub.asm"
+    include "stub.asm"
 
 ; ----------------------------------------------------------------------------
 ;   拡張コマンドエントリ
@@ -174,11 +174,11 @@ getfilename_e:
         call    ROMCALL
         dw  FCERR
 
- incl "load.asm"
- incl "save.asm"
- incl "misc.asm"
+ include "load.asm"
+ include "save.asm"
+ include "misc.asm"
 
 
-codeend     equ $
+codeend:        equ $
  
         end
