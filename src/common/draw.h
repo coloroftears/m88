@@ -15,7 +15,10 @@
 class Draw {
  public:
   struct Palette {
-    uint8_t red, green, blue, rsvd;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+    uint8_t rsvd;
   };
 
   struct Region {
@@ -23,15 +26,19 @@ class Draw {
       top = left = 32767;
       bottom = right = -1;
     }
-    bool Valid() { return top <= bottom; }
+    bool Valid() const { return top <= bottom; }
     void Update(int l, int t, int r, int b) {
-      left = std::min(left, l), right = std::max(right, r);
-      top = std::min(top, t), bottom = std::max(bottom, b);
+      left = std::min(left, l);
+      right = std::max(right, r);
+      top = std::min(top, t);
+      bottom = std::max(bottom, b);
     }
     void Update(int t, int b) { Update(0, t, 640, b); }
 
-    int left, top;
-    int right, bottom;
+    int left;
+    int top;
+    int right;
+    int bottom;
   };
 
   enum Status {
