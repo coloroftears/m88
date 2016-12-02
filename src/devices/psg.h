@@ -68,12 +68,12 @@ class PSG {
 
  protected:
   void MakeNoiseTable();
-  void MakeEnvelopTable();
+  void MakeEnvelopeTable();
   static void StoreSample(Sample& dest, int32_t data);
 
   uint8_t reg[16];
 
-  const uint32_t* envelop;
+  const uint32_t* envelope;
   uint32_t olevel[3];
   uint32_t scount[3], speriod[3];
   uint32_t ecount, eperiod;
@@ -84,7 +84,7 @@ class PSG {
   int volume;
   int mask;
 
-  static uint32_t enveloptable[16][64];
+  static uint32_t envelopetable[16][64];
   static uint32_t noisetable[noisetablesize];
   static int EmitTable[32];
 };

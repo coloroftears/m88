@@ -84,7 +84,7 @@ void PSG::SetVolume(int volume) {
   }
   EmitTable[1] = 0;
   EmitTable[0] = 0;
-  MakeEnvelopTable();
+  MakeEnvelopeTable();
 
   SetChannelMask(~mask);
 }
@@ -98,7 +98,7 @@ void PSG::SetChannelMask(int c) {
 // ---------------------------------------------------------------------------
 //  エンベロープ波形テーブル
 //
-void PSG::MakeEnvelopTable() {
+void PSG::MakeEnvelopeTable() {
   // 0 lo  1 up 2 down 3 hi
   static uint8_t table1[16 * 2] = {
       2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 1, 0, 1, 0, 1, 0,
@@ -107,7 +107,7 @@ void PSG::MakeEnvelopTable() {
   static uint8_t table2[4] = {0, 0, 31, 31};
   static uint8_t table3[4] = {0, 1, -1, 0};
 
-  uint32_t* ptr = enveloptable[0];
+  uint32_t* ptr = envelopetable[0];
 
   for (int i = 0; i < 16 * 2; i++) {
     uint8_t v = table2[table1[i]];
@@ -165,15 +165,15 @@ void PSG::SetReg(uint32_t regnum, uint8_t data) {
         olevel[2] = mask & 4 ? EmitTable[(data & 15) * 2 + 1] : 0;
         break;
 
-      case 11:  // Envelop period
+      case 11:  // Envelope period
       case 12:
         tmp = ((reg[11] + reg[12] * 256) & 0xffff);
         eperiod = tmp ? eperiodbase / tmp : eperiodbase * 2;
         break;
 
-      case 13:  // Envelop shape
+      case 13:  // Envelope shape
         ecount = 0;
-        envelop = enveloptable[data & 15];
+        envelope = envelopetable[data & 15];
         break;
     }
   }
@@ -285,7 +285,7 @@ void PSG::Mix(Sample* dest, int nsamples) {
       for (int i = 0; i < nsamples; i++) {
         sample = 0;
         for (int j = 0; j < (1 << oversampling); j++) {
-          env = envelop[ecount >> (envshift + oversampling)];
+          env = envelope[ecount >> (envshift + oversampling)];
           ecount += eperiod;
           if (ecount >= (1 << (envshift + 6 + oversampling))) {
             if ((reg[0x0d] & 0x0b) != 0x0a)
@@ -333,6 +333,6 @@ uint32_t PSG::noisetable[noisetablesize] = {
 int PSG::EmitTable[0x20] = {
     -1,
 };
-uint32_t PSG::enveloptable[16][64] = {
+uint32_t PSG::envelopetable[16][64] = {
     0,
 };

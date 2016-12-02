@@ -118,7 +118,7 @@ class Operator {
   uint32_t pg_diff_;     // Phase 差分値
   int32_t pg_diff_lfo_;  // Phase 差分値 >> x
 
-  //  Envelop Generator ---------------------------------------------------
+  //  Envelope Generator ---------------------------------------------------
   enum EGPhase { next, attack, decay, sustain, release, off };
 
   void EGCalc();
@@ -159,7 +159,7 @@ class Operator {
   uint32_t sl_;        // Sustain Level (0-127)
   uint32_t rr_;        // Release Rate  (0-63)
   uint32_t ks_;        // Keyscale      (0-3)
-  uint32_t ssg_type_;  // SSG-Type Envelop Control
+  uint32_t ssg_type_;  // SSG-Type Envelope Control
 
   bool keyon_;
   bool amon_;           // enable Amplitude Modulation
@@ -402,7 +402,7 @@ inline void Operator::SetKS(uint32_t ks) {
   PARAMCHANGE(13);
 }
 
-//  SSG-type Envelop (0-15)
+//  SSG-type Envelope (0-15)
 inline void Operator::SetSSGEC(uint32_t ssgec) {
   if (ssgec & 8)
     ssg_type_ = ssgec;

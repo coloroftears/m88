@@ -387,7 +387,7 @@ void Operator::Prepare() {
     dbgopout_ = 0;
   }
 }
-//  envelop の eg_phase_ 変更
+//  envelope の eg_phase_ 変更
 void Operator::ShiftPhase(EGPhase nextphase) {
   switch (nextphase) {
     case attack:  // Attack Phase
@@ -463,7 +463,7 @@ void Operator::SetFNum(uint32_t f) {
 
 //  １サンプル合成
 
-//  ISample を envelop count (2π) に変換するシフト量
+//  ISample を envelope count (2π) に変換するシフト量
 #define IS2EC_SHIFT ((20 + FM_PGBITS) - 13)
 
 // 入力: s = 20+FM_PGBITS = 29
