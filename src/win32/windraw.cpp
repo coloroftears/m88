@@ -67,7 +67,7 @@ bool WinDraw::Init0(HWND hwindow) {
     hthread = HANDLE(_beginthreadex(
         nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread));
   if (!hthread) {
-    Error::SetError(Error::ThreadInitFailed);
+    Error::SetError(Errno::ThreadInitFailed);
     return false;
   }
 #endif

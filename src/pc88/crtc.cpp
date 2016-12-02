@@ -103,11 +103,11 @@ bool CRTC::Init(IOBus* b, Scheduler* s, PD8257* d, Draw* _draw) {
   pcgram = new uint8_t[0x400];
 
   if (!font || !fontrom || !vram[0] || !pcgram) {
-    Error::SetError(Error::OutOfMemory);
+    Error::SetError(Errno::OutOfMemory);
     return false;
   }
   if (!LoadFontFile()) {
-    Error::SetError(Error::LoadFontFailed);
+    Error::SetError(Errno::LoadFontFailed);
     return false;
   }
   CreateTFont();

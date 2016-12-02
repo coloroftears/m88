@@ -6,21 +6,23 @@
 
 #include "common/error.h"
 
-Error::Errno Error::err = Error::unknown;
+Errno Error::err = Errno::unknown;
 
-const char* Error::ErrorText[Error::nerrors] = {
+const char* Error::ErrorText[] = {
     "原因不明のエラーが発生しました.",
     "PC88 の ROM ファイルが見つかりません.\nファイル名を確認してください.",
     "メモリの割り当てに失敗しました.", "画面の初期化に失敗しました.",
     "スレッドを作成できません.", "テキストフォントが見つかりません.",
-    "実行ファイルが書き換えられた恐れがあります.\n故意でなければウィルス感染が"
-    "疑われます.",
+    "実行ファイルが書き換えられた恐れがあります.\n"
+    "故意でなければウィルス感染が疑われます.",
 };
 
+// static
 const char* Error::GetErrorText() {
-  return ErrorText[err];
+  return ErrorText[static_cast<int>(err)];
 }
 
+// static
 void Error::SetError(Errno e) {
   err = e;
 }

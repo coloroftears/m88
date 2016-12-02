@@ -22,7 +22,7 @@ bool SanityCheck(uint32_t* pcrc) {
 #ifdef _WIN32
   char buf[MAX_PATH];
   GetModuleFileName(0, buf, MAX_PATH);
-  Error::SetError(Error::InsaneModule);
+  Error::SetError(Errno::InsaneModule);
 
   FileIO fio;
   if (!fio.Open(buf, FileIO::readonly))

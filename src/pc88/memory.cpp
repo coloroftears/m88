@@ -890,7 +890,7 @@ bool Memory::InitMemory() {
   tvram = new uint8_t[0x1000];
 
   if (!(rom && ram && tvram)) {
-    Error::SetError(Error::OutOfMemory);
+    Error::SetError(Errno::OutOfMemory);
     return false;
   }
   SetRAMPattern(ram, 0x10000);
@@ -903,7 +903,7 @@ bool Memory::InitMemory() {
   mm->AllocW(mid, 0, 0x10000, ram);
 
   if (!LoadROM()) {
-    Error::SetError(Error::NoROM);
+    Error::SetError(Errno::NoROM);
     return false;
   }
   return true;

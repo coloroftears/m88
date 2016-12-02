@@ -6,19 +6,18 @@
 
 #pragma once
 
-class Error {
- public:
-  enum Errno {
-    unknown = 0,
-    NoROM,
-    OutOfMemory,
-    ScreenInitFailed,
-    ThreadInitFailed,
-    LoadFontFailed,
-    InsaneModule,
-    nerrors
-  };
+enum class Errno {
+  unknown = 0,
+  NoROM,
+  OutOfMemory,
+  ScreenInitFailed,
+  ThreadInitFailed,
+  LoadFontFailed,
+  InsaneModule,
+  nerrors
+};
 
+class Error final {
  public:
   static void SetError(Errno e);
   static const char* GetErrorText();
@@ -27,5 +26,5 @@ class Error {
   Error();
 
   static Errno err;
-  static const char* ErrorText[nerrors];
+  static const char* ErrorText[];
 };
