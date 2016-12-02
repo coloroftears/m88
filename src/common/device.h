@@ -15,6 +15,8 @@
 #include <assert.h>
 #include <stdint.h>
 
+#include <memory>
+
 #include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
@@ -22,21 +24,21 @@
 //
 class Device : public IDevice {
  public:
-  explicit Device(const ID& _id) : id(_id) {}
+  explicit Device(const ID& id) : id_(id) {}
   virtual ~Device() {}
 
   // Overrides IDevice.
-  const ID& IFCALL GetID() const final { return id; }
-  const Descriptor* IFCALL GetDesc() const override { return 0; }
+  const ID& IFCALL GetID() const final { return id_; }
+  const Descriptor* IFCALL GetDesc() const override { return nullptr; }
   uint32_t IFCALL GetStatusSize() override { return 0; }
   bool IFCALL LoadStatus(const uint8_t* status) override { return false; }
   bool IFCALL SaveStatus(uint8_t* status) override { return false; }
 
  protected:
-  void SetID(const ID& i) { id = i; }
+  void SetID(const ID& i) { id_ = i; }
 
  private:
-  ID id;
+  ID id_;
 };
 
 // ---------------------------------------------------------------------------
@@ -49,7 +51,7 @@ class Device : public IDevice {
 //  関数と実メモリの識別にはポインタの特定 bit を利用するため、
 //  ポインタの少なくとも 1 bit は 0 になってなければならない
 //
-class MemoryBus : public IMemoryAccess {
+class MemoryBus final : public IMemoryAccess {
  public:
   using ReadFuncPtr = uint32_t(MEMCALL*)(void* inst, uint32_t addr);
   using WriteFuncPtr = void(MEMCALL*)(void* inst, uint32_t addr, uint32_t data);
@@ -60,6 +62,7 @@ class MemoryBus : public IMemoryAccess {
     void* inst;
     int wait;
   };
+
   struct Owner {
     void* read;
     void* write;
@@ -77,9 +80,9 @@ class MemoryBus : public IMemoryAccess {
 
  public:
   MemoryBus();
-  ~MemoryBus();
+  virtual ~MemoryBus();
 
-  bool Init(uint32_t npages, Page* pages = 0);
+  bool Init(uint32_t npages, Page* pages = nullptr);
 
   void SetWriteMemory(uint32_t addr, void* ptr);
   void SetReadMemory(uint32_t addr, void* ptr);
@@ -116,14 +119,14 @@ class MemoryBus : public IMemoryAccess {
   static void MEMCALL wrdummy(void*, uint32_t, uint32_t);
   static uint32_t MEMCALL rddummy(void*, uint32_t);
 
-  Page* pages;
-  Owner* owners;
-  bool ownpages;
+  std::unique_ptr<Page[]> pages;
+  std::unique_ptr<Owner[]> owners;
+  bool ownpages = false;
 };
 
 // ---------------------------------------------------------------------------
 
-class DeviceList {
+class DeviceList final {
  public:
   using ID = IDevice::ID;
 
@@ -133,13 +136,14 @@ class DeviceList {
     Node* next;
     int count;
   };
+
   struct Header {
     ID id;
     uint32_t size;
   };
 
  public:
-  DeviceList() { node = 0; }
+  DeviceList() {}
   ~DeviceList();
 
   void Cleanup();
@@ -156,7 +160,7 @@ class DeviceList {
   Node* FindNode(const ID id);
   bool CheckStatus(const uint8_t*);
 
-  Node* node;
+  Node* node = nullptr;
 };
 
 // ---------------------------------------------------------------------------
@@ -177,6 +181,7 @@ class IOBus : public IIOAccess, public IIOBus {
     InFuncPtr func;
     InBank* next;
   };
+
   struct OutBank {
     IDevice* device;
     OutFuncPtr func;
@@ -185,16 +190,16 @@ class IOBus : public IIOAccess, public IIOBus {
 
  public:
   IOBus();
-  ~IOBus();
+  virtual ~IOBus();
 
-  bool Init(uint32_t nports, DeviceList* devlist = 0);
+  bool Init(uint32_t nports, DeviceList* devlist = nullptr);
 
   bool ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func);
   bool ConnectOut(uint32_t bank, IDevice* device, OutFuncPtr func);
 
-  InBank* GetIns() { return ins; }
-  OutBank* GetOuts() { return outs; }
-  uint8_t* GetFlags() { return flags; }
+  InBank* GetIns() { return ins.get(); }
+  OutBank* GetOuts() { return outs.get(); }
+  uint8_t* GetFlags() { return flags.get(); }
 
   bool IsSyncPort(uint32_t port);
 
@@ -209,7 +214,7 @@ class IOBus : public IIOAccess, public IIOBus {
   static uint32_t Active(uint32_t data, uint32_t bits) { return data | ~bits; }
 
  private:
-  class DummyIO : public Device {
+  class DummyIO final : public Device {
    public:
     DummyIO() : Device(0) {}
     ~DummyIO() {}
@@ -217,34 +222,35 @@ class IOBus : public IIOAccess, public IIOBus {
     uint32_t IOCALL dummyin(uint32_t);
     void IOCALL dummyout(uint32_t, uint32_t);
   };
+
   struct StatusTag {
     Device::ID id;
     uint32_t size;
   };
 
  private:
-  InBank* ins;
-  OutBank* outs;
-  uint8_t* flags;
-  DeviceList* devlist;
+  std::unique_ptr<InBank[]> ins;
+  std::unique_ptr<OutBank[]> outs;
+  std::unique_ptr<uint8_t[]> flags;
+  DeviceList* devlist = nullptr;
 
-  uint32_t banksize;
+  uint32_t banksize = 0;
   static DummyIO dummyio;
 };
 
 // ---------------------------------------------------------------------------
 //  Bus
 //
-/*
+#if 0
 class Bus : public MemoryBus, public IOBus
 {
-public:
-    Bus() {}
-    ~Bus() {}
+ public:
+  Bus() {}
+  ~Bus() {}
 
-    bool Init(uint32_t nports, uint32_t npages, Page* pages = 0);
+  bool Init(uint32_t nports, uint32_t npages, Page* pages = nullptr);
 };
-*/
+#endif
 // ---------------------------------------------------------------------------
 
 #define DEV_ID(a, b, c, d)                                   \
@@ -296,7 +302,7 @@ inline void MemoryBus::SetWriteMemorys(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   if (!(npages & 3) || npages >= 16) {
@@ -331,8 +337,8 @@ inline void MemoryBus::SetWriteMemorys2(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
-  Owner* owner = owners + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   for (; npages > 0; npages--) {
@@ -353,7 +359,7 @@ inline void MemoryBus::SetReadMemorys(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
   uint32_t npages = length >> pagebits;
 
   if (!(npages & 3) || npages >= 16) {
@@ -388,8 +394,8 @@ inline void MemoryBus::SetReadMemorys2(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
-  Owner* owner = owners + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   uint32_t npages = length >> pagebits;
 
   for (; npages > 0; npages--) {
@@ -410,7 +416,7 @@ inline void MemoryBus::SetMemorys(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
   uint32_t npages = length >> pagebits;
 
   if (!(npages & 3) || npages >= 16) {
@@ -449,8 +455,8 @@ inline void MemoryBus::SetMemorys2(uint32_t addr,
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
   assert((uint32_t(ptr) & idbit) == 0);
 
-  Page* page = pages + (addr >> pagebits);
-  Owner* owner = owners + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   uint32_t npages = length >> pagebits;
 
   for (; npages > 0; npages--) {
@@ -478,7 +484,7 @@ inline void MemoryBus::SetWait(uint32_t addr, uint32_t wait) {
 inline void MemoryBus::SetWaits(uint32_t addr, uint32_t length, uint32_t wait) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
 
-  Page* page = pages + (addr >> pagebits);
+  Page* page = pages.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   if (!(npages & 3) || npages >= 16) {
@@ -506,7 +512,7 @@ inline void MemoryBus::SetReadOwner(uint32_t addr,
                                     void* inst) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
 
-  Owner* owner = owners + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   for (; npages > 0; npages--)
@@ -521,7 +527,7 @@ inline void MemoryBus::SetWriteOwner(uint32_t addr,
                                      void* inst) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
 
-  Owner* owner = owners + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   for (; npages > 0; npages--)
@@ -534,7 +540,7 @@ inline void MemoryBus::SetWriteOwner(uint32_t addr,
 inline void MemoryBus::SetOwner(uint32_t addr, uint32_t length, void* inst) {
   assert((addr & pagemask) == 0 && (length & pagemask) == 0);
 
-  Owner* owner = owners + (addr >> pagebits);
+  Owner* owner = owners.get() + (addr >> pagebits);
   int npages = length >> pagebits;
 
   for (; npages > 0; npages--) {
@@ -569,5 +575,5 @@ inline uint32_t MemoryBus::Read8(uint32_t addr) {
 //  ページテーブルの取得
 //
 inline const MemoryBus::Page* MemoryBus::GetPageTable() {
-  return pages;
+  return pages.get();
 }

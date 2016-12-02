@@ -13,13 +13,9 @@
 //  Memory Bus
 //  構築・廃棄
 //
-MemoryBus::MemoryBus() : pages(0), owners(0), ownpages(false) {}
+MemoryBus::MemoryBus() {}
 
-MemoryBus::~MemoryBus() {
-  if (ownpages)
-    delete[] pages;
-  delete[] owners;
-}
+MemoryBus::~MemoryBus() {}
 
 // ---------------------------------------------------------------------------
 //  初期化
@@ -28,28 +24,24 @@ MemoryBus::~MemoryBus() {
 //                  省略時は MemoryBus で用意
 //
 bool MemoryBus::Init(uint32_t npages, Page* _pages) {
-  if (pages && ownpages)
-    delete[] pages;
-
-  delete[] owners;
-  owners = 0;
+  owners.reset();
 
   if (_pages) {
-    pages = _pages;
+    pages.reset(_pages);
     ownpages = false;
   } else {
-    pages = new Page[npages];
+    pages.reset(new Page[npages]);
     if (!pages)
       return false;
     ownpages = true;
   }
-  owners = new Owner[npages];
+  owners.reset(new Owner[npages]);
   if (!owners)
     return false;
 
-  memset(owners, 0, sizeof(Owner) * npages);
+  memset(owners.get(), 0, sizeof(Owner) * npages);
 
-  for (Page *b = pages; npages > 0; npages--, b++) {
+  for (Page *b = pages.get(); npages > 0; npages--, b++) {
     b->read = (void*)(intptr_t(rddummy) | idbit);
     b->write = (void*)(intptr_t(wrdummy) | idbit);
     b->inst = 0;
@@ -77,7 +69,7 @@ void MEMCALL MemoryBus::wrdummy(void*, uint32_t addr, uint32_t data) {
 //
 IOBus::DummyIO IOBus::dummyio;
 
-IOBus::IOBus() : ins(0), outs(0), flags(0), banksize(0) {}
+IOBus::IOBus() {}
 
 IOBus::~IOBus() {
   for (uint32_t i = 0; i < banksize; i++) {
@@ -92,37 +84,29 @@ IOBus::~IOBus() {
       ob = nxt;
     }
   }
-
-  delete[] ins;
-  delete[] outs;
-  delete[] flags;
 }
 
 //  初期化
 bool IOBus::Init(uint32_t nbanks, DeviceList* dl) {
   devlist = dl;
 
-  delete[] ins;
-  delete[] outs;
-  delete[] flags;
-
   banksize = 0;
-  ins = new InBank[nbanks];
-  outs = new OutBank[nbanks];
-  flags = new uint8_t[nbanks];
+  ins.reset(new InBank[nbanks]);
+  outs.reset(new OutBank[nbanks]);
+  flags.reset(new uint8_t[nbanks]);
   if (!ins || !outs || !flags)
     return false;
   banksize = nbanks;
 
-  memset(flags, 0, nbanks);
+  memset(flags.get(), 0, nbanks);
 
   for (uint32_t i = 0; i < nbanks; i++) {
     ins[i].device = &dummyio;
     ins[i].func = static_cast<InFuncPtr>(&DummyIO::dummyin);
-    ins[i].next = 0;
+    ins[i].next = nullptr;
     outs[i].device = &dummyio;
     outs[i].func = static_cast<OutFuncPtr>(&DummyIO::dummyout);
-    outs[i].next = 0;
+    outs[i].next = nullptr;
   }
 
   return true;
