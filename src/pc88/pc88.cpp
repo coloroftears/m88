@@ -522,12 +522,12 @@ bool PC88::ConnectDevices() {
   opn2->SetIMask(0xaa, 0x80);
 
   static const IOBus::Connector c_caln[] = {
-      {pres, IOBus::portout, Calender::reset},
-      {0x10, IOBus::portout, Calender::out10},
-      {0x40, IOBus::portout, Calender::out40},
-      {0x40, IOBus::portin, Calender::in40},
+      {pres, IOBus::portout, Calendar::reset},
+      {0x10, IOBus::portout, Calendar::out10},
+      {0x40, IOBus::portout, Calendar::out40},
+      {0x40, IOBus::portin, Calendar::in40},
       {0, 0, 0}};
-  caln = new PC8801::Calender(DEV_ID('C', 'A', 'L', 'N'));
+  caln = new PC8801::Calendar(DEV_ID('C', 'A', 'L', 'N'));
   if (!caln || !caln->Init())
     return false;
   if (!bus1.Connect(caln, c_caln))

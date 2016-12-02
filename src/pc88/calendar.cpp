@@ -21,17 +21,17 @@ using namespace PC8801;
 // ---------------------------------------------------------------------------
 //  Construct/Destruct
 //
-Calender::Calender(const ID& id) : Device(id) {
+Calendar::Calendar(const ID& id) : Device(id) {
   diff = 0;
   Reset();
 }
 
-Calender::~Calender() {}
+Calendar::~Calendar() {}
 
 // ---------------------------------------------------------------------------
 //  入・出力
 //
-void IOCALL Calender::Reset(uint32_t, uint32_t) {
+void IOCALL Calendar::Reset(uint32_t, uint32_t) {
   datain = 0;
   dataoutmode = 0;
   strobe = 0;
@@ -41,7 +41,7 @@ void IOCALL Calender::Reset(uint32_t, uint32_t) {
     reg[i] = 0;
 }
 
-uint32_t IOCALL Calender::In40(uint32_t) {
+uint32_t IOCALL Calendar::In40(uint32_t) {
   if (dataoutmode)
     return IOBus::Active((reg[0] & 1) << 4, 0x10);
   else {
@@ -52,12 +52,12 @@ uint32_t IOCALL Calender::In40(uint32_t) {
   }
 }
 
-void IOCALL Calender::Out10(uint32_t, uint32_t data) {
+void IOCALL Calendar::Out10(uint32_t, uint32_t data) {
   pcmd = data & 7;
   datain = (data >> 3) & 1;
 }
 
-void IOCALL Calender::Out40(uint32_t, uint32_t data) {
+void IOCALL Calendar::Out40(uint32_t, uint32_t data) {
   uint32_t modified;
   modified = strobe ^ data;
   strobe = data;
@@ -70,7 +70,7 @@ void IOCALL Calender::Out40(uint32_t, uint32_t data) {
 // ---------------------------------------------------------------------------
 //  制御
 //
-void Calender::Command() {
+void Calendar::Command() {
   if (pcmd == 7)
     cmd = scmd | 0x80;
   else
@@ -105,7 +105,7 @@ void Calender::Command() {
 // ---------------------------------------------------------------------------
 //  データシフト
 //
-void Calender::ShiftData() {
+void Calendar::ShiftData() {
   if (hold) {
     if (cmd & 0x80) {
       // shift sreg only
@@ -138,7 +138,7 @@ void Calender::ShiftData() {
 // ---------------------------------------------------------------------------
 //  時間取得
 //
-void Calender::GetTime() {
+void Calendar::GetTime() {
   time_t ct;
 
   ct = time(&ct) + diff;
@@ -156,7 +156,7 @@ void Calender::GetTime() {
 // ---------------------------------------------------------------------------
 //  時間設定
 //
-void Calender::SetTime() {
+void Calendar::SetTime() {
   time_t ct;
   time(&ct);
   tm* lt = localtime(&ct);
@@ -179,11 +179,11 @@ void Calender::SetTime() {
 // ---------------------------------------------------------------------------
 //  状態保存
 //
-uint32_t IFCALL Calender::GetStatusSize() {
+uint32_t IFCALL Calendar::GetStatusSize() {
   return sizeof(Status);
 }
 
-bool IFCALL Calender::SaveStatus(uint8_t* s) {
+bool IFCALL Calendar::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
   st->rev = ssrev;
   st->t = time(&st->t) + diff;
@@ -198,7 +198,7 @@ bool IFCALL Calender::SaveStatus(uint8_t* s) {
   return true;
 }
 
-bool IFCALL Calender::LoadStatus(const uint8_t* s) {
+bool IFCALL Calendar::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
   if (st->rev != ssrev)
     return false;
@@ -218,14 +218,14 @@ bool IFCALL Calender::LoadStatus(const uint8_t* s) {
 // ---------------------------------------------------------------------------
 //  device description
 //
-const Device::Descriptor Calender::descriptor = {indef, outdef};
+const Device::Descriptor Calendar::descriptor = {indef, outdef};
 
-const Device::OutFuncPtr Calender::outdef[] = {
-    static_cast<Device::OutFuncPtr>(&Calender::Reset),
-    static_cast<Device::OutFuncPtr>(&Calender::Out10),
-    static_cast<Device::OutFuncPtr>(&Calender::Out40),
+const Device::OutFuncPtr Calendar::outdef[] = {
+    static_cast<Device::OutFuncPtr>(&Calendar::Reset),
+    static_cast<Device::OutFuncPtr>(&Calendar::Out10),
+    static_cast<Device::OutFuncPtr>(&Calendar::Out40),
 };
 
-const Device::InFuncPtr Calender::indef[] = {
-    static_cast<Device::InFuncPtr>(&Calender::In40),
+const Device::InFuncPtr Calendar::indef[] = {
+    static_cast<Device::InFuncPtr>(&Calendar::In40),
 };

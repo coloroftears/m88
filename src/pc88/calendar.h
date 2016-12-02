@@ -14,7 +14,7 @@
 
 namespace PC8801 {
 
-class Calender final : public Device {
+class Calendar final : public Device {
  public:
   enum {
     reset = 0,
@@ -24,8 +24,8 @@ class Calender final : public Device {
   };
 
  public:
-  explicit Calender(const ID& id);
-  ~Calender();
+  explicit Calendar(const ID& id);
+  ~Calendar();
   bool Init() { return true; }
 
   // Overrides Device
