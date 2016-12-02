@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "common/critical_section.h"
 #include "common/sound_source.h"
 
@@ -10,15 +12,14 @@
 //
 class SamplingRateConverter final : public SoundSource<Sample16> {
  public:
-  SamplingRateConverter();
-  ~SamplingRateConverter();
+  SamplingRateConverter() {}
+  ~SamplingRateConverter() final {}
 
   bool Init(SoundSource<Sample32>* source,
             int bufsize,
             uint32_t outrate);  // bufsize はサンプル単位
-  void Cleanup();
 
-  // Overrides SoundSource.
+  // Overrides SoundSource<Sample16>.
   int Get(Sample16* dest, int size) final;
   uint32_t GetRate() const final;
   int GetChannels() const final;
@@ -35,27 +36,26 @@ class SamplingRateConverter final : public SoundSource<Sample16> {
     M = 30,  // M
   };
 
-  int FillMain(int samples);
+  int FillInternal(int samples);
   void MakeFilter(uint32_t outrate);
   int Avail() const;
 
-  SoundSource<Sample32>* source;
-  Sample32* buffer;
-  float* h2;
+  SoundSource<Sample32>* source = nullptr;
+  std::unique_ptr<Sample32[]> buffer;
+  std::unique_ptr<float[]> h2;
 
-  int buffersize;  // バッファのサイズ (in samples)
-  int read;        // 読込位置 (in samples)
-  int write;       // 書き込み位置 (in samples)
-  int ch;          // チャネル数(1sample = ch*Sample)
-  bool fillwhenempty;
+  int buffersize = 0;  // バッファのサイズ (in samples)
+  int read = 0;        // 読込位置 (in samples)
+  int write = 0;       // 書き込み位置 (in samples)
+  int ch = 2;          // チャネル数(1sample = ch*Sample)
+  bool fillwhenempty = true;
 
-  int n;
-  int nch;
-  int oo;
-  int ic;
-  int oc;
+  int n = 0;
+  int oo = 0;
+  int ic = 0;
+  int oc = 0;
 
-  int outputrate;
+  int outputrate = 0;
 
   mutable CriticalSection cs;
 };

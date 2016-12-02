@@ -62,7 +62,6 @@ bool Sound::SetRate(uint32_t rate, int bufsize) {
   enabled = false;
 
   // 古いバッファを削除
-  soundbuf.Cleanup();
   delete[] mixingbuf;
   mixingbuf = 0;
 
@@ -99,7 +98,6 @@ void Sound::Cleanup() {
   sslist = 0;
 
   // バッファを開放
-  soundbuf.Cleanup();
   delete[] mixingbuf;
   mixingbuf = 0;
 }

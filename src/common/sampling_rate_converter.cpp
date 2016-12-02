@@ -4,12 +4,14 @@
 
 #include <assert.h>
 #include <math.h>
+#include <string.h>
+
 #include <algorithm>
 
 #include "common/clamp.h"
 
-#ifndef PI
-#define PI 3.14159265358979323846
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
 #endif
 
 template <class T>
@@ -42,24 +44,14 @@ T bessel0(T x) {
 // ---------------------------------------------------------------------------
 //  Sound Buffer
 //
-SamplingRateConverter::SamplingRateConverter()
-    : source(0), buffer(0), buffersize(0), h2(0), outputrate(0) {
-  fillwhenempty = true;
-}
-
-SamplingRateConverter::~SamplingRateConverter() {
-  Cleanup();
-}
-
 bool SamplingRateConverter::Init(SoundSource<Sample32>* _source,
                                  int _buffersize,
                                  uint32_t outrate) {
   CriticalSection::Lock lock(cs);
 
-  delete[] buffer;
-  buffer = 0;
+  buffer.reset();
 
-  source = 0;
+  source = nullptr;
   if (!_source)
     return true;
 
@@ -73,11 +65,11 @@ bool SamplingRateConverter::Init(SoundSource<Sample32>* _source,
   if (!ch || buffersize <= 0)
     return false;
 
-  buffer = new Sample32[ch * buffersize];
+  buffer.reset(new Sample32[ch * buffersize]);
   if (!buffer)
     return false;
 
-  memset(buffer, 0, ch * buffersize * sizeof(Sample32));
+  memset(buffer.get(), 0, ch * buffersize * sizeof(Sample32));
   source = _source;
 
   outputrate = outrate;
@@ -87,26 +79,17 @@ bool SamplingRateConverter::Init(SoundSource<Sample32>* _source,
   return true;
 }
 
-void SamplingRateConverter::Cleanup() {
-  CriticalSection::Lock lock(cs);
-
-  delete[] buffer;
-  buffer = 0;
-  delete[] h2;
-  h2 = 0;
-}
-
 // ---------------------------------------------------------------------------
 //  バッファに音を追加
 //
 int SamplingRateConverter::Fill(int samples) {
   CriticalSection::Lock lock(cs);
   if (source)
-    return FillMain(samples);
+    return FillInternal(samples);
   return 0;
 }
 
-int SamplingRateConverter::FillMain(int samples) {
+int SamplingRateConverter::FillInternal(int samples) {
   // リングバッファの空きを計算
   int free = buffersize - Avail();
 
@@ -124,11 +107,11 @@ int SamplingRateConverter::FillMain(int samples) {
     // 書きこむ
     if (buffersize - write >= samples) {
       // 一度で書ける場合
-      source->Get(buffer + write * ch, samples);
+      source->Get(buffer.get() + write * ch, samples);
     } else {
       // ２度に分けて書く場合
-      source->Get(buffer + write * ch, buffersize - write);
-      source->Get(buffer, samples - (buffersize - write));
+      source->Get(buffer.get() + write * ch, buffersize - write);
+      source->Get(buffer.get(), samples - (buffersize - write));
     }
     write += samples;
     if (write >= buffersize)
@@ -165,24 +148,23 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
   double r = ic * in;  // r = lpf かける時のレート
 
   // カットオフ 周波数
-  double c = .95 * PI / std::max(ic, oc);  // c = カットオフ
-  double fc = c * r / (2 * PI);
+  double c = .95 * M_PI / std::max(ic, oc);  // c = カットオフ
+  double fc = c * r / (2 * M_PI);
 
   // フィルタを作ってみる
   // FIR LPF (窓関数はカイザー窓)
   n = (M + 1) * ic;  // n = フィルタの次数
 
-  delete[] h2;
-  h2 = new float[(ic + 1) * (M + 1)];
+  h2.reset(new float[(ic + 1) * (M + 1)]);
 
   double gain = 2 * ic * fc / r;
   double a = 10.;  // a = 阻止域での減衰量を決める
   double d = bessel0(a);
 
   int j = 0;
-  for (int i = 0; i <= ic; i++) {
+  for (int i = 0; i <= ic; ++i) {
     int ii = i;
-    for (int o = 0; o <= M; o++) {
+    for (int o = 0; o <= M; ++o) {
       if (ii > 0) {
         double x = (double)ii / (double)(n);
         double x2 = x * x;
@@ -193,7 +175,7 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
       } else {
         h2[j] = gain;
       }
-      j++;
+      ++j;
       ii += ic;
     }
   }
@@ -208,9 +190,8 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
   if (!buffer)
     return 0;
 
-  int count;
   int ss = samples;
-  for (count = samples; count > 0; count--) {
+  for (int count = samples; count > 0; --count) {
     int p = read;
 
     int i;
@@ -219,21 +200,21 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
     float z0 = 0.f, z1 = 0.f;
 
     h = &h2[(ic - oo) * (M + 1) + (M)];
-    for (i = -M; i <= 0; i++) {
+    for (i = -M; i <= 0; ++i) {
       z0 += *h * buffer[p * 2];
       z1 += *h * buffer[p * 2 + 1];
-      h--;
-      p++;
+      --h;
+      ++p;
       if (p == buffersize)
         p = 0;
     }
 
     h = &h2[oo * (M + 1)];
-    for (; i <= M; i++) {
+    for (; i <= M; ++i) {
       z0 += *h * buffer[p * 2];
       z1 += *h * buffer[p * 2 + 1];
-      h++;
-      p++;
+      ++h;
+      ++p;
       if (p == buffersize)
         p = 0;
     }
@@ -242,11 +223,11 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
 
     oo -= oc;
     while (oo < 0) {
-      read++;
+      ++read;
       if (read == buffersize)
         read = 0;
       if (Avail() < 2 * M + 1)
-        FillMain(std::max(ss, count));
+        FillInternal(std::max(ss, count));
       ss = 0;
       oo += ic;
     }
