@@ -1629,7 +1629,7 @@ void WinUI::GetSnapshotName(char* name, int n) {
 void WinUI::SaveSnapshot(int n) {
   char name[MAX_PATH];
   GetSnapshotName(name, n);
-  if (core.SaveShapshot(name))
+  if (core.SaveSnapshot(name))
     statusdisplay.Show(80, 3000, "%s に保存しました", name);
   else
     statusdisplay.Show(80, 3000, "%s に保存できません", name);
@@ -1646,9 +1646,9 @@ void WinUI::LoadSnapshot(int n) {
   bool r;
   if (diskinfo[0].filename && diskmgr->GetNumDisks(0) >= 2) {
     OpenDiskImage(1, diskinfo[0].filename, diskinfo[0].readonly, 1, false);
-    r = core.LoadShapshot(name, diskinfo[0].filename);
+    r = core.LoadSnapshot(name, diskinfo[0].filename);
   } else {
-    r = core.LoadShapshot(name, 0);
+    r = core.LoadSnapshot(name, 0);
   }
 
   if (r)

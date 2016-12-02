@@ -166,7 +166,7 @@ bool WinCore::ConnectDevices(WinKeyIF* keyb) {
 // ---------------------------------------------------------------------------
 //  スナップショット保存
 //
-bool WinCore::SaveShapshot(const char* filename) {
+bool WinCore::SaveSnapshot(const char* filename) {
   LockObj lock(this);
 
   bool docomp = !!(config.flag2 & Config::compresssnapshot);
@@ -220,7 +220,7 @@ bool WinCore::SaveShapshot(const char* filename) {
 // ---------------------------------------------------------------------------
 //  スナップショット復元
 //
-bool WinCore::LoadShapshot(const char* filename, const char* diskname) {
+bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
   LockObj lock(this);
 
   FileIO file;

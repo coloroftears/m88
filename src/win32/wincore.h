@@ -47,8 +47,8 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   // Overrides PC88.
   void Reset();
   void ApplyConfig(PC8801::Config* config);
-  bool SaveShapshot(const char* filename);
-  bool LoadShapshot(const char* filename, const char* diskname = 0);
+  bool SaveSnapshot(const char* filename);
+  bool LoadSnapshot(const char* filename, const char* diskname = 0);
 
   PC8801::WinSound* GetSound() { return &sound; }
 
