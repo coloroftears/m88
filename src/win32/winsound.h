@@ -78,7 +78,6 @@ class WinSound : public Sound {
   void SetSoundMonitor(OPNMonitor* mon) { soundmon = mon; }
 
  private:
-  bool InitSoundBuffer(LPDIRECTSOUND lpds, uint32_t rate);
   void Cleanup();
   //  int Get(Sample16* dest, int samples);
 
