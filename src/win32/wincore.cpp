@@ -8,6 +8,7 @@
 
 #include "common/device.h"
 #include "common/file.h"
+#include "common/toast.h"
 #include "interface/ifguid.h"
 #include "interface/ifpc88.h"
 #include "pc88/beep.h"
@@ -18,7 +19,6 @@
 #include "pc88/pd8257.h"
 #include "win32/extdev.h"
 #include "win32/module.h"
-#include "win32/status.h"
 #include "win32/ui.h"
 #include "win32/winkeyif.h"
 #include "zlib/zlib.h"
@@ -290,7 +290,7 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
         }
       }
       if (!r) {
-        statusdisplay.Show(70, 3000, "バージョンが異なります");
+        Toast::Show(70, 3000, "バージョンが異なります");
         PC88::Reset();
       }
     }

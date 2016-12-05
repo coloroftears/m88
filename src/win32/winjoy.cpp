@@ -12,8 +12,8 @@
 
 #include <mmsystem.h>
 
+#include "common/toast.h"
 #include "pc88/config.h"
-#include "win32/status.h"
 
 
 using namespace PC8801;
@@ -33,13 +33,13 @@ WinPadIF::~WinPadIF() {}
 bool WinPadIF::Init() {
   enabled = false;
   if (!joyGetNumDevs()) {
-    statusdisplay.Show(70, 3000, "ジョイスティック API を使用できません");
+    Toast::Show(70, 3000, "ジョイスティック API を使用できません");
     return false;
   }
 
   JOYINFO joyinfo;
   if (joyGetPos(JOYSTICKID1, &joyinfo) == JOYERR_UNPLUGGED) {
-    statusdisplay.Show(70, 3000, "ジョイスティックが接続されていません");
+    Toast::Show(70, 3000, "ジョイスティックが接続されていません");
     return false;
   }
   enabled = true;

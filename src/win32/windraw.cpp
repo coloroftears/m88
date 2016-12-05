@@ -13,12 +13,12 @@
 #include <algorithm>
 
 #include "common/error.h"
+#include "common/toast.h"
 #include "win32/draw_dds.h"
 #include "win32/draw_ddw.h"
 #include "win32/draw_gdi.h"
 #include "win32/messages.h"
 #include "win32/monitors/loadmon.h"
-#include "win32/status.h"
 #include "win32/winexapi.h"
 
 #define LOGNAME "windraw"
@@ -208,8 +208,8 @@ void WinDraw::PaintWindow() {
       drawcount++;
       LOG4("\t\t\t(%3d,%3d)-(%3d,%3d)\n", rect.left, rect.top, rect.right - 1,
            rect.bottom - 1);
-      //          statusdisplay.Show(100, 0, "(%.3d, %.3d)-(%.3d, %.3d)",
-      //          rect.left, rect.top, rect.right-1, rect.bottom-1);
+      // Toast::Show(100, 0, "(%.3d, %.3d)-(%.3d, %.3d)",
+      //             rect.left, rect.top, rect.right-1, rect.bottom-1);
     }
     drawing = false;
   }
@@ -269,7 +269,7 @@ bool WinDraw::Unlock() {
 //  画面サイズを変える
 //
 void WinDraw::Resize(uint32_t w, uint32_t h) {
-  //  statusdisplay.Show(50, 2500, "Resize (%d, %d)", width, height);
+  // Toast::Show(50, 2500, "Resize (%d, %d)", width, height);
   width = w;
   height = h;
   if (draw)
@@ -329,9 +329,9 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
       delete newdraw;
 
       if (type == DDFull)
-        statusdisplay.Show(50, 2500, "画面切り替えに失敗しました");
+        Toast::Show(50, 2500, "画面切り替えに失敗しました");
       else
-        statusdisplay.Show(120, 3000, "GDI ドライバを使用します");
+        Toast::Show(120, 3000, "GDI ドライバを使用します");
 
       newdraw = new WinDrawGDI, type = GDI;
       result = false;

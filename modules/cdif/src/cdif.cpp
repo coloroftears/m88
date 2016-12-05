@@ -11,6 +11,8 @@
 
 #include <algorithm>
 
+// #include "common/toast.h"
+
 #define LOGNAME "cdif"
 #include "common/diag.h"
 
@@ -231,7 +233,7 @@ void CDIF::ReadSector() {
     case execphase:
       sector = (((cmdbuf[1] << 8) + cmdbuf[2]) << 8) + cmdbuf[3];
       LOG1("Read Sector (%d)\n", sector);
-      //      statusdisplay.Show(90, 0, "Read Sector (%d)", sector);
+      // Toast::Show(90, 0, "Read Sector (%d)", sector);
       length = retrycount + 1;
       rslt = 0;
 
@@ -284,7 +286,7 @@ void CDIF::TrackSearch() {
       addre = cdrom.GetTrackInfo(0)->addr;
 
       LOG2("Track Search (%d - %d)\n", addrs, addre);
-      //      statusdisplay.Show(90, 0, "Search Track (%d)", addrs);
+      // Toast::Show(90, 0, "Search Track (%d)", addrs);
       SendCommand(CDControl::playaudio, addrs, addre);
       if (cmdbuf[1] & 1)
         stillmode = 2;
@@ -313,7 +315,7 @@ void CDIF::PlayStart() {
     case execphase:
       addre = GetPlayAddress();
       LOG2("Audio Play Start (%d - %d)\n", addrs, addre);
-      //      statusdisplay.Show(90, 0, "Play Audio (%d - %d)", addrs, addre);
+      // Toast::Show(90, 0, "Play Audio (%d - %d)", addrs, addre);
       SendCommand(CDControl::playaudio, addrs, addre);
       break;
 
@@ -331,7 +333,7 @@ void CDIF::PlayStop() {
     case execphase:
       addrs = cd.GetTime();
       SendCommand(CDControl::pause);
-      //      statusdisplay.Show(90, 0, "Pause");
+      // Toast::Show(90, 0, "Pause");
       stillmode = 1;
       break;
 
@@ -442,7 +444,7 @@ void CDIF::ReadTOC() {
 
     case waitphase:
       rslt = cdrom.GetNumTracks();
-      //      statusdisplay.Show(90, 0, "Read TOC - %d tracks", rslt);
+      // Toast::Show(90, 0, "Read TOC - %d tracks", rslt);
       LOG1("GetNumTracks (%d)\n", rslt);
       for (t = 0; t < rslt; t++) {
         const CDROM::Track* tr = cdrom.GetTrackInfo(t);

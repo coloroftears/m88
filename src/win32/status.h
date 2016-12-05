@@ -6,9 +6,11 @@
 
 #pragma once
 
+#include <stdarg.h>
 #include <stdint.h>
 
 #include "common/critical_section.h"
+#include "common/toast.h"
 
 class StatusDisplay {
  public:
@@ -26,7 +28,7 @@ class StatusDisplay {
   void UpdateDisplay();
   void WaitSubSys() { litstat[2] = 9; }
 
-  bool Show(int priority, int duration, char* msg, ...);
+  bool Show(int priority, int duration, const char* msg, va_list args);
   void Update();
   uint32_t GetTimerID() { return timerid; }
 

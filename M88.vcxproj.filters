@@ -614,6 +614,9 @@
     <ClInclude Include="src\common\clamp.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\toast.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\win32\M88.rc">

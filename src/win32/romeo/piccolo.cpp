@@ -5,9 +5,9 @@
 #include <process.h>
 #include <winioctl.h>
 
+//#include "common/toast.h"
 #include "piccolo/piioctl.h"
 #include "win32/romeo/romeo.h"
-#include "win32/status.h"
 
 #define LOGNAME "piccolo"
 #include "common/diag.h"
@@ -284,8 +284,7 @@ bool Piccolo::DrvSetReg(Driver* drv,
                         uint32_t addr,
                         uint32_t data) {
   if (int32_t(at - GetCurrentTime()) > maxlatency) {
-    //      statusdisplay.Show(100, 0, "Piccolo: Time %.6d", at -
-    //      GetCurrentTime());
+    // Toast::Show(100, 0, "Piccolo: Time %.6d", at - GetCurrentTime());
     return false;
   }
   Event ev;
@@ -294,11 +293,13 @@ bool Piccolo::DrvSetReg(Driver* drv,
   ev.addr = addr;
   ev.data = data;
 
-  /*int d = evwrite - evread;
-  if (d < 0) d += eventries;
-  statusdisplay.Show(100, 0, "Piccolo: Time %.6d  Buf: %.6d  R:%.8d W:%.8d
-  w:%.6d", at - GetCurrentTime(), d, evread, GetCurrentTime(), asleep);
-  */
+#if 0
+  int d = evwrite - evread;
+  if (d < 0)
+    d += eventries;
+  Toast::Show(100, 0, "Piccolo: Time %.6d  Buf: %.6d  R:%.8d W:%.8d w:%.6d",
+              at - GetCurrentTime(), d, evread, GetCurrentTime(), asleep);
+#endif
   return Push(ev);
 }
 

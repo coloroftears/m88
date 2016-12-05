@@ -14,10 +14,10 @@
 #include "common/error.h"
 #include "common/file.h"
 #include "common/scheduler.h"
+// #include "common/toast.h"
 #include "pc88/config.h"
 #include "pc88/pc88.h"
 #include "pc88/pd8257.h"
-#include "win32/status.h"
 
 //#define LOGNAME "crtc"
 #include "common/diag.h"
@@ -586,7 +586,7 @@ void CRTC::UpdateScreen(uint8_t* image,
     ClearText(image);
   }
 
-  //  statusdisplay.Show(10, 0, "CRTC: %.2x %.2x %.2x", status, mode, attr);
+  // Toast::Show(10, 0, "CRTC: %.2x %.2x %.2x", status, mode, attr);
   if (status & 0x10) {
     static const uint8_t ctype[5] = {0, underline, underline, reverse, reverse};
 

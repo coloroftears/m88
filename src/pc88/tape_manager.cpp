@@ -11,7 +11,7 @@
 #include <algorithm>
 
 #include "common/file.h"
-#include "win32/status.h"
+#include "common/toast.h"
 
 #define LOGNAME "tape"
 #include "common/diag.h"
@@ -130,7 +130,7 @@ bool TapeManager::Motor(bool s) {
   if (motor == s)
     return true;
   if (s) {
-    statusdisplay.Show(10, 2000, "Motor on: %d %d", timerremain, timercount);
+    Toast::Show(10, 2000, "Motor on: %d %d", timerremain, timercount);
     time = scheduler->GetTime();
     if (timerremain)
       event = scheduler->AddEvent(timercount * 125 / 6, this,
@@ -141,7 +141,7 @@ bool TapeManager::Motor(bool s) {
       int td = (scheduler->GetTime() - time) * 6 / 125;
       timerremain = std::max(10, static_cast<int>(timerremain) - td);
       scheduler->DelEvent(event), event = 0;
-      statusdisplay.Show(10, 2000, "Motor off: %d %d", timerremain, timercount);
+      Toast::Show(10, 2000, "Motor off: %d %d", timerremain, timercount);
     }
     motor = false;
   }
@@ -171,7 +171,7 @@ void TapeManager::Proceed(bool timer) {
       case T_END:
         mode = T_BLANK;
         pos = 0;
-        statusdisplay.Show(50, 0, "end of tape", tick);
+        Toast::Show(50, 0, "end of tape", tick);
         timercount = 0;
         return;
 
@@ -222,7 +222,7 @@ void TapeManager::Proceed(bool timer) {
 //
 void IOCALL TapeManager::Timer(uint32_t) {
   tick += timercount;
-  statusdisplay.Show(50, 0, "tape: %d", tick);
+  Toast::Show(50, 0, "tape: %d", tick);
 
   if (mode == T_DATA) {
     Send(*data++);
@@ -346,7 +346,7 @@ bool IFCALL TapeManager::SaveStatus(uint8_t* s) {
   status->motor = motor;
   status->pos = GetPos();
   status->offset = offset;
-  statusdisplay.Show(0, 1000, "tapesave: %d", status->pos);
+  Toast::Show(0, 1000, "tapesave: %d", status->pos);
   return true;
 }
 
@@ -356,7 +356,7 @@ bool IFCALL TapeManager::LoadStatus(const uint8_t* s) {
     return false;
   motor = status->motor;
   Seek(status->pos, status->offset);
-  statusdisplay.Show(0, 1000, "tapesave: %d", GetPos());
+  Toast::Show(0, 1000, "tapesave: %d", GetPos());
   return true;
 }
 

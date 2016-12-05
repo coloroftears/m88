@@ -126,7 +126,7 @@ void StatusDisplay::DrawItem(DRAWITEMSTRUCT* dis) {
 // ---------------------------------------------------------------------------
 //  メッセージ追加
 //
-bool StatusDisplay::Show(int priority, int duration, char* msg, ...) {
+bool StatusDisplay::Show(int priority, int duration, const char* msg, va_list args) {
   CriticalSection::Lock lock(cs);
 
   if (currentpriority < priority)
@@ -138,11 +138,8 @@ bool StatusDisplay::Show(int priority, int duration, char* msg, ...) {
     return false;
   memset(entry, 0, sizeof(List));
 
-  va_list marker;
-  va_start(marker, msg);
-  int tl = wvsprintf(entry->msg, msg, marker);
+  int tl = wvsprintf(entry->msg, msg, args);
   assert(tl < 128);
-  va_end(marker);
 
   entry->duration = GetTickCount() + duration;
   entry->priority = priority;
@@ -250,4 +247,11 @@ void StatusDisplay::UpdateDisplay() {
   }
 }
 
-//
+// static
+bool Toast::Show(int priority, int duration, const char* msg, ...) {
+  va_list marker;
+  va_start(marker, msg);
+  bool r = statusdisplay.Show(priority, duration, msg, marker);
+  va_end(marker);
+  return r;
+}

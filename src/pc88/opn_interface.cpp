@@ -7,8 +7,8 @@
 #include "pc88/opn_interface.h"
 
 #include "common/scheduler.h"
+#include "common/toast.h"
 #include "pc88/config.h"
-#include "win32/status.h"
 
 #include "win32/romeo/piccolo.h"
 
@@ -70,9 +70,9 @@ bool OPNIF::Init(IOBus* b, int intrport, int io, Scheduler* s) {
     if (piccolo->GetChip(PICCOLO_YMF288, &chip) >= 0) {
       Log(" success.\n");
       if (piccolo->IsDriverBased())
-        statusdisplay.Show(100, 10000, "ROMEO_PICCOLO: YMF288 enabled");
+        Toast::Show(100, 10000, "ROMEO_PICCOLO: YMF288 enabled");
       else
-        statusdisplay.Show(100, 10000, "ROMEO_JULIET: YMF288 enabled");
+        Toast::Show(100, 10000, "ROMEO_JULIET: YMF288 enabled");
 #ifdef USE_OPN
       clock = 4000000;
 #else

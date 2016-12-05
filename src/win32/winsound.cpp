@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "common/clamp.h"
+#include "common/toast.h"
 #include "pc88/config.h"
 #include "win32/status.h"
 #include "win32/soundds.h"
@@ -68,7 +69,7 @@ void WinSound::Cleanup() {
 bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
   if (currentrate != rate || currentbuflen != buflen || wodrv != waveout) {
     if (IsDumping()) {
-      statusdisplay.Show(70, 3000, "wav 書き出し時の音設定の変更はできません");
+      Toast::Show(70, 3000, "wav 書き出し時の音設定の変更はできません");
       return false;
     }
 
@@ -108,10 +109,10 @@ bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
           driver = new DriverWO;
         } else if (useds2) {
           driver = new DriverDS2;
-          statusdisplay.Show(200, 8000, "sounddrv: using Notify driven driver");
+          Toast::Show(200, 8000, "sounddrv: using Notify driven driver");
         } else {
           driver = new DriverDS;
-          statusdisplay.Show(200, 8000, "sounddrv: using timer driven driver");
+          Toast::Show(200, 8000, "sounddrv: using timer driven driver");
         }
 
         if (!driver || !driver->Init(&dumper, hwnd, samprate, 2, buflen)) {
@@ -119,7 +120,7 @@ bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
           driver = 0;
           if (!wodrv && useds2) {
             useds2 = false;
-            statusdisplay.Show(100, 3000,
+            Toast::Show(100, 3000,
                                "IDirectSoundNotify は使用できないようです");
             i = -1;
           }
@@ -127,7 +128,7 @@ bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
       }
       if (!driver) {
         SetRate(rate, 0);
-        statusdisplay.Show(70, 3000, "オーディオデバイスを使用できません");
+        Toast::Show(70, 3000, "オーディオデバイスを使用できません");
       }
     }
   }
@@ -227,7 +228,7 @@ bool SoundDumpPipe::DumpStart(char* filename) {
 
   dumpstate_ = STANDBY;
   dumpedsample_ = 0;
-  statusdisplay.Show(100, 0, "録音待機中～");
+  Toast::Show(100, 0, "録音待機中～");
   return true;
 }
 
@@ -247,7 +248,7 @@ bool SoundDumpPipe::DumpStop() {
       mmioClose(hmmio_, 0), hmmio_ = 0;
 
     int curtime = dumpedsample_ / dumprate_;
-    statusdisplay.Show(100, 2500, "録音終了 %s [%.2d:%.2d]", dumpfile_.c_str(),
+    Toast::Show(100, 2500, "録音終了 %s [%.2d:%.2d]", dumpfile_.c_str(),
                        curtime / 60, curtime % 60);
   }
   return true;
@@ -298,8 +299,8 @@ void SoundDumpPipe::Dump(Sample16* dest, int samples) {
     dumpedsample_ += samples;
     int curtime = dumpedsample_ / dumprate_;
     if (prevtime != curtime) {
-      statusdisplay.Show(101, 0, "録音中 %s [%.2d:%.2d]", dumpfile_.c_str(),
-                         curtime / 60, curtime % 60);
+      Toast::Show(101, 0, "録音中 %s [%.2d:%.2d]", dumpfile_.c_str(),
+                  curtime / 60, curtime % 60);
     }
   }
 }

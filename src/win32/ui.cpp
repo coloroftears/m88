@@ -16,6 +16,7 @@
 #include "common/clamp.h"
 #include "common/error.h"
 #include "common/file.h"
+#include "common/toast.h"
 #include "pc88/disk_manager.h"
 #include "pc88/opn_interface.h"
 #include "pc88/tape_manager.h"
@@ -1385,7 +1386,7 @@ uint32_t WinUI::WmDropFiles(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   // 受け取ったファイルの数を確認
   int nfiles = DragQueryFile(hdrop, ~0, 0, 0);
   if (nfiles != 1) {
-    statusdisplay.Show(50, 3000, "ドロップできるのはファイル１つだけです.");
+    Toast::Show(50, 3000, "ドロップできるのはファイル１つだけです.");
     DragFinish(hdrop);
     return 0;
   }
@@ -1425,7 +1426,7 @@ void WinUI::CaptureScreen() {
       wsprintf(filename, "%.2d%.2d%.2d%.2d%.2d.bmp", time.wDay, time.wHour,
                time.wMinute, time.wSecond, time.wMilliseconds / 10);
       save = true;
-      statusdisplay.Show(80, 1500, "画面イメージを %s に保存しました",
+      Toast::Show(80, 1500, "画面イメージを %s に保存しました",
                          filename);
     } else {
       filename[0] = 0;
@@ -1585,7 +1586,7 @@ uint32_t WinUI::WmSetCursor(HWND hwnd, WPARAM wp, LPARAM lp) {
       }
     }
   }
-  //  statusdisplay.Show(0, 0, "%d", LOWORD(lp));
+  // Toast::Show(0, 0, "%d", LOWORD(lp));
   return DefWindowProc(hwnd, WM_SETCURSOR, wp, lp);
 }
 
@@ -1630,9 +1631,9 @@ void WinUI::SaveSnapshot(int n) {
   char name[MAX_PATH];
   GetSnapshotName(name, n);
   if (core.SaveSnapshot(name))
-    statusdisplay.Show(80, 3000, "%s に保存しました", name);
+    Toast::Show(80, 3000, "%s に保存しました", name);
   else
-    statusdisplay.Show(80, 3000, "%s に保存できません", name);
+    Toast::Show(80, 3000, "%s に保存できません", name);
   currentsnapshot = n;
   snapshotchanged = true;
 }
@@ -1652,9 +1653,9 @@ void WinUI::LoadSnapshot(int n) {
   }
 
   if (r)
-    statusdisplay.Show(80, 2500, "%s から復元しました", name);
+    Toast::Show(80, 2500, "%s から復元しました", name);
   else
-    statusdisplay.Show(80, 2500, "%s から復元できません", name);
+    Toast::Show(80, 2500, "%s から復元できません", name);
   for (uint32_t i = 0; i < 2; i++)
     CreateDiskMenu(i);
   currentsnapshot = n;

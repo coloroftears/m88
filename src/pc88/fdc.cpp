@@ -13,6 +13,7 @@
 #include <algorithm>
 
 #include "common/critical_section.h"
+#include "common/toast.h"
 #include "pc88/config.h"
 #include "pc88/disk_manager.h"
 #include "pc88/fdu.h"
@@ -551,9 +552,8 @@ void FDC::CmdScanEqual() {
 void FDC::ReadData(bool deleted, bool scan) {
   LOG4("\tRead %.2x %.2x %.2x %.2x\n", idr.c, idr.h, idr.r, idr.n);
   if (showstatus)
-    statusdisplay.Show(85, 0, "%s (%d) %.2x %.2x %.2x %.2x",
-                       scan ? "Scan" : "Read", hdu & 3, idr.c, idr.h, idr.r,
-                       idr.n);
+    Toast::Show(85, 0, "%s (%d) %.2x %.2x %.2x %.2x",
+                scan ? "Scan" : "Read", hdu & 3, idr.c, idr.h, idr.r, idr.n);
 
   CriticalSection::Lock lock(diskmgr->GetCS());
   result = CheckCondition(false);
@@ -678,8 +678,8 @@ void IOCALL FDC::SeekEvent(uint32_t dr) {
   if (dr > num_drives || !diskmgr->GetFDU(dr)->Seek(drive[dr].cylinder)) {
     drive[dr].result = (dr & 3) | ST0_SE;
     LOG0("success.\n");
-    //      statusdisplay.Show(1000, 0, "0:%.2d 1:%.2d", drive[0].cylinder,
-    //      drive[1].cylinder);
+    // Toast::Show(1000, 0, "0:%.2d 1:%.2d", drive[0].cylinder,
+    //             drive[1].cylinder);
   } else {
     drive[dr].result = (dr & 3) | ST0_SE | ST0_NR | ST0_AT;
     LOG0("failed.\n");
@@ -856,8 +856,8 @@ void FDC::CmdWriteData() {
 void FDC::WriteData(bool deleted) {
   LOG4("\twrite %.2x %.2x %.2x %.2x\n", idr.c, idr.h, idr.r, idr.n);
   if (showstatus)
-    statusdisplay.Show(85, 0, "Write (%d) %.2x %.2x %.2x %.2x", hdu & 3, idr.c,
-                       idr.h, idr.r, idr.n);
+    Toast::Show(85, 0, "Write (%d) %.2x %.2x %.2x %.2x", hdu & 3, idr.c, idr.h,
+                idr.r, idr.n);
 
   CriticalSection::Lock lock(diskmgr->GetCS());
   if (result = CheckCondition(true)) {
@@ -912,8 +912,8 @@ void FDC::ReadID() {
         ((hdu >> 2) & 1) | (command & 0x40) | (drive[dr].hd & 0x80);
     result = diskmgr->GetFDU(dr)->ReadID(flags, &idr);
     if (showstatus)
-      statusdisplay.Show(85, 0, "ReadID (%d:%.2x) %.2x %.2x %.2x %.2x", dr,
-                         flags, idr.c, idr.h, idr.r, idr.n);
+      Toast::Show(85, 0, "ReadID (%d:%.2x) %.2x %.2x %.2x %.2x", dr, flags,
+                  idr.c, idr.h, idr.r, idr.n);
   }
   ShiftToResultPhase7();
 }
@@ -986,11 +986,9 @@ void FDC::WriteID() {
   uint32_t flags = ((hdu >> 2) & 1) | (command & 0x40) | (drive[dr].hd & 0x80);
   result = diskmgr->GetFDU(dr)->WriteID(flags, &wid);
   if (showstatus)
-    statusdisplay.Show(
-        85, 0, "WriteID dr:%d tr:%d sec:%.2d N:%.2x", dr,
-        (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1), wid.sc,
-        wid.n);
-
+    Toast::Show(85, 0, "WriteID dr:%d tr:%d sec:%.2d N:%.2x", dr,
+                (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1),
+                wid.sc, wid.n);
   idr.n = wid.n;
   ShiftToResultPhase7();
 }
@@ -1080,8 +1078,8 @@ void FDC::ReadDiagnostic() {
         ((hdu >> 2) & 1) | (command & 0x40) | (drive[dr].hd & 0x80);
     uint32_t size;
     int tr = (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1);
-    statusdisplay.Show(84, showstatus ? 1000 : 2000,
-                       "ReadDiagnostic (Dr%d Tr%d)", dr, tr);
+    Toast::Show(84, showstatus ? 1000 : 2000,
+                "ReadDiagnostic (Dr%d Tr%d)", dr, tr);
 
     result = diskmgr->GetFDU(dr)->MakeDiagData(flags, buffer, &size);
     if (result) {

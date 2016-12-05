@@ -11,10 +11,10 @@
 #include <algorithm>
 
 #include "common/draw.h"
+#include "common/toast.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
 #include "pc88/tape_manager.h"
-#include "win32/status.h"
 
 #define LOGNAME "base"
 #include "common/diag.h"
@@ -98,7 +98,7 @@ void IOCALL Base::Reset(uint32_t, uint32_t) {
       mode = "Unknown";
       break;
   };
-  statusdisplay.Show(100, 2000, "%s mode", mode);
+  Toast::Show(100, 2000, "%s mode", mode);
 }
 
 // ---------------------------------------------------------------------------
