@@ -27,9 +27,9 @@ class SoundDumpPipe final : public SoundSource<Sample16> {
  public:
   SoundDumpPipe();
 
-  void SetSource(SoundSource* source) { source_ = source; }
+  void SetSource(SoundSource<Sample16>* source) { source_ = source; }
 
-  // Overrides SoundSource<Sample16>
+  // Overrides SoundSource<Sample16>.
   int Get(Sample16* dest, int samples) final;
   uint32_t GetRate() const final { return source_ ? source_->GetRate() : 0; }
   int GetChannels() const final { return source_ ? source_->GetChannels() : 0; }
@@ -44,7 +44,7 @@ class SoundDumpPipe final : public SoundSource<Sample16> {
 
   void Dump(Sample16* dest, int samples);
 
-  SoundSource* source_;
+  SoundSource<Sample16>* source_;
   std::string dumpfile_;
 
   HMMIO hmmio_;        // mmio handle
