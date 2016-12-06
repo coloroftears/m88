@@ -1090,7 +1090,7 @@ void OPNABase::BuildLFOTable() {
         v = 0x7f - (c - 0x40) * 2 + 0x80;
       else
         v = (c - 0xc0) * 2;
-      pmtable[c] = c;
+      pmtable[c] = v;
 
       if (c < 0x80)
         v = 0xff - c * 2;
