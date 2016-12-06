@@ -12,6 +12,7 @@
 
 #include "common/critical_section.h"
 #include "common/time_keeper.h"
+#include "interface/ifcommon.h"
 
 class PC88;
 
@@ -35,41 +36,41 @@ class Sequencer {
   void Lock() { cs.lock(); }
   void Unlock() { cs.unlock(); }
 
-  void SetClock(int clk);
+  void SetClock(SchedClock clk);
   void SetSpeed(int spd);
   void SetRefreshTiming(uint32_t rti);
 
  private:
-  void Execute(int32_t clock, int32_t length, int32_t ec);
+  void Execute(SchedClock clock, SchedTimeDelta length, int32_t ec);
   void ExecuteAsynchronus();
 
   uint32_t ThreadMain();
   static uint32_t CALLBACK ThreadEntry(LPVOID arg);
 
-  PC88* vm;
+  PC88* vm = nullptr;
 
   TimeKeeper keeper;
 
   CriticalSection cs;
-  HANDLE hthread;
-  uint32_t idthread;
+  HANDLE hthread = 0;
+  uint32_t idthread = 0;
 
-  int clock;  // 1秒は何tick?
-  int speed;  //
-  int execcount;
-  int effclock;
-  int time;
+  SchedClock clock = 1;  // 1秒は何tick?
+  int speed = 100;  //
+  int32_t execcount = 0;
+  SchedClock effclock = 1;
+  SchedTime time = 0;
 
-  uint32_t skippedframe;
-  uint32_t refreshcount;
-  uint32_t refreshtiming;
-  bool drawnextframe;
+  uint32_t skippedframe = 0;
+  uint32_t refreshcount = 1;
+  uint32_t refreshtiming = 0;
+  bool drawnextframe = false;
 
-  volatile bool shouldterminate;
-  volatile bool active;
+  volatile bool shouldterminate = false;
+  volatile bool active = false;
 };
 
-inline void Sequencer::SetClock(int clk) {
+inline void Sequencer::SetClock(SchedClock clk) {
   clock = clk;
 }
 

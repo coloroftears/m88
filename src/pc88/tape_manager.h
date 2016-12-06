@@ -103,9 +103,9 @@ class TapeManager : public Device {
   int offset;
   uint32_t tick;
   Mode mode;
-  uint32_t time;  // motor on: タイマー開始時間
-  uint32_t timercount;
-  uint32_t timerremain;  // タイマー残り
+  SchedTime time;  // motor on: タイマー開始時間
+  SchedTimeDelta timercount;
+  SchedTimeDelta timerremain;  // タイマー残り
   bool motor;
 
   IOBus* bus;

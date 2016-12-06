@@ -408,7 +408,7 @@ bool FDC::IDIncrement() {
 // ---------------------------------------------------------------------------
 //  タイマー
 //
-void FDC::SetTimer(Phase p, int ticks) {
+void FDC::SetTimer(Phase p, SchedTimeDelta ticks) {
   t_phase = p;
   if (!diskwait)
     ticks = (ticks + 127) / 128;

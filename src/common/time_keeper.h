@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include "interface/ifcommon.h"
+
 // ---------------------------------------------------------------------------
 //  TimeKeeper
 //  現在の時間を数値(1/unit ミリ秒単位)で与えるクラス．
@@ -27,7 +29,7 @@ class TimeKeeper {
   TimeKeeper();
   ~TimeKeeper();
 
-  uint32_t GetTime();
+  SchedTime GetTime();
 
  private:
   uint32_t freq;  // ソースクロックの周期

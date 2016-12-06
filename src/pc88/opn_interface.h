@@ -135,7 +135,7 @@ class OPNIF final : public Device, public ISoundSource {
   ISoundControl* soundcontrol;
   IOBus* bus;
   Scheduler* scheduler;
-  int32_t nextcount;
+  SchedTimeDelta nextcount;
   uint32_t imaskport;
   int imaskbit;
   int prevtime;

@@ -142,16 +142,23 @@ struct IIOBus {
 //
 struct SchedulerEvent;
 
+using SchedTime = int32_t;
+using SchedTimeDelta = int32_t;
+// Real clock count per SchedTime.
+// If SchedTime resolution is 10us (1/10MHz), SchedClock 40 => 4MHz.
+// 0 == fullspeed, -40 => burst
+using SchedClock = int32_t;
+
 struct IScheduler {
   using Handle = SchedulerEvent*;
 
-  virtual Handle IFCALL AddEvent(int count,
+  virtual Handle IFCALL AddEvent(SchedTimeDelta count,
                                  IDevice* dev,
                                  IDevice::TimeFunc func,
                                  int arg = 0,
                                  bool repeat = false) = 0;
   virtual void IFCALL SetEvent(Handle ev,
-                               int count,
+                               SchedTimeDelta count,
                                IDevice* dev,
                                IDevice::TimeFunc func,
                                int arg = 0,
@@ -164,7 +171,7 @@ struct IScheduler {
 //  システム内時間取得のためのインターフェース
 //
 struct ITime {
-  virtual int IFCALL GetTime() = 0;
+  virtual SchedTime IFCALL GetTime() = 0;
 };
 
 // ----------------------------------------------------------------------------

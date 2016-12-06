@@ -172,7 +172,7 @@ class FDC final : public Device {
   void WriteData(bool deleted);
   void WriteID();
 
-  void SetTimer(Phase phase, int ticks);
+  void SetTimer(Phase phase, SchedTimeDelta ticks);
   void DelTimer();
   void IOCALL PhaseTimer(uint32_t p);
   void Intr(bool i);
@@ -195,10 +195,10 @@ class FDC final : public Device {
   DiskManager* diskmgr;
   IOBus* bus;
   int pintr;
-  Scheduler* scheduler;
+  Scheduler* scheduler = nullptr;
 
-  Scheduler::Event* timerhandle;
-  uint32_t seektime;
+  Scheduler::Event* timerhandle = nullptr;
+  SchedTimeDelta seektime = 0;
 
   uint32_t status;  // ステータスレジスタ
   uint8_t* buffer;
@@ -222,8 +222,8 @@ class FDC final : public Device {
   uint32_t seekstate;
   uint32_t result;
 
-  uint8_t* readdiagptr;
-  uint8_t* readdiaglim;
+  uint8_t* readdiagptr = nullptr;
+  uint8_t* readdiaglim = nullptr;
   uint32_t xbyte;
   uint32_t readdiagcount;
 

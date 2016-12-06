@@ -65,7 +65,7 @@ class PC88 : public Scheduler, public ICPUTime {
   bool Init(Draw* draw, DiskManager* diskmgr, TapeManager* tape);
 
   void Reset();
-  int Proceed(uint32_t us, uint32_t clock, uint32_t eff);
+  SchedTimeDelta Proceed(SchedTimeDelta us, SchedClock clock, uint32_t eff);
   void ApplyConfig(PC8801::Config*);
   void SetVolume(PC8801::Config*);
 
@@ -88,7 +88,7 @@ class PC88 : public Scheduler, public ICPUTime {
   PC8801::PD8257* GetDMAC() { return dmac; }
   PC8801::Beep* GetBEEP() { return beep; }
 
-  int GetFramePeriod();
+  SchedTimeDelta GetFramePeriod();
 
  public:
   enum SpecialPort {
@@ -123,9 +123,9 @@ class PC88 : public Scheduler, public ICPUTime {
   void VSync();
 
   // Overrides Scheduler.
-  int Execute(int ticks) final;
-  void Shorten(int ticks) final;
-  int GetTicks() final;
+  SchedTimeDelta Execute(SchedTimeDelta ticks) final;
+  void Shorten(SchedTimeDelta ticks) final;
+  SchedTimeDelta GetTicks() final;
 
   bool ConnectDevices();
   bool ConnectDevices2();

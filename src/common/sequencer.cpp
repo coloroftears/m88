@@ -17,7 +17,7 @@
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
-Sequencer::Sequencer() : hthread(0), execcount(0), vm(0) {}
+Sequencer::Sequencer() {}
 
 Sequencer::~Sequencer() {
   Cleanup();
@@ -83,6 +83,7 @@ uint32_t Sequencer::ThreadMain() {
 // ---------------------------------------------------------------------------
 //  サブスレッド開始点
 //
+// static
 uint32_t CALLBACK Sequencer::ThreadEntry(void* arg) {
   return reinterpret_cast<Sequencer*>(arg)->ThreadMain();
 }
@@ -93,7 +94,9 @@ uint32_t CALLBACK Sequencer::ThreadEntry(void* arg) {
 //  length  実行する時間 (0.01ms)
 //  eff     実効クロック
 //
-inline void Sequencer::Execute(int32_t clk, int32_t length, int32_t eff) {
+inline void Sequencer::Execute(SchedClock clk,
+                               SchedTimeDelta length,
+                               int32_t eff) {
   CriticalSection::Lock lock(cs);
   execcount += clk * vm->Proceed(length, clk, eff);
 }
@@ -105,7 +108,7 @@ void Sequencer::ExecuteAsynchronus() {
   if (clock <= 0) {
     time = keeper.GetTime();
     vm->TimeSync();
-    DWORD ms;
+    SchedTimeDelta ms;
     int eclk = 0;
     do {
       if (clock)
@@ -118,14 +121,14 @@ void Sequencer::ExecuteAsynchronus() {
     vm->UpdateScreen();
 
     effclock =
-        std::min((std::min(1000, eclk) * effclock * 100 / ms) + 1, 10000UL);
+        std::min((std::min(1000, eclk) * effclock * 100 / ms) + 1, 10000);
   } else {
-    int texec = vm->GetFramePeriod();
-    int twork = texec * 100 / speed;
+    SchedTimeDelta texec = vm->GetFramePeriod();
+    SchedTimeDelta twork = texec * 100 / speed;
     vm->TimeSync();
     Execute(clock, texec, clock * speed / 100);
 
-    int32_t tcpu = keeper.GetTime() - time;
+    SchedTimeDelta tcpu = keeper.GetTime() - time;
     if (tcpu < twork) {
       if (drawnextframe && ++refreshcount >= refreshtiming) {
         vm->UpdateScreen();
@@ -133,7 +136,7 @@ void Sequencer::ExecuteAsynchronus() {
         refreshcount = 0;
       }
 
-      int32_t tdraw = keeper.GetTime() - time;
+      SchedTimeDelta tdraw = keeper.GetTime() - time;
 
       if (tdraw > twork) {
         drawnextframe = false;
@@ -161,7 +164,7 @@ void Sequencer::ExecuteAsynchronus() {
 int32_t Sequencer::GetExecCount() {
   //  CriticalSection::Lock lock(cs); // 正確な値が必要なときは有効にする
 
-  int i = execcount;
+  int32_t i = execcount;
   execcount = 0;
   return i;
 }

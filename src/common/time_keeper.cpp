@@ -39,7 +39,7 @@ TimeKeeper::~TimeKeeper() {
 // ---------------------------------------------------------------------------
 //  時間を取得
 //
-uint32_t TimeKeeper::GetTime() {
+SchedTime TimeKeeper::GetTime() {
   if (freq) {
     LARGE_INTEGER li;
     QueryPerformanceCounter(&li);

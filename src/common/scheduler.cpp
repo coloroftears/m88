@@ -28,7 +28,7 @@ bool Scheduler::Init() {
 // ---------------------------------------------------------------------------
 //  時間イベントを追加
 //
-Scheduler::Event* IFCALL Scheduler::AddEvent(int count,
+Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
                                              IDevice* inst,
                                              IDevice::TimeFunc func,
                                              int arg,
@@ -109,15 +109,15 @@ bool IFCALL Scheduler::DelEvent(Event* ev) {
 // ---------------------------------------------------------------------------
 //  時間を進める
 //
-int Scheduler::Proceed(int ticks) {
-  int t;
+SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
+  SchedTimeDelta t;
   for (t = ticks; t > 0;) {
     int i;
-    int ptime = t;
+    SchedTimeDelta ptime = t;
     for (i = 0; i <= evlast; i++) {
       Event& ev = events[i];
       if (ev.inst) {
-        int l = ev.count - time;
+        SchedTimeDelta l = ev.count - time;
         if (l < ptime)
           ptime = l;
       }
@@ -125,7 +125,7 @@ int Scheduler::Proceed(int ticks) {
 
     etime = time + ptime;
 
-    int xtime = Execute(ptime);
+    SchedTimeDelta xtime = Execute(ptime);
     etime = time += xtime;
     t -= xtime;
 

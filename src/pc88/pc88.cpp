@@ -130,8 +130,8 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 //  執行
 //  1 tick = 10μs
 //
-int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
-  clock = std::max(1, static_cast<int>(clk));
+SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks, SchedClock clk, uint32_t ecl) {
+  clock = std::max(1, clk);
   eclock = std::max(1, static_cast<int>(ecl));
   return Scheduler::Proceed(ticks);
 }
@@ -139,7 +139,7 @@ int PC88::Proceed(uint32_t ticks, uint32_t clk, uint32_t ecl) {
 // ---------------------------------------------------------------------------
 //  実行
 //
-int PC88::Execute(int ticks) {
+SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   LOADBEGIN("Core.CPU");
   int exc = ticks * clock;
   if (!(cpumode & stopwhenidle) || subsys->IsBusy() || fdc->IsBusy()) {
@@ -159,11 +159,11 @@ int PC88::Execute(int ticks) {
 // ---------------------------------------------------------------------------
 //  実行クロック数変更
 //
-void PC88::Shorten(int ticks) {
+void PC88::Shorten(SchedTimeDelta ticks) {
   Z80::StopDual(ticks * clock);
 }
 
-int PC88::GetTicks() {
+SchedTimeDelta PC88::GetTicks() {
   return (Z80::GetCCount() + dexc) / clock;
 }
 
@@ -663,7 +663,7 @@ void PC88::SetVolume(PC8801::Config* cfg) {
 // ---------------------------------------------------------------------------
 //  1 フレーム分の時間を求める．
 //
-int PC88::GetFramePeriod() {
+SchedTimeDelta PC88::GetFramePeriod() {
   return crtc ? crtc->GetFramePeriod() : 100000 / 60;
 }
 

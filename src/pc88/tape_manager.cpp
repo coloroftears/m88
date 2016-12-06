@@ -107,7 +107,8 @@ bool TapeManager::Close() {
 //
 bool TapeManager::Rewind(bool timer) {
   pos = tags;
-  scheduler->DelEvent(event), event = 0;
+  scheduler->DelEvent(event);
+  event = nullptr;
   if (pos) {
     tick = 0;
 

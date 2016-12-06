@@ -39,7 +39,7 @@ class CRTC final : public Device {
                     bool refresh);
   void SetSize();
   void ApplyConfig(const Config* config);
-  int GetFramePeriod();
+  SchedTimeDelta GetFramePeriod();
 
   // Overrides Device.
   const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
@@ -157,7 +157,7 @@ class CRTC final : public Device {
   uint8_t attr_blink;
   uint32_t status;
   uint32_t column;
-  int linetime;
+  SchedTimeDelta linetime;
   uint32_t frametime;
   uint32_t pcgadr;
   uint32_t pcgdat;
@@ -212,7 +212,7 @@ class CRTC final : public Device {
 // ---------------------------------------------------------------------------
 //  1 フレーム分に相当する時間を求める
 //
-inline int CRTC::GetFramePeriod() {
+inline SchedTimeDelta CRTC::GetFramePeriod() {
   return linetime * (height + vretrace);
 }
 }  // namespace PC8801

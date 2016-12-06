@@ -11,11 +11,11 @@
 // ---------------------------------------------------------------------------
 
 struct SchedulerEvent {
-  int count;  // 時間残り
+  SchedTime count;  // 時間残り
   IDevice* inst;
   IDevice::TimeFunc func;
   int arg;
-  int time;  // 時間
+  SchedTimeDelta time;  // 時間
 };
 
 class Scheduler : public IScheduler, public ITime {
@@ -30,10 +30,10 @@ class Scheduler : public IScheduler, public ITime {
   virtual ~Scheduler();
 
   bool Init();
-  int Proceed(int ticks);
+  SchedTimeDelta Proceed(SchedTimeDelta ticks);
 
   // Overrides IScheduler.
-  Event* IFCALL AddEvent(int count,
+  Event* IFCALL AddEvent(SchedTimeDelta count,
                          IDevice* dev,
                          IDevice::TimeFunc func,
                          int arg = 0,
@@ -48,22 +48,22 @@ class Scheduler : public IScheduler, public ITime {
   bool IFCALL DelEvent(Event* ev) override;
 
   // Overrides ITime
-  int IFCALL GetTime() override;
+  SchedTime IFCALL GetTime() override;
 
  private:
-  virtual int Execute(int ticks) = 0;
+  virtual SchedTimeDelta Execute(SchedTimeDelta ticks) = 0;
   virtual void Shorten(int ticks) = 0;
-  virtual int GetTicks() = 0;
+  virtual SchedTimeDelta GetTicks() = 0;
 
  private:
   int evlast;  // 有効なイベントの番号の最大値
-  int time;    // Scheduler 内の現在時刻
-  int etime;   // Execute の終了予定時刻
+  SchedTime time;    // Scheduler 内の現在時刻
+  SchedTime etime;   // Execute の終了予定時刻
   Event events[maxevents];
 };
 
 // ---------------------------------------------------------------------------
 
-inline int IFCALL Scheduler::GetTime() {
+inline SchedTime IFCALL Scheduler::GetTime() {
   return time + GetTicks();
 }
