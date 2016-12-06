@@ -450,8 +450,11 @@ void OPNABase::Reset() {
   stmask = ~0x1c;
   statusnext = 0;
   memaddr = 0;
+  adpcmlevel = 0;
   adpcmd = 127;
   adpcmx = 0;
+  adpcmreadbuf = 0;
+  apout0 = apout1 = adpcmout = 0;
   lfocount = 0;
   adpcmplay = false;
   adplc = 0;
@@ -1158,6 +1161,8 @@ OPNA::OPNA() {
     rhythm[i].pos = 0;
     rhythm[i].size = 0;
     rhythm[i].volume = 0;
+    rhythm[i].level = 0;
+    rhythm[i].pan = 0;
   }
   rhythmtvol = 0;
   adpcmmask = 0x3ffff;
@@ -1205,6 +1210,7 @@ bool OPNA::Init(uint32_t c, uint32_t r, bool ipflag, const char* path) {
 void OPNA::Reset() {
   reg29 = 0x1f;
   rhythmkey = 0;
+  rhythmtl = 0;
   limitaddr = 0x3ffff;
   OPNABase::Reset();
 }
@@ -1800,7 +1806,7 @@ void OPNB::SetVolumeADPCMA(int index, int db) {
 void OPNB::SetVolumeADPCMB(int db) {
   db = std::min(db, 20);
   if (db > -192)
-    adpcmvol = static_cast<int>(65536.0 * pow(10, db / 40.0));
+    adpcmvol = static_cast<int>(65536.0 * pow(10.0, db / 40.0));
   else
     adpcmvol = 0;
 }
