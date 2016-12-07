@@ -128,7 +128,6 @@ class Z80C final : public Device {
   enum {
     pagebits = MemoryManagerBase::pagebits,
     pagemask = MemoryManagerBase::pagemask,
-    idbit = MemoryManagerBase::idbit
   };
 
   enum {

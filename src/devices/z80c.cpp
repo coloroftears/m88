@@ -103,12 +103,7 @@ Z80C::~Z80C() {
 void Z80C::SetPC(uint32_t newpc) {
   MemoryPage& page = rdpages[(newpc >> pagebits) & PAGESMASK];
 
-#ifdef PTR_IDBIT
-  if (!(intptr_t(page.ptr) & idbit))
-#else
-  if (!page.func)
-#endif
-  {
+  if (!page.func) {
     DEBUGCOUNT(4);
     // instruction is on memory
     instpage = ((uint8_t*)page.ptr);
@@ -125,13 +120,13 @@ void Z80C::SetPC(uint32_t newpc) {
   }
 }
 
-/*
+#if 0
 inline uint32_t Z80C::GetPC()
 {
-    DEBUGCOUNT(6);
-    return inst - instbase;
+  DEBUGCOUNT(6);
+  return inst - instbase;
 }
-*/
+#endif
 
 inline void Z80C::PCInc(uint32_t inc) {
   inst += inc;
@@ -432,36 +427,24 @@ inline void Z80C::SingleStep() {
 inline uint32_t Z80C::Read8(uint32_t addr) {
   addr &= 0xffff;
   MemoryPage& page = rdpages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(intptr_t(page.ptr) & idbit))
-#else
-  if (!page.func)
-#endif
-  {
+  if (!page.func) {
     DEBUGCOUNT(12);
     return ((uint8_t*)page.ptr)[addr & pagemask];
   } else {
     DEBUGCOUNT(8);
-    return (*MemoryManager::RdFunc(intptr_t(page.ptr) & ~idbit))(page.inst,
-                                                                 addr);
+    return (*MemoryManager::RdFunc(intptr_t(page.ptr)))(page.inst, addr);
   }
 }
 
 inline void Z80C::Write8(uint32_t addr, uint32_t data) {
   addr &= 0xffff;
   MemoryPage& page = wrpages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(intptr_t(page.ptr) & idbit))
-#else
-  if (!page.func)
-#endif
-  {
+  if (!page.func) {
     DEBUGCOUNT(14);
     ((uint8_t*)page.ptr)[addr & pagemask] = data;
   } else {
     DEBUGCOUNT(16);
-    (*MemoryManager::WrFunc(intptr_t(page.ptr) & ~idbit))(page.inst, addr,
-                                                          data);
+    (*MemoryManager::WrFunc(intptr_t(page.ptr)))(page.inst, addr, data);
   }
 }
 
@@ -469,12 +452,7 @@ inline uint32_t Z80C::Read16(uint32_t addr) {
 #ifdef ALLOWBOUNDARYACCESS  // ワード境界を越えるアクセスを許す場合
   addr &= 0xffff;
   MemoryPage& page = rdpages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(intptr_t(page.ptr) & idbit))
-#else
-  if (!page.func)
-#endif
-  {
+  if (!page.func) {
     DEBUGCOUNT(13);
     uint32_t a = addr & pagemask;
     if (a < pagemask)
@@ -489,12 +467,7 @@ inline void Z80C::Write16(uint32_t addr, uint32_t data) {
 #ifdef ALLOWBOUNDARYACCESS  // ワード境界を越えるアクセスを許す場合
   addr &= 0xffff;
   MemoryPage& page = wrpages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(intptr_t(page.ptr) & idbit))
-#else
-  if (!page.func)
-#endif
-  {
+  if (!page.func) {
     uint32_t a = addr & pagemask;
     if (a < pagemask) {
       *(uint16_t*)((uint8_t*)page.ptr + a) = data;

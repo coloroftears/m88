@@ -15,16 +15,9 @@ using packed = uint32_t;
 // ワード境界を越えるアクセスを許可
 #define ALLOWBOUNDARYACCESS
 
-// x86 版の Z80 エンジンを使用する
-// #define USE_Z80_X86
-
 // ---------------------------------------------------------------------------
 
-#ifdef USE_Z80_X86
-#define MEMCALL __stdcall
-#else
 #define MEMCALL
-#endif
 
 #ifndef IFCALL
 #define IFCALL __stdcall

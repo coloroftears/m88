@@ -127,12 +127,8 @@ bool ReadMemManager::Init(uint32_t sas, Page* _pages) {
     return false;
 
   for (uint32_t i = 0; i < npages; i++) {
-#ifdef PTR_IDBIT
-    pages[i].ptr = (intptr_t(UndefinedRead) | idbit);
-#else
     pages[i].ptr = intptr_t(UndefinedRead);
     pages[i].func = true;
-#endif
   }
   return true;
 }
@@ -146,17 +142,10 @@ uint32_t ReadMemManager::Read8P(uint32_t pid, uint32_t addr) {
   int page = addr >> pagebits;
   LocalSpace& ls = lsp[priority[page * ndevices + pid + 1]];
 
-#ifdef PTR_IDBIT
-  if (!(ls.pages[page].ptr & idbit))
-    return ((uint8_t*)ls.pages[page].ptr)[addr & pagemask];
-  else
-    return (*RdFunc(ls.pages[page].ptr & ~idbit))(ls.inst, addr);
-#else
   if (!ls.pages[page].func)
     return ((uint8_t*)ls.pages[page].ptr)[addr & pagemask];
   else
     return (*RdFunc(ls.pages[page].ptr))(ls.inst, addr);
-#endif
 }
 
 // ---------------------------------------------------------------------------
@@ -176,12 +165,8 @@ bool WriteMemManager::Init(uint32_t sas, Page* _pages) {
     return false;
 
   for (uint32_t i = 0; i < npages; i++) {
-#ifdef PTR_IDBIT
-    pages[i].ptr = (intptr_t(UndefinedWrite) | idbit);
-#else
     pages[i].ptr = intptr_t(UndefinedWrite);
     pages[i].func = true;
-#endif
   }
   return true;
 }
@@ -195,17 +180,10 @@ void WriteMemManager::Write8P(uint32_t pid, uint32_t addr, uint32_t data) {
   int page = addr >> pagebits;
   LocalSpace& ls = lsp[priority[page * ndevices + pid + 1]];
 
-#ifdef PTR_IDBIT
-  if (!(ls.pages[page].ptr & idbit))
-    ((uint8_t*)ls.pages[page].ptr)[addr & pagemask] = data;
-  else
-    (*WrFunc(ls.pages[page].ptr & ~idbit))(ls.inst, addr, data);
-#else
   if (!ls.pages[page].func)
     ((uint8_t*)ls.pages[page].ptr)[addr & pagemask] = data;
   else
     (*WrFunc(ls.pages[page].ptr))(ls.inst, addr, data);
-#endif
 }
 
 // ---------------------------------------------------------------------------

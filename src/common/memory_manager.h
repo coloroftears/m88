@@ -16,9 +16,7 @@
 struct MemoryPage {
   intptr_t ptr;
   void* inst;
-#ifndef PTR_IDBIT
   bool func;
-#endif
 };
 
 class MemoryManagerBase {
@@ -28,11 +26,6 @@ class MemoryManagerBase {
     ndevices = 8,
     pagebits = 10,
     pagemask = (1 << pagebits) - 1,
-#ifdef PTR_IDBIT
-    idbit = PTR_IDBIT,
-#else
-    idbit = 0,
-#endif
   };
 
  public:
@@ -56,9 +49,7 @@ class MemoryManagerBase {
 
   struct DPage {
     intptr_t ptr;
-#ifndef PTR_IDBIT
     bool func;
-#endif
   };
   struct LocalSpace {
     void* inst;
@@ -118,7 +109,6 @@ class MemoryManager : public IMemoryManager,
   enum {
     pagebits = ::MemoryManagerBase::pagebits,
     pagemask = ::MemoryManagerBase::pagemask,
-    idbit = ::MemoryManagerBase::idbit,
   };
   using RdFunc = ReadMemManager::RdFunc;
   using WrFunc = WriteMemManager::WrFunc;
@@ -223,15 +213,11 @@ inline bool MemoryManagerBase::Alloc(uint32_t pid,
       // 自分がページの優先権を持つなら Page の書き換え
       pages[page].inst = ls.inst;
       pages[page].ptr = ptr;
-#ifndef PTR_IDBIT
       pages[page].func = func;
-#endif
     }
     // ローカルページの属性を更新
     ls.pages[page].ptr = ptr;
-#ifndef PTR_IDBIT
     ls.pages[page].func = func;
-#endif
     ptr += incr;
   }
   return true;
@@ -275,7 +261,6 @@ inline bool ReadMemManager::AllocR(uint32_t pid,
                                    uint32_t addr,
                                    uint32_t length,
                                    uint8_t* ptr) {
-  assert((intptr_t(ptr) & idbit) == 0);
   uint32_t page = addr >> pagebits;
   uint32_t top = (addr + length + pagemask) >> pagebits;
   return Alloc(pid, page, top, intptr_t(ptr), 1 << pagebits, false);
@@ -287,11 +272,10 @@ inline bool ReadMemManager::AllocR(uint32_t pid,
                                    uint32_t addr,
                                    uint32_t length,
                                    RdFunc ptr) {
-  assert((intptr_t(ptr) & idbit) == 0);
   uint32_t page = addr >> pagebits;
   uint32_t top = (addr + length + pagemask) >> pagebits;
 
-  return Alloc(pid, page, top, intptr_t(ptr) | idbit, 0, true);
+  return Alloc(pid, page, top, intptr_t(ptr), 0, true);
 }
 
 // ---------------------------------------------------------------------------
@@ -310,7 +294,6 @@ inline bool WriteMemManager::AllocW(uint32_t pid,
                                     uint32_t addr,
                                     uint32_t length,
                                     uint8_t* ptr) {
-  assert((intptr_t(ptr) & idbit) == 0);
   uint32_t page = addr >> pagebits;
   uint32_t top = (addr + length + pagemask) >> pagebits;
   return Alloc(pid, page, top, intptr_t(ptr), 1 << pagebits, false);
@@ -322,10 +305,9 @@ inline bool WriteMemManager::AllocW(uint32_t pid,
                                     uint32_t addr,
                                     uint32_t length,
                                     WrFunc ptr) {
-  assert((intptr_t(ptr) & idbit) == 0);
   uint32_t page = addr >> pagebits;
   uint32_t top = (addr + length + pagemask) >> pagebits;
-  return MemoryManagerBase::Alloc(pid, page, top, intptr_t(ptr) | idbit, 0,
+  return MemoryManagerBase::Alloc(pid, page, top, intptr_t(ptr), 0,
                                   true);
 }
 
@@ -344,17 +326,10 @@ inline bool WriteMemManager::ReleaseW(uint32_t pid,
 //
 inline uint32_t ReadMemManager::Read8(uint32_t addr) {
   Page& page = pages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(page.ptr & idbit))
-    return ((uint8_t*)page.ptr)[addr & pagemask];
-  else
-    return (*RdFunc(page.ptr & ~idbit))(page.inst, addr);
-#else
   if (!page.func)
     return ((uint8_t*)page.ptr)[addr & pagemask];
   else
     return (*RdFunc(page.ptr))(page.inst, addr);
-#endif
 }
 
 // ---------------------------------------------------------------------------
@@ -362,15 +337,8 @@ inline uint32_t ReadMemManager::Read8(uint32_t addr) {
 //
 inline void WriteMemManager::Write8(uint32_t addr, uint32_t data) {
   Page& page = pages[addr >> pagebits];
-#ifdef PTR_IDBIT
-  if (!(page.ptr & idbit))
-    ((uint8_t*)page.ptr)[addr & pagemask] = data;
-  else
-    (*WrFunc(page.ptr & ~idbit))(page.inst, addr, data);
-#else
   if (!page.func)
     ((uint8_t*)page.ptr)[addr & pagemask] = data;
   else
     (*WrFunc(page.ptr))(page.inst, addr, data);
-#endif
 }
