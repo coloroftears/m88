@@ -222,11 +222,6 @@
     <ClCompile Include="src\devices\psg.cpp" />
     <ClCompile Include="src\devices\z80c.cpp" />
     <ClCompile Include="src\devices\z80diag.cpp" />
-    <ClCompile Include="src\devices\z80_x86.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tuning|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\pc88\base.cpp" />
     <ClCompile Include="src\pc88\beep.cpp" />
     <ClCompile Include="src\pc88\calendar.cpp" />
@@ -338,7 +333,6 @@
     <ClInclude Include="src\devices\z80.h" />
     <ClInclude Include="src\devices\z80c.h" />
     <ClInclude Include="src\devices\z80diag.h" />
-    <ClInclude Include="src\devices\z80_x86.h" />
     <ClInclude Include="src\interface\if_win.h" />
     <ClInclude Include="src\interface\ifcommon.h" />
     <ClInclude Include="src\interface\ifguid.h" />
