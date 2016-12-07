@@ -12,21 +12,11 @@
 using packed = uint32_t;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
 
-// 関数へのポインタにおいて 常に 0 となるビット (1 bit のみ)
-// なければ PTR_IDBIT 自体を define しないでください．
-// (x86 版 Z80 エンジンでは必須)
-
-#if defined(_DEBUG)
-#define PTR_IDBIT 0x80000000
-#else
-#define PTR_IDBIT 0x1
-#endif
-
 // ワード境界を越えるアクセスを許可
 #define ALLOWBOUNDARYACCESS
 
 // x86 版の Z80 エンジンを使用する
-#define USE_Z80_X86
+// #define USE_Z80_X86
 
 // ---------------------------------------------------------------------------
 
