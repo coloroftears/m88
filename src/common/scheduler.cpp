@@ -10,9 +10,7 @@
 
 // ---------------------------------------------------------------------------
 
-Scheduler::Scheduler() {
-  evlast = 0;
-}
+Scheduler::Scheduler(SchedulerDelegate* delegate) : delegate_(delegate) {}
 
 Scheduler::~Scheduler() {}
 
@@ -36,9 +34,9 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   assert(inst && func);
   assert(count > 0);
 
-  int i;
+  int i = 0;
   // 空いてる Event を探す
-  for (i = 0; i <= evlast; i++)
+  for (; i <= evlast; i++)
     if (!events[i].inst)
       break;
   if (i >= maxevents)
@@ -53,7 +51,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
 
   // 最短イベント発生時刻を更新する？
   if ((etime - ev.count) > 0) {
-    Shorten(etime - ev.count);
+    delegate_->Shorten(etime - ev.count);
     etime = ev.count;
   }
   return &ev;
@@ -77,7 +75,7 @@ void IFCALL Scheduler::SetEvent(Event* ev,
 
   // 最短イベント発生時刻を更新する？
   if ((etime - ev->count) > 0) {
-    Shorten(etime - ev->count);
+    delegate_->Shorten(etime - ev->count);
     etime = ev->count;
   }
 }
@@ -125,7 +123,7 @@ SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
 
     etime = time + ptime;
 
-    SchedTimeDelta xtime = Execute(ptime);
+    SchedTimeDelta xtime = delegate_->Execute(ptime);
     etime = time += xtime;
     t -= xtime;
 

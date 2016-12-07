@@ -63,7 +63,7 @@ PC88::PC88()
       siomidi(0),
       joypad(0) {
   assert((1 << MemoryManager::pagebits) <= 0x400);
-  clock = 100;
+  sched_.reset(new Scheduler(this));
   DIAGINIT(&cpu1);
   dexc = 0;
 }
@@ -95,13 +95,13 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   diskmgr = disk;
   tapemgr = tape;
 
-  if (!Scheduler::Init())
+  if (!sched_->Init())
     return false;
 
   if (!draw->Init(640, 400, 8))
     return false;
 
-  if (!tapemgr->Init(this, 0, 0))
+  if (!tapemgr->Init(sched_.get(), 0, 0))
     return false;
 
   MemoryPage *read, *write;
@@ -122,7 +122,7 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 
   Reset();
   region.Reset();
-  clock = 1;
+  clock_ = 1;
   return true;
 }
 
@@ -131,9 +131,9 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 //  1 tick = 10μs
 //
 SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks, SchedClock clk, uint32_t ecl) {
-  clock = std::max(1, clk);
-  eclock = std::max(1, static_cast<int>(ecl));
-  return Scheduler::Proceed(ticks);
+  clock_ = std::max(1, clk);
+  eclock_ = std::max(1, static_cast<int>(ecl));
+  return sched_->Proceed(ticks);
 }
 
 // ---------------------------------------------------------------------------
@@ -141,7 +141,7 @@ SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks, SchedClock clk, uint32_t ecl)
 //
 SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   LOADBEGIN("Core.CPU");
-  int exc = ticks * clock;
+  int exc = ticks * clock_;
   if (!(cpumode & stopwhenidle) || subsys->IsBusy() || fdc->IsBusy()) {
     if ((cpumode & 1) == ms11)
       exc = Z80::ExecDual(&cpu1, &cpu2, exc);
@@ -151,20 +151,20 @@ SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
     exc = Z80::ExecSingle(&cpu1, &cpu2, exc);
   }
   exc += dexc;
-  dexc = exc % clock;
+  dexc = exc % clock_;
   LOADEND("Core.CPU");
-  return exc / clock;
+  return exc / clock_;
 }
 
 // ---------------------------------------------------------------------------
 //  実行クロック数変更
 //
 void PC88::Shorten(SchedTimeDelta ticks) {
-  Z80::StopDual(ticks * clock);
+  Z80::StopDual(ticks * clock_);
 }
 
 SchedTimeDelta PC88::GetTicks() {
-  return (Z80::GetCCount() + dexc) / clock;
+  return (Z80::GetCCount() + dexc) / clock_;
 }
 
 // ---------------------------------------------------------------------------
@@ -375,7 +375,7 @@ bool PC88::ConnectDevices() {
   if (!mem1->Init(&mm1, &bus1, crtc, cpu1.GetWaits()))
     return false;
 
-  if (!crtc->Init(&bus1, this, dmac, draw))
+  if (!crtc->Init(&bus1, sched_.get(), dmac, draw))
     return false;
 
   static const IOBus::Connector c_knj1[] = {
@@ -480,7 +480,7 @@ bool PC88::ConnectDevices() {
       {0, 0, 0}};
   if (!bus1.Connect(tapemgr, c_tape))
     return false;
-  if (!tapemgr->Init(this, &bus1, psioin))
+  if (!tapemgr->Init(sched_.get(), &bus1, psioin))
     return false;
 
   static const IOBus::Connector c_opn1[] = {
@@ -497,7 +497,7 @@ bool PC88::ConnectDevices() {
       {0x47, IOBus::portin, OPNIF::readdata1},
       {0, 0, 0}};
   opn1 = new PC8801::OPNIF(DEV_ID('O', 'P', 'N', '1'));
-  if (!opn1 || !opn1->Init(&bus1, pint4, popnio, this))
+  if (!opn1 || !opn1->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!bus1.Connect(opn1, c_opn1))
     return false;
@@ -516,7 +516,7 @@ bool PC88::ConnectDevices() {
       {0xad, IOBus::portin, OPNIF::readdata1},
       {0, 0, 0}};
   opn2 = new PC8801::OPNIF(DEV_ID('O', 'P', 'N', '2'));
-  if (!opn2->Init(&bus1, pint4, popnio, this))
+  if (!opn2->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!opn2 || !bus1.Connect(opn2, c_opn2))
     return false;
@@ -609,7 +609,7 @@ bool PC88::ConnectDevices2() {
   fdc = new PC8801::FDC(DEV_ID('F', 'D', 'C', ' '));
   if (!bus2.Connect(fdc, c_fdc))
     return false;
-  if (!fdc->Init(diskmgr, this, &bus2, pirq2, pfdstat))
+  if (!fdc->Init(diskmgr, sched_.get(), &bus2, pirq2, pfdstat))
     return false;
 
   return true;
@@ -663,7 +663,7 @@ void PC88::SetVolume(PC8801::Config* cfg) {
 // ---------------------------------------------------------------------------
 //  1 フレーム分の時間を求める．
 //
-SchedTimeDelta PC88::GetFramePeriod() {
+SchedTimeDelta PC88::GetFramePeriod() const {
   return crtc ? crtc->GetFramePeriod() : 100000 / 60;
 }
 

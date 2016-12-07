@@ -42,7 +42,7 @@ bool Sound::Init(PC88* pc88, uint32_t rate, int bufsize) {
     return false;
 
   // 時間カウンタが一周しないように定期的に更新する
-  pc88->AddEvent(5000, this, static_cast<TimeFunc>(&Sound::UpdateCounter), 0,
+  pc88->GetScheduler()->AddEvent(5000, this, static_cast<TimeFunc>(&Sound::UpdateCounter), 0,
                  true);
   return true;
 }

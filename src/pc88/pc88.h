@@ -6,9 +6,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include "common/device.h"
 #include "common/draw.h"
 #include "common/scheduler.h"
+#include "common/sequencer.h"
 
 // ---------------------------------------------------------------------------
 //  使用する Z80 エンジンの種類を決める
@@ -50,7 +53,9 @@ class SubSystem;
 // ---------------------------------------------------------------------------
 //  PC8801 クラス
 //
-class PC88 : public Scheduler, public ICPUTime {
+class PC88 : public SchedulerDelegate,
+             public SequencerDelegate,
+             public ICPUTime {
  public:
 #if defined(USE_Z80_X86)
   using Z80 = Z80_x86;
@@ -65,18 +70,22 @@ class PC88 : public Scheduler, public ICPUTime {
   bool Init(Draw* draw, DiskManager* diskmgr, TapeManager* tape);
 
   void Reset();
-  SchedTimeDelta Proceed(SchedTimeDelta us, SchedClock clock, uint32_t eff);
-  void ApplyConfig(PC8801::Config*);
-  void SetVolume(PC8801::Config*);
+
+  // Overrides SequencerDelegate.
+  SchedTimeDelta Proceed(SchedTimeDelta us, SchedClock clock, uint32_t eff) final;
+  void TimeSync() final;
+  void UpdateScreen(bool refresh = false) final;
+  SchedTimeDelta GetFramePeriod() const final;
 
   // Override ICPUTime.
   uint32_t IFCALL GetCPUTick() final { return cpu1.GetCount(); }
-  uint32_t IFCALL GetCPUSpeed() final { return clock; }
+  uint32_t IFCALL GetCPUSpeed() final { return clock_; }
 
-  uint32_t GetEffectiveSpeed() { return eclock; }
-  void TimeSync();
+  void ApplyConfig(PC8801::Config*);
+  void SetVolume(PC8801::Config*);
 
-  void UpdateScreen(bool refresh = false);
+  uint32_t GetEffectiveSpeed() { return eclock_; }
+
   bool IsCDSupported();
 
   PC8801::Memory* GetMem1() { return mem1; }
@@ -88,7 +97,7 @@ class PC88 : public Scheduler, public ICPUTime {
   PC8801::PD8257* GetDMAC() { return dmac; }
   PC8801::Beep* GetBEEP() { return beep; }
 
-  SchedTimeDelta GetFramePeriod();
+  Scheduler* GetScheduler() const { return sched_.get(); }
 
  public:
   enum SpecialPort {
@@ -111,6 +120,7 @@ class PC88 : public Scheduler, public ICPUTime {
     ptimesync,
     portend
   };
+
   enum SpecialPort2 {
     pres2 = 0x100,
     pirq2,
@@ -122,7 +132,7 @@ class PC88 : public Scheduler, public ICPUTime {
  private:
   void VSync();
 
-  // Overrides Scheduler.
+  // Overrides SchedulerDelegate.
   SchedTimeDelta Execute(SchedTimeDelta ticks) final;
   void Shorten(SchedTimeDelta ticks) final;
   SchedTimeDelta GetTicks() final;
@@ -137,12 +147,14 @@ class PC88 : public Scheduler, public ICPUTime {
     stopwhenidle = 4,  // bit 2
   };
 
+  std::unique_ptr<Scheduler> sched_;
+
   Draw::Region region;
 
-  int clock;
+  SchedClock clock_ = 1;
   int cpumode;
   int dexc;
-  int eclock;
+  int eclock_;
 
   uint32_t cfgflags;
   uint32_t cfgflag2;

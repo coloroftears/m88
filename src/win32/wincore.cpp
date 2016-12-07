@@ -322,9 +322,9 @@ void* WinCore::QueryIF(REFIID id) {
   if (id == M88IID_SoundControl)
     return static_cast<ISoundControl*>(&sound);
   if (id == M88IID_Scheduler)
-    return static_cast<IScheduler*>(this);
+    return static_cast<IScheduler*>(GetScheduler());
   if (id == M88IID_Time)
-    return static_cast<ITime*>(this);
+    return static_cast<ITime*>(GetScheduler());
   if (id == M88IID_CPUTime)
     return static_cast<ICPUTime*>(this);
   if (id == M88IID_DMA)

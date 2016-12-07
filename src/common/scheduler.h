@@ -7,6 +7,7 @@
 #pragma once
 
 #include "common/device.h"
+#include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 
@@ -18,6 +19,18 @@ struct SchedulerEvent {
   SchedTimeDelta time;  // 時間
 };
 
+class SchedulerDelegate {
+ public:
+  virtual ~SchedulerDelegate() {}
+
+  // Execute |ticks| time, and return executed time.
+  virtual SchedTimeDelta Execute(SchedTimeDelta ticks) = 0;
+  // TODO: Fill description.
+  virtual void Shorten(SchedTimeDelta ticks) = 0;
+  // Get current VM time during Execute().
+  virtual SchedTimeDelta GetTicks() = 0;
+};
+
 class Scheduler : public IScheduler, public ITime {
  public:
   using Event = SchedulerEvent;
@@ -26,7 +39,7 @@ class Scheduler : public IScheduler, public ITime {
   };
 
  public:
-  Scheduler();
+  explicit Scheduler(SchedulerDelegate* delegate);
   virtual ~Scheduler();
 
   bool Init();
@@ -51,19 +64,16 @@ class Scheduler : public IScheduler, public ITime {
   SchedTime IFCALL GetTime() override;
 
  private:
-  virtual SchedTimeDelta Execute(SchedTimeDelta ticks) = 0;
-  virtual void Shorten(int ticks) = 0;
-  virtual SchedTimeDelta GetTicks() = 0;
+  SchedulerDelegate* delegate_ = nullptr;
 
- private:
-  int evlast;  // 有効なイベントの番号の最大値
-  SchedTime time;    // Scheduler 内の現在時刻
-  SchedTime etime;   // Execute の終了予定時刻
+  int evlast = 0;  // 有効なイベントの番号の最大値
+  SchedTime time = 0;    // Scheduler 内の現在時刻
+  SchedTime etime = 0;   // Execute の終了予定時刻
   Event events[maxevents];
 };
 
 // ---------------------------------------------------------------------------
 
 inline SchedTime IFCALL Scheduler::GetTime() {
-  return time + GetTicks();
+  return time + delegate_->GetTicks();
 }

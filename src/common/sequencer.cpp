@@ -9,8 +9,6 @@
 #include <process.h>
 #include <algorithm>
 
-#include "pc88/pc88.h"
-
 #define LOGNAME "sequence"
 #include "common/diag.h"
 
@@ -26,8 +24,8 @@ Sequencer::~Sequencer() {
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool Sequencer::Init(PC88* _vm) {
-  vm = _vm;
+bool Sequencer::Init(SequencerDelegate* delegate) {
+  delegate_ = delegate;
 
   active = false;
   shouldterminate = false;
@@ -98,7 +96,7 @@ inline void Sequencer::Execute(SchedClock clk,
                                SchedTimeDelta length,
                                int32_t eff) {
   CriticalSection::Lock lock(cs);
-  execcount += clk * vm->Proceed(length, clk, eff);
+  execcount += clk * delegate_->Proceed(length, clk, eff);
 }
 
 // ---------------------------------------------------------------------------
@@ -107,7 +105,7 @@ inline void Sequencer::Execute(SchedClock clk,
 void Sequencer::ExecuteAsynchronus() {
   if (clock <= 0) {
     time = keeper.GetTime();
-    vm->TimeSync();
+    delegate_->TimeSync();
     SchedTimeDelta ms;
     int eclk = 0;
     do {
@@ -118,20 +116,20 @@ void Sequencer::ExecuteAsynchronus() {
       eclk += 5;
       ms = keeper.GetTime() - time;
     } while (ms < 1000);
-    vm->UpdateScreen();
+    delegate_->UpdateScreen();
 
     effclock =
         std::min((std::min(1000, eclk) * effclock * 100 / ms) + 1, 10000);
   } else {
-    SchedTimeDelta texec = vm->GetFramePeriod();
+    SchedTimeDelta texec = delegate_->GetFramePeriod();
     SchedTimeDelta twork = texec * 100 / speed;
-    vm->TimeSync();
+    delegate_->TimeSync();
     Execute(clock, texec, clock * speed / 100);
 
     SchedTimeDelta tcpu = keeper.GetTime() - time;
     if (tcpu < twork) {
       if (drawnextframe && ++refreshcount >= refreshtiming) {
-        vm->UpdateScreen();
+        delegate_->UpdateScreen();
         skippedframe = 0;
         refreshcount = 0;
       }
@@ -150,7 +148,7 @@ void Sequencer::ExecuteAsynchronus() {
     } else {
       time += twork;
       if (++skippedframe >= 20) {
-        vm->UpdateScreen();
+        delegate_->UpdateScreen();
         skippedframe = 0;
         time = keeper.GetTime();
       }

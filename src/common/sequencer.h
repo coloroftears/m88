@@ -14,7 +14,16 @@
 #include "common/time_keeper.h"
 #include "interface/ifcommon.h"
 
-class PC88;
+class SequencerDelegate {
+ public:
+  SequencerDelegate() {}
+  virtual ~SequencerDelegate() {}
+
+  virtual SchedTimeDelta Proceed(SchedTimeDelta ticks, SchedClock clock, uint32_t ecl) = 0;
+  virtual void TimeSync() = 0;
+  virtual void UpdateScreen(bool refresh = false) = 0;
+  virtual SchedTimeDelta GetFramePeriod() const = 0;
+};
 
 // ---------------------------------------------------------------------------
 //  Sequencer
@@ -27,7 +36,7 @@ class Sequencer {
   Sequencer();
   ~Sequencer();
 
-  bool Init(PC88* vm);
+  bool Init(SequencerDelegate* delegate);
   bool Cleanup();
 
   int32_t GetExecCount();
@@ -47,7 +56,7 @@ class Sequencer {
   uint32_t ThreadMain();
   static uint32_t CALLBACK ThreadEntry(LPVOID arg);
 
-  PC88* vm = nullptr;
+  SequencerDelegate* delegate_ = nullptr;
 
   TimeKeeper keeper;
 
