@@ -8,24 +8,56 @@
 
 #pragma once
 
+#ifdef _WIN32
+
 #include <windows.h>
 
-class CriticalSection {
+class CriticalSection final {
  public:
-  class Lock {
-    CriticalSection& cs;
-
+  class Lock final {
    public:
-    explicit Lock(CriticalSection& c) : cs(c) { cs.lock(); }
-    ~Lock() { cs.unlock(); }
+    explicit Lock(CriticalSection& c) : cs_(c) { cs_.lock(); }
+    ~Lock() { cs_.unlock(); }
+
+   private:
+    CriticalSection& cs_;
   };
 
-  CriticalSection() { InitializeCriticalSection(&css); }
-  ~CriticalSection() { DeleteCriticalSection(&css); }
+  CriticalSection() { InitializeCriticalSection(&css_); }
+  ~CriticalSection() { DeleteCriticalSection(&css_); }
 
-  void lock() { EnterCriticalSection(&css); }
-  void unlock() { LeaveCriticalSection(&css); }
+  void lock() { EnterCriticalSection(&css_); }
+  void unlock() { LeaveCriticalSection(&css_); }
 
  private:
-  CRITICAL_SECTION css;
+  CRITICAL_SECTION css_;
 };
+
+#else  // !_WIN32
+
+#include <mutex>
+
+class CriticalSection final {
+ public:
+  class Lock final {
+   public:
+    explicit Lock(CriticalSection& c) : cs_(c) { cs_.lock(); }
+    ~Lock() { cs_.unlock(); }
+
+   private:
+    CriticalSection& cs_;
+  };
+
+  CriticalSection() {}
+  ~CriticalSection() {}
+
+  bool try_lock() { return mtx_.try_lock(); }
+
+  void lock() { mtx_.lock(); }
+  void unlock() { mtx_.unlock(); }
+
+ private:
+  std::mutex mtx_;
+};
+
+#endif // _WIN32
