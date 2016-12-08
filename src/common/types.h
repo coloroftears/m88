@@ -12,9 +12,6 @@
 using packed = uint32_t;
 #define PACK(p) ((p) | ((p) << 8) | ((p) << 16) | ((p) << 24))
 
-// ワード境界を越えるアクセスを許可
-#define ALLOWBOUNDARYACCESS
-
 // ---------------------------------------------------------------------------
 
 #define MEMCALL

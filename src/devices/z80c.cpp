@@ -180,14 +180,7 @@ inline uint32_t Z80C::Fetch8() {
 
 inline uint32_t Z80C::Fetch16() {
   DEBUGCOUNT(3);
-#ifdef ALLOWBOUNDARYACCESS
-  if (inst + 1 < instlim) {
-    uint32_t r = *(uint16_t*)inst;
-    inst += 2;
-    return r;
-  } else
-#endif
-    return Fetch16B();
+  return Fetch16B();
 }
 
 uint32_t Z80C::Fetch8B() {
@@ -449,32 +442,11 @@ inline void Z80C::Write8(uint32_t addr, uint32_t data) {
 }
 
 inline uint32_t Z80C::Read16(uint32_t addr) {
-#ifdef ALLOWBOUNDARYACCESS  // ワード境界を越えるアクセスを許す場合
-  addr &= 0xffff;
-  MemoryPage& page = rdpages[addr >> pagebits];
-  if (!page.func) {
-    DEBUGCOUNT(13);
-    uint32_t a = addr & pagemask;
-    if (a < pagemask)
-      return *(uint16_t*)((uint8_t*)page.ptr + a);
-  }
-#endif
   return Read8(addr) + Read8(addr + 1) * 256;
 }
 
 inline void Z80C::Write16(uint32_t addr, uint32_t data) {
   DEBUGCOUNT(15);
-#ifdef ALLOWBOUNDARYACCESS  // ワード境界を越えるアクセスを許す場合
-  addr &= 0xffff;
-  MemoryPage& page = wrpages[addr >> pagebits];
-  if (!page.func) {
-    uint32_t a = addr & pagemask;
-    if (a < pagemask) {
-      *(uint16_t*)((uint8_t*)page.ptr + a) = data;
-      return;
-    }
-  }
-#endif
   Write8(addr, data & 0xff);
   Write8(addr + 1, data >> 8);
 }
