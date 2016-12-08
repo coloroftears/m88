@@ -118,8 +118,8 @@ int Sound::Get(Sample16* dest, int nsamples) {
 
     int32_t* src = mixingbuf;
     for (int n = mixsamples; n > 0; n--) {
-      *dest++ = Limit(*src++, 32767, -32768);
-      *dest++ = Limit(*src++, 32767, -32768);
+      *dest++ = Limit16(*src++);
+      *dest++ = Limit16(*src++);
     }
   }
   return mixsamples;

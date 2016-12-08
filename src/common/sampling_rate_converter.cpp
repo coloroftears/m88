@@ -218,8 +218,8 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
       if (p == buffersize)
         p = 0;
     }
-    *dest++ = Limit(z0, 32767, -32768);
-    *dest++ = Limit(z1, 32767, -32768);
+    *dest++ = Limit16(z0);
+    *dest++ = Limit16(z1);
 
     oo -= oc;
     while (oo < 0) {

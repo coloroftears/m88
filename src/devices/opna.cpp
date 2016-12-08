@@ -861,7 +861,7 @@ inline int OPNABase::DecodeADPCMBSample(uint32_t data) {
   static const int table2[16] = {
       57, 57, 57, 57, 77, 102, 128, 153, 57, 57, 57, 57, 77, 102, 128, 153,
   };
-  adpcmx = Limit(adpcmx + table1[data] * adpcmd / 8, 32767, -32768);
+  adpcmx = Limit16(adpcmx + table1[data] * adpcmd / 8);
   adpcmd = Limit(adpcmd * table2[data] / 64, 24576, 127);
   return adpcmx;
 }

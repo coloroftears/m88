@@ -9,3 +9,7 @@
 inline int Limit(int v, int max, int min) {
   return v > max ? max : (v < min ? min : v);
 }
+
+inline int Limit16(int v) {
+  return Limit(v, 32767, -32768);
+}
