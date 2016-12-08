@@ -97,7 +97,7 @@ init_err:
         call    putmsg
         ret
 
-InstallFailMsg: db  "CMD extention is alredy in use. Installation aborted.",13,10,0
+InstallFailMsg: db  "CMD extension is already in use. Installation aborted.",13,10,0
 
     include "stub.asm"
 
