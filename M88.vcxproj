@@ -369,6 +369,7 @@
     <ClInclude Include="src\win32\draw_dds.h" />
     <ClInclude Include="src\win32\draw_ddw.h" />
     <ClInclude Include="src\win32\draw_gdi.h" />
+    <ClInclude Include="src\win32\file_finder.h" />
     <ClInclude Include="src\win32\filetest.h" />
     <ClInclude Include="src\win32\messages.h" />
     <ClInclude Include="src\win32\module.h" />

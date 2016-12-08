@@ -461,6 +461,9 @@
     <ClInclude Include="src\win32\dderr.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="src\win32\file_finder.h">
+      <Filter>win32</Filter>
+    </ClInclude>
     <ClInclude Include="src\win32\filetest.h">
       <Filter>win32</Filter>
     </ClInclude>

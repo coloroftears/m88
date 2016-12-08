@@ -22,6 +22,7 @@
 #include "pc88/tape_manager.h"
 #include "win32/88config.h"
 #include "win32/about.h"
+#include "win32/file_finder.h"
 #include "win32/filetest.h"
 #include "win32/messages.h"
 #include "win32/resource.h"

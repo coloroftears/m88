@@ -17,6 +17,7 @@
 #include "pc88/joypad.h"
 #include "pc88/opn_interface.h"
 #include "pc88/pd8257.h"
+#include "win32/file_finder.h"
 #include "win32/module.h"
 #include "win32/ui.h"
 #include "win32/winkeyif.h"
