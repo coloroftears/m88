@@ -307,8 +307,7 @@ inline bool WriteMemManager::AllocW(uint32_t pid,
                                     WrFunc ptr) {
   uint32_t page = addr >> pagebits;
   uint32_t top = (addr + length + pagemask) >> pagebits;
-  return MemoryManagerBase::Alloc(pid, page, top, intptr_t(ptr), 0,
-                                  true);
+  return MemoryManagerBase::Alloc(pid, page, top, intptr_t(ptr), 0, true);
 }
 
 // ---------------------------------------------------------------------------

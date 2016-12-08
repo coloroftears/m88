@@ -331,7 +331,8 @@ uint32_t IOCALL OPNIF::ReadStatusEx(uint32_t a) {
 //
 void OPNIF::UpdateTimer() {
   scheduler->DelEvent(this);
-  // TODO: Use proper function to convert GetNextEvent() (usec) to SchedTimeDelta.
+  // TODO: Use proper function to convert GetNextEvent() (usec) to
+  // SchedTimeDelta.
   nextcount = opn.GetNextEvent();
   if (nextcount > 0) {
     nextcount = (nextcount + 9) / 10;

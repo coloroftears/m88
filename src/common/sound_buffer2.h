@@ -28,7 +28,6 @@ class SoundBuffer2 final : public SoundSource<Sample16> {
   bool IsEmpty();
   void FillWhenEmpty(bool f);  // バッファが空になったら補充するか
 
-
  private:
   int FillMain(int samples);
 

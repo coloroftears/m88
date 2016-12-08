@@ -66,9 +66,9 @@ class Scheduler : public IScheduler, public ITime {
  private:
   SchedulerDelegate* delegate_ = nullptr;
 
-  int evlast = 0;  // 有効なイベントの番号の最大値
-  SchedTime time = 0;    // Scheduler 内の現在時刻
-  SchedTime etime = 0;   // Execute の終了予定時刻
+  int evlast = 0;       // 有効なイベントの番号の最大値
+  SchedTime time = 0;   // Scheduler 内の現在時刻
+  SchedTime etime = 0;  // Execute の終了予定時刻
   Event events[maxevents];
 };
 

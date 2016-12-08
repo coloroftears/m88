@@ -19,7 +19,9 @@ class SequencerDelegate {
   SequencerDelegate() {}
   virtual ~SequencerDelegate() {}
 
-  virtual SchedTimeDelta Proceed(SchedTimeDelta ticks, SchedClock clock, uint32_t ecl) = 0;
+  virtual SchedTimeDelta Proceed(SchedTimeDelta ticks,
+                                 SchedClock clock,
+                                 uint32_t ecl) = 0;
   virtual void TimeSync() = 0;
   virtual void UpdateScreen(bool refresh = false) = 0;
   virtual SchedTimeDelta GetFramePeriod() const = 0;
@@ -65,7 +67,7 @@ class Sequencer {
   uint32_t idthread = 0;
 
   SchedClock clock = 1;  // 1秒は何tick?
-  int speed = 100;  //
+  int speed = 100;       //
   int32_t execcount = 0;
   SchedClock effclock = 1;
   SchedTime time = 0;

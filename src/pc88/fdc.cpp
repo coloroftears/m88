@@ -552,8 +552,8 @@ void FDC::CmdScanEqual() {
 void FDC::ReadData(bool deleted, bool scan) {
   LOG4("\tRead %.2x %.2x %.2x %.2x\n", idr.c, idr.h, idr.r, idr.n);
   if (showstatus)
-    Toast::Show(85, 0, "%s (%d) %.2x %.2x %.2x %.2x",
-                scan ? "Scan" : "Read", hdu & 3, idr.c, idr.h, idr.r, idr.n);
+    Toast::Show(85, 0, "%s (%d) %.2x %.2x %.2x %.2x", scan ? "Scan" : "Read",
+                hdu & 3, idr.c, idr.h, idr.r, idr.n);
 
   CriticalSection::Lock lock(diskmgr->GetCS());
   result = CheckCondition(false);
@@ -1078,8 +1078,8 @@ void FDC::ReadDiagnostic() {
         ((hdu >> 2) & 1) | (command & 0x40) | (drive[dr].hd & 0x80);
     uint32_t size;
     int tr = (drive[dr].cylinder >> drive[dr].dd) * 2 + ((hdu >> 2) & 1);
-    Toast::Show(84, showstatus ? 1000 : 2000,
-                "ReadDiagnostic (Dr%d Tr%d)", dr, tr);
+    Toast::Show(84, showstatus ? 1000 : 2000, "ReadDiagnostic (Dr%d Tr%d)", dr,
+                tr);
 
     result = diskmgr->GetFDU(dr)->MakeDiagData(flags, buffer, &size);
     if (result) {

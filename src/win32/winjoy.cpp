@@ -15,7 +15,6 @@
 #include "common/toast.h"
 #include "pc88/config.h"
 
-
 using namespace PC8801;
 
 // ---------------------------------------------------------------------------

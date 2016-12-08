@@ -183,8 +183,8 @@ bool ExternalDevice::S_MemRelease(void* h, uint32_t p, uint32_t n, uint32_t) {
 //
 void* ExternalDevice::S_AddEvent(void* h, uint32_t c, uint32_t f) {
   ExternalDevice* e = reinterpret_cast<ExternalDevice*>(h);
-  return e->pc->GetScheduler()->AddEvent(c, e,
-                         static_cast<TimeFunc>(&ExternalDevice::EventProc), f);
+  return e->pc->GetScheduler()->AddEvent(
+      c, e, static_cast<TimeFunc>(&ExternalDevice::EventProc), f);
 }
 
 // ---------------------------------------------------------------------------

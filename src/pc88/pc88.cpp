@@ -130,7 +130,9 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 //  執行
 //  1 tick = 10μs
 //
-SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks, SchedClock clk, uint32_t ecl) {
+SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks,
+                             SchedClock clk,
+                             uint32_t ecl) {
   clock_ = std::max(1, clk);
   eclock_ = std::max(1, static_cast<int>(ecl));
   return sched_->Proceed(ticks);

@@ -72,7 +72,9 @@ class PC88 : public SchedulerDelegate,
   void Reset();
 
   // Overrides SequencerDelegate.
-  SchedTimeDelta Proceed(SchedTimeDelta us, SchedClock clock, uint32_t eff) final;
+  SchedTimeDelta Proceed(SchedTimeDelta us,
+                         SchedClock clock,
+                         uint32_t eff) final;
   void TimeSync() final;
   void UpdateScreen(bool refresh = false) final;
   SchedTimeDelta GetFramePeriod() const final;

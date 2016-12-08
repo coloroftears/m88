@@ -1426,8 +1426,7 @@ void WinUI::CaptureScreen() {
       wsprintf(filename, "%.2d%.2d%.2d%.2d%.2d.bmp", time.wDay, time.wHour,
                time.wMinute, time.wSecond, time.wMilliseconds / 10);
       save = true;
-      Toast::Show(80, 1500, "画面イメージを %s に保存しました",
-                         filename);
+      Toast::Show(80, 1500, "画面イメージを %s に保存しました", filename);
     } else {
       filename[0] = 0;
 

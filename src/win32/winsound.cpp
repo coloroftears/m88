@@ -120,8 +120,7 @@ bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
           driver = 0;
           if (!wodrv && useds2) {
             useds2 = false;
-            Toast::Show(100, 3000,
-                               "IDirectSoundNotify は使用できないようです");
+            Toast::Show(100, 3000, "IDirectSoundNotify は使用できないようです");
             i = -1;
           }
         }
@@ -249,7 +248,7 @@ bool SoundDumpPipe::DumpStop() {
 
     int curtime = dumpedsample_ / dumprate_;
     Toast::Show(100, 2500, "録音終了 %s [%.2d:%.2d]", dumpfile_.c_str(),
-                       curtime / 60, curtime % 60);
+                curtime / 60, curtime % 60);
   }
   return true;
 }
