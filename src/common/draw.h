@@ -64,5 +64,5 @@ class Draw {
                           uint32_t nents,
                           const Palette* pal) = 0;
   virtual void Flip() {}
-  virtual bool SetFlipMode(bool) = 0;
+  virtual bool SetFlipMode(bool flip) = 0;
 };

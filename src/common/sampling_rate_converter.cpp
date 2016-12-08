@@ -139,7 +139,8 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
   ic = out / g;
   oc = in / g;
 
-  // あまり次元を高くしすぎると、係数テーブルが巨大になってしまうのでてけとうに精度を落とす
+  // あまり次元を高くしすぎると、係数テーブルが巨大になってしまうので
+  // てけとうに精度を落とす
   while (ic > osmax && oc >= osmin) {
     ic = (ic + 1) / 2;
     oc = (oc + 1) / 2;

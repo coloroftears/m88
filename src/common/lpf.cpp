@@ -6,9 +6,9 @@
 
 #include "common/lpf.h"
 
-#include "common/clamp.h"
-
 #include <math.h>
+
+#include "common/clamp.h"
 
 // ---------------------------------------------------------------------------
 //  バタワース特性 IIR IIR_LPF

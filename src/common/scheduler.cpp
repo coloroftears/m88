@@ -39,7 +39,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   for (; i <= evlast; i++)
     if (!events[i].inst)
       break;
-  if (i >= maxevents)
+  if (i >= kMaxEvents)
     return 0;
   if (i > evlast)
     evlast = i;
@@ -133,9 +133,9 @@ SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
 
       if (ev.inst && (ev.count - time <= 0)) {
         IDevice* inst = ev.inst;
-        if (ev.time)
+        if (ev.time) {
           ev.count += ev.time;
-        else {
+        } else {
           ev.inst = 0;
           if (evlast == i)
             evlast--;

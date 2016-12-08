@@ -33,7 +33,7 @@ class FileIO {
 
  public:
   FileIO();
-  FileIO(const char* filename, uint32_t flg = 0);
+  explicit FileIO(const char* filename, uint32_t flg = 0);
   virtual ~FileIO();
 
   bool Open(const char* filename, uint32_t flg = 0);

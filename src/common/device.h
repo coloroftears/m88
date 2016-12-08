@@ -128,7 +128,7 @@ class DeviceList final {
 
  private:
   struct Node {
-    Node(IDevice* d) : entry(d), count(1) {}
+    explicit Node(IDevice* d) : entry(d), count(1) {}
     ~Node() {}
 
     IDevice* entry;
@@ -150,8 +150,8 @@ class DeviceList final {
   bool Del(const ID id);
   IDevice* Find(const ID id) const;
 
-  bool LoadStatus(const uint8_t*);
-  bool SaveStatus(uint8_t*);
+  bool LoadStatus(const uint8_t* status);
+  bool SaveStatus(uint8_t* status);
   uint32_t GetStatusSize() const;
 
  private:
@@ -240,8 +240,7 @@ class IOBus : public IIOAccess, public IIOBus {
 //  Bus
 //
 #if 0
-class Bus : public MemoryBus, public IOBus
-{
+class Bus : public MemoryBus, public IOBus {
  public:
   Bus() {}
   ~Bus() {}

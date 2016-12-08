@@ -35,7 +35,7 @@ class Scheduler : public IScheduler, public ITime {
  public:
   using Event = SchedulerEvent;
   enum {
-    maxevents = 16,
+    kMaxEvents = 16,
   };
 
  public:
@@ -69,7 +69,7 @@ class Scheduler : public IScheduler, public ITime {
   int evlast = 0;       // 有効なイベントの番号の最大値
   SchedTime time = 0;   // Scheduler 内の現在時刻
   SchedTime etime = 0;  // Execute の終了予定時刻
-  Event events[maxevents];
+  Event events[kMaxEvents];
 };
 
 // ---------------------------------------------------------------------------
