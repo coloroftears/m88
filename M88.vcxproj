@@ -261,7 +261,6 @@
     <ClCompile Include="src\win32\draw_dds.cpp" />
     <ClCompile Include="src\win32\draw_ddw.cpp" />
     <ClCompile Include="src\win32\draw_gdi.cpp" />
-    <ClCompile Include="src\win32\extdev.cpp" />
     <ClCompile Include="src\win32\file.cpp" />
     <ClCompile Include="src\win32\filetest.cpp" />
     <ClCompile Include="src\win32\guid.cpp" />
@@ -356,7 +355,6 @@
     <ClInclude Include="src\pc88\mouse.h" />
     <ClInclude Include="src\pc88\opn_interface.h" />
     <ClInclude Include="src\pc88\pc88.h" />
-    <ClInclude Include="src\pc88\pcinfo.h" />
     <ClInclude Include="src\pc88\pd8257.h" />
     <ClInclude Include="src\pc88\pio.h" />
     <ClInclude Include="src\pc88\screen.h" />
@@ -371,7 +369,6 @@
     <ClInclude Include="src\win32\draw_dds.h" />
     <ClInclude Include="src\win32\draw_ddw.h" />
     <ClInclude Include="src\win32\draw_gdi.h" />
-    <ClInclude Include="src\win32\extdev.h" />
     <ClInclude Include="src\win32\filetest.h" />
     <ClInclude Include="src\win32\messages.h" />
     <ClInclude Include="src\win32\module.h" />

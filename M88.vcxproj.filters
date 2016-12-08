@@ -165,9 +165,6 @@
     <ClCompile Include="src\win32\dderr.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\win32\extdev.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
     <ClCompile Include="src\win32\file.cpp">
       <Filter>win32</Filter>
     </ClCompile>
@@ -422,9 +419,6 @@
     <ClInclude Include="src\pc88\pc88.h">
       <Filter>pc88</Filter>
     </ClInclude>
-    <ClInclude Include="src\pc88\pcinfo.h">
-      <Filter>pc88</Filter>
-    </ClInclude>
     <ClInclude Include="src\pc88\pd8257.h">
       <Filter>pc88</Filter>
     </ClInclude>
@@ -465,9 +459,6 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="src\win32\dderr.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\win32\extdev.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="src\win32\filetest.h">

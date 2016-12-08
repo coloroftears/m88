@@ -17,7 +17,6 @@
 #include "pc88/joypad.h"
 #include "pc88/opn_interface.h"
 #include "pc88/pd8257.h"
-#include "win32/extdev.h"
 #include "win32/module.h"
 #include "win32/ui.h"
 #include "win32/winkeyif.h"
@@ -86,11 +85,6 @@ bool WinCore::Cleanup() {
        ++i)
     delete *i;
   extmodules.clear();
-
-  for (ExternalDevices::iterator j = extdevices.begin(); j != extdevices.end();
-       ++j)
-    delete *j;
-  extdevices.clear();
 
   return true;
 }
@@ -350,19 +344,8 @@ bool WinCore::ConnectExternalDevices() {
     while (ff.FindNext()) {
       const char* modname = ff.GetFileName();
       ExtendModule* em = ExtendModule::Create(modname, this);
-      if (em) {
+      if (em)
         extmodules.push_back(em);
-      } else {
-        ExternalDevice* extdevice = new ExternalDevice();
-        if (extdevice) {
-          if (extdevice->Init(modname, this, &bus1, GetDMAC(), &sound, &mm1)) {
-            devlist.Add(extdevice);
-            extdevices.push_back(extdevice);
-          } else {
-            delete extdevice;
-          }
-        }
-      }
     }
   }
   return true;

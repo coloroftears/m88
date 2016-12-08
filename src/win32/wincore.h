@@ -22,7 +22,6 @@
 
 namespace PC8801 {
 class WinKeyIF;
-class ExternalDevice;
 class ExtendModule;
 }
 
@@ -107,7 +106,4 @@ class WinCore : public PC88, public ISystem, public ILockCore {
 
   PC8801::WinSound sound;
   PC8801::Config config;
-
-  using ExternalDevices = std::vector<PC8801::ExternalDevice*>;
-  ExternalDevices extdevices;
 };
