@@ -36,19 +36,3 @@ struct IConfigPropBase {
 struct IConfigPropSheet {
   virtual bool IFCALL Setup(IConfigPropBase*, PROPSHEETPAGE* psp) = 0;
 };
-
-// ----------------------------------------------------------------------------
-//  UI 拡張用インターフェース
-//
-struct IWinUIExtention {
-  virtual bool IFCALL WinProc(HWND, UINT, WPARAM, LPARAM) = 0;
-  virtual bool IFCALL Connect(HWND hwnd, uint32_t index) = 0;
-  virtual bool IFCALL Disconnect() = 0;
-};
-
-// ----------------------------------------------------------------------------
-//  UI に対するインターフェース
-//
-struct IWinUI2 {
-  virtual HWND IFCALL GetHWnd() = 0;
-};

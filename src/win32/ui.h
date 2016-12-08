@@ -45,10 +45,6 @@ class WinUI {
     bool readonly;
     char filename[MAX_PATH];
   };
-  struct ExtNode {
-    ExtNode* next;
-    IWinUIExtention* ext;
-  };
 
  private:
   bool InitM88(const char* cmdline);
