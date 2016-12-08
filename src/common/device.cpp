@@ -275,51 +275,31 @@ DeviceList::~DeviceList() {
 //  リストをすべて破棄
 //
 void DeviceList::Cleanup() {
-  Node* n = node;
-  while (n) {
-    Node* nx = n->next;
-    delete n;
-    n = nx;
-  }
-  node = 0;
+  nodes_.clear();
 }
 
 // ---------------------------------------------------------------------------
 //  リストにデバイスを登録
 //
-bool DeviceList::Add(IDevice* t) {
-  ID id = t->GetID();
+bool DeviceList::Add(IDevice* device) {
+  ID id = device->GetID();
   if (!id)
     return false;
 
-  Node* n = FindNode(id);
-  if (n) {
-    n->count++;
-    return true;
-  } else {
-    n = new Node;
-    if (n) {
-      n->entry = t, n->next = node, n->count = 1;
-      node = n;
-      return true;
-    }
-    return false;
-  }
+  if (Node* n = FindNode(id))
+    ++n->count;
+  else
+    nodes_.emplace(id, Node(device));
+  return true;
 }
 
 // ---------------------------------------------------------------------------
 //  リストからデバイスを削除
 //
 bool DeviceList::Del(const ID id) {
-  for (Node** r = &node; *r; r = &((*r)->next)) {
-    if ((*r)->entry->GetID() == id) {
-      Node* d = *r;
-      if (!--d->count) {
-        *r = d->next;
-        delete d;
-      }
-      return true;
-    }
+  if (FindNode(id)) {
+    nodes_.erase(id);
+    return true;
   }
   return false;
 }
@@ -327,30 +307,29 @@ bool DeviceList::Del(const ID id) {
 // ---------------------------------------------------------------------------
 //  指定された識別子を持つデバイスをリスト中から探す
 //
-IDevice* DeviceList::Find(const ID id) {
+IDevice* DeviceList::Find(const ID id) const {
   Node* n = FindNode(id);
-  return n ? n->entry : 0;
+  return n ? n->entry : nullptr;
 }
 
 // ---------------------------------------------------------------------------
 //  指定された識別子を持つデバイスノードを探す
 //
-DeviceList::Node* DeviceList::FindNode(const ID id) {
-  for (Node* n = node; n; n = n->next) {
-    if (n->entry->GetID() == id)
-      return n;
-  }
-  return 0;
+DeviceList::Node* DeviceList::FindNode(const ID id) const {
+  auto pos = nodes_.find(id);
+  if (pos == nodes_.end())
+    return nullptr;
+
+  return const_cast<Node*>(&pos->second);
 }
 
 // ---------------------------------------------------------------------------
 //  状態保存に必要なデータサイズを求める
 //
-uint32_t DeviceList::GetStatusSize() {
+uint32_t DeviceList::GetStatusSize() const {
   uint32_t size = sizeof(Header);
-  for (Node* n = node; n; n = n->next) {
-    int ds = n->entry->GetStatusSize();
-    if (ds)
+  for (auto& n : nodes_) {
+    if (int ds = n.second.entry->GetStatusSize())
       size += sizeof(Header) + ((ds + 3) & ~3);
   }
   return size;
@@ -361,18 +340,19 @@ uint32_t DeviceList::GetStatusSize() {
 //  data にはあらかじめ GetStatusSize() で取得したサイズのバッファが必要
 //
 bool DeviceList::SaveStatus(uint8_t* data) {
-  for (Node* n = node; n; n = n->next) {
-    int s = n->entry->GetStatusSize();
-    if (s) {
-      ((Header*)data)->id = n->entry->GetID();
-      ((Header*)data)->size = s;
+  for (auto& n : nodes_) {
+    if (uint32_t s = n.second.entry->GetStatusSize()) {
+      Header* header = reinterpret_cast<Header*>(data);
+      header->id = n.second.entry->GetID();
+      header->size = s;
       data += sizeof(Header);
-      n->entry->SaveStatus(data);
+      n.second.entry->SaveStatus(data);
       data += (s + 3) & ~3;
     }
   }
-  ((Header*)data)->id = 0;
-  ((Header*)data)->size = 0;
+  Header* header = reinterpret_cast<Header*>(data);
+  header->id = 0;
+  header->size = 0;
   return true;
 }
 
@@ -382,18 +362,19 @@ bool DeviceList::SaveStatus(uint8_t* data) {
 bool DeviceList::LoadStatus(const uint8_t* data) {
   if (!CheckStatus(data))
     return false;
-  while (1) {
-    const Header* hdr = (const Header*)data;
+
+  while (true) {
+    const Header* header = reinterpret_cast<const Header*>(data);
     data += sizeof(Header);
-    if (!hdr->id)
+    if (!header->id)
       break;
 
-    IDevice* dev = Find(hdr->id);
+    IDevice* dev = Find(header->id);
     if (dev) {
       if (!dev->LoadStatus(data))
         return false;
     }
-    data += (hdr->size + 3) & ~3;
+    data += (header->size + 3) & ~3;
   }
   return true;
 }
@@ -402,17 +383,17 @@ bool DeviceList::LoadStatus(const uint8_t* data) {
 //  状態データが現在の構成で適応可能か調べる
 //  具体的にはサイズチェックだけ．
 //
-bool DeviceList::CheckStatus(const uint8_t* data) {
-  while (1) {
-    const Header* hdr = (const Header*)data;
+bool DeviceList::CheckStatus(const uint8_t* data) const {
+  while (true) {
+    const Header* header = reinterpret_cast<const Header*>(data);
     data += sizeof(Header);
-    if (!hdr->id)
+    if (!header->id)
       break;
 
-    IDevice* dev = Find(hdr->id);
-    if (dev && dev->GetStatusSize() != hdr->size)
+    IDevice* dev = Find(header->id);
+    if (dev && dev->GetStatusSize() != header->size)
       return false;
-    data += (hdr->size + 3) & ~3;
+    data += (header->size + 3) & ~3;
   }
   return true;
 }

@@ -16,6 +16,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <unordered_map>
 
 #include "interface/ifcommon.h"
 
@@ -127,8 +128,10 @@ class DeviceList final {
 
  private:
   struct Node {
+    Node(IDevice* d) : entry(d), count(1) {}
+    ~Node() {}
+
     IDevice* entry;
-    Node* next;
     int count;
   };
 
@@ -145,17 +148,17 @@ class DeviceList final {
   bool Add(IDevice* t);
   bool Del(IDevice* t) { return t->GetID() ? Del(t->GetID()) : false; }
   bool Del(const ID id);
-  IDevice* Find(const ID id);
+  IDevice* Find(const ID id) const;
 
   bool LoadStatus(const uint8_t*);
   bool SaveStatus(uint8_t*);
-  uint32_t GetStatusSize();
+  uint32_t GetStatusSize() const;
 
  private:
-  Node* FindNode(const ID id);
-  bool CheckStatus(const uint8_t*);
+  Node* FindNode(const ID id) const;
+  bool CheckStatus(const uint8_t*) const;
 
-  Node* node = nullptr;
+  std::unordered_map<ID, Node> nodes_;
 };
 
 // ---------------------------------------------------------------------------
