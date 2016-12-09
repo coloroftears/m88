@@ -83,7 +83,7 @@ INT_PTR CALLBACK WinNewDisk::DlgProcGate(HWND hwnd,
   WinNewDisk* newdisk = nullptr;
   if (m == WM_INITDIALOG) {
     if (newdisk = reinterpret_cast<WinNewDisk*>(l))
-      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)newdisk);
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)newdisk);
   } else {
     newdisk = (WinNewDisk*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }

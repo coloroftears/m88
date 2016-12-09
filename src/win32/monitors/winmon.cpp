@@ -658,7 +658,7 @@ INT_PTR WinMonitor::DlgProcGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
   WinMonitor* monitor = nullptr;
   if (m == WM_INITDIALOG) {
     if (monitor = reinterpret_cast<WinMonitor*>(l))
-      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)monitor);
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)monitor);
   } else {
     monitor = (WinMonitor*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }

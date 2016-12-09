@@ -71,7 +71,7 @@ INT_PTR M88About::DlgProcGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
   M88About* about = nullptr;
   if (m == WM_INITDIALOG) {
     if (about = reinterpret_cast<M88About*>(l))
-      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)about);
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)about);
   } else {
     about = (M88About*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }

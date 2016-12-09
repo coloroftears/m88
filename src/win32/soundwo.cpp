@@ -92,7 +92,7 @@ bool DriverWO::Init(SoundSource<Sample16>* s,
   wf.nAvgBytesPerSec = wf.nSamplesPerSec * wf.nBlockAlign;
 
   if (waveOutOpen(&hwo, WAVE_MAPPER, &wf, idthread,
-                  reinterpret_cast<DWORD>(this),
+                  reinterpret_cast<DWORD_PTR>(this),
                   CALLBACK_THREAD) != MMSYSERR_NOERROR) {
     hwo = 0;
     DeleteBuffers();

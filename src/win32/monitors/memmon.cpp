@@ -405,7 +405,7 @@ INT_PTR CALLBACK MemoryMonitor::EDlgProcGate(HWND hwnd,
   MemoryMonitor* monitor = nullptr;
   if (m == WM_INITDIALOG) {
     if (monitor = reinterpret_cast<MemoryMonitor*>(l))
-      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)monitor);
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)monitor);
   } else {
     monitor = (MemoryMonitor*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }

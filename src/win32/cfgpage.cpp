@@ -84,7 +84,7 @@ INT_PTR ConfigPage::PageGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
   if (m == WM_INITDIALOG) {
     PROPSHEETPAGE* pPage = (PROPSHEETPAGE*)l;
     if (page = reinterpret_cast<ConfigPage*>(pPage->lParam))
-      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)page);
+      ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)page);
   } else {
     page = (ConfigPage*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
   }

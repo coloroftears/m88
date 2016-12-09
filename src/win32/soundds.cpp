@@ -109,7 +109,7 @@ bool DriverDS::Init(SoundSource<Sample16>* s,
   timeBeginPeriod(buffer_length / num_blocks);
   timerid = timeSetEvent(buffer_length / num_blocks, timer_resolution,
                          &DriverDS::TimeProc,
-                         reinterpret_cast<DWORD>(this), TIME_PERIODIC);
+                         reinterpret_cast<DWORD_PTR>(this), TIME_PERIODIC);
   nextwrite = 1 << sampleshift;
 
   if (!timerid) {
