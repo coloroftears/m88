@@ -39,7 +39,7 @@ bool BasicMonitor::Init(PC88* pc88) {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL BasicMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR BasicMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_INITDIALOG:
       Decode(true);

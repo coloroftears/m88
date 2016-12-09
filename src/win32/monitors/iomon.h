@@ -27,7 +27,7 @@ class IOMonitor final : public WinMonitor {
  private:
   // Overrides WinMonitor.
   void UpdateText() final;
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) final;
   void Start() final;
   void Stop() final;
 

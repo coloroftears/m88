@@ -24,7 +24,7 @@ class Z80RegMonitor final : public WinMonitor {
  private:
   // Overrides WinMonitor.
   void UpdateText();
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM);
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
   void DrawMain(HDC, bool);
 
   PC88* pc;

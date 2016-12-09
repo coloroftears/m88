@@ -34,7 +34,7 @@ class OPNMonitor final : public WinMonitor, public ISoundSource {
 
   // Overrides WinMonitor.
   void DrawMain(HDC, bool) final;
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) final;
   void UpdateText() final;
 
   // Overrides ISoundSource.

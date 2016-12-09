@@ -29,7 +29,7 @@ class BasicMonitor final : public WinMonitor {
   void Decode(bool always);
 
   // Overrides WinMonitor.
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) final;
   void UpdateText() final;
 
   char basictext[0x10000];

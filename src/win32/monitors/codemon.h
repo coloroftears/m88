@@ -28,7 +28,7 @@ class CodeMonitor final : public MemViewMonitor {
 
  private:
   // Overrides WinMonitor
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) final;
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) final;
   void UpdateText() final;
   int VerticalScroll(int msg) final;
 

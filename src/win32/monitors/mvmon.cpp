@@ -39,7 +39,7 @@ bool MemViewMonitor::Init(LPCTSTR tmpl, PC88* pc88) {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL MemViewMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR MemViewMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_INITDIALOG:
       SetBank();

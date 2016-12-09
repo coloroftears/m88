@@ -44,7 +44,7 @@ void Z80RegMonitor::DrawMain(HDC hdc, bool) {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL Z80RegMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR Z80RegMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   /*  switch (msg)
     {
 //  case WM_SIZE:

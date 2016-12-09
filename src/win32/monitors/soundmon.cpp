@@ -108,7 +108,7 @@ void IFCALL OPNMonitor::Mix(int32_t* s, int length) {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL OPNMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR OPNMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_CLOSE:
       opn->SetChannelMask(0);

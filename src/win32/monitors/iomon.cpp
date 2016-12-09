@@ -99,7 +99,7 @@ void IOMonitor::UpdateText() {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL IOMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR IOMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_COMMAND:
       switch (LOWORD(wp)) {

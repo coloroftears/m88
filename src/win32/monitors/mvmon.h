@@ -27,7 +27,7 @@ class MemViewMonitor : public WinMonitor {
   MemoryBus* GetBus() { return bus; }
 
   // Overrides WinMonitor.
-  BOOL DlgProc(HWND, UINT, WPARAM, LPARAM) override;
+  INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM) override;
 
   void StatClear();
   uint32_t StatExec(uint32_t a);

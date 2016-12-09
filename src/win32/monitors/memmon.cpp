@@ -185,7 +185,7 @@ void MemoryMonitor::UpdateText() {
 // ---------------------------------------------------------------------------
 //  ダイアログ処理
 //
-BOOL MemoryMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR MemoryMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     POINT p;
 

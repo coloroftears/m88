@@ -36,7 +36,7 @@ bool IFCALL ConfigPage::Setup(IConfigPropBase* _base, PROPSHEETPAGE* psp) {
   return true;
 }
 
-BOOL ConfigPage::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
+INT_PTR ConfigPage::PageProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     case WM_INITDIALOG:
       InitDialog(hdlg);
