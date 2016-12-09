@@ -1018,7 +1018,8 @@ void FDC::CmdReadDiagnostic() {
       }
       xbyte = idr.n ? 0x80 << std::min(8, static_cast<int>(idr.n))
                     : std::min(dtl, 0x80U);
-      ct = std::min(readdiaglim - readdiagptr, static_cast<int>(xbyte));
+      ct = std::min(static_cast<int>(readdiaglim - readdiagptr),
+                    static_cast<int>(xbyte));
       readdiagcount = ct;
       ShiftToExecReadPhase(ct, readdiagptr);
       readdiagptr += ct, xbyte -= ct;
@@ -1028,7 +1029,8 @@ void FDC::CmdReadDiagnostic() {
 
     case execreadphase:
       if (xbyte > 0) {
-        ct = std::min(readdiaglim - readdiagptr, static_cast<int>(xbyte));
+        ct = std::min(static_cast<int>(readdiaglim - readdiagptr),
+                      static_cast<int>(xbyte));
         readdiagcount += ct;
         ShiftToExecReadPhase(ct, readdiagptr);
         readdiagptr += ct, xbyte -= ct;
