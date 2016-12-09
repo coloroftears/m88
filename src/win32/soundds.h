@@ -37,7 +37,7 @@ class DriverDS final : public Driver {
   bool Cleanup() final;
 
  private:
-  static void CALLBACK TimeProc(UINT, UINT, DWORD, DWORD, DWORD);
+  static void CALLBACK TimeProc(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
   void Send();
 
   LPDIRECTSOUND lpds;
