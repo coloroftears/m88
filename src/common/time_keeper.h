@@ -21,18 +21,14 @@
 //
 class TimeKeeper {
  public:
-  enum {
-    unit = 100,  // 最低 1 ということで．
-  };
+  static const int kUnit = 100;
 
- public:
-  TimeKeeper();
-  ~TimeKeeper();
+  virtual ~TimeKeeper() {}
 
-  SchedTime GetTime();
+  static TimeKeeper* create();
+  virtual SchedTime GetTime() = 0;
 
- private:
-  uint32_t freq;  // ソースクロックの周期
-  uint32_t base;  // 最後の呼び出しの際の元クロックの値
-  uint32_t time;  // 最後の呼び出しに返した値
+ protected:
+   TimeKeeper() : time_(0) {}
+   SchedTime time_;
 };

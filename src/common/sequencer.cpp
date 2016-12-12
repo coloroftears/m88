@@ -15,7 +15,9 @@
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
-Sequencer::Sequencer() {}
+Sequencer::Sequencer() {
+  keeper_.reset(TimeKeeper::create());
+}
 
 Sequencer::~Sequencer() {
   Cleanup();
@@ -64,7 +66,7 @@ bool Sequencer::Cleanup() {
 //  Core Thread
 //
 uint32_t Sequencer::ThreadMain() {
-  time = keeper.GetTime();
+  time = keeper_->GetTime();
   effclock = 100;
 
   while (!shouldterminate) {
@@ -72,7 +74,7 @@ uint32_t Sequencer::ThreadMain() {
       ExecuteAsynchronus();
     } else {
       Sleep(20);
-      time = keeper.GetTime();
+      time = keeper_->GetTime();
     }
   }
   return 0;
@@ -104,7 +106,7 @@ inline void Sequencer::Execute(SchedClock clk,
 //
 void Sequencer::ExecuteAsynchronus() {
   if (clock <= 0) {
-    time = keeper.GetTime();
+    time = keeper_->GetTime();
     delegate_->TimeSync();
     SchedTimeDelta ms;
     int eclk = 0;
@@ -114,7 +116,7 @@ void Sequencer::ExecuteAsynchronus() {
       else
         Execute(effclock, 500 * speed / 100, effclock);
       eclk += 5;
-      ms = keeper.GetTime() - time;
+      ms = keeper_->GetTime() - time;
     } while (ms < 1000);
     delegate_->UpdateScreen();
 
@@ -126,7 +128,7 @@ void Sequencer::ExecuteAsynchronus() {
     delegate_->TimeSync();
     Execute(clock, texec, clock * speed / 100);
 
-    SchedTimeDelta tcpu = keeper.GetTime() - time;
+    SchedTimeDelta tcpu = keeper_->GetTime() - time;
     if (tcpu < twork) {
       if (drawnextframe && ++refreshcount >= refreshtiming) {
         delegate_->UpdateScreen();
@@ -134,7 +136,7 @@ void Sequencer::ExecuteAsynchronus() {
         refreshcount = 0;
       }
 
-      SchedTimeDelta tdraw = keeper.GetTime() - time;
+      SchedTimeDelta tdraw = keeper_->GetTime() - time;
 
       if (tdraw > twork) {
         drawnextframe = false;
@@ -150,7 +152,7 @@ void Sequencer::ExecuteAsynchronus() {
       if (++skippedframe >= 20) {
         delegate_->UpdateScreen();
         skippedframe = 0;
-        time = keeper.GetTime();
+        time = keeper_->GetTime();
       }
     }
   }

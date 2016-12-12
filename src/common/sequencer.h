@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include <memory>
+
 #include "common/critical_section.h"
 #include "common/time_keeper.h"
 #include "interface/ifcommon.h"
@@ -60,7 +62,7 @@ class Sequencer {
 
   SequencerDelegate* delegate_ = nullptr;
 
-  TimeKeeper keeper;
+  std::unique_ptr<TimeKeeper> keeper_;
 
   CriticalSection cs;
   HANDLE hthread = 0;
