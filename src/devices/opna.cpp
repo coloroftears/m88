@@ -379,7 +379,6 @@ int32_t OPNABase::tltable[FM_TLENTS + FM_TLPOS];
 bool OPNABase::tablehasmade = false;
 
 OPNABase::OPNABase() {
-  adpcmbuf = 0;
   memaddr = 0;
   startaddr = 0;
   deltan = 256;
@@ -1173,7 +1172,6 @@ OPNA::OPNA() {
 // ---------------------------------------------------------------------------
 
 OPNA::~OPNA() {
-  delete[] adpcmbuf;
   for (int i = 0; i < 6; i++)
     delete[] rhythm[i].sample;
 }
@@ -1186,7 +1184,7 @@ bool OPNA::Init(uint32_t c, uint32_t r, bool ipflag, const char* path) {
   LoadRhythmSample(path);
 
   if (!adpcmbuf)
-    adpcmbuf = new uint8_t[0x40000];
+    adpcmbuf.reset(new uint8_t[0x40000]);
   if (!adpcmbuf)
     return false;
 
@@ -1499,7 +1497,7 @@ bool OPNB::Init(uint32_t c,
 
   adpcmabuf = _adpcma;
   adpcmasize = _adpcma_size;
-  adpcmbuf = _adpcmb;
+  adpcmbuf.reset(_adpcmb);
 
   for (i = 0; i <= 24; i++)  // max 16M bytes
   {

@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "devices/fmgen.h"
 #include "devices/fmtimer.h"
 #include "devices/psg.h"
@@ -175,7 +177,7 @@ class OPNABase : public OPNBase {
   uint32_t fnum3[3];
 
   // ADPCM 関係
-  uint8_t* adpcmbuf;     // ADPCM RAM
+  std::unique_ptr<uint8_t[]> adpcmbuf;     // ADPCM RAM
   uint32_t adpcmmask;    // メモリアドレスに対するビットマスク
   uint32_t adpcmnotice;  // ADPCM 再生終了時にたつビット
   uint32_t startaddr;    // Start address
@@ -270,7 +272,7 @@ class OPNA : public OPNABase {
   void SetVolumeRhythmTotal(int db);
   void SetVolumeRhythm(int index, int db);
 
-  uint8_t* GetADPCMBuffer() { return adpcmbuf; }
+  uint8_t* GetADPCMBuffer() { return adpcmbuf.get(); }
 
   int dbgGetOpOut(int c, int s) { return ch[c].op[s].dbgopout_; }
   int dbgGetPGOut(int c, int s) { return ch[c].op[s].dbgpgout_; }
