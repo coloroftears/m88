@@ -5,7 +5,6 @@
 #include <stdint.h>
 
 #include "common/critical_section.h"
-#include "common/time_keeper.h"
 
 //  遅延送信対応 ROMEO ドライバ
 //
@@ -129,7 +128,6 @@ class Piccolo {
   static uint32_t CALLBACK ThreadEntry(void* arg);
   uint32_t ThreadMain();
 
-  TimeKeeper timekeeper;
   CriticalSection cs;
 
   bool Push(Event&);
