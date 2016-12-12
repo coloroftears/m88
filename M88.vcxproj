@@ -131,7 +131,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Debug\</ObjectFileName>
@@ -174,7 +174,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Debug\</ObjectFileName>
@@ -219,7 +219,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;NDEBUG;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Tuning\</AssemblerListingLocation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Tuning\</ObjectFileName>
@@ -262,7 +262,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;NDEBUG;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Tuning\</AssemblerListingLocation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Tuning\</ObjectFileName>
@@ -306,7 +306,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerOutput>AssemblyAndMachineCode</AssemblerOutput>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -354,7 +354,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;OS_WIN;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerOutput>AssemblyAndMachineCode</AssemblerOutput>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
