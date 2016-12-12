@@ -486,19 +486,19 @@ bool PC88::ConnectDevices() {
     return false;
 
   static const IOBus::Connector c_opn1[] = {
-      {pres, IOBus::portout, OPNIF::reset},
-      {0x32, IOBus::portout, OPNIF::setintrmask},
-      {0x44, IOBus::portout, OPNIF::setindex0},
-      {0x45, IOBus::portout, OPNIF::writedata0},
-      {0x46, IOBus::portout, OPNIF::setindex1},
-      {0x47, IOBus::portout, OPNIF::writedata1},
-      {ptimesync, IOBus::portout, OPNIF::sync},
-      {0x44, IOBus::portin, OPNIF::readstatus},
-      {0x45, IOBus::portin, OPNIF::readdata0},
-      {0x46, IOBus::portin, OPNIF::readstatusex},
-      {0x47, IOBus::portin, OPNIF::readdata1},
+      {pres, IOBus::portout, OPNInterface::reset},
+      {0x32, IOBus::portout, OPNInterface::setintrmask},
+      {0x44, IOBus::portout, OPNInterface::setindex0},
+      {0x45, IOBus::portout, OPNInterface::writedata0},
+      {0x46, IOBus::portout, OPNInterface::setindex1},
+      {0x47, IOBus::portout, OPNInterface::writedata1},
+      {ptimesync, IOBus::portout, OPNInterface::sync},
+      {0x44, IOBus::portin, OPNInterface::readstatus},
+      {0x45, IOBus::portin, OPNInterface::readdata0},
+      {0x46, IOBus::portin, OPNInterface::readstatusex},
+      {0x47, IOBus::portin, OPNInterface::readdata1},
       {0, 0, 0}};
-  opn1 = new PC8801::OPNIF(DEV_ID('O', 'P', 'N', '1'));
+  opn1 = new PC8801::OPNInterface(DEV_ID('O', 'P', 'N', '1'));
   if (!opn1 || !opn1->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!bus1.Connect(opn1, c_opn1))
@@ -506,18 +506,18 @@ bool PC88::ConnectDevices() {
   opn1->SetIMask(0x32, 0x80);
 
   static const IOBus::Connector c_opn2[] = {
-      {pres, IOBus::portout, OPNIF::reset},
-      {0xaa, IOBus::portout, OPNIF::setintrmask},
-      {0xa8, IOBus::portout, OPNIF::setindex0},
-      {0xa9, IOBus::portout, OPNIF::writedata0},
-      {0xac, IOBus::portout, OPNIF::setindex1},
-      {0xad, IOBus::portout, OPNIF::writedata1},
-      {0xa8, IOBus::portin, OPNIF::readstatus},
-      {0xa9, IOBus::portin, OPNIF::readdata0},
-      {0xac, IOBus::portin, OPNIF::readstatusex},
-      {0xad, IOBus::portin, OPNIF::readdata1},
+      {pres, IOBus::portout, OPNInterface::reset},
+      {0xaa, IOBus::portout, OPNInterface::setintrmask},
+      {0xa8, IOBus::portout, OPNInterface::setindex0},
+      {0xa9, IOBus::portout, OPNInterface::writedata0},
+      {0xac, IOBus::portout, OPNInterface::setindex1},
+      {0xad, IOBus::portout, OPNInterface::writedata1},
+      {0xa8, IOBus::portin, OPNInterface::readstatus},
+      {0xa9, IOBus::portin, OPNInterface::readdata0},
+      {0xac, IOBus::portin, OPNInterface::readstatusex},
+      {0xad, IOBus::portin, OPNInterface::readdata1},
       {0, 0, 0}};
-  opn2 = new PC8801::OPNIF(DEV_ID('O', 'P', 'N', '2'));
+  opn2 = new PC8801::OPNInterface(DEV_ID('O', 'P', 'N', '2'));
   if (!opn2->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!opn2 || !bus1.Connect(opn2, c_opn2))

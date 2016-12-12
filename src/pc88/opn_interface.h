@@ -23,7 +23,7 @@ class Config;
 // ---------------------------------------------------------------------------
 //  88 用の OPN Unit
 //
-class OPNIF final : public Device, public ISoundSource {
+class OPNInterface final : public Device, public ISoundSource {
  public:
   enum IDFunc {
     reset = 0,
@@ -47,8 +47,8 @@ class OPNIF final : public Device, public ISoundSource {
   };
 
  public:
-  explicit OPNIF(const ID& id);
-  ~OPNIF();
+  explicit OPNInterface(const ID& id);
+  ~OPNInterface();
 
   bool Init(IOBus* bus, int intrport, int io, Scheduler* s);
   void SetIMask(uint32_t port, uint32_t bit);
@@ -108,7 +108,7 @@ class OPNIF final : public Device, public ISoundSource {
     bool intrenabled;
     bool intrpending;
 
-    friend class OPNIF;
+    friend class OPNInterface;
   };
 
   enum {
@@ -160,14 +160,14 @@ class OPNIF final : public Device, public ISoundSource {
 
   static int prescaler;
 
-  //  static OPNIF* romeo_user;
+  //  static OPNInterface* romeo_user;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
 
-inline void OPNIF::SetChannelMask(uint32_t ch) {
+inline void OPNInterface::SetChannelMask(uint32_t ch) {
   opn.SetChannelMask(ch);
 }
 }  // namespace PC8801

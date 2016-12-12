@@ -15,7 +15,7 @@ class PC88;
 namespace PC8801 {
 class Sound;
 class Config;
-class OPNIF;
+class OPNInterface;
 
 // ---------------------------------------------------------------------------
 //

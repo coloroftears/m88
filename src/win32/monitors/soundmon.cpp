@@ -25,7 +25,7 @@ OPNMonitor::OPNMonitor() {
 
 OPNMonitor::~OPNMonitor() {}
 
-bool OPNMonitor::Init(OPNIF* o, ISoundControl* sc) {
+bool OPNMonitor::Init(OPNInterface* o, ISoundControl* sc) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_SOUNDMON)))
     return false;
 

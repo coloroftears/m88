@@ -19,7 +19,7 @@
 
 using namespace PC8801;
 
-// OPNIF* OPNIF::romeo_user = 0;
+// OPNInterface* OPNInterface::romeo_user = 0;
 
 #define ROMEO_JULIET 0
 
@@ -28,12 +28,12 @@ using namespace PC8801;
 //  static にするのは，FMGen の制限により，複数の OPN を異なるクロックに
 //  することが出来ないため．
 //
-int OPNIF::prescaler = 0x2d;
+int OPNInterface::prescaler = 0x2d;
 
 // ---------------------------------------------------------------------------
 //  生成・破棄
 //
-OPNIF::OPNIF(const ID& id) : Device(id), chip(0) {
+OPNInterface::OPNInterface(const ID& id) : Device(id), chip(0) {
   Log("Hello\n");
   scheduler = 0;
   soundcontrol = 0;
@@ -45,14 +45,14 @@ OPNIF::OPNIF(const ID& id) : Device(id), chip(0) {
   delay = 100000;
 }
 
-OPNIF::~OPNIF() {
+OPNInterface::~OPNInterface() {
   Connect(0);
 }
 
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool OPNIF::Init(IOBus* b, int intrport, int io, Scheduler* s) {
+bool OPNInterface::Init(IOBus* b, int intrport, int io, Scheduler* s) {
   bus = b;
   scheduler = s;
   portio = io;
@@ -85,7 +85,7 @@ bool OPNIF::Init(IOBus* b, int intrport, int io, Scheduler* s) {
   return true;
 }
 
-void OPNIF::SetIMask(uint32_t port, uint32_t bit) {
+void OPNInterface::SetIMask(uint32_t port, uint32_t bit) {
   imaskport = port;
   imaskbit = bit;
 }
@@ -93,7 +93,7 @@ void OPNIF::SetIMask(uint32_t port, uint32_t bit) {
 // ---------------------------------------------------------------------------
 //
 //
-bool IFCALL OPNIF::Connect(ISoundControl* c) {
+bool IFCALL OPNInterface::Connect(ISoundControl* c) {
   if (soundcontrol)
     soundcontrol->Disconnect(this);
   soundcontrol = c;
@@ -105,7 +105,7 @@ bool IFCALL OPNIF::Connect(ISoundControl* c) {
 // ---------------------------------------------------------------------------
 //  合成・再生レート設定
 //
-bool IFCALL OPNIF::SetRate(uint32_t rate) {
+bool IFCALL OPNInterface::SetRate(uint32_t rate) {
   opn.SetReg(prescaler, 0);
   opn.SetRate(clock, rate, fmmixmode);
   currentrate = rate;
@@ -115,7 +115,7 @@ bool IFCALL OPNIF::SetRate(uint32_t rate) {
 // ---------------------------------------------------------------------------
 //  FM 音源の合成モードを設定
 //
-void OPNIF::SetFMMixMode(bool mm) {
+void OPNInterface::SetFMMixMode(bool mm) {
   fmmixmode = mm;
   SetRate(currentrate);
 }
@@ -123,7 +123,7 @@ void OPNIF::SetFMMixMode(bool mm) {
 // ---------------------------------------------------------------------------
 //  合成
 //
-void IFCALL OPNIF::Mix(int32_t* dest, int nsamples) {
+void IFCALL OPNInterface::Mix(int32_t* dest, int nsamples) {
   if (enable)
     opn.Mix(dest, nsamples);
 }
@@ -135,7 +135,7 @@ static inline int ConvertVolume(int volume) {
   return volume > -40 ? volume : -200;
 }
 
-void OPNIF::SetVolume(const Config* config) {
+void OPNInterface::SetVolume(const Config* config) {
   opn.SetVolumeFM(ConvertVolume(config->volfm));
   opn.SetVolumePSG(ConvertVolume(config->volssg));
 #ifndef USE_OPN
@@ -157,7 +157,7 @@ void OPNIF::SetVolume(const Config* config) {
 // ---------------------------------------------------------------------------
 //  Reset
 //
-void IOCALL OPNIF::Reset(uint32_t, uint32_t) {
+void IOCALL OPNInterface::Reset(uint32_t, uint32_t) {
   memset(regs, 0, sizeof(regs));
 
   regs[0x29] = 0x1f;
@@ -176,7 +176,7 @@ void IOCALL OPNIF::Reset(uint32_t, uint32_t) {
 // ---------------------------------------------------------------------------
 //  割り込み
 //
-void OPNIF::OPNUnit::Intr(bool flag) {
+void OPNInterface::OPNUnit::Intr(bool flag) {
   bool prev = intrpending && intrenabled && bus;
   intrpending = flag;
   LOG3("OPN     :Interrupt %d %d %d\n", intrpending, intrenabled, !prev);
@@ -188,14 +188,14 @@ void OPNIF::OPNUnit::Intr(bool flag) {
 // ---------------------------------------------------------------------------
 //  割り込み許可？
 //
-inline void OPNIF::OPNUnit::SetIntrMask(bool en) {
+inline void OPNInterface::OPNUnit::SetIntrMask(bool en) {
   bool prev = intrpending && intrenabled && bus;
   intrenabled = en;
   if (intrpending && intrenabled && bus && !prev)
     bus->Out(pintr, true);
 }
 
-void OPNIF::SetIntrMask(uint32_t port, uint32_t intrmask) {
+void OPNInterface::SetIntrMask(uint32_t port, uint32_t intrmask) {
   //  LOG2("Intr enabled (%.2x)[%.2x]\n", a, intrmask);
   if (port == imaskport) {
     opn.SetIntrMask(!(imaskbit & intrmask));
@@ -205,7 +205,7 @@ void OPNIF::SetIntrMask(uint32_t port, uint32_t intrmask) {
 // ---------------------------------------------------------------------------
 //  SetRegisterIndex
 //
-void IOCALL OPNIF::SetIndex0(uint32_t a, uint32_t data) {
+void IOCALL OPNInterface::SetIndex0(uint32_t a, uint32_t data) {
   //  LOG2("Index0[%.2x] = %.2x\n", a, data);
   index0 = data;
   if (enable && (data & 0xfc) == 0x2c) {
@@ -215,7 +215,7 @@ void IOCALL OPNIF::SetIndex0(uint32_t a, uint32_t data) {
   }
 }
 
-void IOCALL OPNIF::SetIndex1(uint32_t a, uint32_t data) {
+void IOCALL OPNInterface::SetIndex1(uint32_t a, uint32_t data) {
   //  LOG2("Index1[%.2x] = %.2x\n", a, data);
   index1 = data1 = data;
 }
@@ -223,14 +223,14 @@ void IOCALL OPNIF::SetIndex1(uint32_t a, uint32_t data) {
 // ---------------------------------------------------------------------------
 //
 //
-inline uint32_t OPNIF::ChipTime() {
+inline uint32_t OPNInterface::ChipTime() {
   return basetime + (scheduler->GetTime() - basetick) * 10 + delay;
 }
 
 // ---------------------------------------------------------------------------
 //  WriteRegister
 //
-void IOCALL OPNIF::WriteData0(uint32_t a, uint32_t data) {
+void IOCALL OPNInterface::WriteData0(uint32_t a, uint32_t data) {
   //  LOG2("Write0[%.2x] = %.2x\n", a, data);
   if (enable) {
     LOG3("%.8x:OPN[0%.2x] = %.2x\n", scheduler->GetTime(), index0, data);
@@ -263,7 +263,7 @@ void IOCALL OPNIF::WriteData0(uint32_t a, uint32_t data) {
   }
 }
 
-void IOCALL OPNIF::WriteData1(uint32_t a, uint32_t data) {
+void IOCALL OPNInterface::WriteData1(uint32_t a, uint32_t data) {
 //  LOG2("Write1[%.2x] = %.2x\n", a, data);
 #ifndef USE_OPN
   if (enable && opnamode) {
@@ -283,7 +283,7 @@ void IOCALL OPNIF::WriteData1(uint32_t a, uint32_t data) {
 // ---------------------------------------------------------------------------
 //  ReadRegister
 //
-uint32_t IOCALL OPNIF::ReadData0(uint32_t a) {
+uint32_t IOCALL OPNInterface::ReadData0(uint32_t a) {
   uint32_t ret;
   if (!enable)
     ret = 0xff;
@@ -297,7 +297,7 @@ uint32_t IOCALL OPNIF::ReadData0(uint32_t a) {
   return ret;
 }
 
-uint32_t IOCALL OPNIF::ReadData1(uint32_t a) {
+uint32_t IOCALL OPNInterface::ReadData1(uint32_t a) {
   uint32_t ret = 0xff;
 #ifndef USE_OPN
   if (enable && opnamode) {
@@ -314,13 +314,13 @@ uint32_t IOCALL OPNIF::ReadData1(uint32_t a) {
 // ---------------------------------------------------------------------------
 //  ReadStatus
 //
-uint32_t IOCALL OPNIF::ReadStatus(uint32_t a) {
+uint32_t IOCALL OPNInterface::ReadStatus(uint32_t a) {
   uint32_t ret = enable ? opn.ReadStatus() : 0xff;
   //  LOG2("status[%.2x] = %.2x\n", a, ret);
   return ret;
 }
 
-uint32_t IOCALL OPNIF::ReadStatusEx(uint32_t a) {
+uint32_t IOCALL OPNInterface::ReadStatusEx(uint32_t a) {
   uint32_t ret = enable && opnamode ? opn.ReadStatusEx() : 0xff;
   //  LOG2("statex[%.2x] = %.2x\n", a, ret);
   return ret;
@@ -329,7 +329,7 @@ uint32_t IOCALL OPNIF::ReadStatusEx(uint32_t a) {
 // ---------------------------------------------------------------------------
 //  タイマー更新
 //
-void OPNIF::UpdateTimer() {
+void OPNInterface::UpdateTimer() {
   scheduler->DelEvent(this);
   // TODO: Use proper function to convert GetNextEvent() (usec) to
   // SchedTimeDelta.
@@ -337,14 +337,14 @@ void OPNIF::UpdateTimer() {
   if (nextcount > 0) {
     nextcount = (nextcount + 9) / 10;
     scheduler->AddEvent(nextcount, this,
-                        static_cast<TimeFunc>(&OPNIF::TimeEvent), 1);
+                        static_cast<TimeFunc>(&OPNInterface::TimeEvent), 1);
   }
 }
 
 // ---------------------------------------------------------------------------
 //  タイマー
 //
-void IOCALL OPNIF::TimeEvent(uint32_t e) {
+void IOCALL OPNInterface::TimeEvent(uint32_t e) {
   int currenttime = scheduler->GetTime();
   int diff = currenttime - prevtime;
   prevtime = currenttime;
@@ -362,7 +362,7 @@ void IOCALL OPNIF::TimeEvent(uint32_t e) {
 // ---------------------------------------------------------------------------
 //  状態のサイズ
 //
-uint32_t IFCALL OPNIF::GetStatusSize() {
+uint32_t IFCALL OPNInterface::GetStatusSize() {
   if (enable)
     return sizeof(Status) + (opnamode ? 0x40000 : 0);
   else
@@ -372,7 +372,7 @@ uint32_t IFCALL OPNIF::GetStatusSize() {
 // ---------------------------------------------------------------------------
 //  状態保存
 //
-bool IFCALL OPNIF::SaveStatus(uint8_t* s) {
+bool IFCALL OPNInterface::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
   st->rev = ssrev;
   st->i0 = index0;
@@ -391,7 +391,7 @@ bool IFCALL OPNIF::SaveStatus(uint8_t* s) {
 // ---------------------------------------------------------------------------
 //  状態復帰
 //
-bool IFCALL OPNIF::LoadStatus(const uint8_t* s) {
+bool IFCALL OPNInterface::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
   if (st->rev != ssrev)
     return false;
@@ -454,7 +454,7 @@ bool IFCALL OPNIF::LoadStatus(const uint8_t* s) {
 // ---------------------------------------------------------------------------
 //  カウンタを同期
 //
-void IOCALL OPNIF::Sync(uint32_t, uint32_t) {
+void IOCALL OPNInterface::Sync(uint32_t, uint32_t) {
   if (chip) {
     basetime = piccolo->GetCurrentTime();
     basetick = scheduler->GetTime();
@@ -464,21 +464,21 @@ void IOCALL OPNIF::Sync(uint32_t, uint32_t) {
 // ---------------------------------------------------------------------------
 //  device description
 //
-const Device::Descriptor OPNIF::descriptor = {indef, outdef};
+const Device::Descriptor OPNInterface::descriptor = {indef, outdef};
 
-const Device::OutFuncPtr OPNIF::outdef[] = {
-    static_cast<Device::OutFuncPtr>(&OPNIF::Reset),
-    static_cast<Device::OutFuncPtr>(&OPNIF::SetIndex0),
-    static_cast<Device::OutFuncPtr>(&OPNIF::SetIndex1),
-    static_cast<Device::OutFuncPtr>(&OPNIF::WriteData0),
-    static_cast<Device::OutFuncPtr>(&OPNIF::WriteData1),
-    static_cast<Device::OutFuncPtr>(&OPNIF::SetIntrMask),
-    static_cast<Device::OutFuncPtr>(&OPNIF::Sync),
+const Device::OutFuncPtr OPNInterface::outdef[] = {
+    static_cast<Device::OutFuncPtr>(&OPNInterface::Reset),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::SetIndex0),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::SetIndex1),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::WriteData0),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::WriteData1),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::SetIntrMask),
+    static_cast<Device::OutFuncPtr>(&OPNInterface::Sync),
 };
 
-const Device::InFuncPtr OPNIF::indef[] = {
-    static_cast<Device::InFuncPtr>(&OPNIF::ReadStatus),
-    static_cast<Device::InFuncPtr>(&OPNIF::ReadStatusEx),
-    static_cast<Device::InFuncPtr>(&OPNIF::ReadData0),
-    static_cast<Device::InFuncPtr>(&OPNIF::ReadData1),
+const Device::InFuncPtr OPNInterface::indef[] = {
+    static_cast<Device::InFuncPtr>(&OPNInterface::ReadStatus),
+    static_cast<Device::InFuncPtr>(&OPNInterface::ReadStatusEx),
+    static_cast<Device::InFuncPtr>(&OPNInterface::ReadData0),
+    static_cast<Device::InFuncPtr>(&OPNInterface::ReadData1),
 };

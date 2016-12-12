@@ -242,7 +242,7 @@ int WinUI::Main(const char* cmdline) {
     DispatchMessage(&msg);
   }
 
-  OPNIF* opn = core.GetOPN1();
+  OPNInterface* opn = core.GetOPN1();
   if (opn)
     opn->Reset();
   CleanupM88();

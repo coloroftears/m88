@@ -43,7 +43,7 @@ class INTC;
 class JoyPad;
 class KanjiROM;
 class Memory;
-class OPNIF;
+class OPNInterface;
 class PD8257;
 class SIO;
 class Screen;
@@ -92,8 +92,8 @@ class PC88 : public SchedulerDelegate,
 
   PC8801::Memory* GetMem1() { return mem1; }
   PC8801::SubSystem* GetMem2() { return subsys; }
-  PC8801::OPNIF* GetOPN1() { return opn1; }
-  PC8801::OPNIF* GetOPN2() { return opn2; }
+  PC8801::OPNInterface* GetOPN1() { return opn1; }
+  PC8801::OPNInterface* GetOPN2() { return opn2; }
   Z80* GetCPU1() { return &cpu1; }
   Z80* GetCPU2() { return &cpu2; }
   PC8801::PD8257* GetDMAC() { return dmac; }
@@ -173,8 +173,8 @@ class PC88 : public SchedulerDelegate,
   PC8801::SubSystem* subsys;
   PC8801::SIO* siotape;
   PC8801::SIO* siomidi;
-  PC8801::OPNIF* opn1;
-  PC8801::OPNIF* opn2;
+  PC8801::OPNInterface* opn1;
+  PC8801::OPNInterface* opn2;
   PC8801::Calendar* caln;
   PC8801::Beep* beep;
   PC8801::PD8257* dmac;
