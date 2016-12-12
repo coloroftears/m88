@@ -121,8 +121,7 @@ void Z80C::SetPC(uint32_t newpc) {
 }
 
 #if 0
-inline uint32_t Z80C::GetPC()
-{
+inline uint32_t Z80C::GetPC() {
   DEBUGCOUNT(6);
   return inst - instbase;
 }
@@ -2174,8 +2173,7 @@ void Z80C::SingleStep(uint32_t m) {
     // DD / FD
     case 0xdd:
       w = Fetch8();
-      if ((w & 0xdf) != 0xdd)  // not DD nor FD
-      {
+      if ((w & 0xdf) != 0xdd) { // not DD nor FD
         index_mode = USEIX;
         SingleStep(w);
         index_mode = USEHL;
@@ -2905,8 +2903,9 @@ void Z80C::OutTestIntr() {
     } else if (w == 0xd3) {
       PCDec(1);
       return;
-    } else
+    } else {
       SingleStep(w);
+    }
     TestIntr();
   }
 }
