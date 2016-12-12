@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include <memory>
+
 #include "interface/if_win.h"
 #include "win32/88config.h"
 #include "win32/monitors/basmon.h"
@@ -133,8 +135,9 @@ class WinUI {
   PC8801::IOMonitor iomon;
   Z80RegMonitor regmon;
   LoadMonitor loadmon;
-  DiskManager* diskmgr;
-  TapeManager* tapemgr;
+
+  std::unique_ptr<DiskManager> diskmgr;
+  std::unique_ptr<TapeManager> tapemgr;
 
  private:
   // メッセージ関数

@@ -44,7 +44,7 @@ WinUI* g_ui;
 //  WinUI
 //  生成・破棄
 //
-WinUI::WinUI(HINSTANCE hinstance) : hinst(hinstance), diskmgr(0), tapemgr(0) {
+WinUI::WinUI(HINSTANCE hinstance) : hinst(hinstance) {
   g_ui = this;
   timerid = 0;
   point.x = point.y = 0;
@@ -91,11 +91,11 @@ bool WinUI::InitM88(const char* cmdline) {
 
   LOG1("%d\tdiskmanager\n", timeGetTime());
   if (!diskmgr)
-    diskmgr = new DiskManager;
+    diskmgr.reset(new DiskManager);
   if (!diskmgr || !diskmgr->Init())
     return false;
   if (!tapemgr)
-    tapemgr = new TapeManager;
+    tapemgr.reset(new TapeManager);
   if (!tapemgr)
     return false;
 
@@ -103,7 +103,8 @@ bool WinUI::InitM88(const char* cmdline) {
   if (!keyif.Init(hwnd))
     return false;
   LOG1("%d\tcore\n", timeGetTime());
-  if (!core.Init(this, hwnd, &draw, diskmgr, &keyif, &winconfig, tapemgr))
+  if (!core.Init(this, hwnd, &draw, diskmgr.get(), &keyif, &winconfig,
+                 tapemgr.get()))
     return false;
 
   //  debug 用クラス初期化
@@ -158,10 +159,6 @@ void WinUI::CleanupM88() {
   PC8801::Config cfg = config;
   PC8801::SaveConfig(&cfg, m88ini, true);
   core.Cleanup();
-  delete diskmgr;
-  diskmgr = 0;
-  delete tapemgr;
-  tapemgr = 0;
 }
 
 // ---------------------------------------------------------------------------
