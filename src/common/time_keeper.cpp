@@ -17,12 +17,8 @@ class TimeKeeperImplQPC final : public TimeKeeper {
 
   static TimeKeeper* create() {
     LARGE_INTEGER freq;
-    if (QueryPerformanceFrequency(&freq)) {
-      int64_t clocks_per_unit = (freq.QuadPart + kUnit * 500) / (kUnit * 1000);
-      LARGE_INTEGER count;
-      QueryPerformanceCounter(&count);
-      return new TimeKeeperImplQPC(clocks_per_unit, count.QuadPart);
-    }
+    if (QueryPerformanceFrequency(&freq))
+      return new TimeKeeperImplQPC(freq.QuadPart);
     return nullptr;
   }
 
@@ -30,23 +26,29 @@ class TimeKeeperImplQPC final : public TimeKeeper {
     LARGE_INTEGER count;
     QueryPerformanceCounter(&count);
     int64_t diff = count.QuadPart - base_;
-    time_ += static_cast<SchedTime>(diff / freq_);
-    base_ = count.QuadPart - (diff % freq_);
+    base_ = count.QuadPart;
+
+    SchedTimeDelta delta = static_cast<SchedTimeDelta>(
+        static_cast<double>(diff) * (kUnit * 1000) / freq_);
+    time_ += delta;
     return time_;
   }
 
  private:
-  TimeKeeperImplQPC(int64_t freq, uint64_t base)
-      : freq_(freq), base_(base) {}
+  TimeKeeperImplQPC(int64_t freq)
+      : freq_(freq) {
+    LARGE_INTEGER count;
+    QueryPerformanceCounter(&count);
+    base_ = count.QuadPart;
+  }
 
-  int64_t freq_ = 0;
+  int64_t freq_;
   int64_t base_ = 0;
 };
 
-class ScopedPrecisionKeeper {
+class ScopedPrecisionKeeper final {
  public:
   ScopedPrecisionKeeper() {
-    // 精度を上げるためのおまじない…らしい
     timeBeginPeriod(1);
   }
   ~ScopedPrecisionKeeper() {
@@ -54,6 +56,7 @@ class ScopedPrecisionKeeper {
   }
 };
 
+// Warning: This class is not working as expected.
 class TimeKeeperImplWin final : public TimeKeeper {
  public:
   ~TimeKeeperImplWin() final {}
