@@ -47,7 +47,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   Event& ev = events[i];
   ev.count = GetTime() + count;
   ev.inst = inst, ev.func = func, ev.arg = arg;
-  ev.time = repeat ? count : 0;
+  ev.time_ = repeat ? count : 0;
 
   // 最短イベント発生時刻を更新する？
   if ((etime - ev.count) > 0) {
@@ -71,7 +71,7 @@ void IFCALL Scheduler::SetEvent(Event* ev,
 
   ev->count = GetTime() + count;
   ev->inst = inst, ev->func = func, ev->arg = arg;
-  ev->time = repeat ? count : 0;
+  ev->time_ = repeat ? count : 0;
 
   // 最短イベント発生時刻を更新する？
   if ((etime - ev->count) > 0) {
@@ -133,8 +133,8 @@ SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
 
       if (ev.inst && (ev.count - time <= 0)) {
         IDevice* inst = ev.inst;
-        if (ev.time) {
-          ev.count += ev.time;
+        if (ev.time_) {
+          ev.count += ev.time_;
         } else {
           ev.inst = 0;
           if (evlast == i)

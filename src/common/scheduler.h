@@ -6,17 +6,47 @@
 
 #pragma once
 
+#include <queue>
+#include <utility>
+#include <vector>
+
 #include "common/device.h"
 #include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 
+template <class T>
+class EventComparator final {
+ public:
+  bool operator()(const T a, const T b) const { return a->time() > b->time(); }
+};
+
+template <class T>
+class EventQueue final
+    : public std::priority_queue<T, std::vector<T>, EventComparator<T>> {
+ public:
+  EventQueue() : std::priority_queue<T, std::vector<T>, EventComparator<T>>() {}
+  ~EventQueue() {}
+
+  using parent =
+      typename std::priority_queue<T, std::vector<T>, EventComparator<T>>;
+  using iterator = typename std::vector<T>::iterator;
+
+  iterator begin() { return parent::c.begin(); }
+  iterator end() { return parent::c.end(); }
+  const T& back() const { return parent::c.back(); }
+
+  size_t size() const { return parent::c.size(); }
+};
+
 struct SchedulerEvent {
+  SchedTimeDelta time() const { return time_; }
+
   SchedTime count;  // 時間残り
   IDevice* inst;
   IDevice::TimeFunc func;
   int arg;
-  SchedTimeDelta time;  // 時間
+  SchedTimeDelta time_;  // 時間
 };
 
 class SchedulerDelegate {
