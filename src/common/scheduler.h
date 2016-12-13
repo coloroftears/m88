@@ -40,13 +40,35 @@ class EventQueue final
 };
 
 struct SchedulerEvent {
-  SchedTimeDelta time() const { return time_; }
+ public:
+  SchedulerEvent() {}
+  SchedulerEvent(IDevice* dev,
+                 IDevice::TimeFunc func,
+                 int arg,
+                 SchedTime time,
+                 SchedTimeDelta interval);
 
-  SchedTime count;  // 時間残り
-  IDevice* inst;
-  IDevice::TimeFunc func;
-  int arg;
-  SchedTimeDelta time_;  // 時間
+  void RunCallback() { (dev_->*func_)(arg_); }
+  void UpdateTime() { time_ += interval_; }
+
+  SchedTimeDelta interval() const { return interval_; }
+  SchedTime time() const { return time_; }
+
+  const IDevice* dev() const { return dev_; }
+  bool deleted() const { return deleted_; }
+  void set_deleted() { deleted_ = true; }
+
+private:
+  IDevice* dev_ = nullptr;
+  IDevice::TimeFunc func_ = nullptr;
+  int arg_ = 0;
+
+  // Timestamp to fire this event.
+  SchedTime time_ = 0;
+  // Recurring timer.
+  SchedTimeDelta interval_ = 0;
+
+  bool deleted_ = false;
 };
 
 class SchedulerDelegate {
@@ -74,6 +96,7 @@ class Scheduler : public IScheduler, public ITime {
 
   bool Init();
   SchedTimeDelta Proceed(SchedTimeDelta ticks);
+  void DrainEvents();
 
   // Overrides IScheduler.
   Event* IFCALL AddEvent(SchedTimeDelta count,
@@ -81,6 +104,7 @@ class Scheduler : public IScheduler, public ITime {
                          IDevice::TimeFunc func,
                          int arg = 0,
                          bool repeat = false) override;
+  // Warning: deprecated, do not use.
   void IFCALL SetEvent(Event* ev,
                        int count,
                        IDevice* dev,
@@ -96,14 +120,15 @@ class Scheduler : public IScheduler, public ITime {
  private:
   SchedulerDelegate* delegate_ = nullptr;
 
-  int evlast = 0;       // 有効なイベントの番号の最大値
-  SchedTime time = 0;   // Scheduler 内の現在時刻
-  SchedTime etime = 0;  // Execute の終了予定時刻
-  Event events[kMaxEvents];
+  SchedTime time_ = 0;   // Scheduler 内の現在時刻
+
+  EventQueue<Event*> queue_;
+  int pool_index_ = 0;
+  Event* pool_[kMaxEvents];
 };
 
 // ---------------------------------------------------------------------------
 
 inline SchedTime IFCALL Scheduler::GetTime() {
-  return time + delegate_->GetTicks();
+  return time_ + delegate_->GetTicks();
 }

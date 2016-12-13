@@ -173,7 +173,8 @@ void CRTC::HotReset() {
   pcount[0] = 0;
   pcount[1] = 0;
 
-  scheduler->DelEvent(sev);
+  if (sev)
+    scheduler->DelEvent(sev);
   StartDisplay();
 }
 

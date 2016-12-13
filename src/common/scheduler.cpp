@@ -8,6 +8,13 @@
 
 #include <assert.h>
 
+SchedulerEvent::SchedulerEvent(IDevice* dev,
+                               IDevice::TimeFunc func,
+                               int arg,
+                               SchedTime time,
+                               SchedTimeDelta interval)
+    : dev_(dev), func_(func), arg_(arg), time_(time), interval_(interval) {}
+
 // ---------------------------------------------------------------------------
 
 Scheduler::Scheduler(SchedulerDelegate* delegate) : delegate_(delegate) {}
@@ -17,44 +24,37 @@ Scheduler::~Scheduler() {}
 // ---------------------------------------------------------------------------
 
 bool Scheduler::Init() {
-  evlast = -1;
-
-  time = 0;
-  return events != 0;
+  time_ = 0;
+  return true;
 }
 
 // ---------------------------------------------------------------------------
 //  時間イベントを追加
 //
 Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
-                                             IDevice* inst,
+                                             IDevice* dev,
                                              IDevice::TimeFunc func,
                                              int arg,
                                              bool repeat) {
-  assert(inst && func);
+  assert(dev && func);
   assert(count > 0);
 
-  int i = 0;
-  // 空いてる Event を探す
-  for (; i <= evlast; i++)
-    if (!events[i].inst)
-      break;
-  if (i >= kMaxEvents)
-    return 0;
-  if (i > evlast)
-    evlast = i;
+  SchedTime earliest_event = queue_.empty() ? 0 : queue_.top()->time();
 
-  Event& ev = events[i];
-  ev.count = GetTime() + count;
-  ev.inst = inst, ev.func = func, ev.arg = arg;
-  ev.time_ = repeat ? count : 0;
+  Event* ev;
+  if (pool_index_ > 0) {
+    ev = new (pool_[--pool_index_])
+        Event(dev, func, arg, GetTime() + count, repeat ? count : 0);
+  } else {
+    ev = new Event(dev, func, arg, GetTime() + count, repeat ? count : 0);
+  }
+  queue_.push(ev);
 
   // 最短イベント発生時刻を更新する？
-  if ((etime - ev.count) > 0) {
-    delegate_->Shorten(etime - ev.count);
-    etime = ev.count;
-  }
-  return &ev;
+  if ((earliest_event - ev->time()) > 0)
+    delegate_->Shorten(earliest_event - ev->time());
+
+  return ev;
 }
 
 // ---------------------------------------------------------------------------
@@ -62,88 +62,76 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
 //
 void IFCALL Scheduler::SetEvent(Event* ev,
                                 int count,
-                                IDevice* inst,
+                                IDevice* dev,
                                 IDevice::TimeFunc func,
                                 int arg,
                                 bool repeat) {
-  assert(inst && func);
+  assert(dev && func);
   assert(count > 0);
 
-  ev->count = GetTime() + count;
-  ev->inst = inst, ev->func = func, ev->arg = arg;
-  ev->time_ = repeat ? count : 0;
+  DelEvent(ev);
+  AddEvent(count, dev, func, arg, repeat);
 
-  // 最短イベント発生時刻を更新する？
-  if ((etime - ev->count) > 0) {
-    delegate_->Shorten(etime - ev->count);
-    etime = ev->count;
-  }
+  // This interface assumes that original pointer ev is preserved and reusable,
+  // which is false.  Therefore not recommended.
 }
 
 // ---------------------------------------------------------------------------
 //  時間イベントを削除
 //
-bool IFCALL Scheduler::DelEvent(IDevice* inst) {
-  Event* ev = &events[evlast];
-  for (int i = evlast; i >= 0; i--, ev--) {
-    if (ev->inst == inst) {
-      ev->inst = 0;
-      if (evlast == i)
-        evlast--;
-    }
+bool IFCALL Scheduler::DelEvent(IDevice* dev) {
+  for (auto it = queue_.begin(); it != queue_.end(); ++it) {
+    if ((*it)->dev() == dev)
+      (*it)->set_deleted();
   }
   return true;
 }
 
 bool IFCALL Scheduler::DelEvent(Event* ev) {
-  if (ev) {
-    ev->inst = 0;
-    if (ev - events == evlast)
-      evlast--;
-  }
+  assert(ev);
+  ev->set_deleted();
   return true;
+}
+
+void Scheduler::DrainEvents() {
+  while (!queue_.empty()) {
+    Event* ev = queue_.top();
+    if (ev->time() > time_)
+      return;
+
+    queue_.pop();
+    assert(ev);
+    if (!ev->deleted()) {
+      ev->RunCallback();
+      if (ev->interval()) {
+        ev->UpdateTime();
+        queue_.push(ev);
+        continue;
+      }
+    }
+
+    if (pool_index_ < kMaxEvents) {
+      pool_[pool_index_++] = ev;
+      continue;
+    }
+    delete ev;
+  }
 }
 
 // ---------------------------------------------------------------------------
 //  時間を進める
 //
 SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
-  SchedTimeDelta t;
-  for (t = ticks; t > 0;) {
-    int i;
-    SchedTimeDelta ptime = t;
-    for (i = 0; i <= evlast; i++) {
-      Event& ev = events[i];
-      if (ev.inst) {
-        SchedTimeDelta l = ev.count - time;
-        if (l < ptime)
-          ptime = l;
-      }
-    }
-
-    etime = time + ptime;
-
-    SchedTimeDelta xtime = delegate_->Execute(ptime);
-    etime = time += xtime;
-    t -= xtime;
-
-    // イベントを駆動
-    for (i = evlast; i >= 0; i--) {
-      Event& ev = events[i];
-
-      if (ev.inst && (ev.count - time <= 0)) {
-        IDevice* inst = ev.inst;
-        if (ev.time_) {
-          ev.count += ev.time_;
-        } else {
-          ev.inst = 0;
-          if (evlast == i)
-            evlast--;
-        }
-
-        (inst->*ev.func)(ev.arg);
-      }
-    }
+  SchedTimeDelta remaining_ticks = ticks;
+  while (remaining_ticks > 0) {
+    SchedTimeDelta execution_ticks = remaining_ticks;
+    if (!queue_.empty())
+      execution_ticks =
+          std::min(execution_ticks, queue_.top()->time() - time_);
+    SchedTimeDelta executed_ticks = delegate_->Execute(execution_ticks);
+    time_ += executed_ticks;
+    remaining_ticks -= executed_ticks;
+    DrainEvents();
   }
-  return ticks - t;
+  return ticks - remaining_ticks;
 }

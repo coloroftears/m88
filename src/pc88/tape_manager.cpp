@@ -107,8 +107,10 @@ bool TapeManager::Close() {
 //
 bool TapeManager::Rewind(bool timer) {
   pos = tags;
-  scheduler->DelEvent(event);
-  event = nullptr;
+  if (event) {
+    scheduler->DelEvent(event);
+    event = nullptr;
+  }
   if (pos) {
     tick = 0;
 
@@ -141,7 +143,10 @@ bool TapeManager::Motor(bool s) {
     if (timercount) {
       int td = (scheduler->GetTime() - time) * 6 / 125;
       timerremain = std::max(10, static_cast<int>(timerremain) - td);
-      scheduler->DelEvent(event), event = 0;
+      if (event) {
+        scheduler->DelEvent(event);
+        event = nullptr;
+      }
       Toast::Show(10, 2000, "Motor off: %d %d", timerremain, timercount);
     }
     motor = false;
@@ -254,7 +259,10 @@ bool TapeManager::Carrier() {
 void TapeManager::SetTimer(int count) {
   if (count > 100)
     LOG1("Timer: %d\n", count);
-  scheduler->DelEvent(event), event = 0;
+  if (event) {
+    scheduler->DelEvent(event);
+    event = nullptr;
+  }
   timercount = count;
   if (motor) {
     time = scheduler->GetTime();
@@ -278,8 +286,9 @@ inline void TapeManager::Send(uint32_t byte) {
 //
 void TapeManager::RequestData(uint32_t, uint32_t) {
   if (mode == T_DATA) {
-    scheduler->SetEvent(event, 1, this,
-                        static_cast<TimeFunc>(&TapeManager::Timer));
+    scheduler->DelEvent(event);
+    event = scheduler->AddEvent(1, this,
+                                static_cast<TimeFunc>(&TapeManager::Timer));
   }
 }
 
