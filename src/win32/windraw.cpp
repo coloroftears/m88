@@ -29,18 +29,6 @@
 // 構築/消滅
 //
 WinDraw::WinDraw() {
-  draw = 0;
-  idthread = 0;
-  hthread = 0;
-  hevredraw = 0;
-  drawcount = 0;
-  guicount = 0;
-  shouldterminate = false;
-  drawall = false;
-  drawing = false;
-  refresh = false;
-  locked = false;
-  active = false;
 }
 
 WinDraw::~WinDraw() {
@@ -52,7 +40,7 @@ WinDraw::~WinDraw() {
 //
 bool WinDraw::Init0(HWND hwindow) {
   hwnd = hwindow;
-  draw = 0;
+  draw = nullptr;
   drawtype = None;
 
   hthread = 0;
@@ -304,7 +292,7 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
     {
       CriticalSection::Lock lock(csdraw);
       delete draw;
-      draw = 0;
+      draw = nullptr;
     }
 
     // 新しいドライバの用意
@@ -333,11 +321,14 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
       else
         Toast::Show(120, 3000, "GDI ドライバを使用します");
 
-      newdraw = new WinDrawGDI, type = GDI;
+      newdraw = new WinDrawGDI;
+      type = GDI;
       result = false;
 
-      if (!newdraw || !newdraw->Init(hwnd, width, height, 0))
-        newdraw = 0, drawtype = None;
+      if (!newdraw || !newdraw->Init(hwnd, width, height, 0)) {
+        newdraw = nullptr;
+        drawtype = None;
+      }
     }
 
     if (newdraw) {
@@ -352,9 +343,12 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
       draw = newdraw;
     }
 
-    drawall = true, refresh = true;
+    drawall = true;
+    refresh = true;
+
     palrgnbegin = std::min(palcngbegin, palrgnbegin);
     palrgnend = std::max(palcngend, palrgnend);
+
     if (draw)
       draw->Resize(width, height);
 

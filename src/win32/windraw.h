@@ -95,36 +95,37 @@ class WinDraw final : public Draw {
   uint32_t ThreadMain();
   static uint32_t __stdcall ThreadEntry(LPVOID arg);
 
-  uint32_t idthread;
-  HANDLE hthread;
-  volatile bool shouldterminate;  // スレッド終了要求
+  uint32_t idthread = 0;
+  HANDLE hthread = 0;
+  volatile bool shouldterminate = false;  // スレッド終了要求
 
-  DisplayType drawtype;
+  DisplayType drawtype = None;
 
   int palcngbegin;        // パレット変更エントリの最初
   int palcngend;          // パレット変更エントリの最後
   int palrgnbegin;        // 使用中パレットの最初
   int palrgnend;          // 使用中パレットの最後
-  volatile bool drawing;  // 画面を書き換え中
-  bool drawall;           // 画面全体を書き換える
-  bool active;
-  bool haspalette;  // パレットを持っている
 
-  int refresh;
+  volatile bool drawing = false;  // 画面を書き換え中
+  bool drawall = false;   // 画面全体を書き換える
+  bool active = false;
+  bool haspalette = false;  // パレットを持っている
+
   RECT drawarea;  // 書き換える領域
-  int drawcount;
-  int guicount;
+  int refresh;
+  int drawcount = 0;
+  int guicount = 0;
 
   int width;
   int height;
 
-  HWND hwnd;
-  HANDLE hevredraw;
-  WinDrawSub* draw;
+  HWND hwnd = 0;
+  HANDLE hevredraw = 0;
+  WinDrawSub* draw = nullptr;
 
   CriticalSection csdraw;
-  bool locked;
-  bool flipmode;
+  bool locked = false;
+  bool flipmode = false;
 
   HMONITOR hmonitor;  // 探索中の hmonitor
   GUID gmonitor;      // hmonitor に対応する GUID
