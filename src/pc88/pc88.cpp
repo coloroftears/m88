@@ -12,6 +12,7 @@
 
 #include <algorithm>
 
+#include "common/time_keeper.h"
 #include "common/toast.h"
 #include "pc88/base.h"
 #include "pc88/beep.h"
@@ -666,7 +667,7 @@ void PC88::SetVolume(PC8801::Config* cfg) {
 //  1 フレーム分の時間を求める．
 //
 SchedTimeDelta PC88::GetFramePeriod() const {
-  return crtc ? crtc->GetFramePeriod() : 100000 / 60;
+  return crtc ? crtc->GetFramePeriod() : TimeKeeper::GetResolution() / 60;
 }
 
 // ---------------------------------------------------------------------------

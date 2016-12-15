@@ -121,7 +121,7 @@ void Sequencer::ExecuteAsynchronus() {
     if (tdraw > twork) {
       draw_next_frame_ = false;
     } else {
-      int it = (twork - tdraw) / 100;
+      int it = TimeKeeper::ToMilliSeconds(twork - tdraw);
       if (it > 0)
         Sleep(it);
       draw_next_frame_ = true;
@@ -141,7 +141,7 @@ void Sequencer::ExecuteAsynchronus() {
 void Sequencer::ExecuteBurst() {
   time_ = keeper_->GetTime();
   delegate_->TimeSync();
-  SchedTimeDelta ms = 0;
+  SchedTimeDelta ticks = 0;
   int eclk = 0;
   do {
     if (clock_)
@@ -149,12 +149,13 @@ void Sequencer::ExecuteBurst() {
     else
       Execute(effective_clock_, 500 * speed_ / 100, effective_clock_);
     eclk += 5;
-    ms = keeper_->GetTime() - time_;
-  } while (ms < 1000);
+    ticks = keeper_->GetTime() - time_;
+  } while (ticks < 1000);
   delegate_->UpdateScreen();
 
   effective_clock_ =
-      std::min((std::min(1000, eclk) * effective_clock_ * 100 / ms) + 1, 10000);
+      std::min((std::min(1000, eclk) * effective_clock_ * 100 / ticks) + 1,
+               10000);
 }
 
 // ---------------------------------------------------------------------------

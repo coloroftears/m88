@@ -28,6 +28,13 @@ class TimeKeeper {
   static TimeKeeper* create();
   virtual SchedTime GetTime() = 0;
 
+  // Returns ticks per second.
+  static int GetResolution() { return kUnit * 1000; }
+  // Conversion utility functions.
+  static int ToMilliSeconds(SchedTimeDelta tick) { return tick / kUnit; }
+  static SchedTimeDelta FromMilliSeconds(int ms) { return ms * kUnit; }
+  static SchedTimeDelta FromMicroSeconds(int us) { return (us + 9) / 10; }
+
  protected:
    TimeKeeper() : time_(0) {}
    SchedTime time_;

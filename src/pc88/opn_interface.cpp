@@ -7,6 +7,7 @@
 #include "pc88/opn_interface.h"
 
 #include "common/scheduler.h"
+#include "common/time_keeper.h"
 #include "common/toast.h"
 #include "pc88/config.h"
 
@@ -38,7 +39,6 @@ OPNInterface::OPNInterface(const ID& id) : Device(id), chip(0) {
   scheduler = 0;
   soundcontrol = 0;
   opnamode = false;
-  nextcount = 0;
   fmmixmode = true;
   imaskport = 0;
 
@@ -331,11 +331,9 @@ uint32_t IOCALL OPNInterface::ReadStatusEx(uint32_t a) {
 //
 void OPNInterface::UpdateTimer() {
   scheduler->DelEvent(this);
-  // TODO: Use proper function to convert GetNextEvent() (usec) to
-  // SchedTimeDelta.
-  nextcount = opn.GetNextEvent();
-  if (nextcount > 0) {
-    nextcount = (nextcount + 9) / 10;
+  int next_us = opn.GetNextEvent();
+  if (next_us > 0) {
+    SchedTimeDelta nextcount = TimeKeeper::FromMicroSeconds(next_us);
     scheduler->AddEvent(nextcount, this,
                         static_cast<TimeFunc>(&OPNInterface::TimeEvent), 1);
   }

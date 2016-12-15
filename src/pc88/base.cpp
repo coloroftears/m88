@@ -11,6 +11,7 @@
 #include <algorithm>
 
 #include "common/draw.h"
+#include "common/time_keeper.h"
 #include "common/toast.h"
 #include "pc88/pc88.h"
 #include "pc88/config.h"
@@ -40,8 +41,9 @@ bool Base::Init(PC88* pc88) {
   sw30 = 0xcb;
   sw31 = 0x79;
   sw6e = 0xff;
-  pc->GetScheduler()->AddEvent(167, this, static_cast<TimeFunc>(&Base::RTC), 0,
-                               true);
+  int rtc_interval = TimeKeeper::GetResolution() / 600 + 1;
+  pc->GetScheduler()->AddEvent(rtc_interval, this,
+                               static_cast<TimeFunc>(&Base::RTC), 0, true);
   return true;
 }
 
