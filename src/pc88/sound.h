@@ -12,6 +12,7 @@
 #include "common/sound_source.h"
 
 #include <limits.h>
+#include <vector>
 
 // ---------------------------------------------------------------------------
 
@@ -61,17 +62,12 @@ class Sound : public Device,
   uint32_t rate50;        // samplingrate / 50
 
  private:
-  struct SSNode {
-    ISoundSource* ss;
-    SSNode* next;
-  };
-
   //  SoundBuffer2 soundbuf;
   SamplingRateConverter soundbuf;
 
   PC88* pc;
 
-  int32_t* mixingbuf;
+  std::unique_ptr<int32_t[]> mixingbuf_;
   int buffersize;
 
   uint32_t prevtime;
@@ -81,7 +77,7 @@ class Sound : public Device,
 
   bool enabled;
 
-  SSNode* sslist;
+  std::vector<ISoundSource*> sslist_;
   CriticalSection cs_ss;
 };
 }  // namespace PC8801

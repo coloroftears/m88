@@ -23,7 +23,7 @@ using namespace PC8801;
 //  生成・破棄
 //
 Sound::Sound()
-    : Device(0), sslist(0), mixingbuf(0), enabled(false), cfgflg(0) {}
+    : Device(0), enabled(false), cfgflg(0) {}
 
 Sound::~Sound() {
   Cleanup();
@@ -56,14 +56,13 @@ bool Sound::SetRate(uint32_t rate, int bufsize) {
   mixrate = 55467;
 
   // 各音源のレート設定を変更
-  for (SSNode* n = sslist; n; n = n->next)
-    n->ss->SetRate(mixrate);
+  for (auto source : sslist_)
+    source->SetRate(mixrate);
 
   enabled = false;
 
   // 古いバッファを削除
-  delete[] mixingbuf;
-  mixingbuf = 0;
+  mixingbuf_.reset();
 
   // 新しいバッファを用意
   samplingrate = rate;
@@ -74,8 +73,8 @@ bool Sound::SetRate(uint32_t rate, int bufsize) {
     if (!soundbuf.Init(this, bufsize, rate))
       return false;
 
-    mixingbuf = new int32_t[2 * bufsize];
-    if (!mixingbuf)
+    mixingbuf_.reset(new int32_t[2 * bufsize]);
+    if (!mixingbuf_)
       return false;
 
     rate50 = mixrate / 50;
@@ -90,16 +89,10 @@ bool Sound::SetRate(uint32_t rate, int bufsize) {
 //
 void Sound::Cleanup() {
   // 各音源を切り離す。(音源自体の削除は行わない)
-  for (SSNode* n = sslist; n;) {
-    SSNode* next = n->next;
-    delete[] n;
-    n = next;
-  }
-  sslist = 0;
+  sslist_.clear();
 
   // バッファを開放
-  delete[] mixingbuf;
-  mixingbuf = 0;
+  mixingbuf_.reset();
 }
 
 // ---------------------------------------------------------------------------
@@ -110,13 +103,13 @@ int Sound::Get(Sample16* dest, int nsamples) {
   if (mixsamples > 0) {
     // 合成
     {
-      memset(mixingbuf, 0, mixsamples * 2 * sizeof(int32_t));
+      memset(mixingbuf_.get(), 0, mixsamples * 2 * sizeof(int32_t));
       CriticalSection::Lock lock(cs_ss);
-      for (SSNode* s = sslist; s; s = s->next)
-        s->ss->Mix(mixingbuf, mixsamples);
+      for (auto source : sslist_)
+        source->Mix(mixingbuf_.get(), mixsamples);
     }
 
-    int32_t* src = mixingbuf;
+    int32_t* src = mixingbuf_.get();
     for (int n = mixsamples; n > 0; n--) {
       *dest++ = Limit16(*src++);
       *dest++ = Limit16(*src++);
@@ -132,8 +125,8 @@ int Sound::Get(Sample32* dest, int nsamples) {
   // 合成
   memset(dest, 0, nsamples * 2 * sizeof(int32_t));
   CriticalSection::Lock lock(cs_ss);
-  for (SSNode* s = sslist; s; s = s->next)
-    s->ss->Mix(dest, nsamples);
+  for (auto source : sslist_)
+    source->Mix(dest, nsamples);
   return nsamples;
 }
 
@@ -156,21 +149,14 @@ bool Sound::Connect(ISoundSource* ss) {
   CriticalSection::Lock lock(cs_ss);
 
   // 音源は既に登録済みか？;
-  SSNode** n;
-  for (n = &sslist; *n; n = &((*n)->next)) {
-    if ((*n)->ss == ss)
+  for (auto source : sslist_) {
+    if (source == ss)
       return false;
   }
 
-  SSNode* nn = new SSNode;
-  if (nn) {
-    *n = nn;
-    nn->next = 0;
-    nn->ss = ss;
-    ss->SetRate(mixrate);
-    return true;
-  }
-  return false;
+  sslist_.push_back(ss);
+  ss->SetRate(mixrate);
+  return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -182,15 +168,12 @@ bool Sound::Connect(ISoundSource* ss) {
 bool Sound::Disconnect(ISoundSource* ss) {
   CriticalSection::Lock lock(cs_ss);
 
-  for (SSNode** r = &sslist; *r; r = &((*r)->next)) {
-    if ((*r)->ss == ss) {
-      SSNode* d = *r;
-      *r = d->next;
-      delete d;
-      return true;
-    }
-  }
-  return false;
+  std::vector<ISoundSource*>::iterator pos =
+      find(sslist_.begin(), sslist_.end(), ss);
+  if (pos == sslist_.end())
+    return false;
+  sslist_.erase(pos);
+  return true;
 }
 
 // ---------------------------------------------------------------------------
