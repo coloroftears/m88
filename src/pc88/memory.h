@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "common/device.h"
 #include "pc88/config.h"
 
@@ -19,25 +21,25 @@ class CRTC;
 class Memory final : public Device, public IGetMemoryBank {
  public:
   enum IDOut {
-    reset = 0,
-    out31,
-    out32,
-    out34,
-    out35,
-    out40,
-    out5x,
-    out70,
-    out71,
-    out78,
-    out99,
-    oute2,
-    oute3,
-    outf0,
-    outf1,
-    vrtc,
-    out33
+    kReset = 0,
+    kOut31,
+    kOut32,
+    kOut34,
+    kOut35,
+    kOut40,
+    kOut5x,
+    kOut70,
+    kOut71,
+    kOut78,
+    kOut99,
+    kOute2,
+    kOute3,
+    kOutf0,
+    kOutf1,
+    kVRTC,
+    kOut33
   };
-  enum IDIn { in32 = 0, in5c, in70, in71, ine2, ine3, in33 };
+  enum IDIn { kIn32 = 0, kIn5c, kIn70, kIn71, kIne2, kIne3, kIn33 };
   union quadbyte {
     uint32_t pack;
     uint8_t byte[4];
@@ -78,10 +80,10 @@ class Memory final : public Device, public IGetMemoryBank {
   ~Memory();
 
   void ApplyConfig(const Config* cfg);
-  uint8_t* GetRAM() { return ram; }
-  uint8_t* GetTVRAM() { return tvram; }
+  uint8_t* GetRAM() { return ram.get(); }
+  uint8_t* GetTVRAM() { return tvram.get(); }
   quadbyte* GetGVRAM() { return gvram; }
-  uint8_t* GetROM() { return rom; }
+  uint8_t* GetROM() { return rom.get(); }
   uint8_t* GetDirtyFlag() { return dirty; }
 
   // Overrides IGetMemoryBank.
@@ -145,7 +147,9 @@ class Memory final : public Device, public IGetMemoryBank {
   bool InitMemory();
   bool LoadROM();
   bool LoadROMImage(uint8_t* at, const char* file, int length);
-  bool LoadOptROM(const char* file, uint8_t*& rom, int length);
+  bool LoadOptROM(const char* file,
+                  std::unique_ptr<uint8_t[]>& rom,
+                  int length);
   void SetWait();
   void SetWaits(uint32_t, uint32_t, uint32_t);
   void SelectJisyo();
@@ -165,32 +169,46 @@ class Memory final : public Device, public IGetMemoryBank {
 
   uint32_t GetHiBank(uint32_t addr);
 
-  MemoryManager* mm;
-  int mid;
-  int* waits;
-  IOBus* bus;
-  CRTC* crtc;
-  uint8_t* rom;
-  uint8_t* ram;
-  uint8_t* eram;
-  uint8_t* tvram;
-  uint8_t* dicrom;       // 辞書ROM
-  uint8_t* cdbios;       // CD-ROM BIOS ROM
-  uint8_t* n80rom;       // N80-BASIC ROM
-  uint8_t* n80v2rom;     // N80SR
-  uint8_t* erom[8 + 1];  // 拡張 ROM
+  MemoryManager* mm = nullptr;
+  int mid = -1;
+  int* waits = nullptr;
+  IOBus* bus = nullptr;
+  CRTC* crtc = nullptr;
 
-  uint32_t port31, port32, port33, port34, port35, port40, port5x;
-  uint32_t port99, txtwnd, port71, porte2, porte3, portf0;
+  std::unique_ptr<uint8_t[]> rom;
+  std::unique_ptr<uint8_t[]> ram;
+  std::unique_ptr<uint8_t[]> eram;
+  std::unique_ptr<uint8_t[]> tvram;
+  std::unique_ptr<uint8_t[]> dicrom;       // 辞書ROM
+  std::unique_ptr<uint8_t[]> cdbios;       // CD-ROM BIOS ROM
+  std::unique_ptr<uint8_t[]> n80rom;       // N80-BASIC ROM
+  std::unique_ptr<uint8_t[]> n80v2rom;     // N80SR
+  std::unique_ptr<uint8_t[]> erom[8 + 1];  // 拡張 ROM
+
+  uint32_t port31;
+  uint32_t port32;
+  uint32_t port33;
+  uint32_t port34;
+  uint32_t port35;
+  uint32_t port40;
+  uint32_t port5x;
+  uint32_t port99;
+  uint32_t txtwnd;
+  uint32_t port71;
+  uint32_t porte2;
+  uint32_t porte3;
+  uint32_t portf0;
   uint32_t sw31;
   uint32_t erommask;
   uint32_t waitmode;
   uint32_t waittype;  // b0 = disp/vrtc,
+
   bool selgvram;
   bool seldic;
   bool enablewait;
   bool n80mode;
   bool n80srmode;
+
   uint32_t erambanks;
   uint32_t neweram;
   uint8_t* r00;
