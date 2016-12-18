@@ -12,6 +12,8 @@
 
 #include <stdint.h>
 
+#include <memory>
+
 #include "common/critical_section.h"
 #include "common/draw.h"
 #include "common/guid.h"
@@ -48,7 +50,7 @@ class WinDrawSub {
 class WinDraw final : public Draw {
  public:
   WinDraw();
-  ~WinDraw();
+  ~WinDraw() final;
   bool Init0(HWND hwindow);
 
   // - Draw Common Interface
@@ -72,12 +74,12 @@ class WinDraw final : public Draw {
   }
   void RequestPaint();
   void QueryNewPalette(bool background);
-  void Activate(bool f) { active = f; }
+  void Activate(bool f) { is_active_ = f; }
 
   void SetPriorityLow(bool low);
   void SetGUIFlag(bool flag);
   bool ChangeDisplayMode(bool fullscreen, bool force480 = true);
-  void Refresh() { refresh = 1; }
+  void Refresh() { refresh_ = true; }
   void WindowMoved(int cx, int cy);
 
   int CaptureScreen(uint8_t* dest);
@@ -97,7 +99,6 @@ class WinDraw final : public Draw {
 
   uint32_t idthread = 0;
   HANDLE hthread = 0;
-  volatile bool shouldterminate = false;  // スレッド終了要求
 
   DisplayType drawtype = None;
 
@@ -106,27 +107,29 @@ class WinDraw final : public Draw {
   int palrgnbegin;        // 使用中パレットの最初
   int palrgnend;          // 使用中パレットの最後
 
-  volatile bool drawing = false;  // 画面を書き換え中
-  bool drawall = false;   // 画面全体を書き換える
-  bool active = false;
-  bool haspalette = false;  // パレットを持っている
+  volatile bool should_terminate_ = false;  // スレッド終了要求
+  volatile bool drawing_ = false;  // 画面を書き換え中
+
+  bool draw_all_ = false;   // 画面全体を書き換える
+  bool is_active_ = false;
+  bool has_palette_ = false;  // パレットを持っている
+  bool refresh_ = false;
+  bool locked_ = false;
+  bool flipmode_ = false;
 
   RECT drawarea;  // 書き換える領域
-  int refresh;
   int drawcount = 0;
   int guicount = 0;
 
   int width;
   int height;
 
-  HWND hwnd = 0;
-  HANDLE hevredraw = 0;
-  WinDrawSub* draw = nullptr;
+  std::unique_ptr<WinDrawSub> draw_sub_;
 
   CriticalSection csdraw;
-  bool locked = false;
-  bool flipmode = false;
 
+  HWND hwnd = 0;
+  HANDLE hevredraw = 0;
   HMONITOR hmonitor;  // 探索中の hmonitor
   GUID gmonitor;      // hmonitor に対応する GUID
 

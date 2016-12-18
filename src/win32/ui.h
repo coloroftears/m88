@@ -85,9 +85,6 @@ class WinUI {
 
   void CaptureScreen();
 
-  int AllocControlID();
-  void FreeControlID(int);
-
   // ウインドウ関係
   HWND hwnd;
   HINSTANCE hinst;
@@ -100,7 +97,7 @@ class WinUI {
   volatile bool active;
 
   // ウインドウの状態
-  bool background;
+  bool background_ = true;
   bool fullscreen;
   uint32_t displaychangedtime;
   uint32_t resetwindowsize;

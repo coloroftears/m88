@@ -40,14 +40,14 @@ WinDraw::~WinDraw() {
 //
 bool WinDraw::Init0(HWND hwindow) {
   hwnd = hwindow;
-  draw = nullptr;
+  draw_sub_.reset();
   drawtype = None;
 
   hthread = 0;
   hevredraw = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
   HDC hdc = GetDC(hwnd);
-  haspalette = !!(GetDeviceCaps(hdc, RASTERCAPS) & RC_PALETTE);
+  has_palette_ = !!(GetDeviceCaps(hdc, RASTERCAPS) & RC_PALETTE);
   ReleaseDC(hwnd, hdc);
 
 #ifdef DRAW_THREAD
@@ -69,8 +69,8 @@ bool WinDraw::Init0(HWND hwindow) {
 bool WinDraw::Init(uint32_t w, uint32_t h, uint32_t /*bpp*/) {
   width = w;
   height = h;
-  shouldterminate = false;
-  active = true;
+  should_terminate_ = false;
+  is_active_ = true;
   return true;
 }
 
@@ -83,7 +83,7 @@ bool WinDraw::Cleanup() {
 
     int i = 300;
     do {
-      shouldterminate = true;
+      should_terminate_ = true;
       SetEvent(hevredraw);
     } while (--i > 0 && WAIT_TIMEOUT == WaitForSingleObject(hthread, 10));
 
@@ -95,8 +95,6 @@ bool WinDraw::Cleanup() {
   if (hevredraw)
     CloseHandle(hevredraw), hevredraw = 0;
 
-  delete draw;
-  draw = 0;
   return true;
 }
 
@@ -104,8 +102,8 @@ bool WinDraw::Cleanup() {
 //  画面描画用スレッド
 //
 uint32_t WinDraw::ThreadMain() {
-  drawing = false;
-  while (!shouldterminate) {
+  drawing_ = false;
+  while (!should_terminate_) {
     PaintWindow();
     WaitForSingleObject(hevredraw, 1000);
   }
@@ -134,8 +132,8 @@ void WinDraw::SetPriorityLow(bool low) {
 //
 void WinDraw::QueryNewPalette(bool /*bkgnd*/) {
   CriticalSection::Lock lock(csdraw);
-  if (draw)
-    draw->QueryNewPalette();
+  if (draw_sub_)
+    draw_sub_->QueryNewPalette();
 }
 
 // ---------------------------------------------------------------------------
@@ -148,8 +146,8 @@ void WinDraw::RequestPaint() {
   drawing = true;
   SetEvent(hevredraw);
 #else
-  drawall = true;
-  drawing = true;
+  draw_all_ = true;
+  drawing_ = true;
   PaintWindow();
 #endif
   //  LOG1("Request at %d\n", GetTickCount());
@@ -159,9 +157,9 @@ void WinDraw::RequestPaint() {
 //  更新
 //
 void WinDraw::DrawScreen(const Region& region) {
-  if (!drawing) {
+  if (!drawing_) {
     LOG2("Draw %d to %d\n", region.top, region.bottom);
-    drawing = true;
+    drawing_ = true;
     drawarea.left = std::max(0, region.left);
     drawarea.top = std::max(0, region.top);
     drawarea.right = std::min(width, region.right);
@@ -180,18 +178,18 @@ void WinDraw::DrawScreen(const Region& region) {
 void WinDraw::PaintWindow() {
   LOADBEGIN("WinDraw");
   CriticalSection::Lock lock(csdraw);
-  if (drawing && draw && active) {
+  if (drawing_ && draw_sub_ && is_active_) {
     RECT rect = drawarea;
     if (palcngbegin <= palcngend) {
       palrgnbegin = std::min(palcngbegin, palrgnbegin);
       palrgnend = std::max(palcngend, palrgnend);
-      draw->SetPalette(palette + palcngbegin, palcngbegin,
+      draw_sub_->SetPalette(palette + palcngbegin, palcngbegin,
                        palcngend - palcngbegin + 1);
       palcngbegin = 0x100;
       palcngend = -1;
     }
-    draw->DrawScreen(rect, drawall);
-    drawall = false;
+    draw_sub_->DrawScreen(rect, draw_all_);
+    draw_all_ = false;
     if (rect.left < rect.right && rect.top < rect.bottom) {
       drawcount++;
       LOG4("\t\t\t(%3d,%3d)-(%3d,%3d)\n", rect.left, rect.top, rect.right - 1,
@@ -199,7 +197,7 @@ void WinDraw::PaintWindow() {
       // Toast::Show(100, 0, "(%.3d, %.3d)-(%.3d, %.3d)",
       //             rect.left, rect.top, rect.right-1, rect.bottom-1);
     }
-    drawing = false;
+    drawing_ = false;
   }
   LOADEND("WinDraw");
 }
@@ -223,16 +221,16 @@ void WinDraw::SetPalette(uint32_t index, uint32_t nents, const Palette* pal) {
 bool WinDraw::Lock(uint8_t** pimage, int* pbpl) {
   assert(pimage && pbpl);
 
-  if (!locked) {
-    locked = true;
+  if (!locked_) {
+    locked_ = true;
     csdraw.lock();
-    if (draw && draw->Lock(pimage, pbpl)) {
+    if (draw_sub_ && draw_sub_->Lock(pimage, pbpl)) {
       // Lock に失敗することがある？
       assert(**pimage >= 0);
       return true;
     }
     csdraw.unlock();
-    locked = false;
+    locked_ = false;
   }
   return false;
 }
@@ -242,13 +240,13 @@ bool WinDraw::Lock(uint8_t** pimage, int* pbpl) {
 //
 bool WinDraw::Unlock() {
   bool result = false;
-  if (locked) {
-    if (draw)
-      result = draw->Unlock();
+  if (locked_) {
+    if (draw_sub_)
+      result = draw_sub_->Unlock();
     csdraw.unlock();
-    locked = false;
-    if (refresh == 1)
-      refresh = 0;
+    locked_ = false;
+    if (refresh_)
+      refresh_ = false;
   }
   return result;
 }
@@ -260,16 +258,16 @@ void WinDraw::Resize(uint32_t w, uint32_t h) {
   // Toast::Show(50, 2500, "Resize (%d, %d)", width, height);
   width = w;
   height = h;
-  if (draw)
-    draw->Resize(width, height);
+  if (draw_sub_)
+    draw_sub_->Resize(width, height);
 }
 
 // ---------------------------------------------------------------------------
 //  画面位置を変える
 //
 void WinDraw::WindowMoved(int x, int y) {
-  if (draw)
-    draw->WindowMoved(x, y);
+  if (draw_sub_)
+    draw_sub_->WindowMoved(x, y);
 }
 
 // ---------------------------------------------------------------------------
@@ -287,12 +285,11 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
 
   if (type != drawtype) {
     // 今までのドライバを廃棄
-    if (draw)
-      draw->SetGUIMode(true);
+    if (draw_sub_)
+      draw_sub_->SetGUIMode(true);
     {
       CriticalSection::Lock lock(csdraw);
-      delete draw;
-      draw = nullptr;
+      draw_sub_.reset();
     }
 
     // 新しいドライバの用意
@@ -332,7 +329,7 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
     }
 
     if (newdraw) {
-      newdraw->SetFlipMode(flipmode);
+      newdraw->SetFlipMode(flipmode_);
       newdraw->SetGUIMode(false);
     }
 
@@ -340,17 +337,17 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
     {
       CriticalSection::Lock lock(csdraw);
       guicount = 0;
-      draw = newdraw;
+      draw_sub_.reset(newdraw);
     }
 
-    drawall = true;
-    refresh = true;
+    draw_all_ = true;
+    refresh_ = true;
 
     palrgnbegin = std::min(palcngbegin, palrgnbegin);
     palrgnend = std::max(palcngend, palrgnend);
 
-    if (draw)
-      draw->Resize(width, height);
+    if (draw_sub_)
+      draw_sub_->Resize(width, height);
 
     if (type == DDFull)
       ShowCursor(false);
@@ -358,7 +355,7 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
       ShowCursor(true);
     drawtype = type;
 
-    refresh = 2;
+    // refresh_ = true;
 
     return result;
   }
@@ -369,11 +366,9 @@ bool WinDraw::ChangeDisplayMode(bool fullscreen, bool force480) {
 //  現在の状態を得る
 //
 uint32_t WinDraw::GetStatus() {
-  if (draw) {
-    if (refresh)
-      refresh = 1;
-    return (!drawing && active ? readytodraw : 0) |
-           (refresh ? shouldrefresh : 0) | draw->GetStatus();
+  if (draw_sub_) {
+    return (!drawing_ && is_active_ ? readytodraw : 0) |
+           (refresh_ ? shouldrefresh : 0) | draw_sub_->GetStatus();
   }
   return 0;
 }
@@ -382,9 +377,9 @@ uint32_t WinDraw::GetStatus() {
 //  flip モードの設定
 //
 bool WinDraw::SetFlipMode(bool f) {
-  flipmode = f;
-  if (draw)
-    return draw->SetFlipMode(flipmode);
+  flipmode_ = f;
+  if (draw_sub_)
+    return draw_sub_->SetFlipMode(flipmode_);
   return false;
 }
 
@@ -392,8 +387,8 @@ bool WinDraw::SetFlipMode(bool f) {
 //  flip する
 //
 void WinDraw::Flip() {
-  if (draw)
-    draw->Flip();
+  if (draw_sub_)
+    draw_sub_->Flip();
 }
 
 // ---------------------------------------------------------------------------
@@ -402,13 +397,13 @@ void WinDraw::Flip() {
 void WinDraw::SetGUIFlag(bool usegui) {
   CriticalSection::Lock lock(csdraw);
   if (usegui) {
-    if (!guicount++ && draw) {
-      draw->SetGUIMode(true);
+    if (!guicount++ && draw_sub_) {
+      draw_sub_->SetGUIMode(true);
       ShowCursor(true);
     }
   } else {
-    if (!--guicount && draw) {
-      draw->SetGUIMode(false);
+    if (!--guicount && draw_sub_) {
+      draw_sub_->SetGUIMode(false);
       ShowCursor(false);
     }
   }
@@ -421,7 +416,7 @@ void WinDraw::SetGUIFlag(bool usegui) {
 //
 int WinDraw::CaptureScreen(uint8_t* dest) {
   const bool half = false;
-  if (!draw)
+  if (!draw_sub_)
     return false;
 
   uint8_t* src = new uint8_t[640 * 400];
@@ -430,13 +425,13 @@ int WinDraw::CaptureScreen(uint8_t* dest) {
 
   uint8_t* s;
   int bpl;
-  if (draw->Lock(&s, &bpl)) {
+  if (draw_sub_->Lock(&s, &bpl)) {
     uint8_t* d = src;
     for (int y = 0; y < 400; y++) {
       memcpy(d, s, 640);
       d += 640, s += bpl;
     }
-    draw->Unlock();
+    draw_sub_->Unlock();
   }
 
   // 構造体の準備

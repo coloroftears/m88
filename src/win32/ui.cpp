@@ -364,20 +364,20 @@ inline uint32_t WinUI::WmSysKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 //  WM_ACTIVATE ハンドラ
 //
 uint32_t WinUI::WmActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
-  bool prevbg = background;
-  background = LOWORD(wparam) == WA_INACTIVE;
+  bool prev_bg = background_;
+  background_ = LOWORD(wparam) == WA_INACTIVE;
 
   if (!HIWORD(wparam)) {
     draw.RequestPaint();
   }
 
-  keyif.Activate(!background);
-  draw.QueryNewPalette(background);
-  if (prevbg != background) {
-    //      core.ActivateMouse(!background);
-    M88ClipCursor(hwnd, background ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE,
+  keyif.Activate(!background_);
+  draw.QueryNewPalette(background_);
+  if (prev_bg != background_) {
+    // core.ActivateMouse(!background_);
+    M88ClipCursor(hwnd, background_ ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE,
                   0);
-    draw.SetGUIFlag(background);
+    draw.SetGUIFlag(background_);
   }
   snapshotchanged = true;
   return 0;
@@ -388,7 +388,7 @@ uint32_t WinUI::WmActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 //  WM_QUERYNEWPALETTE ハンドラ
 //
 uint32_t WinUI::WmQueryNewPalette(HWND hwnd, WPARAM wparam, LPARAM lparam) {
-  draw.QueryNewPalette(background);
+  draw.QueryNewPalette(background_);
   return 1;
 }
 
@@ -398,7 +398,7 @@ uint32_t WinUI::WmQueryNewPalette(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 //
 uint32_t WinUI::WmPaletteChanged(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((HWND)wparam != hwnd) {
-    draw.QueryNewPalette(background);
+    draw.QueryNewPalette(background_);
     return 1;
   }
   return 0;
@@ -1591,8 +1591,8 @@ uint32_t WinUI::WmSetCursor(HWND hwnd, WPARAM wp, LPARAM lp) {
 //  GUI 操作モードに入る
 //
 void WinUI::SetGUIFlag(bool gui) {
-  if (gui && !background) {
-    if (!background)
+  if (gui && !background_) {
+    if (!background_)
       ::DrawMenuBar(hwnd);
   }
   //  core.SetGUIFlag(gui);
