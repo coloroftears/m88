@@ -10,6 +10,10 @@
 
 // ---------------------------------------------------------------------------
 
+#include <stdint.h>
+
+#include <memory>
+
 #include "win32/windraw.h"
 
 class WinDrawGDI final : public WinDrawSub {
@@ -36,13 +40,14 @@ class WinDrawGDI final : public WinDrawSub {
  private:
   bool MakeBitmap();
 
-  HBITMAP hbitmap;
-  uint8_t* bitmapimage;
-  HWND hwnd;
-  uint8_t* image;
-  int bpl;
-  uint32_t width;
-  uint32_t height;
-  bool updatepal;
+  HWND hwnd = 0;
+  HBITMAP hbitmap = 0;
+  uint8_t* image_;
+
+  // Bytes per Line
+  int bpl_;
+  uint32_t width_ = 0;
+  uint32_t height_ = 0;
+  bool updatepal_;
   BI256 binfo;
 };

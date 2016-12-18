@@ -6,20 +6,14 @@
 // ---------------------------------------------------------------------------
 //  $Id: DrawGDI.cpp,v 1.13 2003/04/22 13:16:35 cisc Exp $
 
-//  bug:パレット〜(T-T
+//  bug:パレット～(T-T
 
 #include "win32/draw_gdi.h"
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
-WinDrawGDI::WinDrawGDI() {
-  hwnd = 0;
-  hbitmap = 0;
-  updatepal = false;
-  bitmapimage = 0;
-  image = 0;
-}
+WinDrawGDI::WinDrawGDI() {}
 
 WinDrawGDI::~WinDrawGDI() {
   Cleanup();
@@ -30,23 +24,21 @@ WinDrawGDI::~WinDrawGDI() {
 //
 bool WinDrawGDI::Init(HWND hwindow, uint32_t w, uint32_t h, GUID*) {
   hwnd = hwindow;
-
-  if (!Resize(w, h))
-    return false;
-  return true;
+  return Resize(w, h);
 }
 
 // ---------------------------------------------------------------------------
 //  画面有効範囲を変更
 //
 bool WinDrawGDI::Resize(uint32_t w, uint32_t h) {
-  width = w;
-  height = h;
+  width_ = w;
+  height_ = h;
 
+  Cleanup();
   if (!MakeBitmap())
     return false;
 
-  memset(image, 0x40, width * height);
+  memset(image_, 0x40, width_ * height_);
   status |= Draw::shouldrefresh;
   return true;
 }
@@ -56,7 +48,8 @@ bool WinDrawGDI::Resize(uint32_t w, uint32_t h) {
 //
 bool WinDrawGDI::Cleanup() {
   if (hbitmap) {
-    DeleteObject(hbitmap), hbitmap = 0;
+    DeleteObject(hbitmap);
+    hbitmap = 0;
   }
   return true;
 }
@@ -66,8 +59,8 @@ bool WinDrawGDI::Cleanup() {
 //
 bool WinDrawGDI::MakeBitmap() {
   binfo.header.biSize = sizeof(BITMAPINFOHEADER);
-  binfo.header.biWidth = width;
-  binfo.header.biHeight = -(int)height;
+  binfo.header.biWidth = width_;
+  binfo.header.biHeight = -(int)height_;
   binfo.header.biPlanes = 1;
   binfo.header.biBitCount = 8;
   binfo.header.biCompression = BI_RGB;
@@ -84,6 +77,7 @@ bool WinDrawGDI::MakeBitmap() {
 
   if (hbitmap)
     DeleteObject(hbitmap);
+  uint8_t* bitmapimage = nullptr;
   hbitmap = CreateDIBSection(hdc, (BITMAPINFO*)&binfo, DIB_RGB_COLORS,
                              (void**)(&bitmapimage), nullptr, 0);
 
@@ -92,8 +86,8 @@ bool WinDrawGDI::MakeBitmap() {
   if (!hbitmap)
     return false;
 
-  bpl = width;
-  image = bitmapimage;
+  bpl_ = width_;
+  image_ = bitmapimage;
   return true;
 }
 
@@ -108,7 +102,7 @@ void WinDrawGDI::SetPalette(PALETTEENTRY* pe, int index, int nentries) {
     binfo.colors[index].rgbGreen = pe->peGreen;
     index++, pe++;
   }
-  updatepal = true;
+  updatepal_ = true;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,15 +112,15 @@ void WinDrawGDI::DrawScreen(const RECT& _rect, bool refresh) {
   RECT rect = _rect;
   bool valid = rect.left < rect.right && rect.top < rect.bottom;
 
-  if (refresh || updatepal)
-    SetRect(&rect, 0, 0, width, height), valid = true;
+  if (refresh || updatepal_)
+    SetRect(&rect, 0, 0, width_, height_), valid = true;
 
   if (valid) {
     HDC hdc = GetDC(hwnd);
     HDC hmemdc = CreateCompatibleDC(hdc);
     HBITMAP oldbitmap = (HBITMAP)SelectObject(hmemdc, hbitmap);
-    if (updatepal) {
-      updatepal = false;
+    if (updatepal_) {
+      updatepal_ = false;
       SetDIBColorTable(hmemdc, 0, 0x100, binfo.colors);
     }
 
@@ -143,9 +137,9 @@ void WinDrawGDI::DrawScreen(const RECT& _rect, bool refresh) {
 //  画面イメージの使用要求
 //
 bool WinDrawGDI::Lock(uint8_t** pimage, int* pbpl) {
-  *pimage = image;
-  *pbpl = bpl;
-  return image != 0;
+  *pimage = image_;
+  *pbpl = bpl_;
+  return !!image_;
 }
 
 // ---------------------------------------------------------------------------
