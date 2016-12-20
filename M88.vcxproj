@@ -619,10 +619,7 @@
     <Image Include="src\win32\M88.ico" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="m88dev.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="memo.txt" />
+    <Manifest Include="src\win32\m88.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

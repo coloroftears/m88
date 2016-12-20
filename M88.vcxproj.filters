@@ -612,12 +612,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\win32\M88.ico" />
+    <Manifest Include="src\win32\m88.manifest">
+      <Filter>win32</Filter>
+    </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="memo.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="m88dev.html" />
+    <Image Include="src\win32\M88.ico">
+      <Filter>win32</Filter>
+    </Image>
   </ItemGroup>
 </Project>
