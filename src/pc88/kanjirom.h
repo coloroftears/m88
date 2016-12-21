@@ -14,9 +14,9 @@ namespace PC8801 {
 
 class KanjiROM final : public Device {
  public:
-  enum { setl = 0, seth };
+  enum { kSetL, kSetH };
 
-  enum { readl = 0, readh };
+  enum { kReadL, kReadH };
 
  public:
   explicit KanjiROM(const ID& id);

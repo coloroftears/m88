@@ -8,7 +8,7 @@
 
 #include "pc88/memory.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ----------------------------------------------------------------------------
 //
@@ -105,3 +105,4 @@ void MemoryViewer::SelectBank(Type a0, Type a6, Type a8, Type ac, Type af) {
   }
   bus.SetMemorys(0xf000, 0x1000, p);
 }
+}  // namespace PC8801

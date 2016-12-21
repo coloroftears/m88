@@ -17,10 +17,10 @@ namespace PC8801 {
 class Calendar final : public Device {
  public:
   enum {
-    reset = 0,
-    out10,
-    out40,
-    in40 = 0,
+    kReset,
+    kOut10,
+    kOut40,
+    kIn40 = 0,
   };
 
  public:

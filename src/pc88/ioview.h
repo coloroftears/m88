@@ -24,7 +24,7 @@ namespace PC8801 {
 class IOViewer final : public Device {
  public:
   enum ConnID {
-    out = 0,
+    kOut,
   };
 
  public:

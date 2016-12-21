@@ -20,8 +20,9 @@
 //#define LOGNAME "winsound"
 #include "common/diag.h"
 
-using namespace PC8801;
 using namespace WinSoundDriver;
+
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -164,6 +165,7 @@ bool WinSound::DumpEnd() {
   //  FillWhenEmpty(true);
   return true;
 }
+}  // namespace PC8801
 
 // ---------------------------------------------------------------------------
 //  合成の場合

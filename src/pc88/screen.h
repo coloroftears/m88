@@ -33,15 +33,15 @@ class CRTC;
 class Screen final : public Device {
  public:
   enum IDOut {
-    reset = 0,
-    out30,
-    out31,
-    out32,
-    out33,
-    out52,
-    out53,
-    out54,
-    out55to5b
+    kReset = 0,
+    kOut30,
+    kOut31,
+    kOut32,
+    kOut33,
+    kOut52,
+    kOut53,
+    kOut54,
+    kOut55To5b
   };
 
  public:

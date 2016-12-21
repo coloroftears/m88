@@ -23,7 +23,7 @@ class OPNInterface;
 class Beep final : public Device, public ISoundSource {
  public:
   enum IDFunc {
-    out40 = 0,
+    kOut40
   };
 
  public:

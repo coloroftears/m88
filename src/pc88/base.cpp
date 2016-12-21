@@ -20,7 +20,7 @@
 #define LOGNAME "base"
 #include "common/diag.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  構築・破壊
@@ -162,3 +162,4 @@ const Device::InFuncPtr Base::indef[] = {
     static_cast<Device::InFuncPtr>(&Base::In40),
     static_cast<Device::InFuncPtr>(&Base::In6e),
 };
+}  // namespace PC8801

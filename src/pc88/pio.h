@@ -33,12 +33,11 @@ class PIO {
   uint8_t readmask[4];
   PIO* partner;
 };
-}  // namespace PID
 
 // ---------------------------------------------------------------------------
 //  ポートに出力
 //
-inline void PC8801::PIO::SetData(uint32_t adr, uint32_t data) {
+inline void PIO::SetData(uint32_t adr, uint32_t data) {
   adr &= 3;
   port[adr] = data;
 }
@@ -46,18 +45,19 @@ inline void PC8801::PIO::SetData(uint32_t adr, uint32_t data) {
 // ---------------------------------------------------------------------------
 //  ポートから入力
 //
-inline uint32_t PC8801::PIO::Read0() {
+inline uint32_t PIO::Read0() {
   uint32_t data = partner->Port(1);
   return (data & readmask[0]) | (port[1] & ~readmask[0]);
 }
 
-inline uint32_t PC8801::PIO::Read1() {
+inline uint32_t PIO::Read1() {
   uint32_t data = partner->Port(0);
   return (data & readmask[1]) | (port[1] & ~readmask[1]);
 }
 
-inline uint32_t PC8801::PIO::Read2() {
+inline uint32_t PIO::Read2() {
   uint32_t data = partner->Port(2);
   data = ((data << 4) & 0xf0) + ((data >> 4) & 0x0f);  // rotate 4 bits
   return (data & readmask[2]) | (port[2] & ~readmask[2]);
 }
+}  // namespace PC8801

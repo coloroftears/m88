@@ -12,8 +12,6 @@
 #include "pc88/opn_interface.h"
 #include "win32/resource.h"
 
-using namespace PC8801;
-
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
@@ -25,7 +23,7 @@ OPNMonitor::OPNMonitor() {
 
 OPNMonitor::~OPNMonitor() {}
 
-bool OPNMonitor::Init(OPNInterface* o, ISoundControl* sc) {
+bool OPNMonitor::Init(PC8801::OPNInterface* o, ISoundControl* sc) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_SOUNDMON)))
     return false;
 

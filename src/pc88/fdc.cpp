@@ -22,7 +22,7 @@
 #define LOGNAME "fdc"
 #include "common/diag.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -1243,3 +1243,4 @@ const Device::InFuncPtr FDC::indef[] = {
     static_cast<Device::InFuncPtr>(&FDC::GetData),
     static_cast<Device::InFuncPtr>(&FDC::TC),
 };
+}  // namespace PC8801

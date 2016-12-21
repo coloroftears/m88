@@ -11,7 +11,7 @@
 
 #include "win32/resource.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -281,3 +281,4 @@ const char* BasicMonitor::rsvdword[] = {
     "",       "",          "",       "",       "",        "",        "",
     "",       "",          "",       "",
 };
+}  // namespace PC8801

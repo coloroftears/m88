@@ -17,8 +17,8 @@ namespace PC8801 {
 
 class PD8257 final : public Device, public IDMAAccess {
  public:
-  enum IDOut { reset = 0, setaddr, setcount, setmode };
-  enum IDIn { getaddr, getcount, getstat };
+  enum IDOut { kReset, kSetAddr, kSetCount, kSetMode };
+  enum IDIn { kGetAddr, kGetCount, kGetStat };
 
  public:
   explicit PD8257(const ID&);

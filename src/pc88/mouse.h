@@ -18,10 +18,10 @@ class Config;
 class Mouse final : public Device {
  public:
   enum {
-    strobe = 0,
-    vsync,
-    getmove = 0,
-    getbutton,
+    kStrobe,
+    kVSync,
+    kGetMove = 0,
+    kGetButton,
   };
 
  public:

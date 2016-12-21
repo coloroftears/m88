@@ -19,8 +19,7 @@
 #include "pc88/crtc.h"
 #include "win32/status.h"
 
-// using namespace std;
-using namespace PC8801;
+namespace PC8801 {
 
 // ----------------------------------------------------------------------------
 //  Constructor / Destructor
@@ -1199,3 +1198,4 @@ uint32_t IFCALL Memory::GetWrBank(uint32_t addr) {
     return mRAM;
   return GetHiBank(addr);
 }
+}  // namespace PC8801

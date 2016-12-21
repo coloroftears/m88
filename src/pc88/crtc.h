@@ -22,11 +22,8 @@ class Config;
 //
 class CRTC final : public Device {
  public:
-  enum IDOut { reset = 0, out, pcgout, setkanamode };
-  enum IDIn {
-    in = 0,
-    getstatus,
-  };
+  enum IDOut { kReset, kOut, kPCGOut, kSetKanaMode };
+  enum IDIn { kIn, kGetStatus };
 
  public:
   explicit CRTC(const ID& id);

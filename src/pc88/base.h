@@ -19,8 +19,8 @@ class Config;
 
 class Base final : public Device {
  public:
-  enum IDOut { reset = 0, vrtc };
-  enum IDIn { in30 = 0, in31, in40, in6e };
+  enum IDOut { kReset, kVRTC };
+  enum IDIn { kIn30, kIn31, kIn40, kIn6e };
 
  public:
   explicit Base(const ID& id);

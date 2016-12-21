@@ -14,9 +14,9 @@ namespace PC8801 {
 class JoyPad final : public Device {
  public:
   enum {
-    vsync = 0,
-    getdir = 0,
-    getbutton = 1,
+    kVSync,
+    kGetDir = 0,
+    kGetButton,
   };
   enum ButtonMode { NORMAL, SWAPPED, DISABLED };
 

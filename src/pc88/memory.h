@@ -21,7 +21,7 @@ class CRTC;
 class Memory final : public Device, public IGetMemoryBank {
  public:
   enum IDOut {
-    kReset = 0,
+    kReset,
     kOut31,
     kOut32,
     kOut34,
@@ -39,11 +39,14 @@ class Memory final : public Device, public IGetMemoryBank {
     kVRTC,
     kOut33
   };
-  enum IDIn { kIn32 = 0, kIn5c, kIn70, kIn71, kIne2, kIne3, kIn33 };
+
+  enum IDIn { kIn32, kIn5c, kIn70, kIn71, kIne2, kIne3, kIn33 };
+
   union quadbyte {
     uint32_t pack;
     uint8_t byte[4];
   };
+
   enum ROM { n88 = 0, n88e = 0x8000, n80 = 0x10000, romsize = 0x18000 };
 
   enum MemID {

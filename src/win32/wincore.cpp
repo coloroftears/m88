@@ -26,7 +26,9 @@
 #define LOGNAME "wincore"
 #include "common/diag.h"
 
-using namespace PC8801;
+using Config = PC8801::Config;
+using ExtendModule = PC8801::ExtendModule;
+using WinKeyIF = PC8801::WinKeyIF;
 
 //                   0123456789abcdef
 #define SNAPSHOT_ID "M88 SnapshotData"

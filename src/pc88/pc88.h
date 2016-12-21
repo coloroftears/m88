@@ -33,7 +33,6 @@ class TapeManager;
 namespace PC8801 {
 class Base;
 class Beep;
-class CDIF;
 class CRTC;
 class Calendar;
 class Config;

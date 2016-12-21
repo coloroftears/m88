@@ -27,13 +27,13 @@ class FDC final : public Device {
     num_drives = 2,
   };
   enum ConnID {
-    reset = 0,
-    setdata,
-    drivecontrol,
-    motorcontrol,
-    getstatus = 0,
-    getdata,
-    tcin
+    kReset,
+    kSetData,
+    kDriveControl,
+    kMotorControl,
+    kGetStatus = 0,
+    kGetData,
+    kTCIn
   };
 
   enum Result {

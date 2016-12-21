@@ -11,7 +11,7 @@
 #include "pc88/pc88.h"
 #include "win32/resource.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -168,3 +168,4 @@ void MemViewMonitor::StatClear() {
     }
   }
 }
+}  // namespace PC8801

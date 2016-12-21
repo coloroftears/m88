@@ -22,7 +22,7 @@
 //#define LOGNAME "crtc"
 #include "common/diag.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ---------------------------------------------------------------------------
 //  CRTC 部の機能
@@ -1160,3 +1160,4 @@ const Device::InFuncPtr CRTC::indef[] = {
     static_cast<Device::InFuncPtr>(&CRTC::In),
     static_cast<Device::InFuncPtr>(&CRTC::GetStatus),
 };
+}  // namespace PC8801

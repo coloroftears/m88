@@ -10,7 +10,8 @@
 
 #include "common/toast.h"
 
-using namespace D88;
+using ImageHeader = D88::ImageHeader;
+using SectorHeader = D88::SectorHeader;
 
 // ---------------------------------------------------------------------------
 //  構築・破棄

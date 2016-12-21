@@ -8,7 +8,7 @@
 
 #include "win32/status.h"
 
-using namespace PC8801;
+namespace PC8801 {
 
 // ----------------------------------------------------------------------------
 //
@@ -31,7 +31,7 @@ bool IOViewer::Connect(IIOBus* _bus) {
   for (i = 0; i < 256; i++) {
     conn[i].bank = i;
     conn[i].rule = IOBus::portout;
-    conn[i].id = out;
+    conn[i].id = kOut;
   }
   conn[i].bank = 0;
   conn[i].rule = 0;
@@ -70,3 +70,5 @@ const Device::Descriptor IOViewer::descriptor = {0, outdef};
 
 const Device::OutFuncPtr IOViewer::outdef[] = {
     static_cast<Device::OutFuncPtr>(&IOViewer::Out)};
+
+}  // namespace PC8801

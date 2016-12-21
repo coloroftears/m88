@@ -37,7 +37,21 @@
 //#define LOGNAME "pc88"
 #include "common/diag.h"
 
-using namespace PC8801;
+using Base = PC8801::Base;
+using CRTC = PC8801::CRTC;
+using Calendar = PC8801::Calendar;
+using Config = PC8801::Config;
+using DiskIO = PC8801::DiskIO;
+using FDC = PC8801::FDC;
+using INTC = PC8801::INTC;
+using JoyPad = PC8801::JoyPad;
+using KanjiROM = PC8801::KanjiROM;
+using Memory = PC8801::Memory;
+using OPNInterface = PC8801::OPNInterface;
+using PD8257 = PC8801::PD8257;
+using SIO = PC8801::SIO;
+using Screen = PC8801::Screen;
+using SubSystem = PC8801::SubSystem;
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -290,14 +304,14 @@ bool PC88::ConnectDevices() {
   if (!cpu1.Init(&mm1, &bus1, piack))
     return false;
 
-  static const IOBus::Connector c_base[] = {{pres, IOBus::portout, Base::reset},
-                                            {vrtc, IOBus::portout, Base::vrtc},
-                                            {0x30, IOBus::portin, Base::in30},
-                                            {0x31, IOBus::portin, Base::in31},
-                                            {0x40, IOBus::portin, Base::in40},
-                                            {0x6e, IOBus::portin, Base::in6e},
+  static const IOBus::Connector c_base[] = {{pres, IOBus::portout, Base::kReset},
+                                            {vrtc, IOBus::portout, Base::kVRTC},
+                                            {0x30, IOBus::portin, Base::kIn30},
+                                            {0x31, IOBus::portin, Base::kIn31},
+                                            {0x40, IOBus::portin, Base::kIn40},
+                                            {0x6e, IOBus::portin, Base::kIn6e},
                                             {0, 0, 0}};
-  base = new PC8801::Base(DEV_ID('B', 'A', 'S', 'E'));
+  base = new Base(DEV_ID('B', 'A', 'S', 'E'));
   if (!base || !bus1.Connect(base, c_base))
     return false;
   if (!base->Init(this))
@@ -305,42 +319,42 @@ bool PC88::ConnectDevices() {
   devlist.Add(tapemgr);
 
   static const IOBus::Connector c_dmac[] = {
-      {pres, IOBus::portout, PD8257::reset},
-      {0x60, IOBus::portout, PD8257::setaddr},
-      {0x61, IOBus::portout, PD8257::setcount},
-      {0x62, IOBus::portout, PD8257::setaddr},
-      {0x63, IOBus::portout, PD8257::setcount},
-      {0x64, IOBus::portout, PD8257::setaddr},
-      {0x65, IOBus::portout, PD8257::setcount},
-      {0x66, IOBus::portout, PD8257::setaddr},
-      {0x67, IOBus::portout, PD8257::setcount},
-      {0x68, IOBus::portout, PD8257::setmode},
-      {0x60, IOBus::portin, PD8257::getaddr},
-      {0x61, IOBus::portin, PD8257::getcount},
-      {0x62, IOBus::portin, PD8257::getaddr},
-      {0x63, IOBus::portin, PD8257::getcount},
-      {0x64, IOBus::portin, PD8257::getaddr},
-      {0x65, IOBus::portin, PD8257::getcount},
-      {0x66, IOBus::portin, PD8257::getaddr},
-      {0x67, IOBus::portin, PD8257::getcount},
-      {0x68, IOBus::portin, PD8257::getstat},
+      {pres, IOBus::portout, PD8257::kReset},
+      {0x60, IOBus::portout, PD8257::kSetAddr},
+      {0x61, IOBus::portout, PD8257::kSetCount},
+      {0x62, IOBus::portout, PD8257::kSetAddr},
+      {0x63, IOBus::portout, PD8257::kSetCount},
+      {0x64, IOBus::portout, PD8257::kSetAddr},
+      {0x65, IOBus::portout, PD8257::kSetCount},
+      {0x66, IOBus::portout, PD8257::kSetAddr},
+      {0x67, IOBus::portout, PD8257::kSetCount},
+      {0x68, IOBus::portout, PD8257::kSetMode},
+      {0x60, IOBus::portin, PD8257::kGetAddr},
+      {0x61, IOBus::portin, PD8257::kGetCount},
+      {0x62, IOBus::portin, PD8257::kGetAddr},
+      {0x63, IOBus::portin, PD8257::kGetCount},
+      {0x64, IOBus::portin, PD8257::kGetAddr},
+      {0x65, IOBus::portin, PD8257::kGetCount},
+      {0x66, IOBus::portin, PD8257::kGetAddr},
+      {0x67, IOBus::portin, PD8257::kGetCount},
+      {0x68, IOBus::portin, PD8257::kGetStat},
       {0, 0, 0}};
-  dmac = new PC8801::PD8257(DEV_ID('D', 'M', 'A', 'C'));
+  dmac = new PD8257(DEV_ID('D', 'M', 'A', 'C'));
   if (!bus1.Connect(dmac, c_dmac))
     return false;
 
   static const IOBus::Connector c_crtc[] = {
-      {pres, IOBus::portout, CRTC::reset},
-      {0x50, IOBus::portout, CRTC::out},
-      {0x51, IOBus::portout, CRTC::out},
-      {0x50, IOBus::portin, CRTC::getstatus},
-      {0x51, IOBus::portin, CRTC::in},
-      {0x00, IOBus::portout, CRTC::pcgout},
-      {0x01, IOBus::portout, CRTC::pcgout},
-      {0x02, IOBus::portout, CRTC::pcgout},
-      {0x33, IOBus::portout, CRTC::setkanamode},
+      {pres, IOBus::portout, CRTC::kReset},
+      {0x50, IOBus::portout, CRTC::kOut},
+      {0x51, IOBus::portout, CRTC::kOut},
+      {0x50, IOBus::portin, CRTC::kGetStatus},
+      {0x51, IOBus::portin, CRTC::kIn},
+      {0x00, IOBus::portout, CRTC::kPCGOut},
+      {0x01, IOBus::portout, CRTC::kPCGOut},
+      {0x02, IOBus::portout, CRTC::kPCGOut},
+      {0x33, IOBus::portout, CRTC::kSetKanaMode},
       {0, 0, 0}};
-  crtc = new PC8801::CRTC(DEV_ID('C', 'R', 'T', 'C'));
+  crtc = new CRTC(DEV_ID('C', 'R', 'T', 'C'));
   if (!crtc || !bus1.Connect(crtc, c_crtc))
     return false;
 
@@ -372,7 +386,7 @@ bool PC88::ConnectDevices() {
       {0xe2, IOBus::portin, Memory::kIne2},
       {0xe3, IOBus::portin, Memory::kIne3},
       {0, 0, 0}};
-  mem1 = new PC8801::Memory(DEV_ID('M', 'E', 'M', '1'));
+  mem1 = new Memory(DEV_ID('M', 'E', 'M', '1'));
   if (!mem1 || !bus1.Connect(mem1, c_mem1))
     return false;
   if (!mem1->Init(&mm1, &bus1, crtc, cpu1.GetWaits()))
@@ -382,67 +396,67 @@ bool PC88::ConnectDevices() {
     return false;
 
   static const IOBus::Connector c_knj1[] = {
-      {0xe8, IOBus::portout, KanjiROM::setl},
-      {0xe9, IOBus::portout, KanjiROM::seth},
-      {0xe8, IOBus::portin, KanjiROM::readl},
-      {0xe9, IOBus::portin, KanjiROM::readh},
+      {0xe8, IOBus::portout, KanjiROM::kSetL},
+      {0xe9, IOBus::portout, KanjiROM::kSetH},
+      {0xe8, IOBus::portin, KanjiROM::kReadL},
+      {0xe9, IOBus::portin, KanjiROM::kReadH},
       {0, 0, 0}};
-  knj1 = new PC8801::KanjiROM(DEV_ID('K', 'N', 'J', '1'));
+  knj1 = new KanjiROM(DEV_ID('K', 'N', 'J', '1'));
   if (!knj1 || !bus1.Connect(knj1, c_knj1))
     return false;
   if (!knj1->Init("kanji1.rom"))
     return false;
 
   static const IOBus::Connector c_knj2[] = {
-      {0xec, IOBus::portout, KanjiROM::setl},
-      {0xed, IOBus::portout, KanjiROM::seth},
-      {0xec, IOBus::portin, KanjiROM::readl},
-      {0xed, IOBus::portin, KanjiROM::readh},
+      {0xec, IOBus::portout, KanjiROM::kSetL},
+      {0xed, IOBus::portout, KanjiROM::kSetH},
+      {0xec, IOBus::portin, KanjiROM::kReadL},
+      {0xed, IOBus::portin, KanjiROM::kReadH},
       {0, 0, 0}};
-  knj2 = new PC8801::KanjiROM(DEV_ID('K', 'N', 'J', '2'));
+  knj2 = new KanjiROM(DEV_ID('K', 'N', 'J', '2'));
   if (!knj2 || !bus1.Connect(knj2, c_knj2))
     return false;
   if (!knj2->Init("kanji2.rom"))
     return false;
 
   static const IOBus::Connector c_scrn[] = {
-      {pres, IOBus::portout, Screen::reset},
-      {0x30, IOBus::portout, Screen::out30},
-      {0x31, IOBus::portout, Screen::out31},
-      {0x32, IOBus::portout, Screen::out32},
-      {0x33, IOBus::portout, Screen::out33},
-      {0x52, IOBus::portout, Screen::out52},
-      {0x53, IOBus::portout, Screen::out53},
-      {0x54, IOBus::portout, Screen::out54},
-      {0x55, IOBus::portout, Screen::out55to5b},
-      {0x56, IOBus::portout, Screen::out55to5b},
-      {0x57, IOBus::portout, Screen::out55to5b},
-      {0x58, IOBus::portout, Screen::out55to5b},
-      {0x59, IOBus::portout, Screen::out55to5b},
-      {0x5a, IOBus::portout, Screen::out55to5b},
-      {0x5b, IOBus::portout, Screen::out55to5b},
+      {pres, IOBus::portout, Screen::kReset},
+      {0x30, IOBus::portout, Screen::kOut30},
+      {0x31, IOBus::portout, Screen::kOut31},
+      {0x32, IOBus::portout, Screen::kOut32},
+      {0x33, IOBus::portout, Screen::kOut33},
+      {0x52, IOBus::portout, Screen::kOut52},
+      {0x53, IOBus::portout, Screen::kOut53},
+      {0x54, IOBus::portout, Screen::kOut54},
+      {0x55, IOBus::portout, Screen::kOut55To5b},
+      {0x56, IOBus::portout, Screen::kOut55To5b},
+      {0x57, IOBus::portout, Screen::kOut55To5b},
+      {0x58, IOBus::portout, Screen::kOut55To5b},
+      {0x59, IOBus::portout, Screen::kOut55To5b},
+      {0x5a, IOBus::portout, Screen::kOut55To5b},
+      {0x5b, IOBus::portout, Screen::kOut55To5b},
       {0, 0, 0}};
-  scrn = new PC8801::Screen(DEV_ID('S', 'C', 'R', 'N'));
+  scrn = new Screen(DEV_ID('S', 'C', 'R', 'N'));
   if (!scrn || !bus1.Connect(scrn, c_scrn))
     return false;
   if (!scrn->Init(&bus1, mem1, crtc))
     return false;
 
   static const IOBus::Connector c_intc[] = {
-      {pres, IOBus::portout, INTC::reset},
-      {pint0, IOBus::portout, INTC::request},
-      {pint1, IOBus::portout, INTC::request},
-      {pint2, IOBus::portout, INTC::request},
-      {pint3, IOBus::portout, INTC::request},
-      {pint4, IOBus::portout, INTC::request},
-      {pint5, IOBus::portout, INTC::request},
-      {pint6, IOBus::portout, INTC::request},
-      {pint7, IOBus::portout, INTC::request},
-      {0xe4, IOBus::portout, INTC::setreg},
-      {0xe6, IOBus::portout, INTC::setmask},
-      {piack, IOBus::portin, INTC::intack},
+      {pres, IOBus::portout, INTC::kReset},
+      {pint0, IOBus::portout, INTC::kRequest},
+      {pint1, IOBus::portout, INTC::kRequest},
+      {pint2, IOBus::portout, INTC::kRequest},
+      {pint3, IOBus::portout, INTC::kRequest},
+      {pint4, IOBus::portout, INTC::kRequest},
+      {pint5, IOBus::portout, INTC::kRequest},
+      {pint6, IOBus::portout, INTC::kRequest},
+      {pint7, IOBus::portout, INTC::kRequest},
+      {0xe4, IOBus::portout, INTC::kSetReg},
+      {0xe6, IOBus::portout, INTC::kSetMask},
+      {piack, IOBus::portin, INTC::kIntAck},
       {0, 0, 0}};
-  intc = new PC8801::INTC(DEV_ID('I', 'N', 'T', 'C'));
+  intc = new INTC(DEV_ID('I', 'N', 'T', 'C'));
   if (!intc || !bus1.Connect(intc, c_intc))
     return false;
   if (!intc->Init(&bus1, pirq, pint0))
@@ -458,7 +472,7 @@ bool PC88::ConnectDevices() {
       {0xfd, IOBus::portin | IOBus::sync, SubSystem::m_read1},
       {0xfe, IOBus::portin | IOBus::sync, SubSystem::m_read2},
       {0, 0, 0}};
-  subsys = new PC8801::SubSystem(DEV_ID('S', 'U', 'B', ' '));
+  subsys = new SubSystem(DEV_ID('S', 'U', 'B', ' '));
   if (!subsys || !bus1.Connect(subsys, c_subsys))
     return false;
 
@@ -470,7 +484,7 @@ bool PC88::ConnectDevices() {
       {0x20, IOBus::portin, SIO::getdata},
       {0x21, IOBus::portin, SIO::getstatus},
       {0, 0, 0}};
-  siotape = new PC8801::SIO(DEV_ID('S', 'I', 'O', ' '));
+  siotape = new SIO(DEV_ID('S', 'I', 'O', ' '));
   if (!siotape || !bus1.Connect(siotape, c_sio))
     return false;
   if (!siotape->Init(&bus1, pint0, psioreq))
@@ -499,7 +513,7 @@ bool PC88::ConnectDevices() {
       {0x46, IOBus::portin, OPNInterface::readstatusex},
       {0x47, IOBus::portin, OPNInterface::readdata1},
       {0, 0, 0}};
-  opn1 = new PC8801::OPNInterface(DEV_ID('O', 'P', 'N', '1'));
+  opn1 = new OPNInterface(DEV_ID('O', 'P', 'N', '1'));
   if (!opn1 || !opn1->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!bus1.Connect(opn1, c_opn1))
@@ -518,7 +532,7 @@ bool PC88::ConnectDevices() {
       {0xac, IOBus::portin, OPNInterface::readstatusex},
       {0xad, IOBus::portin, OPNInterface::readdata1},
       {0, 0, 0}};
-  opn2 = new PC8801::OPNInterface(DEV_ID('O', 'P', 'N', '2'));
+  opn2 = new OPNInterface(DEV_ID('O', 'P', 'N', '2'));
   if (!opn2->Init(&bus1, pint4, popnio, sched_.get()))
     return false;
   if (!opn2 || !bus1.Connect(opn2, c_opn2))
@@ -526,18 +540,19 @@ bool PC88::ConnectDevices() {
   opn2->SetIMask(0xaa, 0x80);
 
   static const IOBus::Connector c_caln[] = {
-      {pres, IOBus::portout, Calendar::reset},
-      {0x10, IOBus::portout, Calendar::out10},
-      {0x40, IOBus::portout, Calendar::out40},
-      {0x40, IOBus::portin, Calendar::in40},
+      {pres, IOBus::portout, Calendar::kReset},
+      {0x10, IOBus::portout, Calendar::kOut10},
+      {0x40, IOBus::portout, Calendar::kOut40},
+      {0x40, IOBus::portin, Calendar::kIn40},
       {0, 0, 0}};
-  caln = new PC8801::Calendar(DEV_ID('C', 'A', 'L', 'N'));
+  caln = new Calendar(DEV_ID('C', 'A', 'L', 'N'));
   if (!caln || !caln->Init())
     return false;
   if (!bus1.Connect(caln, c_caln))
     return false;
 
-  static const IOBus::Connector c_beep[] = {{0x40, IOBus::portout, Beep::out40},
+  static const IOBus::Connector c_beep[] =
+      {{0x40, IOBus::portout, PC8801::Beep::kOut40},
                                             {0, 0, 0}};
   beep = new PC8801::Beep(DEV_ID('B', 'E', 'E', 'P'));
   if (!beep || !beep->Init())
@@ -553,18 +568,18 @@ bool PC88::ConnectDevices() {
       {0xc2, IOBus::portin, SIO::getdata},
       {0xc3, IOBus::portin, SIO::getstatus},
       {0, 0, 0}};
-  siomidi = new PC8801::SIO(DEV_ID('S', 'I', 'O', 'M'));
+  siomidi = new SIO(DEV_ID('S', 'I', 'O', 'M'));
   if (!siomidi || !bus1.Connect(siomidi, c_siom))
     return false;
   if (!siomidi->Init(&bus1, 0, psioreq))
     return false;
 
   static const IOBus::Connector c_joy[] = {
-      {popnio, IOBus::portin, JoyPad::getdir},
-      {popnio2, IOBus::portin, JoyPad::getbutton},
-      {vrtc, IOBus::portout, JoyPad::vsync},
+      {popnio, IOBus::portin, JoyPad::kGetDir},
+      {popnio2, IOBus::portin, JoyPad::kGetButton},
+      {vrtc, IOBus::portout, JoyPad::kVSync},
       {0, 0, 0}};
-  joypad = new PC8801::JoyPad();  // DEV_ID('J', 'O', 'Y', ' '));
+  joypad = new JoyPad();  // DEV_ID('J', 'O', 'Y', ' '));
   if (!joypad)
     return false;
   if (!bus1.Connect(joypad, c_joy))
@@ -601,13 +616,13 @@ bool PC88::ConnectDevices2() {
     return false;
 
   static const IOBus::Connector c_fdc[] = {
-      {pres2, IOBus::portout, FDC::reset},
-      {0xfb, IOBus::portout, FDC::setdata},
-      {0xf4, IOBus::portout, FDC::drivecontrol},
-      {0xf8, IOBus::portout, FDC::motorcontrol},
-      {0xf8, IOBus::portin, FDC::tcin},
-      {0xfa, IOBus::portin, FDC::getstatus},
-      {0xfb, IOBus::portin, FDC::getdata},
+      {pres2, IOBus::portout, FDC::kReset},
+      {0xfb, IOBus::portout, FDC::kSetData},
+      {0xf4, IOBus::portout, FDC::kDriveControl},
+      {0xf8, IOBus::portout, FDC::kMotorControl},
+      {0xf8, IOBus::portin, FDC::kTCIn},
+      {0xfa, IOBus::portin, FDC::kGetStatus},
+      {0xfb, IOBus::portin, FDC::kGetData},
       {0, 0, 0}};
   fdc = new PC8801::FDC(DEV_ID('F', 'D', 'C', ' '));
   if (!bus2.Connect(fdc, c_fdc))
