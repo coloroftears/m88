@@ -97,7 +97,7 @@ void OPM::RebuildTimeTable() {
   rateratio = ((fmclock << FM_RATIOBITS) + rate / 2) / rate;
   SetTimerBase(fmclock);
 
-  //  FM::MakeTimeTable(rateratio);
+  //  MakeTimeTable(rateratio);
   chip.SetRatio(rateratio);
 
   //  lfo_diff_ =

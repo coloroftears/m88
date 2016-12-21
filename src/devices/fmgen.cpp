@@ -250,12 +250,12 @@ void Chip::MakeTable() {
 // ---------------------------------------------------------------------------
 //  Operator
 //
-bool FM::Operator::tablehasmade = false;
-uint32_t FM::Operator::sinetable[1024];
-int32_t FM::Operator::cltable[FM_CLENTS];
+bool Operator::tablehasmade = false;
+uint32_t Operator::sinetable[1024];
+int32_t Operator::cltable[FM_CLENTS];
 
 //  構築
-FM::Operator::Operator() : chip_(0) {
+Operator::Operator() : chip_(0) {
   if (!tablehasmade)
     MakeTable();
 
@@ -279,7 +279,7 @@ FM::Operator::Operator() : chip_(0) {
 }
 
 //  初期化
-void FM::Operator::Reset() {
+void Operator::Reset() {
   // EG part
   tl_ = tl_latch_ = 127;
   ShiftPhase(off);
@@ -327,12 +327,12 @@ void Operator::MakeTable() {
     sinetable[FM_OPSINENTS / 2 + i] = s * 2 + 1;
   }
 
-  ::FM::MakeLFOTable();
+  MakeLFOTable();
 
   tablehasmade = true;
 }
 
-inline void FM::Operator::SetDPBN(uint32_t dp, uint32_t bn) {
+inline void Operator::SetDPBN(uint32_t dp, uint32_t bn) {
   dp_ = dp, bn_ = bn;
   param_changed_ = true;
   PARAMCHANGE(1);
@@ -471,7 +471,7 @@ void Operator::SetFNum(uint32_t f) {
   sinetable[((s) >> (20 + FM_PGBITS - FM_OPSINBITS)) & (FM_OPSINENTS - 1)]
 #define SINE(s) sinetable[(s) & (FM_OPSINENTS - 1)]
 
-inline FM::ISample Operator::LogToLin(uint32_t a) {
+inline ISample Operator::LogToLin(uint32_t a) {
 #if 1  // FM_CLENTS < 0xc00      // 400 for TL, 400 for ENV, 400 for LFO.
   return (a < FM_CLENTS) ? cltable[a] : 0;
 #else
@@ -494,7 +494,7 @@ inline void Operator::SetEGRate(uint32_t rate) {
 }
 
 //  EG 計算
-void FM::Operator::EGCalc() {
+void Operator::EGCalc() {
   eg_count_ = (2047 * 3) << FM_RATIOBITS;  // ##この手抜きは再現性を低下させる
 
   if (eg_phase_ == attack) {
@@ -532,7 +532,7 @@ void FM::Operator::EGCalc() {
   eg_curve_count_++;
 }
 
-inline void FM::Operator::EGStep() {
+inline void Operator::EGStep() {
   eg_count_ -= eg_count_diff_;
 
   // EG の変化は全スロットで同期しているという噂もある
@@ -542,14 +542,14 @@ inline void FM::Operator::EGStep() {
 
 //  PG 計算
 //  ret:2^(20+PGBITS) / cycle
-inline uint32_t FM::Operator::PGCalc() {
+inline uint32_t Operator::PGCalc() {
   uint32_t ret = pg_count_;
   pg_count_ += pg_diff_;
   dbgpgout_ = ret;
   return ret;
 }
 
-inline uint32_t FM::Operator::PGCalcL() {
+inline uint32_t Operator::PGCalcL() {
   uint32_t ret = pg_count_;
   pg_count_ += pg_diff_ + ((pg_diff_lfo_ * chip_->GetPMV()) >>
                            5);  // & -(1 << (2+IS2EC_SHIFT)));
@@ -559,7 +559,7 @@ inline uint32_t FM::Operator::PGCalcL() {
 
 //  OP 計算
 //  in: ISample (最大 8π)
-inline FM::ISample FM::Operator::Calc(ISample in) {
+inline ISample Operator::Calc(ISample in) {
   EGStep();
   out2_ = out_;
 
@@ -571,7 +571,7 @@ inline FM::ISample FM::Operator::Calc(ISample in) {
   return out_;
 }
 
-inline FM::ISample FM::Operator::CalcL(ISample in) {
+inline ISample Operator::CalcL(ISample in) {
   EGStep();
 
   int pgin = PGCalcL() >> (20 + FM_PGBITS - FM_OPSINBITS);
@@ -582,7 +582,7 @@ inline FM::ISample FM::Operator::CalcL(ISample in) {
   return out_;
 }
 
-inline FM::ISample FM::Operator::CalcN(uint32_t noise) {
+inline ISample Operator::CalcN(uint32_t noise) {
   EGStep();
 
   int lv = std::max(0, 0x3ff - (tl_out_ + eg_level_)) << 1;
@@ -597,7 +597,7 @@ inline FM::ISample FM::Operator::CalcN(uint32_t noise) {
 
 //  OP (FB) 計算
 //  Self Feedback の変調最大 = 4π
-inline FM::ISample FM::Operator::CalcFB(uint32_t fb) {
+inline ISample Operator::CalcFB(uint32_t fb) {
   EGStep();
 
   ISample in = out_ + out2_;
@@ -614,7 +614,7 @@ inline FM::ISample FM::Operator::CalcFB(uint32_t fb) {
   return out2_;
 }
 
-inline FM::ISample FM::Operator::CalcFBL(uint32_t fb) {
+inline ISample Operator::CalcFBL(uint32_t fb) {
   EGStep();
 
   ISample in = out_ + out2_;
