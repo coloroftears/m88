@@ -31,7 +31,7 @@ class Base final : public Device {
   const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
   void SetSwitch(const Config* cfg);
-  uint32_t GetBasicMode() { return bmode; }
+  uint32_t GetBasicMode() const { return bmode; }
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
   void SetFDBoot(bool autoboot_) { autoboot = autoboot_; }
 
