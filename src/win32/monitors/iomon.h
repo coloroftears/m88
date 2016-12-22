@@ -15,7 +15,7 @@
 
 class PC88;
 
-namespace PC8801 {
+namespace pc88 {
 
 class IOMonitor final : public WinMonitor {
  public:
@@ -37,4 +37,4 @@ class IOMonitor final : public WinMonitor {
 
   static COLORREF ctbl[0x100];
 };
-}  // namespace PC8801
+}  // namespace pc88

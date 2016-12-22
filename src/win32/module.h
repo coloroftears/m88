@@ -10,7 +10,7 @@
 
 #include "interface/ifcommon.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 //
 class ExtendModule {
@@ -36,4 +36,4 @@ class ExtendModule {
 inline void* ExtendModule::QueryIF(REFIID iid) {
   return mod ? mod->QueryIF(iid) : 0;
 }
-}  // namespace PC8801
+}  // namespace pc88

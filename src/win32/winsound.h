@@ -58,7 +58,7 @@ class SoundDumpPipe final : public SoundSource<Sample16> {
   CriticalSection cs_;
 };
 
-namespace PC8801 {
+namespace pc88 {
 class Config;
 
 class WinSound : public Sound {
@@ -94,4 +94,4 @@ class WinSound : public Sound {
 
   SoundDumpPipe dumper;
 };
-}  // namespace PC8801
+}  // namespace pc88

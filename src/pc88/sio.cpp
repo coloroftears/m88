@@ -13,7 +13,7 @@
 #define LOGNAME "sio"
 #include "common/diag.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -211,4 +211,4 @@ const Device::InFuncPtr SIO::indef[] = {
     static_cast<Device::InFuncPtr>(&SIO::GetStatus),
     static_cast<Device::InFuncPtr>(&SIO::GetData),
 };
-}  // namespace PC8801
+}  // namespace pc88

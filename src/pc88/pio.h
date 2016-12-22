@@ -11,7 +11,7 @@
 
 #include "common/device.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 class PIO {
  public:
@@ -60,4 +60,4 @@ inline uint32_t PIO::Read2() {
   data = ((data << 4) & 0xf0) + ((data >> 4) & 0x0f);  // rotate 4 bits
   return (data & readmask[2]) | (port[2] & ~readmask[2]);
 }
-}  // namespace PC8801
+}  // namespace pc88

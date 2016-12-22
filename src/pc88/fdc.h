@@ -15,7 +15,7 @@
 
 class DiskManager;
 
-namespace PC8801 {
+namespace pc88 {
 class Config;
 
 // ---------------------------------------------------------------------------
@@ -254,4 +254,4 @@ class FDC final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace PC8801
+}  // namespace pc88

@@ -9,7 +9,7 @@
 
 #include "pc88/pio.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 //  Reset
@@ -33,4 +33,4 @@ void PIO::SetCW(uint32_t data) {
     port[0] = port[1] = port[2] = 0;
   }
 }
-}  // namespace PC8801
+}  // namespace pc88

@@ -14,7 +14,7 @@
 
 class PC88;
 
-namespace PC8801 {
+namespace pc88 {
 
 class MemViewMonitor : public WinMonitor {
  public:
@@ -45,4 +45,4 @@ class MemViewMonitor : public WinMonitor {
   MemoryViewer::Type a6;
   MemoryViewer::Type af;
 };
-}  // namespace PC8801
+}  // namespace pc88

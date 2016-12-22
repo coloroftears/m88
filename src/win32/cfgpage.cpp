@@ -11,7 +11,7 @@
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 
@@ -853,4 +853,4 @@ void ConfigROMEO::SetText(HWND hdlg, int id, int val) {
   wsprintf(buf, "%d ms", val);
   SetDlgItemText(hdlg, id, buf);
 }
-}  // namespace PC8801
+}  // namespace pc88

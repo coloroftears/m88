@@ -6,7 +6,7 @@
 
 #include "pc88/beep.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 //  生成・破棄
@@ -150,4 +150,4 @@ const Device::Descriptor Beep::descriptor = {0, outdef};
 const Device::OutFuncPtr Beep::outdef[] = {
     static_cast<Device::OutFuncPtr>(&Beep::Out40),
 };
-}  // namespace PC8801
+}  // namespace pc88

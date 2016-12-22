@@ -14,7 +14,7 @@
 #include "pc88/pc88.h"
 #include "win32/resource.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 COLORREF IOMonitor::ctbl[0x100] = {0};
 
@@ -121,4 +121,4 @@ INT_PTR IOMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
   }
   return WinMonitor::DlgProc(hdlg, msg, wp, lp);
 }
-}  // namespace PC8801
+}  // namespace pc88

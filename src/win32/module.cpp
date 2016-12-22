@@ -6,7 +6,7 @@
 
 #include "win32/module.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 ExtendModule::ExtendModule() : hdll(0), mod(0) {}
 
@@ -48,4 +48,4 @@ ExtendModule* ExtendModule::Create(const char* dllname, ISystem* pc) {
   }
   return 0;
 }
-}  // namespace PC8801
+}  // namespace pc88

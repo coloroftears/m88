@@ -17,7 +17,7 @@
 //#define LOGNAME "sound"
 #include "common/diag.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 //  生成・破棄
@@ -222,4 +222,4 @@ void IOCALL Sound::UpdateCounter(uint32_t) {
     Update(0);
   }
 }
-}  // namespace PC8801
+}  // namespace pc88

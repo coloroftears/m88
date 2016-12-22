@@ -13,7 +13,7 @@
 #include "pc88/subsys.h"
 #include "pc88/pc88.h"
 
-namespace PC8801 {
+namespace pc88 {
 // ----------------------------------------------------------------------------
 //  0   N88 N80 RAM ERAM             SUB
 //  60  N88 N80 RAM ERAM E0 E1 E2 E3 SUB
@@ -54,4 +54,4 @@ class IOViewer final : public Device {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-}  // namespace PC8801
+}  // namespace pc88

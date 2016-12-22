@@ -12,7 +12,7 @@
 
 #include <vector>
 
-namespace PC8801 {
+namespace pc88 {
 
 class WinConfig final : public IConfigPropBase {
  public:
@@ -62,4 +62,4 @@ class WinConfig final : public IConfigPropBase {
   ConfigEnv cenv;
   ConfigROMEO cromeo;
 };
-}  // namespace PC8801
+}  // namespace pc88

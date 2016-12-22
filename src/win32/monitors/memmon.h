@@ -15,7 +15,7 @@
 
 class PC88;
 
-namespace PC8801 {
+namespace pc88 {
 
 class MemoryMonitor final : public MemViewMonitor {
  public:
@@ -67,4 +67,4 @@ class MemoryMonitor final : public MemViewMonitor {
 
   static COLORREF col[0x100];
 };
-}  // namespace PC8801
+}  // namespace pc88

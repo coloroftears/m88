@@ -35,7 +35,7 @@
 extern char m88dir[MAX_PATH];
 extern char m88ini[MAX_PATH];
 
-using namespace PC8801;
+using namespace pc88;
 
 // TODO: Remove this
 WinUI* g_ui;
@@ -80,14 +80,14 @@ bool WinUI::InitM88(const char* cmdline) {
 
   //  設定よみこみ
   LOG1("%d\tLoadConfig\n", timeGetTime());
-  PC8801::LoadConfig(&config, m88ini, true);
+  pc88::LoadConfig(&config, m88ini, true);
 
   //  現在の path 保存
   char path[MAX_PATH];
   GetCurrentDirectory(MAX_PATH, path);
 
   //  デバイスの初期化
-  PC8801::LoadConfigDirectory(&config, m88ini, "BIOSPath", true);
+  pc88::LoadConfigDirectory(&config, m88ini, "BIOSPath", true);
 
   LOG1("%d\tdiskmanager\n", timeGetTime());
   if (!diskmgr)
@@ -143,7 +143,7 @@ bool WinUI::InitM88(const char* cmdline) {
   // あとごちゃごちゃしたもの
   LOG1("%d\tetc\n", timeGetTime());
   if (!diskinfo[0].filename[0])
-    PC8801::LoadConfigDirectory(&config, m88ini, "Directory", false);
+    pc88::LoadConfigDirectory(&config, m88ini, "Directory", false);
   ChangeDisplayType(true);
   ResizeWindow(640, 400);
 
@@ -156,8 +156,8 @@ bool WinUI::InitM88(const char* cmdline) {
 //  M88 の後片付け
 //
 void WinUI::CleanupM88() {
-  PC8801::Config cfg = config;
-  PC8801::SaveConfig(&cfg, m88ini, true);
+  pc88::Config cfg = config;
+  pc88::SaveConfig(&cfg, m88ini, true);
   core.Cleanup();
 }
 
@@ -490,32 +490,32 @@ uint32_t WinUI::WmCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
       break;
 
     case IDM_DEBUG_TEXT:
-      config.flags ^= PC8801::Config::specialpalette;
+      config.flags ^= pc88::Config::specialpalette;
       ApplyConfig();
       break;
 
     case IDM_DEBUG_GVRAM0:
-      config.flag2 ^= PC8801::Config::mask0;
+      config.flag2 ^= pc88::Config::mask0;
       ApplyConfig();
       break;
 
     case IDM_DEBUG_GVRAM1:
-      config.flag2 ^= PC8801::Config::mask1;
+      config.flag2 ^= pc88::Config::mask1;
       ApplyConfig();
       break;
 
     case IDM_DEBUG_GVRAM2:
-      config.flag2 ^= PC8801::Config::mask2;
+      config.flag2 ^= pc88::Config::mask2;
       ApplyConfig();
       break;
 
     case IDM_STATUSBAR:
-      config.flags ^= PC8801::Config::showstatusbar;
+      config.flags ^= pc88::Config::showstatusbar;
       ShowStatusWindow();
       break;
 
     case IDM_FDC_STATUS:
-      config.flags ^= PC8801::Config::showfdcstatus;
+      config.flags ^= pc88::Config::showfdcstatus;
       ApplyConfig();
       break;
 
@@ -544,7 +544,7 @@ uint32_t WinUI::WmCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
       break;
 
     case IDM_WATCHREGISTER:
-      config.flags &= ~PC8801::Config::watchregister;
+      config.flags &= ~pc88::Config::watchregister;
       regmon.Show(hinst, hwnd, !regmon.IsOpen());
       break;
 
@@ -860,8 +860,8 @@ void WinUI::ReportError() {
 uint32_t WinUI::M88ApplyConfig(HWND, WPARAM newconfig, LPARAM) {
   if (newconfig) {
     // 乱暴ですな。
-    if (memcmp(&config, (PC8801::Config*)newconfig, sizeof(PC8801::Config))) {
-      config = *((PC8801::Config*)newconfig);
+    if (memcmp(&config, (pc88::Config*)newconfig, sizeof(pc88::Config))) {
+      config = *((pc88::Config*)newconfig);
       ApplyConfig();
     }
   }
@@ -1229,8 +1229,8 @@ void WinUI::ResizeWindow(uint32_t width, uint32_t height) {
 //
 void WinUI::ShowStatusWindow() {
   if (!fullscreen) {
-    if (config.flags & PC8801::Config::showstatusbar)
-      statusdisplay.Enable((config.flags & PC8801::Config::showfdcstatus) != 0);
+    if (config.flags & pc88::Config::showstatusbar)
+      statusdisplay.Enable((config.flags & pc88::Config::showfdcstatus) != 0);
     else
       statusdisplay.Disable();
     ResizeWindow(640, 400);
@@ -1290,7 +1290,7 @@ uint32_t WinUI::M88ChangeDisplay(HWND hwnd, WPARAM, LPARAM) {
   // 画面ドライバの切替え
   // ドライバが false を返した場合 GDI ドライバが使用されることになる
   if (!draw.ChangeDisplayMode(fullscreen,
-                              (config.flags & PC8801::Config::force480) != 0))
+                              (config.flags & pc88::Config::force480) != 0))
     fullscreen = false;
 
   // ウィンドウスタイル関係の変更
@@ -1360,7 +1360,7 @@ uint32_t WinUI::WmExitMenuLoop(HWND, WPARAM wp, LPARAM) {
 //
 uint32_t WinUI::M88ChangeVolume(HWND, WPARAM c, LPARAM) {
   if (c)
-    core.SetVolume((PC8801::Config*)c);
+    core.SetVolume((pc88::Config*)c);
   return 0;
 }
 

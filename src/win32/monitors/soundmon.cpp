@@ -23,7 +23,7 @@ OPNMonitor::OPNMonitor() {
 
 OPNMonitor::~OPNMonitor() {}
 
-bool OPNMonitor::Init(PC8801::OPNInterface* o, ISoundControl* sc) {
+bool OPNMonitor::Init(pc88::OPNInterface* o, ISoundControl* sc) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_SOUNDMON)))
     return false;
 

@@ -8,7 +8,7 @@
 
 #include "win32/status.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ----------------------------------------------------------------------------
 //
@@ -71,4 +71,4 @@ const Device::Descriptor IOViewer::descriptor = {0, outdef};
 const Device::OutFuncPtr IOViewer::outdef[] = {
     static_cast<Device::OutFuncPtr>(&IOViewer::Out)};
 
-}  // namespace PC8801
+}  // namespace pc88

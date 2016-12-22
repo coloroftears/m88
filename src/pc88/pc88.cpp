@@ -37,21 +37,21 @@
 //#define LOGNAME "pc88"
 #include "common/diag.h"
 
-using Base = PC8801::Base;
-using CRTC = PC8801::CRTC;
-using Calendar = PC8801::Calendar;
-using Config = PC8801::Config;
-using DiskIO = PC8801::DiskIO;
-using FDC = PC8801::FDC;
-using INTC = PC8801::INTC;
-using JoyPad = PC8801::JoyPad;
-using KanjiROM = PC8801::KanjiROM;
-using Memory = PC8801::Memory;
-using OPNInterface = PC8801::OPNInterface;
-using PD8257 = PC8801::PD8257;
-using SIO = PC8801::SIO;
-using Screen = PC8801::Screen;
-using SubSystem = PC8801::SubSystem;
+using Base = pc88::Base;
+using CRTC = pc88::CRTC;
+using Calendar = pc88::Calendar;
+using Config = pc88::Config;
+using DiskIO = pc88::DiskIO;
+using FDC = pc88::FDC;
+using INTC = pc88::INTC;
+using JoyPad = pc88::JoyPad;
+using KanjiROM = pc88::KanjiROM;
+using Memory = pc88::Memory;
+using OPNInterface = pc88::OPNInterface;
+using PD8257 = pc88::PD8257;
+using SIO = pc88::SIO;
+using Screen = pc88::Screen;
+using SubSystem = pc88::SubSystem;
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -552,9 +552,9 @@ bool PC88::ConnectDevices() {
     return false;
 
   static const IOBus::Connector c_beep[] =
-      {{0x40, IOBus::portout, PC8801::Beep::kOut40},
+      {{0x40, IOBus::portout, pc88::Beep::kOut40},
                                             {0, 0, 0}};
-  beep = new PC8801::Beep(DEV_ID('B', 'E', 'E', 'P'));
+  beep = new pc88::Beep(DEV_ID('B', 'E', 'E', 'P'));
   if (!beep || !beep->Init())
     return false;
   if (!bus1.Connect(beep, c_beep))
@@ -624,7 +624,7 @@ bool PC88::ConnectDevices2() {
       {0xfa, IOBus::portin, FDC::kGetStatus},
       {0xfb, IOBus::portin, FDC::kGetData},
       {0, 0, 0}};
-  fdc = new PC8801::FDC(DEV_ID('F', 'D', 'C', ' '));
+  fdc = new pc88::FDC(DEV_ID('F', 'D', 'C', ' '));
   if (!bus2.Connect(fdc, c_fdc))
     return false;
   if (!fdc->Init(diskmgr, sched_.get(), &bus2, pirq2, pfdstat))
@@ -657,23 +657,23 @@ void PC88::ApplyConfig(Config* cfg) {
   if ((cfg->flags & Config::subcpucontrol) != 0)
     cpumode |= stopwhenidle;
 
-  if (cfg->flags & PC8801::Config::enablepad) {
+  if (cfg->flags & pc88::Config::enablepad) {
     joypad->SetButtonMode(cfg->flags & Config::swappadbuttons ? JoyPad::SWAPPED
                                                               : JoyPad::NORMAL);
   } else {
     joypad->SetButtonMode(JoyPad::DISABLED);
   }
 
-  //  EnablePad((cfg->flags & PC8801::Config::enablepad) != 0);
+  //  EnablePad((cfg->flags & pc88::Config::enablepad) != 0);
   //  if (padenable)
-  //      cfg->flags &= ~PC8801::Config::enablemouse;
-  //  EnableMouse((cfg->flags & PC8801::Config::enablemouse) != 0);
+  //      cfg->flags &= ~pc88::Config::enablemouse;
+  //  EnableMouse((cfg->flags & pc88::Config::enablemouse) != 0);
 }
 
 // ---------------------------------------------------------------------------
 //  音量変更
 //
-void PC88::SetVolume(PC8801::Config* cfg) {
+void PC88::SetVolume(pc88::Config* cfg) {
   opn1->SetVolume(cfg);
   opn2->SetVolume(cfg);
 }

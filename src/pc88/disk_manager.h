@@ -105,12 +105,12 @@ class DiskManager {
   void Modified(int drive = -1, int track = -1);
   CriticalSection& GetCS() { return cs; }
 
-  PC8801::FDU* GetFDU(int dr) { return dr < max_drives ? &drive[dr].fdu : 0; }
+  pc88::FDU* GetFDU(int dr) { return dr < max_drives ? &drive[dr].fdu : 0; }
 
  private:
   struct Drive {
     FloppyDisk disk;
-    PC8801::FDU fdu;
+    pc88::FDU fdu;
     DiskImageHolder* holder;
     int index;
     bool sizechanged;

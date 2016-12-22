@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace PC8801 {
+namespace pc88 {
 
 class Config {
  public:
@@ -111,4 +111,4 @@ class Config {
   // (条件: option 又は N80/SR モード時)
   bool IsFV15k() const { return (basicmode & 2) || (flags & fv15k); }
 };
-}  // namespace PC8801
+}  // namespace pc88

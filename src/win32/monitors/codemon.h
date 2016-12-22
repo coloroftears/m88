@@ -17,7 +17,7 @@
 
 class PC88;
 
-namespace PC8801 {
+namespace pc88 {
 
 class CodeMonitor final : public MemViewMonitor {
  public:
@@ -37,4 +37,4 @@ class CodeMonitor final : public MemViewMonitor {
 
   Z80Diag diag;
 };
-}  // namespace PC8801
+}  // namespace pc88

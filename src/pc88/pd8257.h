@@ -13,7 +13,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace PC8801 {
+namespace pc88 {
 
 class PD8257 final : public Device, public IDMAAccess {
  public:
@@ -76,4 +76,4 @@ class PD8257 final : public Device, public IDMAAccess {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace PC8801
+}  // namespace pc88

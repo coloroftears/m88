@@ -11,7 +11,7 @@
 
 class PC88;
 
-namespace PC8801 {
+namespace pc88 {
 
 class Config;
 
@@ -58,4 +58,4 @@ class Mouse final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace PC8801
+}  // namespace pc88

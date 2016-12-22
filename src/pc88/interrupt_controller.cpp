@@ -13,7 +13,7 @@
 //#define LOGNAME "intc"
 #include "common/diag.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 // ---------------------------------------------------------------------------
 //  構築破壊
@@ -144,4 +144,4 @@ const Device::OutFuncPtr INTC::outdef[] = {
 const Device::InFuncPtr INTC::indef[] = {
     static_cast<Device::InFuncPtr>(&INTC::IntAck),
 };
-}  // namespace PC8801
+}  // namespace pc88
