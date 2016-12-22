@@ -13,7 +13,7 @@
 #include "cdif/src/cdrom.h"
 #include "interface/ifpc88.h"
 
-namespace PC8801 {
+namespace pc88 {
 
 class CDIF : public Device {
  public:
@@ -165,4 +165,4 @@ class CDIF : public Device {
   static const OutFuncPtr outdef[];
 };
 
-}  // namespace PC8801
+}  // namespace pc88

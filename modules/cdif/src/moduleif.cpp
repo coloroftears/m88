@@ -9,7 +9,7 @@
 
 #define EXTDEVAPI __declspec(dllexport)
 
-using namespace PC8801;
+using CDIF = pc88::CDIF;
 
 static HINSTANCE hinst;
 

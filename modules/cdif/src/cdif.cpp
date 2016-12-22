@@ -16,7 +16,7 @@
 #define LOGNAME "cdif"
 #include "common/diag.h"
 
-using namespace PC8801;
+namespace pc88 {
 
 // ----------------------------------------------------------------------------
 //  構築
@@ -684,3 +684,4 @@ const Device::InFuncPtr CDIF::indef[] = {
     static_cast<Device::InFuncPtr>(&In9b),
     static_cast<Device::InFuncPtr>(&In9d),
 };
+}  // namespace pc88
