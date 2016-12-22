@@ -85,7 +85,7 @@ class OPNInterface final : public Device, public ISoundSource {
   void IOCALL Sync(uint32_t, uint32_t);
 
  private:
-  class OPNUnit :
+  class OPNUnit final :
 #ifndef USE_OPN
       public fmgen::OPNA
 #else
@@ -93,9 +93,11 @@ class OPNInterface final : public Device, public ISoundSource {
 #endif
   {
    public:
-    OPNUnit() : bus(0) {}
-    ~OPNUnit() {}
-    void Intr(bool f);
+    OPNUnit() : bus(nullptr) {}
+    ~OPNUnit() override {}
+
+    void Intr(bool f) override;
+
     void SetIntr(IOBus* b, int p) { bus = b, pintr = p; }
     void SetIntrMask(bool e);
     uint32_t IntrStat() {

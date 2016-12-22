@@ -13,7 +13,11 @@
 namespace fmgen {
 class Timer {
  public:
-  void Reset();
+  virtual ~Timer() {}
+  void Reset() {
+    timera_count_ = 0;
+    timreb_count_ = 0;
+  }
   bool Count(int32_t us);
   int32_t GetNextEvent();
 
@@ -31,19 +35,14 @@ class Timer {
 
  private:
   virtual void TimerA() {}
-  uint8_t regta[2];
+  uint8_t regta_[2];
 
-  int32_t timera, timera_count;
-  int32_t timerb, timerb_count;
-  int32_t timer_step;
+  int32_t timera_;
+  int32_t timera_count_;
+
+  int32_t timerb_;
+  int32_t timerb_count_;
+
+  int32_t timer_step_;
 };
-
-// ---------------------------------------------------------------------------
-//  初期化
-//
-inline void Timer::Reset() {
-  timera_count = 0;
-  timerb_count = 0;
-}
-
 }  // namespace fmgen

@@ -98,10 +98,12 @@ class OPM : public Timer {
     OPM_LFOENTS = 512,
   };
 
-  void SetStatus(uint32_t bit);
-  void ResetStatus(uint32_t bit);
+  // Overrides Timer.
+  void SetStatus(uint32_t bit) override;
+  void ResetStatus(uint32_t bit) override;
+  void TimerA() override;
+
   void SetParameter(uint32_t addr, uint32_t data);
-  void TimerA();
   void RebuildTimeTable();
   void MixSub(int activech, ISample**);
   void MixSubL(int activech, ISample**);

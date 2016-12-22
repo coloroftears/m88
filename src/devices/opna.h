@@ -84,6 +84,7 @@ namespace fmgen {
 class OPNBase : public Timer {
  public:
   OPNBase();
+  ~OPNBase() override {}
 
   bool Init(uint32_t c, uint32_t r);
   virtual void Reset();
@@ -108,7 +109,8 @@ class OPNBase : public Timer {
   static uint32_t lfotable[8];
 
  private:
-  void TimerA();
+  // Overrides Timer.
+  void TimerA() override;
   uint8_t prescale;
 
  protected:
@@ -120,7 +122,7 @@ class OPNBase : public Timer {
 class OPNABase : public OPNBase {
  public:
   OPNABase();
-  ~OPNABase();
+  ~OPNABase() override {}
 
   uint32_t ReadStatus() { return status & 0x03; }
   uint32_t ReadStatusEx();
@@ -135,7 +137,8 @@ class OPNABase : public OPNBase {
   bool Init(uint32_t c, uint32_t r, bool);
   bool SetRate(uint32_t c, uint32_t r, bool);
 
-  void Reset();
+  // Overrides OPNBase.
+  void Reset() override;
   void SetReg(uint32_t addr, uint32_t data);
   void SetADPCMBReg(uint32_t reg, uint32_t data);
   uint32_t GetReg(uint32_t addr);
@@ -147,8 +150,10 @@ class OPNABase : public OPNBase {
   void MixSubS(int activech, ISample**);
   void MixSubSL(int activech, ISample**);
 
-  void SetStatus(uint32_t bit);
-  void ResetStatus(uint32_t bit);
+  // Overrides Timer.
+  void SetStatus(uint32_t bit) override;
+  void ResetStatus(uint32_t bit) override;
+
   void UpdateStatus();
   void LFO();
 
@@ -221,12 +226,14 @@ class OPNABase : public OPNBase {
 class OPN : public OPNBase {
  public:
   OPN();
-  virtual ~OPN() {}
+  ~OPN() override {}
 
   bool Init(uint32_t c, uint32_t r, bool = false, const char* = 0);
   bool SetRate(uint32_t c, uint32_t r, bool = false);
 
-  void Reset();
+  // Overrides OPNBase.
+  void Reset() override;
+
   void Mix(Sample* buffer, int nsamples);
   void SetReg(uint32_t addr, uint32_t data);
   uint32_t GetReg(uint32_t addr);
@@ -242,8 +249,9 @@ class OPN : public OPNBase {
  private:
   virtual void Intr(bool) {}
 
-  void SetStatus(uint32_t bit);
-  void ResetStatus(uint32_t bit);
+  // Overrides Timer.
+  void SetStatus(uint32_t bit) override;
+  void ResetStatus(uint32_t bit) override;
 
   uint32_t fnum[3];
   uint32_t fnum3[3];
@@ -256,7 +264,7 @@ class OPN : public OPNBase {
 class OPNA : public OPNABase {
  public:
   OPNA();
-  virtual ~OPNA();
+  ~OPNA() override;
 
   bool Init(uint32_t c, uint32_t r, bool = false, const char* rhythmpath = 0);
   bool LoadRhythmSample(const char*);
@@ -264,7 +272,9 @@ class OPNA : public OPNABase {
   bool SetRate(uint32_t c, uint32_t r, bool = false);
   void Mix(Sample* buffer, int nsamples);
 
-  void Reset();
+  // Overrides OPNABase.
+  void Reset() override;
+
   void SetReg(uint32_t addr, uint32_t data);
   uint32_t GetReg(uint32_t addr);
 
@@ -303,7 +313,7 @@ class OPNA : public OPNABase {
 class OPNB : public OPNABase {
  public:
   OPNB();
-  virtual ~OPNB();
+  ~OPNB() override {}
 
   bool Init(uint32_t c,
             uint32_t r,
@@ -316,7 +326,9 @@ class OPNB : public OPNABase {
   bool SetRate(uint32_t c, uint32_t r, bool = false);
   void Mix(Sample* buffer, int nsamples);
 
-  void Reset();
+  // Overrides OPNABase.
+  void Reset() override;
+
   void SetReg(uint32_t addr, uint32_t data);
   uint32_t GetReg(uint32_t addr);
   uint32_t ReadStatusEx();
@@ -365,12 +377,15 @@ class OPNB : public OPNABase {
 class OPN2 : public OPNBase {
  public:
   OPN2();
-  virtual ~OPN2() {}
+  ~OPN2() override {}
 
   bool Init(uint32_t c, uint32_t r, bool = false, const char* = 0);
   bool SetRate(uint32_t c, uint32_t r, bool);
 
-  void Reset();
+  // Overrides OPNBase.
+  // TODO: implement this?
+  void Reset() override;
+
   void Mix(Sample* buffer, int nsamples);
   void SetReg(uint32_t addr, uint32_t data);
   uint32_t GetReg(uint32_t addr);
@@ -382,8 +397,9 @@ class OPN2 : public OPNBase {
  private:
   virtual void Intr(bool) {}
 
-  void SetStatus(uint32_t bit);
-  void ResetStatus(uint32_t bit);
+  // Overrides Timer.
+  void SetStatus(uint32_t bit) override;
+  void ResetStatus(uint32_t bit) override;
 
   uint32_t fnum[3];
   uint32_t fnum3[3];
