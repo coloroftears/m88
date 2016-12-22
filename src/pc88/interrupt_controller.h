@@ -16,12 +16,7 @@ namespace pc88 {
 
 class INTC final : public Device {
  public:
-  enum {
-    kReset,
-    kRequest,
-    kSetMask,
-    kSetReg, 
-    kIntAck = 0 };
+  enum { kReset, kRequest, kSetMask, kSetReg, kIntAck = 0 };
 
  public:
   explicit INTC(const ID& id);

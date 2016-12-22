@@ -22,8 +22,7 @@ namespace pc88 {
 // ---------------------------------------------------------------------------
 //  生成・破棄
 //
-Sound::Sound()
-    : Device(0), enabled(false), cfgflg(0) {}
+Sound::Sound() : Device(0), enabled(false), cfgflg(0) {}
 
 Sound::~Sound() {
   Cleanup();

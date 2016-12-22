@@ -24,8 +24,7 @@ namespace pc88 {
 // ----------------------------------------------------------------------------
 //  Constructor / Destructor
 //
-Memory::Memory(const ID& id)
-    : Device(id) {
+Memory::Memory(const ID& id) : Device(id) {
   txtwnd = 0;
   erambanks = 0;
   neweram = 4;
@@ -890,7 +889,8 @@ bool Memory::InitMemory() {
 //  必須でない ROM を読み込む
 //
 bool Memory::LoadOptROM(const char* name,
-                        std::unique_ptr<uint8_t[]>& rom, int size) {
+                        std::unique_ptr<uint8_t[]>& rom,
+                        int size) {
   FileIO file;
   if (file.Open(name, FileIO::readonly)) {
     file.Seek(0, FileIO::begin);

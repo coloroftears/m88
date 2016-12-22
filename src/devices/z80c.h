@@ -144,7 +144,7 @@ class Z80C final : public Device {
 
   void DumpLog();
 
-  uint8_t* inst;      // PC の指すメモリのポインタ，または PC そのもの
+  uint8_t* inst;  // PC の指すメモリのポインタ，または PC そのもの
   uint8_t* instlim;   // inst の有効上限
   uint8_t* instbase;  // inst - PC        (PC = inst - instbase)
   uint8_t* instpage;

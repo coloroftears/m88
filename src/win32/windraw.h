@@ -102,15 +102,15 @@ class WinDraw final : public Draw {
 
   DisplayType drawtype = None;
 
-  int palcngbegin;        // パレット変更エントリの最初
-  int palcngend;          // パレット変更エントリの最後
-  int palrgnbegin;        // 使用中パレットの最初
-  int palrgnend;          // 使用中パレットの最後
+  int palcngbegin;  // パレット変更エントリの最初
+  int palcngend;    // パレット変更エントリの最後
+  int palrgnbegin;  // 使用中パレットの最初
+  int palrgnend;    // 使用中パレットの最後
 
   volatile bool should_terminate_ = false;  // スレッド終了要求
-  volatile bool drawing_ = false;  // 画面を書き換え中
+  volatile bool drawing_ = false;           // 画面を書き換え中
 
-  bool draw_all_ = false;   // 画面全体を書き換える
+  bool draw_all_ = false;  // 画面全体を書き換える
   bool is_active_ = false;
   bool has_palette_ = false;  // パレットを持っている
   bool refresh_ = false;

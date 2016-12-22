@@ -51,8 +51,8 @@ class CDROM {
   bool FindDrive();
 
   ASPI* aspi;
-  int ha;       // CD-ROM ドライブの接続されているホストアダプタ
-  int id;       // CD-ROM ドライブの ID
+  int ha;  // CD-ROM ドライブの接続されているホストアダプタ
+  int id;  // CD-ROM ドライブの ID
   int ntracks;  // トラック数
   int trstart;  // トラックの開始位置
 

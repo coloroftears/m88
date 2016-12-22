@@ -126,8 +126,7 @@ SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
   while (remaining_ticks > 0) {
     SchedTimeDelta execution_ticks = remaining_ticks;
     if (!queue_.empty())
-      execution_ticks =
-          std::min(execution_ticks, queue_.top()->time() - time_);
+      execution_ticks = std::min(execution_ticks, queue_.top()->time() - time_);
     SchedTimeDelta executed_ticks = delegate_->Execute(execution_ticks);
     time_ += executed_ticks;
     remaining_ticks -= executed_ticks;

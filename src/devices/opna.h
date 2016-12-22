@@ -177,7 +177,7 @@ class OPNABase : public OPNBase {
   uint32_t fnum3[3];
 
   // ADPCM 関係
-  std::unique_ptr<uint8_t[]> adpcmbuf;     // ADPCM RAM
+  std::unique_ptr<uint8_t[]> adpcmbuf;  // ADPCM RAM
   uint32_t adpcmmask;    // メモリアドレスに対するビットマスク
   uint32_t adpcmnotice;  // ADPCM 再生終了時にたつビット
   uint32_t startaddr;    // Start address

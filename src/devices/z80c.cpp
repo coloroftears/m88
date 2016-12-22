@@ -2173,7 +2173,7 @@ void Z80C::SingleStep(uint32_t m) {
     // DD / FD
     case 0xdd:
       w = Fetch8();
-      if ((w & 0xdf) != 0xdd) { // not DD nor FD
+      if ((w & 0xdf) != 0xdd) {  // not DD nor FD
         index_mode = USEIX;
         SingleStep(w);
         index_mode = USEHL;

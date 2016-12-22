@@ -108,8 +108,8 @@ bool DriverDS::Init(SoundSource<Sample16>* s,
   // タイマー作成
   timeBeginPeriod(buffer_length / num_blocks);
   timerid = timeSetEvent(buffer_length / num_blocks, timer_resolution,
-                         &DriverDS::TimeProc,
-                         reinterpret_cast<DWORD_PTR>(this), TIME_PERIODIC);
+                         &DriverDS::TimeProc, reinterpret_cast<DWORD_PTR>(this),
+                         TIME_PERIODIC);
   nextwrite = 1 << sampleshift;
 
   if (!timerid) {
@@ -147,8 +147,8 @@ bool DriverDS::Cleanup() {
 // ---------------------------------------------------------------------------
 //  TimeProc  ----------------------------------------------------------------
 
-void CALLBACK DriverDS::TimeProc(
-    UINT uid, UINT,  DWORD_PTR user, DWORD_PTR, DWORD_PTR) {
+void CALLBACK
+DriverDS::TimeProc(UINT uid, UINT, DWORD_PTR user, DWORD_PTR, DWORD_PTR) {
   DriverDS* inst = reinterpret_cast<DriverDS*>(user);
   if (inst)
     inst->Send();

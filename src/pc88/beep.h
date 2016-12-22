@@ -22,9 +22,7 @@ class OPNInterface;
 //
 class Beep final : public Device, public ISoundSource {
  public:
-  enum IDFunc {
-    kOut40
-  };
+  enum IDFunc { kOut40 };
 
  public:
   explicit Beep(const ID& id);

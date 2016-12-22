@@ -28,8 +28,7 @@
 // ---------------------------------------------------------------------------
 // 構築/消滅
 //
-WinDraw::WinDraw() {
-}
+WinDraw::WinDraw() {}
 
 WinDraw::~WinDraw() {
   Cleanup();
@@ -184,7 +183,7 @@ void WinDraw::PaintWindow() {
       palrgnbegin = std::min(palcngbegin, palrgnbegin);
       palrgnend = std::max(palcngend, palrgnend);
       draw_sub_->SetPalette(palette + palcngbegin, palcngbegin,
-                       palcngend - palcngbegin + 1);
+                            palcngend - palcngbegin + 1);
       palcngbegin = 0x100;
       palcngend = -1;
     }

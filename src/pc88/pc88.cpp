@@ -304,13 +304,14 @@ bool PC88::ConnectDevices() {
   if (!cpu1.Init(&mm1, &bus1, piack))
     return false;
 
-  static const IOBus::Connector c_base[] = {{pres, IOBus::portout, Base::kReset},
-                                            {vrtc, IOBus::portout, Base::kVRTC},
-                                            {0x30, IOBus::portin, Base::kIn30},
-                                            {0x31, IOBus::portin, Base::kIn31},
-                                            {0x40, IOBus::portin, Base::kIn40},
-                                            {0x6e, IOBus::portin, Base::kIn6e},
-                                            {0, 0, 0}};
+  static const IOBus::Connector c_base[] = {
+      {pres, IOBus::portout, Base::kReset},
+      {vrtc, IOBus::portout, Base::kVRTC},
+      {0x30, IOBus::portin, Base::kIn30},
+      {0x31, IOBus::portin, Base::kIn31},
+      {0x40, IOBus::portin, Base::kIn40},
+      {0x6e, IOBus::portin, Base::kIn6e},
+      {0, 0, 0}};
   base = new Base(DEV_ID('B', 'A', 'S', 'E'));
   if (!base || !bus1.Connect(base, c_base))
     return false;
@@ -551,9 +552,8 @@ bool PC88::ConnectDevices() {
   if (!bus1.Connect(caln, c_caln))
     return false;
 
-  static const IOBus::Connector c_beep[] =
-      {{0x40, IOBus::portout, pc88::Beep::kOut40},
-                                            {0, 0, 0}};
+  static const IOBus::Connector c_beep[] = {
+      {0x40, IOBus::portout, pc88::Beep::kOut40}, {0, 0, 0}};
   beep = new pc88::Beep(DEV_ID('B', 'E', 'E', 'P'));
   if (!beep || !beep->Init())
     return false;

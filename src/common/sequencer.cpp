@@ -153,9 +153,8 @@ void Sequencer::ExecuteBurst() {
   } while (ticks < 1000);
   delegate_->UpdateScreen();
 
-  effective_clock_ =
-      std::min((std::min(1000, eclk) * effective_clock_ * 100 / ticks) + 1,
-               10000);
+  effective_clock_ = std::min(
+      (std::min(1000, eclk) * effective_clock_ * 100 / ticks) + 1, 10000);
 }
 
 // ---------------------------------------------------------------------------

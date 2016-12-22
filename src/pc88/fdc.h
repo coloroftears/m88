@@ -95,7 +95,7 @@ class FDC final : public Device {
   bool IsBusy() { return phase != idlephase; }
 
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
-  void IOCALL DriveControl(uint32_t, uint32_t data);    // 2HD/2DD 切り替えとか
+  void IOCALL DriveControl(uint32_t, uint32_t data);  // 2HD/2DD 切り替えとか
   void IOCALL MotorControl(uint32_t, uint32_t data) {}  // モーター制御
   void IOCALL SetData(uint32_t, uint32_t data);         // データセット
   uint32_t IOCALL TC(uint32_t);                         // TC

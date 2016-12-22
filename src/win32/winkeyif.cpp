@@ -218,8 +218,7 @@ void IOCALL WinKeyIF::VSync(uint32_t, uint32_t d) {
   if (d && active) {
     if (hwnd) {
       PostMessage(hwnd, WM_M88_SENDKEYSTATE,
-                  reinterpret_cast<DWORD_PTR>(keyboard),
-                  (DWORD)hevent);
+                  reinterpret_cast<DWORD_PTR>(keyboard), (DWORD)hevent);
       WaitForSingleObject(hevent, 10);
     }
 

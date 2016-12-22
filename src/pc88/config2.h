@@ -14,10 +14,10 @@ DECLARE_CONFIG_BOOL(FullSpeed, false)     // 全力動作
 DECLARE_CONFIG_INT(Speed, 1000, 500, 2000)
 DECLARE_CONFIG_BOOL(NoWaitMode, false)  // ノーウェイト
 DECLARE_CONFIG_BOOL(FDDWait, true)      // FDD ウェイト
-DECLARE_CONFIG_BOOL(CPUWait, true)      // ウェイトのエミュレーション
+DECLARE_CONFIG_BOOL(CPUWait, true)  // ウェイトのエミュレーション
 
 DECLARE_CONFIG_BOOL(EnablePCG, false)  // PCG 系のフォント書き換えを有効
-DECLARE_CONFIG_SYM(DisplayMode, DispModeType, 24k)      // 15KHz モニターモード
+DECLARE_CONFIG_SYM(DisplayMode, DispModeType, 24k)  // 15KHz モニターモード
 DECLARE_CONFIG_SYM(PaletteMode, PalModeType, Analogue)  // パレットモード
 DECLARE_CONFIG_BOOL(Force480, false)  // 全画面を常に 640x480 で
 
@@ -36,7 +36,7 @@ DECLARE_CONFIG_SYM(OpnType44h, OpnType, OPN)   // OPN (44h)
 DECLARE_CONFIG_SYM(OpnTypeA8h, OpnType, None)  // OPN (a8h)
 
 DECLARE_CONFIG_INT(PCMRate, 22100, 8000, 96000)
-DECLARE_CONFIG_BOOL(FMMix55k, true)       // FM 音源の合成に本来のクロックを使用
+DECLARE_CONFIG_BOOL(FMMix55k, true)  // FM 音源の合成に本来のクロックを使用
 DECLARE_CONFIG_BOOL(PreciseMixing, true)  // 高精度な合成を行う
 DECLARE_CONFIG_BOOL(EnableLPF, false)     // LPF を使ってみる
 DECLARE_CONFIG_INT(LPFCutoff, 9000, 3000, 48000)
@@ -62,7 +62,7 @@ DECLARE_CONFIG_BOOL(ShowPlacesBar,
                     false)  // ファイルダイアログで PLACESBAR を表示する
 DECLARE_CONFIG_SYM(JoyPortMode, JoyPortModeType, None)  //
 DECLARE_CONFIG_BOOL(UseALTasGRPH, false)                // ALT を GRPH に
-DECLARE_CONFIG_BOOL(UseArrowAs10key, false)             // 方向キーをテンキーに
+DECLARE_CONFIG_BOOL(UseArrowAs10key, false)  // 方向キーをテンキーに
 DECLARE_CONFIG_BOOL(SwapPadButtons, false)  // パッドのボタンを入れ替え
 DECLARE_CONFIG_SYM(ScreenShotName,
                    ScreenShotNameType,

@@ -36,6 +36,6 @@ class TimeKeeper {
   static SchedTimeDelta FromMicroSeconds(int us) { return (us + 9) / 10; }
 
  protected:
-   TimeKeeper() : time_(0) {}
-   SchedTime time_;
+  TimeKeeper() : time_(0) {}
+  SchedTime time_;
 };

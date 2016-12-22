@@ -35,8 +35,7 @@ class TimeKeeperImplQPC final : public TimeKeeper {
   }
 
  private:
-  TimeKeeperImplQPC(int64_t freq)
-      : freq_(freq) {
+  TimeKeeperImplQPC(int64_t freq) : freq_(freq) {
     LARGE_INTEGER count;
     QueryPerformanceCounter(&count);
     base_ = count.QuadPart;
@@ -48,12 +47,8 @@ class TimeKeeperImplQPC final : public TimeKeeper {
 
 class ScopedPrecisionKeeper final {
  public:
-  ScopedPrecisionKeeper() {
-    timeBeginPeriod(1);
-  }
-  ~ScopedPrecisionKeeper() {
-    timeEndPeriod(1);
-  }
+  ScopedPrecisionKeeper() { timeBeginPeriod(1); }
+  ~ScopedPrecisionKeeper() { timeEndPeriod(1); }
 };
 
 // Warning: This class is not working as expected.
@@ -61,9 +56,7 @@ class TimeKeeperImplWin final : public TimeKeeper {
  public:
   ~TimeKeeperImplWin() final {}
 
-  static TimeKeeper* create() {
-    return new TimeKeeperImplWin(timeGetTime());
-  }
+  static TimeKeeper* create() { return new TimeKeeperImplWin(timeGetTime()); }
 
   SchedTime TimeKeeper::GetTime() final {
     int32_t t = timeGetTime();

@@ -58,7 +58,7 @@ struct SchedulerEvent {
   bool deleted() const { return deleted_; }
   void set_deleted() { deleted_ = true; }
 
-private:
+ private:
   IDevice* dev_ = nullptr;
   IDevice::TimeFunc func_ = nullptr;
   int arg_ = 0;
@@ -120,7 +120,7 @@ class Scheduler : public IScheduler, public ITime {
  private:
   SchedulerDelegate* delegate_ = nullptr;
 
-  SchedTime time_ = 0;   // Scheduler 内の現在時刻
+  SchedTime time_ = 0;  // Scheduler 内の現在時刻
 
   EventQueue<Event*> queue_;
   int pool_index_ = 0;
