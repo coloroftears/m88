@@ -14,13 +14,13 @@ namespace pc88 {
 
 // ---------------------------------------------------------------------------
 
-class INTC final : public Device {
+class InterruptController final : public Device {
  public:
   enum { kReset, kRequest, kSetMask, kSetReg, kIntAck = 0 };
 
  public:
-  explicit INTC(const ID& id);
-  ~INTC();
+  explicit InterruptController(const ID& id);
+  ~InterruptController();
   bool Init(IOBus* bus, uint32_t irqport, uint32_t ipbase);
 
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);

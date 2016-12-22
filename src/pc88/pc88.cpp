@@ -43,7 +43,7 @@ using Calendar = pc88::Calendar;
 using Config = pc88::Config;
 using DiskIO = pc88::DiskIO;
 using FDC = pc88::FDC;
-using INTC = pc88::INTC;
+using InterruptController = pc88::InterruptController;
 using JoyPad = pc88::JoyPad;
 using KanjiROM = pc88::KanjiROM;
 using Memory = pc88::Memory;
@@ -444,20 +444,20 @@ bool PC88::ConnectDevices() {
     return false;
 
   static const IOBus::Connector c_intc[] = {
-      {pres, IOBus::portout, INTC::kReset},
-      {pint0, IOBus::portout, INTC::kRequest},
-      {pint1, IOBus::portout, INTC::kRequest},
-      {pint2, IOBus::portout, INTC::kRequest},
-      {pint3, IOBus::portout, INTC::kRequest},
-      {pint4, IOBus::portout, INTC::kRequest},
-      {pint5, IOBus::portout, INTC::kRequest},
-      {pint6, IOBus::portout, INTC::kRequest},
-      {pint7, IOBus::portout, INTC::kRequest},
-      {0xe4, IOBus::portout, INTC::kSetReg},
-      {0xe6, IOBus::portout, INTC::kSetMask},
-      {piack, IOBus::portin, INTC::kIntAck},
+      {pres, IOBus::portout, InterruptController::kReset},
+      {pint0, IOBus::portout, InterruptController::kRequest},
+      {pint1, IOBus::portout, InterruptController::kRequest},
+      {pint2, IOBus::portout, InterruptController::kRequest},
+      {pint3, IOBus::portout, InterruptController::kRequest},
+      {pint4, IOBus::portout, InterruptController::kRequest},
+      {pint5, IOBus::portout, InterruptController::kRequest},
+      {pint6, IOBus::portout, InterruptController::kRequest},
+      {pint7, IOBus::portout, InterruptController::kRequest},
+      {0xe4, IOBus::portout, InterruptController::kSetReg},
+      {0xe6, IOBus::portout, InterruptController::kSetMask},
+      {piack, IOBus::portin, InterruptController::kIntAck},
       {0, 0, 0}};
-  intc = new INTC(DEV_ID('I', 'N', 'T', 'C'));
+  intc = new InterruptController(DEV_ID('I', 'N', 'T', 'C'));
   if (!intc || !bus1.Connect(intc, c_intc))
     return false;
   if (!intc->Init(&bus1, pirq, pint0))

@@ -38,7 +38,7 @@ class Calendar;
 class Config;
 class DiskIO;
 class FDC;
-class INTC;
+class InterruptController;
 class JoyPad;
 class KanjiROM;
 class Memory;
@@ -165,7 +165,7 @@ class PC88 : public SchedulerDelegate,
   pc88::KanjiROM* knj1;
   pc88::KanjiROM* knj2;
   pc88::Screen* scrn;
-  pc88::INTC* intc;
+  pc88::InterruptController* intc;
   pc88::CRTC* crtc;
   pc88::Base* base;
   pc88::FDC* fdc;
