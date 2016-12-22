@@ -39,7 +39,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace FM {
+namespace fmgen {
 //  Types ----------------------------------------------------------------
 using Sample = FM_SAMPLETYPE;
 using ISample = int32_t;
@@ -267,7 +267,7 @@ class Chip {
   OpType optype_;
   uint32_t multable_[4][16];
 };
-}  // namespace FM
+}  // namespace fmgen
 
 // ---------------------------------------------------------------------------
 //  定数その２
@@ -296,7 +296,7 @@ class Chip {
 //#define PARAMCHANGE(i) paramcount[i]++;
 #define PARAMCHANGE(i)
 
-namespace FM {
+namespace fmgen {
 
 // ---------------------------------------------------------------------------
 //  Operator
@@ -490,4 +490,4 @@ inline void Chip::SetAML(uint32_t l) {
 inline void Chip::SetPML(uint32_t l) {
   pml_ = l & (FM_LFOENTS - 1);
 }
-}  // namespace FM
+}  // namespace fmgen

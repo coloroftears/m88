@@ -69,7 +69,7 @@
 //      irq = true:  IRQ 要求が発生
 //      irq = false: IRQ 要求が消える
 //
-namespace FM {
+namespace fmgen {
 //  YM2151(OPM) ----------------------------------------------------
 class OPM : public Timer {
  public:
@@ -150,4 +150,4 @@ class OPM : public Timer {
   int dbgGetOpOut(int c, int s) { return ch[c].op[s].dbgopout_; }
   Channel4* dbgGetCh(int c) { return &ch[c]; }
 };
-}  // namespace FM
+}  // namespace fmgen

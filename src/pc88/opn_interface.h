@@ -87,9 +87,9 @@ class OPNInterface final : public Device, public ISoundSource {
  private:
   class OPNUnit :
 #ifndef USE_OPN
-      public FM::OPNA
+      public fmgen::OPNA
 #else
-      public FM::OPN
+      public fmgen::OPN
 #endif
   {
    public:

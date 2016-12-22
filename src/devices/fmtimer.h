@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace FM {
+namespace fmgen {
 class Timer {
  public:
   void Reset();
@@ -46,4 +46,4 @@ inline void Timer::Reset() {
   timerb_count = 0;
 }
 
-}  // namespace FM
+}  // namespace fmgen

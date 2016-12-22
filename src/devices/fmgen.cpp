@@ -37,7 +37,7 @@
 // ---------------------------------------------------------------------------
 //  Table/etc
 //
-namespace FM {
+namespace fmgen {
 const uint8_t Operator::notetable[128] = {
     0,  0,  0,  0,  0,  0,  0,  1,  2,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,
     4,  4,  4,  4,  5,  6,  7,  7,  7,  7,  7,  7,  7,  8,  8,  8,  8,  8,  8,
@@ -156,9 +156,9 @@ int pmtable[2][8][FM_LFOENTS];
 uint32_t amtable[2][4][FM_LFOENTS];
 
 static bool tablemade = false;
-}  // namespace FM
+}  // namespace fmgen
 
-namespace FM {
+namespace fmgen {
 
 // ---------------------------------------------------------------------------
 //  テーブル作成
@@ -894,4 +894,4 @@ ISample Channel4::CalcLN(uint32_t noise) {
   return *out[2] + o;
 }
 
-}  // namespace FM
+}  // namespace fmgen

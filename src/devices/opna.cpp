@@ -29,7 +29,7 @@
 #include "common/file.h"
 #endif
 
-namespace FM {
+namespace fmgen {
 
 // ---------------------------------------------------------------------------
 //  OPNBase
@@ -1823,4 +1823,4 @@ void OPNB::Mix(Sample* buffer, int nsamples) {
 
 #endif  // BUILD_OPNB
 
-}  // namespace FM
+}  // namespace fmgen
