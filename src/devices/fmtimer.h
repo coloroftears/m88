@@ -16,7 +16,7 @@ class Timer {
   virtual ~Timer() {}
   void Reset() {
     timera_count_ = 0;
-    timreb_count_ = 0;
+    timerb_count_ = 0;
   }
   bool Count(int32_t us);
   int32_t GetNextEvent();
