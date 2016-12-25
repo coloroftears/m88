@@ -50,20 +50,20 @@ class StatusDisplay {
 
   void Clean();
 
-  HWND hwnd;
-  HWND hwndparent;
-  List* list;
-  uint32_t timerid;
+  HWND hwnd = 0;
+  HWND hwndparent = 0;
+  List* list = nullptr;
+  uint32_t timerid = 0;
   CriticalSection cs;
   Border border;
-  int height;
+  int height = 0;
   int litstat[3];
   int litcurrent[3];
-  bool showfdstat;
-  bool updatemessage;
+  bool showfdstat = false;
+  bool updatemessage = false;
 
-  int currentduration;
-  int currentpriority;
+  int currentduration = 0;
+  int currentpriority = 0;
 
   char buf[128];
 };

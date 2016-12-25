@@ -18,13 +18,11 @@ StatusDisplay statusdisplay;
 //  Constructor/Destructor
 //
 StatusDisplay::StatusDisplay() {
-  hwnd = 0;
-  hwndparent = 0;
-  list = 0;
-  timerid = 0;
-  height = 0;
   litstat[0] = litstat[1] = 0;
-  updatemessage = 0;
+  for (int i = 0; i < 3; ++i) {
+    litstat[i] = 0;
+    litcurrent[i] = 0;
+  }
 }
 
 StatusDisplay::~StatusDisplay() {
@@ -88,33 +86,40 @@ void StatusDisplay::DrawItem(DRAWITEMSTRUCT* dis) {
   switch (dis->itemID) {
     case 0: {
       SetBkColor(dis->hDC, GetSysColor(COLOR_3DFACE));
-      //          SetTextColor(dis->hDC, RGB(255, 0, 0));
       char* text = reinterpret_cast<char*>(dis->itemData);
       TextOut(dis->hDC, dis->rcItem.left, dis->rcItem.top, text, strlen(text));
       break;
     }
     case 1: {
-      DWORD color[] = {
-          RGB(64, 0, 0),  RGB(255, 0, 0), RGB(0, 64, 0),
-          RGB(0, 255, 0), RGB(0, 32, 64), RGB(0, 128, 255),
+      static const DWORD color[] = {
+        // 2D/2DD
+        RGB(64, 0, 0),  RGB(255, 0, 0),
+        // 2HD
+        RGB(0, 64, 0), RGB(0, 255, 0),
+        // FDD status
+        RGB(0, 32, 64), RGB(0, 128, 255),
       };
 
-      HBRUSH hbrush1, hbrush2, hbrush3, hbrushold;
-      hbrush1 = CreateSolidBrush(color[litcurrent[1] & 3]);
-      hbrush2 = CreateSolidBrush(color[litcurrent[0] & 3]);
-      hbrush3 = CreateSolidBrush(color[4 | (litcurrent[2] & 1)]);
-      hbrushold = (HBRUSH)SelectObject(dis->hDC, hbrush1);
+      HBRUSH hbrush1 = CreateSolidBrush(color[litcurrent[1] & 3]);
+      HBRUSH hbrush2 = CreateSolidBrush(color[litcurrent[0] & 3]);
+      HBRUSH hbrush3 = CreateSolidBrush(color[4 | (litcurrent[2] & 1)]);
+
+      HBRUSH hbrushold = (HBRUSH)SelectObject(dis->hDC, hbrush1);
       Rectangle(dis->hDC, dis->rcItem.left + 6, height / 2 - 4,
                 dis->rcItem.left + 24, height / 2 + 5);
+
       SelectObject(dis->hDC, hbrush2);
       Rectangle(dis->hDC, dis->rcItem.left + 32, height / 2 - 4,
                 dis->rcItem.left + 50, height / 2 + 5);
+
       if (showfdstat) {
         SelectObject(dis->hDC, hbrush3);
         Rectangle(dis->hDC, dis->rcItem.left + 58, height / 2 - 4,
                   dis->rcItem.left + 68, height / 2 + 5);
       }
+
       SelectObject(dis->hDC, hbrushold);
+
       DeleteObject(hbrush1);
       DeleteObject(hbrush2);
       DeleteObject(hbrush3);
@@ -165,7 +170,7 @@ void StatusDisplay::Update() {
     CriticalSection::Lock lock(cs);
     // find highest priority (0 == highest)
     int pc = 10000;
-    List* entry = 0;
+    List* entry = nullptr;
     int c = GetTickCount();
     for (List* l = list; l; l = l->next) {
       //          LOG3("\t\t[%s] p:%5d d:%8d\n", l->msg, l->priority,
