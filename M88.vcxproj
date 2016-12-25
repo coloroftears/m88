@@ -165,6 +165,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -212,6 +213,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tuning|Win32'">
@@ -258,6 +260,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tuning|x64'">
@@ -305,6 +308,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -356,6 +360,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -408,6 +413,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>src\win32\m88.manifest</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
