@@ -42,7 +42,11 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE, LPSTR cmdline, int nwinmode) {
     return -1;
 
   InitPathInfo();
-  InitCommonControls();
+
+  INITCOMMONCONTROLSEX init_ctrls;
+  init_ctrls.dwSize = sizeof(init_ctrls);
+  init_ctrls.dwICC = ICC_BAR_CLASSES;
+  InitCommonControlsEx(&init_ctrls);
 
   int r = -1;
   {
