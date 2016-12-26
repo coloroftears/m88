@@ -264,40 +264,40 @@ LRESULT WinUI::WinProc(HWND hwnd, UINT umsg, WPARAM wp, LPARAM lp) {
   keyif.Disable(true);
 
   switch (umsg) {
-    PROC_MSG(WM_COMMAND, WmCommand);
-    PROC_MSG(WM_PAINT, WmPaint);
-    PROC_MSG(WM_CREATE, WmCreate);
-    PROC_MSG(WM_DESTROY, WmDestroy);
-    PROC_MSG(WM_CLOSE, WmClose);
-    PROC_MSG(WM_TIMER, WmTimer);
-    PROC_MSG(WM_ACTIVATE, WmActivate);
-    PROC_MSG(WM_PALETTECHANGED, WmPaletteChanged);
-    PROC_MSG(WM_QUERYNEWPALETTE, WmQueryNewPalette);
-    PROC_MSG(WM_INITMENU, WmInitMenu);
-    PROC_MSG(WM_KEYUP, WmKeyUp);
-    PROC_MSG(WM_KEYDOWN, WmKeyDown);
-    PROC_MSG(WM_SYSKEYUP, WmSysKeyUp);
-    PROC_MSG(WM_SYSKEYDOWN, WmSysKeyDown);
-    PROC_MSG(WM_SIZE, WmSize);
-    PROC_MSG(WM_MOVE, WmMove);
-    PROC_MSG(WM_DRAWITEM, WmDrawItem);
-    PROC_MSG(WM_ENTERMENULOOP, WmEnterMenuLoop);
-    PROC_MSG(WM_EXITMENULOOP, WmExitMenuLoop);
-    PROC_MSG(WM_DISPLAYCHANGE, WmDisplayChange);
-    PROC_MSG(WM_DROPFILES, WmDropFiles);
-    PROC_MSG(WM_LBUTTONDOWN, WmLButtonDown);
-    PROC_MSG(WM_LBUTTONUP, WmLButtonUp);
-    PROC_MSG(WM_RBUTTONDOWN, WmRButtonDown);
-    PROC_MSG(WM_RBUTTONUP, WmRButtonUp);
-    PROC_MSG(WM_ENTERSIZEMOVE, WmEnterSizeMove);
-    PROC_MSG(WM_EXITSIZEMOVE, WmExitSizeMove);
-    PROC_MSG(WM_M88_SENDKEYSTATE, M88SendKeyState);
-    PROC_MSG(WM_M88_APPLYCONFIG, M88ApplyConfig);
-    PROC_MSG(WM_M88_CHANGEDISPLAY, M88ChangeDisplay);
-    PROC_MSG(WM_M88_CHANGEVOLUME, M88ChangeVolume);
-    PROC_MSG(WM_M88_CLIPCURSOR, M88ClipCursor);
-    PROC_MSG(WM_MOUSEMOVE, WmMouseMove);
-    PROC_MSG(WM_SETCURSOR, WmSetCursor);
+    PROC_MSG(WM_COMMAND, OnCommand);
+    PROC_MSG(WM_PAINT, OnPaint);
+    PROC_MSG(WM_CREATE, OnCreate);
+    PROC_MSG(WM_DESTROY, OnDestroy);
+    PROC_MSG(WM_CLOSE, OnClose);
+    PROC_MSG(WM_TIMER, OnTimer);
+    PROC_MSG(WM_ACTIVATE, OnActivate);
+    PROC_MSG(WM_PALETTECHANGED, OnPaletteChanged);
+    PROC_MSG(WM_QUERYNEWPALETTE, OnQueryNewPalette);
+    PROC_MSG(WM_INITMENU, OnInitMenu);
+    PROC_MSG(WM_KEYUP, OnKeyUp);
+    PROC_MSG(WM_KEYDOWN, OnKeyDown);
+    PROC_MSG(WM_SYSKEYUP, OnSysKeyUp);
+    PROC_MSG(WM_SYSKEYDOWN, OnSysKeyDown);
+    PROC_MSG(WM_SIZE, OnSize);
+    PROC_MSG(WM_MOVE, OnMove);
+    PROC_MSG(WM_DRAWITEM, OnDrawItem);
+    PROC_MSG(WM_ENTERMENULOOP, OnEnterMenuLoop);
+    PROC_MSG(WM_EXITMENULOOP, OnExitMenuLoop);
+    PROC_MSG(WM_DISPLAYCHANGE, OnDisplayChange);
+    PROC_MSG(WM_DROPFILES, OnDropFiles);
+    PROC_MSG(WM_LBUTTONDOWN, OnLButtonDown);
+    PROC_MSG(WM_LBUTTONUP, OnLButtonUp);
+    PROC_MSG(WM_RBUTTONDOWN, OnRButtonDown);
+    PROC_MSG(WM_RBUTTONUP, OnRButtonUp);
+    PROC_MSG(WM_ENTERSIZEMOVE, OnEnterSizeMove);
+    PROC_MSG(WM_EXITSIZEMOVE, OnExitSizeMove);
+    PROC_MSG(WM_M88_SENDKEYSTATE, OnM88SendKeyState);
+    PROC_MSG(WM_M88_APPLYCONFIG, OnM88ApplyConfig);
+    PROC_MSG(WM_M88_CHANGEDISPLAY, OnM88ChangeDisplay);
+    PROC_MSG(WM_M88_CHANGEVOLUME, OnM88ChangeVolume);
+    PROC_MSG(WM_M88_CLIPCURSOR, OnM88ClipCursor);
+    PROC_MSG(WM_MOUSEMOVE, OnMouseMove);
+    PROC_MSG(WM_SETCURSOR, OnSetCursor);
 
     default:
       ret = DefWindowProc(hwnd, umsg, wp, lp);
@@ -316,7 +316,7 @@ LRESULT CALLBACK WinUI::WinProcGate(HWND hwnd,
 // ---------------------------------------------------------------------------
 //  WinUI::M88SendKeyState
 //
-inline uint32_t WinUI::M88SendKeyState(HWND hwnd,
+inline uint32_t WinUI::OnM88SendKeyState(HWND hwnd,
                                        WPARAM wparam,
                                        LPARAM lparam) {
   uint8_t* dest = reinterpret_cast<uint8_t*>(wparam);
@@ -325,7 +325,7 @@ inline uint32_t WinUI::M88SendKeyState(HWND hwnd,
   return 0;
 }
 
-inline uint32_t WinUI::WmKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+inline uint32_t WinUI::OnKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((uint32_t)wparam == VK_F12 && !(config.flags & Config::disablef12reset))
     ;
   else
@@ -334,7 +334,7 @@ inline uint32_t WinUI::WmKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return 0;
 }
 
-inline uint32_t WinUI::WmKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+inline uint32_t WinUI::OnKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((uint32_t)wparam == VK_F12 && !(config.flags & Config::disablef12reset))
     Reset();
   else
@@ -343,7 +343,7 @@ inline uint32_t WinUI::WmKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return 0;
 }
 
-inline uint32_t WinUI::WmSysKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+inline uint32_t WinUI::OnSysKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (config.flags & Config::suppressmenu) {
     keyif.KeyDown((uint32_t)wparam, (uint32_t)lparam);
     return 0;
@@ -351,7 +351,7 @@ inline uint32_t WinUI::WmSysKeyDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return DefWindowProc(hwnd, WM_SYSKEYDOWN, wparam, lparam);
 }
 
-inline uint32_t WinUI::WmSysKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+inline uint32_t WinUI::OnSysKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (config.flags & Config::suppressmenu) {
     keyif.KeyUp((uint32_t)wparam, (uint32_t)lparam);
     return 0;
@@ -360,10 +360,10 @@ inline uint32_t WinUI::WmSysKeyUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmActivate
+//  WinUI::OnActivate
 //  WM_ACTIVATE ハンドラ
 //
-uint32_t WinUI::WmActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   bool prev_bg = background_;
   background_ = LOWORD(wparam) == WA_INACTIVE;
 
@@ -375,8 +375,9 @@ uint32_t WinUI::WmActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   draw.QueryNewPalette(background_);
   if (prev_bg != background_) {
     // core.ActivateMouse(!background_);
-    M88ClipCursor(hwnd, background_ ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE,
-                  0);
+    OnM88ClipCursor(hwnd,
+                    background_ ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE,
+                    0);
     draw.SetGUIFlag(background_);
   }
   snapshotchanged = true;
@@ -384,19 +385,19 @@ uint32_t WinUI::WmActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmQueryNewPalette
+//  WinUI::OnQueryNewPalette
 //  WM_QUERYNEWPALETTE ハンドラ
 //
-uint32_t WinUI::WmQueryNewPalette(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnQueryNewPalette(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   draw.QueryNewPalette(background_);
   return 1;
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmPaletteChanged
+//  WinUI::OnPaletteChanged
 //  WM_PALETTECHANGED ハンドラ
 //
-uint32_t WinUI::WmPaletteChanged(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnPaletteChanged(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((HWND)wparam != hwnd) {
     draw.QueryNewPalette(background_);
     return 1;
@@ -405,10 +406,10 @@ uint32_t WinUI::WmPaletteChanged(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmCommand
+//  WinUI::OnCommand
 //  WM_COMMAND ハンドラ
 //
-uint32_t WinUI::WmCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   uint32_t wid = LOWORD(wparam);
   switch (wid) {
     case IDM_EXIT:
@@ -613,19 +614,19 @@ uint32_t WinUI::WmCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmPaint
+//  WinUI::OnPaint
 //  WM_PAINT ハンドラ
 //
-uint32_t WinUI::WmPaint(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnPaint(HWND hwnd, WPARAM wp, LPARAM lp) {
   draw.RequestPaint();
   return DefWindowProc(hwnd, WM_PAINT, wp, lp);
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmCreate
+//  WinUI::OnCreate
 //  WM_CREATE ハンドラ
 //
-uint32_t WinUI::WmCreate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnCreate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   CREATESTRUCT* cs = (CREATESTRUCT*)wparam;
 
   RECT rect;
@@ -650,19 +651,19 @@ uint32_t WinUI::WmCreate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmDestroy
+//  WinUI::OnDestroy
 //  WM_DESTROY ハンドラ
 //
-uint32_t WinUI::WmDestroy(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnDestroy(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   PostQuitMessage(0);
   return 0;
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmClose
+//  WinUI::OnClose
 //  WM_CLOSE ハンドラ
 //
-uint32_t WinUI::WmClose(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnClose(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   // 確認
   if (config.flags & Config::askbeforereset) {
     SetGUIFlag(true);
@@ -707,10 +708,10 @@ uint32_t WinUI::WmClose(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmTimer
+//  WinUI::OnTimer
 //  WM_TIMER ハンドラ
 //
-uint32_t WinUI::WmTimer(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnTimer(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   LOG2("WmTimer:%d(%d)\n", wparam, timerid);
   if (wparam == timerid) {
     // 実効周波数,表示フレーム数を取得
@@ -748,10 +749,10 @@ uint32_t WinUI::WmTimer(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmInitMenu
+//  WinUI::OnInitMenu
 //  WM_INITMENU ハンドラ
 //
-uint32_t WinUI::WmInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
   HMENU hmenu = (HMENU)wp;
 #ifndef DEBUG_MONITOR
   EnableMenuItem(hmenu, IDM_LOGSTART, MF_GRAYED);
@@ -831,10 +832,10 @@ uint32_t WinUI::WmInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmSize
+//  WinUI::OnSize
 //  WM_SIZE
 //
-uint32_t WinUI::WmSize(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnSize(HWND hwnd, WPARAM wp, LPARAM lp) {
   HWND hwndstatus = statusdisplay.GetHWnd();
   if (hwndstatus)
     PostMessage(hwndstatus, WM_SIZE, wp, lp);
@@ -857,7 +858,7 @@ void WinUI::ReportError() {
 // ---------------------------------------------------------------------------
 //  WinUI::ReportError
 //
-uint32_t WinUI::M88ApplyConfig(HWND, WPARAM newconfig, LPARAM) {
+uint32_t WinUI::OnM88ApplyConfig(HWND, WPARAM newconfig, LPARAM) {
   if (newconfig) {
     // 乱暴ですな。
     if (memcmp(&config, (pc88::Config*)newconfig, sizeof(pc88::Config))) {
@@ -1238,10 +1239,10 @@ void WinUI::ShowStatusWindow() {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmDrawItem
+//  WinUI::OnDrawItem
 //  WM_DRAWITEM ハンドラ
 //
-uint32_t WinUI::WmDrawItem(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnDrawItem(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((UINT)wparam == 1)
     statusdisplay.DrawItem((DRAWITEMSTRUCT*)lparam);
   return TRUE;
@@ -1286,7 +1287,7 @@ void WinUI::ChangeDisplayType(bool savepos) {
 //  WinUI::M88ChangeDisplay
 //  表示メソッドの変更
 //
-uint32_t WinUI::M88ChangeDisplay(HWND hwnd, WPARAM, LPARAM) {
+uint32_t WinUI::OnM88ChangeDisplay(HWND hwnd, WPARAM, LPARAM) {
   // 画面ドライバの切替え
   // ドライバが false を返した場合 GDI ドライバが使用されることになる
   if (!draw.ChangeDisplayMode(fullscreen,
@@ -1332,10 +1333,10 @@ uint32_t WinUI::M88ChangeDisplay(HWND hwnd, WPARAM, LPARAM) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmEnterMenuLoop
+//  WinUI::OnEnterMenuLoop
 //  WM_ENTERMENULOOP ハンドラ
 //
-uint32_t WinUI::WmEnterMenuLoop(HWND, WPARAM wp, LPARAM) {
+uint32_t WinUI::OnEnterMenuLoop(HWND, WPARAM wp, LPARAM) {
   if (!wp) {
     keyif.Activate(false);
     SetGUIFlag(true);
@@ -1344,10 +1345,10 @@ uint32_t WinUI::WmEnterMenuLoop(HWND, WPARAM wp, LPARAM) {
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmExitMenuLoop
+//  WinUI::OnExitMenuLoop
 //  WM_EXITMENULOOP ハンドラ
 //
-uint32_t WinUI::WmExitMenuLoop(HWND, WPARAM wp, LPARAM) {
+uint32_t WinUI::OnExitMenuLoop(HWND, WPARAM wp, LPARAM) {
   if (!wp) {
     keyif.Activate(true);
     SetGUIFlag(false);
@@ -1358,17 +1359,17 @@ uint32_t WinUI::WmExitMenuLoop(HWND, WPARAM wp, LPARAM) {
 // ---------------------------------------------------------------------------
 //  ボリューム変更
 //
-uint32_t WinUI::M88ChangeVolume(HWND, WPARAM c, LPARAM) {
+uint32_t WinUI::OnM88ChangeVolume(HWND, WPARAM c, LPARAM) {
   if (c)
     core.SetVolume((pc88::Config*)c);
   return 0;
 }
 
 // ---------------------------------------------------------------------------
-//  WinUI::WmDisplayChange
+//  WinUI::OnDisplayChange
 //  WM_DISPLAYCHANGE ハンドラ
 //
-uint32_t WinUI::WmDisplayChange(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnDisplayChange(HWND hwnd, WPARAM wp, LPARAM lp) {
   resetwindowsize = fullscreen ? 0 : 5;
   return 0;
 }
@@ -1378,7 +1379,7 @@ uint32_t WinUI::WmDisplayChange(HWND hwnd, WPARAM wp, LPARAM lp) {
 //  WM_DROPFILES ハンドラ
 //  午後Ｔ氏の実装をもとに作成しました．
 //
-uint32_t WinUI::WmDropFiles(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnDropFiles(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   HDROP hdrop = (HDROP)wparam;
 
   // 受け取ったファイルの数を確認
@@ -1459,7 +1460,7 @@ void WinUI::CaptureScreen() {
 // ---------------------------------------------------------------------------
 //  マウス状態の取得
 //
-uint32_t WinUI::WmLButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnLButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (capturemouse) {
     mousebutton |= 1;
     return 0;
@@ -1467,7 +1468,7 @@ uint32_t WinUI::WmLButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return DefWindowProc(hwnd, WM_LBUTTONDOWN, wparam, lparam);
 }
 
-uint32_t WinUI::WmLButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnLButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (capturemouse) {
     mousebutton &= ~1;
     return 0;
@@ -1475,7 +1476,7 @@ uint32_t WinUI::WmLButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return DefWindowProc(hwnd, WM_LBUTTONDOWN, wparam, lparam);
 }
 
-uint32_t WinUI::WmRButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnRButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (capturemouse) {
     mousebutton |= 2;
     return 0;
@@ -1483,7 +1484,7 @@ uint32_t WinUI::WmRButtonDown(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   return DefWindowProc(hwnd, WM_LBUTTONDOWN, wparam, lparam);
 }
 
-uint32_t WinUI::WmRButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
+uint32_t WinUI::OnRButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (capturemouse) {
     mousebutton &= ~2;
     return 0;
@@ -1494,12 +1495,12 @@ uint32_t WinUI::WmRButtonUp(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 // ---------------------------------------------------------------------------
 //  ウィンドウ移動モードに入る・出る
 //
-uint32_t WinUI::WmEnterSizeMove(HWND hwnd, WPARAM, LPARAM) {
+uint32_t WinUI::OnEnterSizeMove(HWND hwnd, WPARAM, LPARAM) {
   //  core.ActivateMouse(false);
   return 0;
 }
 
-uint32_t WinUI::WmExitSizeMove(HWND hwnd, WPARAM, LPARAM) {
+uint32_t WinUI::OnExitSizeMove(HWND hwnd, WPARAM, LPARAM) {
   //  core.ActivateMouse(true);
   return 0;
 }
@@ -1507,7 +1508,7 @@ uint32_t WinUI::WmExitSizeMove(HWND hwnd, WPARAM, LPARAM) {
 // ---------------------------------------------------------------------------
 //  WM_MOVE
 //
-uint32_t WinUI::WmMove(HWND hwnd, WPARAM, LPARAM) {
+uint32_t WinUI::OnMove(HWND hwnd, WPARAM, LPARAM) {
   POINT srcpoint;
   srcpoint.x = 0, srcpoint.y = 0;
   ClientToScreen(hwnd, &srcpoint);
@@ -1519,7 +1520,7 @@ uint32_t WinUI::WmMove(HWND hwnd, WPARAM, LPARAM) {
 // ---------------------------------------------------------------------------
 //  WM_M88_CLIPCURSOR
 //
-uint32_t WinUI::M88ClipCursor(HWND hwnd, WPARAM op, LPARAM) {
+uint32_t WinUI::OnM88ClipCursor(HWND hwnd, WPARAM op, LPARAM) {
   if (static_cast<int>(op) > 0)
     clipmode |= op;
   else
@@ -1546,7 +1547,7 @@ uint32_t WinUI::M88ClipCursor(HWND hwnd, WPARAM op, LPARAM) {
   return 1;
 }
 
-uint32_t WinUI::WmMouseMove(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnMouseMove(HWND hwnd, WPARAM wp, LPARAM lp) {
 #if 0
   if (fullscreen) {
     POINTS p;
@@ -1568,7 +1569,7 @@ uint32_t WinUI::WmMouseMove(HWND hwnd, WPARAM wp, LPARAM lp) {
   return 0;
 }
 
-uint32_t WinUI::WmSetCursor(HWND hwnd, WPARAM wp, LPARAM lp) {
+uint32_t WinUI::OnSetCursor(HWND hwnd, WPARAM wp, LPARAM lp) {
   if (fullscreen) {
     uint32_t menu = LOWORD(lp) == HTMENU;
     if (!guimodebymouse) {
