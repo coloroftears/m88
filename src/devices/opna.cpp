@@ -115,7 +115,6 @@ void OPNBase::SetPrescaler(uint32_t p) {
     uint32_t ratio = ((fmclock << FM_RATIOBITS) + rate / 2) / rate;
 
     SetTimerBase(fmclock);
-    //      MakeTimeTable(ratio);
     chip.SetRatio(ratio);
     psg.SetClock(clock / table[p][1], psgrate);
 
@@ -1108,8 +1107,8 @@ inline void OPNABase::LFO() {
 
   //  Operator::SetPML(pmtable[(lfocount >> (FM_LFOCBITS+1)) & 0xff]);
   //  Operator::SetAML(amtable[(lfocount >> (FM_LFOCBITS+1)) & 0xff]);
-  chip.SetPML(pmtable[(lfocount >> (FM_LFOCBITS + 1)) & 0xff]);
-  chip.SetAML(amtable[(lfocount >> (FM_LFOCBITS + 1)) & 0xff]);
+  chip.SetPMLevel(pmtable[(lfocount >> (FM_LFOCBITS + 1)) & 0xff]);
+  chip.SetAMLevel(amtable[(lfocount >> (FM_LFOCBITS + 1)) & 0xff]);
   lfocount += lfodcount;
 }
 

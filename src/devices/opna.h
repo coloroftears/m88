@@ -40,13 +40,13 @@
 //      クロックや PCM レートを変更する
 //      引数等は Init を参照のこと．
 //
-//  void Mix(FM_SAMPLETYPE* dest, int nsamples)
+//  void Mix(Sample* dest, int nsamples)
 //      Stereo PCM データを nsamples 分合成し， dest で始まる配列に
 //      加える(加算する)
 //      ・dest には sample*2 個分の領域が必要
 //      ・格納形式は L, R, L, R... となる．
 //      ・あくまで加算なので，あらかじめ配列をゼロクリアする必要がある
-//      ・FM_SAMPLETYPE が short 型の場合クリッピングが行われる.
+//      ・Sample 型が short 型の場合クリッピングが行われる.
 //      ・この関数は音源内部のタイマーとは独立している．
 //        Timer は Count と GetNextEvent で操作する必要がある．
 //
@@ -141,7 +141,6 @@ class OPNABase : public OPNBase {
   void Reset() override;
   void SetReg(uint32_t addr, uint32_t data);
   void SetADPCMBReg(uint32_t reg, uint32_t data);
-  uint32_t GetReg(uint32_t addr);
 
  protected:
   void FMMix(Sample* buffer, int nsamples);
@@ -354,7 +353,6 @@ class OPNB : public OPNABase {
     int adpcmd;       // 変換用
   };
 
-  int DecodeADPCMASample(uint32_t);
   void ADPCMAMix(Sample* buffer, uint32_t count);
   static void InitADPCMATable();
 
@@ -371,44 +369,6 @@ class OPNB : public OPNABase {
   static int jedi_table[(48 + 1) * 16];
 
   Channel4 ch[6];
-};
-
-//  YM2612/3438(OPN2) ----------------------------------------------------
-class OPN2 : public OPNBase {
- public:
-  OPN2();
-  ~OPN2() override {}
-
-  bool Init(uint32_t c, uint32_t r, bool = false, const char* = 0);
-  bool SetRate(uint32_t c, uint32_t r, bool);
-
-  // Overrides OPNBase.
-  // TODO: implement this?
-  void Reset() override;
-
-  void Mix(Sample* buffer, int nsamples);
-  void SetReg(uint32_t addr, uint32_t data);
-  uint32_t GetReg(uint32_t addr);
-  uint32_t ReadStatus() { return status & 0x03; }
-  uint32_t ReadStatusEx() { return 0xff; }
-
-  void SetChannelMask(uint32_t mask);
-
- private:
-  virtual void Intr(bool) {}
-
-  // Overrides Timer.
-  void SetStatus(uint32_t bit) override;
-  void ResetStatus(uint32_t bit) override;
-
-  uint32_t fnum[3];
-  uint32_t fnum3[3];
-  uint8_t fnum2[6];
-
-  // 線形補間用ワーク
-  int32_t mixc, mixc1;
-
-  Channel4 ch[3];
 };
 }  // namespace fmgen
 

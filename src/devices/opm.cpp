@@ -97,7 +97,6 @@ void OPM::RebuildTimeTable() {
   rateratio = ((fmclock << FM_RATIOBITS) + rate / 2) / rate;
   SetTimerBase(fmclock);
 
-  //  MakeTimeTable(rateratio);
   chip.SetRatio(rateratio);
 
   //  lfo_diff_ =
@@ -374,14 +373,14 @@ inline void OPM::LFO() {
     {
       int c = (lfo_count_ >> 15) & 0x1fe;
       //  fprintf(stderr, "%.8x %.2x\n", lfo_count_, c);
-      chip.SetPML(pmtable[lfowaveform][c] * pmd / 128 + 0x80);
-      chip.SetAML(amtable[lfowaveform][c] * amd / 128);
+      chip.SetPMLevel(pmtable[lfowaveform][c] * pmd / 128 + 0x80);
+      chip.SetAMLevel(amtable[lfowaveform][c] * amd / 128);
     }
   } else {
     if ((lfo_count_ ^ lfo_count_prev_) & ~((1 << 17) - 1)) {
       int c = (rand() / 17) & 0xff;
-      chip.SetPML((c - 0x80) * pmd / 128 + 0x80);
-      chip.SetAML(c * amd / 128);
+      chip.SetPMLevel((c - 0x80) * pmd / 128 + 0x80);
+      chip.SetAMLevel(c * amd / 128);
     }
   }
   lfo_count_prev_ = lfo_count_;

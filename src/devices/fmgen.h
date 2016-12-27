@@ -17,36 +17,36 @@
 #include "common/clamp.h"
 
 // ---------------------------------------------------------------------------
-//  出力サンプルの型
-//
-#define FM_SAMPLETYPE int32_t  // int16_t or int32_t
-
-// ---------------------------------------------------------------------------
 //  定数その１
 //  静的テーブルのサイズ
 
-#define FM_LFOBITS 8  // 変更不可
-#define FM_TLBITS 7
+const int FM_LFOBITS = 8;  // 変更不可
+const int FM_TLBITS = 7;
 
-// ---------------------------------------------------------------------------
-
-#define FM_TLENTS (1 << FM_TLBITS)
-#define FM_LFOENTS (1 << FM_LFOBITS)
-#define FM_TLPOS (FM_TLENTS / 4)
+const int FM_TLENTS = (1 << FM_TLBITS);
+const int FM_LFOENTS = (1 << FM_LFOBITS);
+const int FM_TLPOS(FM_TLENTS / 4);
 
 //  サイン波の精度は 2^(1/256)
-#define FM_CLENTS (0x1000 * 2)  // sin + TL + LFO
+const int FM_CLENTS = (0x1000 * 2);  // sin + TL + LFO
 
 // ---------------------------------------------------------------------------
 
 namespace fmgen {
-//  Types ----------------------------------------------------------------
-using Sample = FM_SAMPLETYPE;
+
+// Output sample precision (int32_t or int16_t)
+using Sample = int32_t;
+// Internal sample precision
 using ISample = int32_t;
 
 enum OpType { typeN = 0, typeM = 1 };
 
-void StoreSample(ISample& dest, int data);
+inline void StoreSample(Sample& dest, ISample data) {
+  if (sizeof(Sample) == 2)
+    dest = (Sample)Limit(dest + data, 0x7fff, -0x8000);
+  else
+    dest += data;
+}
 
 class Chip;
 
@@ -55,8 +55,6 @@ class Operator {
  public:
   Operator();
   void SetChip(Chip* chip) { chip_ = chip; }
-
-  static void MakeTimeTable(uint32_t ratio);
 
   ISample Calc(ISample in);
   ISample CalcL(ISample in);
@@ -83,13 +81,9 @@ class Operator {
   void SetSSGEC(uint32_t ssgec);
   void SetFNum(uint32_t fnum);
   void SetDPBN(uint32_t dp, uint32_t bn);
-  void SetMode(bool modulator);
   void SetAMON(bool on);
   void SetMS(uint32_t ms);
   void Mute(bool);
-
-  //      static void SetAML(uint32_t l);
-  //      static void SetPML(uint32_t l);
 
   int Out() { return out_; }
 
@@ -124,10 +118,8 @@ class Operator {
   void EGCalc();
   void EGStep();
   void ShiftPhase(EGPhase nextphase);
-  void SSGShiftPhase(int mode);
   void SetEGRate(uint32_t);
   void EGUpdate();
-  int FBCalc(int fb);
   ISample LogToLin(uint32_t a);
 
   OpType type_;                 // OP の種類 (M, N...)
@@ -185,7 +177,6 @@ class Operator {
 
   //  friends --------------------------------------------------------------
   friend class Channel4;
-  friend void __stdcall FM_NextPhase(Operator* op);
 
  public:
   int dbgopout_;
@@ -245,8 +236,8 @@ class Chip {
  public:
   Chip();
   void SetRatio(uint32_t ratio);
-  void SetAML(uint32_t l);
-  void SetPML(uint32_t l);
+  void SetAMLevel(uint32_t l);
+  void SetPMLevel(uint32_t l);
   void SetPMV(int pmv) { pmv_ = pmv; }
 
   uint32_t GetMulValue(uint32_t dt2, uint32_t mul) {
@@ -470,24 +461,11 @@ inline void Channel4::SetChip(Chip* chip) {
     op[i].SetChip(chip);
 }
 
-// ---------------------------------------------------------------------------
-//
-//
-inline void StoreSample(Sample& dest, ISample data) {
-  if (sizeof(Sample) == 2)
-    dest = (Sample)Limit(dest + data, 0x7fff, -0x8000);
-  else
-    dest += data;
-}
-
-// ---------------------------------------------------------------------------
-//  AM のレベルを設定
-inline void Chip::SetAML(uint32_t l) {
+inline void Chip::SetAMLevel(uint32_t l) {
   aml_ = l & (FM_LFOENTS - 1);
 }
 
-//  PM のレベルを設定
-inline void Chip::SetPML(uint32_t l) {
+inline void Chip::SetPMLevel(uint32_t l) {
   pml_ = l & (FM_LFOENTS - 1);
 }
 }  // namespace fmgen

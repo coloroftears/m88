@@ -35,7 +35,7 @@
 //      ・dest には sample*2 個分の領域が必要
 //      ・格納形式は L, R, L, R... となる．
 //      ・あくまで加算なので，あらかじめ配列をゼロクリアする必要がある
-//      ・FM_SAMPLETYPE が short 型の場合クリッピングが行われる.
+//      ・Sample 型が int16_t 型の場合クリッピングが行われる.
 //      ・この関数は音源内部のタイマーとは独立している．
 //        Timer は Count と GetNextEvent で操作する必要がある．
 //
@@ -78,11 +78,9 @@ class OPM : public Timer {
 
   bool Init(uint32_t c, uint32_t r, bool = false);
   bool SetRate(uint32_t c, uint32_t r, bool);
-  void SetLPFCutoff(uint32_t freq);
   void Reset();
 
   void SetReg(uint32_t addr, uint32_t data);
-  uint32_t GetReg(uint32_t addr);
   uint32_t ReadStatus() { return status & 0x03; }
 
   void Mix(Sample* buffer, int nsamples);
