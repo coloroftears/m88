@@ -14,7 +14,17 @@ using packed = uint32_t;
 
 // ---------------------------------------------------------------------------
 
+#if defined(_WIN32) && !defined(_WIN64)
+#define MEMCALL __stdcall
+#else
 #define MEMCALL
+#endif
+
+#if !defined(_WIN32)
+#define __cdecl
+#define __stdcall
+#define CALLBACK
+#endif
 
 #ifndef IFCALL
 #define IFCALL __stdcall
