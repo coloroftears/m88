@@ -2,11 +2,11 @@
 
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include <windows.h>
 
-#else  // !WIN32
+#else  // !_WIN32
 
 #include <stdint.h>
 
@@ -57,4 +57,4 @@ inline bool operator==(const GUID& a, const GUID& b) {
          (a.data4[6] == b.data4[6]) && (a.data4[7] == b.data4[7]);
 }
 
-#endif  // WIN32
+#endif  // _WIN32
