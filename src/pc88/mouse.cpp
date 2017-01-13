@@ -124,7 +124,7 @@ void IOCALL Mouse::VSync(uint32_t, uint32_t) {
 //  コンフィギュレーション更新
 //
 void Mouse::ApplyConfig(const Config* config) {
-  joymode = (config->flags & Config::mousejoymode) != 0;
+  joymode = (config->flags & Config::kMouseJoyMode) != 0;
   sensibility = config->mousesensibility;
 }
 

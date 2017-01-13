@@ -107,9 +107,9 @@ void WinCore::ApplyConfig(pc88::Config* cfg) {
   config = *cfg;
 
   int c = cfg->clock;
-  if (cfg->flags & pc88::Config::fullspeed)
+  if (cfg->flags & pc88::Config::kFullspeed)
     c = 0;
-  if (cfg->flags & pc88::Config::cpuburst)
+  if (cfg->flags & pc88::Config::kCPUBurst)
     c = -c;
   seq.SetClock(c);
   seq.SetSpeed(cfg->speed / 10);
@@ -166,7 +166,7 @@ bool WinCore::ConnectDevices(WinKeyIF* keyb) {
 bool WinCore::SaveSnapshot(const char* filename) {
   LockObj lock(this);
 
-  bool docomp = !!(config.flag2 & Config::compresssnapshot);
+  bool docomp = !!(config.flag2 & Config::kCompressSnapshot);
 
   uint32_t size = devlist.GetStatusSize();
   uint8_t* buf = new uint8_t[docomp ? size * 129 / 64 + 20 : size];
@@ -233,12 +233,13 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
     return false;
 
   // applyconfig
-  const uint32_t fl1a = Config::subcpucontrol | Config::fullspeed |
-                        Config::enableopna | Config::enablepcg | Config::fv15k |
-                        Config::cpuburst | Config::cpuclockmode |
-                        Config::digitalpalette | Config::opnona8 |
-                        Config::opnaona8 | Config::enablewait;
-  const uint32_t fl2a = Config::disableopn44;
+  const uint32_t fl1a = Config::kSubCPUControl | Config::kFullspeed |
+                        Config::kEnableOPNA | Config::kEnablePCG |
+                        Config::kFv15k |
+                        Config::kCPUBurst | Config::kCPUClockMode |
+                        Config::kDigitalPalette | Config::kOPNOnA8 |
+                        Config::kOPNAOnA8 | Config::kEnableWait;
+  const uint32_t fl2a = Config::kDisableOPN44;
 
   config.flags = (config.flags & ~fl1a) | (ssh.flags & fl1a);
   config.flag2 = (config.flag2 & ~fl2a) | (ssh.flag2 & fl2a);

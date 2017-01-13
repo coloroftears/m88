@@ -42,7 +42,7 @@ void LoadConfigDirectory(Config* cfg,
                          const char* inifile,
                          const char* entry,
                          bool readalways) {
-  if (readalways || (cfg->flags & Config::savedirectory)) {
+  if (readalways || (cfg->flags & Config::kSaveDirectory)) {
     char path[MAX_PATH];
     if (GetPrivateProfileString(AppName, entry, ";", path, MAX_PATH, inifile)) {
       if (path[0] != ';')
@@ -63,12 +63,12 @@ void LoadConfigDirectory(Config* cfg,
 void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   int n;
 
-  n = Config::subcpucontrol | Config::savedirectory;
+  n = Config::kSubCPUControl | Config::kSaveDirectory;
   LoadConfigEntry(inifile, "Flags", &cfg->flags, n, applydefault);
-  cfg->flags &= ~Config::specialpalette;
+  cfg->flags &= ~Config::kSpecialPalette;
 
   LoadConfigEntry(inifile, "Flag2", &cfg->flag2, 0, applydefault);
-  cfg->flag2 &= ~(Config::mask0 | Config::mask1 | Config::mask2);
+  cfg->flag2 &= ~(Config::kMask0 | Config::kMask1 | Config::kMask2);
 
   if (LoadConfigEntry(inifile, "CPUClock", &n, 40, applydefault))
     cfg->clock = Limit(n, 1000, 1);

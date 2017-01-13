@@ -103,25 +103,25 @@ LPCSTR ConfigCPU::GetTemplate() {
 bool ConfigCPU::Clicked(HWND hdlg, HWND hwctl, UINT id) {
   switch (id) {
     case IDC_CPU_NOWAIT:
-      config.flags ^= Config::fullspeed;
-      if (config.flags & Config::fullspeed)
-        config.flags &= ~Config::cpuburst;
+      config.flags ^= Config::kFullspeed;
+      if (config.flags & Config::kFullspeed)
+        config.flags &= ~Config::kCPUBurst;
       Update(hdlg);
       return true;
 
     case IDC_CPU_BURST:
-      config.flags ^= Config::cpuburst;
-      if (config.flags & Config::cpuburst)
-        config.flags &= ~Config::fullspeed;
+      config.flags ^= Config::kCPUBurst;
+      if (config.flags & Config::kCPUBurst)
+        config.flags &= ~Config::kFullspeed;
       Update(hdlg);
       return true;
 
     case IDC_CPU_CLOCKMODE:
-      config.flags ^= Config::cpuclockmode;
+      config.flags ^= Config::kCPUClockMode;
       return true;
 
     case IDC_CPU_NOSUBCPUCONTROL:
-      config.flags ^= Config::subcpucontrol;
+      config.flags ^= Config::kSubCPUControl;
       return true;
 
     case IDC_CPU_MS11:
@@ -137,11 +137,11 @@ bool ConfigCPU::Clicked(HWND hdlg, HWND hwctl, UINT id) {
       return true;
 
     case IDC_CPU_ENABLEWAIT:
-      config.flags ^= Config::enablewait;
+      config.flags ^= Config::kEnableWait;
       return true;
 
     case IDC_CPU_FDDNOWAIT:
-      config.flag2 ^= Config::fddnowait;
+      config.flag2 ^= Config::kFDDNoWait;
       return true;
   }
   return false;
@@ -158,7 +158,7 @@ void ConfigCPU::InitDialog(HWND hdlg) {
 }
 
 void ConfigCPU::SetActive(HWND hdlg) {
-  SetFocus(GetDlgItem(hdlg, config.flags & Config::fullspeed
+  SetFocus(GetDlgItem(hdlg, config.flags & Config::kFullspeed
                                 ? IDC_CPU_NOSUBCPUCONTROL
                                 : IDC_CPU_CLOCK));
   SendDlgItemMessage(hdlg, IDC_CPU_CLOCK_SPIN, UDM_SETRANGE, 0,
@@ -186,30 +186,30 @@ BOOL ConfigCPU::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
 void ConfigCPU::Update(HWND hdlg) {
   SetDlgItemInt(hdlg, IDC_CPU_CLOCK, config.clock / 10, false);
   CheckDlgButton(hdlg, IDC_CPU_NOWAIT,
-                 BSTATE(config.flags & Config::fullspeed));
+                 BSTATE(config.flags & Config::kFullspeed));
 
   EnableWindow(GetDlgItem(hdlg, IDC_CPU_CLOCK),
-               !(config.flags & Config::fullspeed));
+               !(config.flags & Config::kFullspeed));
 
   EnableWindow(GetDlgItem(hdlg, IDC_CPU_SPEED),
-               !(config.flags & Config::cpuburst));
+               !(config.flags & Config::kCPUBurst));
   EnableWindow(GetDlgItem(hdlg, IDC_CPU_SPEED_TEXT),
-               !(config.flags & Config::cpuburst));
+               !(config.flags & Config::kCPUBurst));
 
   CheckDlgButton(hdlg, IDC_CPU_NOSUBCPUCONTROL,
-                 BSTATE(!(config.flags & Config::subcpucontrol)));
+                 BSTATE(!(config.flags & Config::kSubCPUControl)));
   CheckDlgButton(hdlg, IDC_CPU_CLOCKMODE,
-                 BSTATE(config.flags & Config::cpuclockmode));
-  CheckDlgButton(hdlg, IDC_CPU_BURST, BSTATE(config.flags & Config::cpuburst));
+                 BSTATE(config.flags & Config::kCPUClockMode));
+  CheckDlgButton(hdlg, IDC_CPU_BURST, BSTATE(config.flags & Config::kCPUBurst));
   CheckDlgButton(hdlg, IDC_CPU_FDDNOWAIT,
-                 BSTATE(!(config.flag2 & Config::fddnowait)));
+                 BSTATE(!(config.flag2 & Config::kFDDNoWait)));
   UpdateSlider(hdlg);
 
   static const int item[4] = {IDC_CPU_MS11, IDC_CPU_MS21, IDC_CPU_MSAUTO,
                               IDC_CPU_MSAUTO};
   CheckDlgButton(hdlg, item[config.cpumode & 3], BSTATE(true));
   CheckDlgButton(hdlg, IDC_CPU_ENABLEWAIT,
-                 BSTATE(config.flags & Config::enablewait));
+                 BSTATE(config.flags & Config::kEnableWait));
 }
 
 void ConfigCPU::UpdateSlider(HWND hdlg) {
@@ -246,31 +246,31 @@ bool ConfigScreen::Clicked(HWND hdlg, HWND hwctl, UINT id) {
       return true;
 
     case IDC_SCREEN_ENABLEPCG:
-      config.flags ^= Config::enablepcg;
+      config.flags ^= Config::kEnablePCG;
       return true;
 
     case IDC_SCREEN_FV15K:
-      config.flags ^= Config::fv15k;
+      config.flags ^= Config::kFv15k;
       return true;
 
     case IDC_SCREEN_DIGITALPAL:
-      config.flags ^= Config::digitalpalette;
+      config.flags ^= Config::kDigitalPalette;
       return true;
 
     case IDC_SCREEN_FORCE480:
-      config.flags ^= Config::force480;
+      config.flags ^= Config::kForce480;
       return true;
 
     case IDC_SCREEN_LOWPRIORITY:
-      config.flags ^= Config::drawprioritylow;
+      config.flags ^= Config::kDrawPriorityLow;
       return true;
 
     case IDC_SCREEN_FULLLINE:
-      config.flags ^= Config::fullline;
+      config.flags ^= Config::kFullline;
       return true;
 
     case IDC_SCREEN_VSYNC:
-      config.flag2 ^= Config::synctovsync;
+      config.flag2 ^= Config::kSyncToVSync;
       return true;
   }
   return false;
@@ -283,21 +283,21 @@ void ConfigScreen::Update(HWND hdlg) {
 
   // misc. option
   CheckDlgButton(hdlg, IDC_SCREEN_ENABLEPCG,
-                 BSTATE(config.flags & Config::enablepcg));
-  CheckDlgButton(hdlg, IDC_SCREEN_FV15K, BSTATE(config.flags & Config::fv15k));
+                 BSTATE(config.flags & Config::kEnablePCG));
+  CheckDlgButton(hdlg, IDC_SCREEN_FV15K, BSTATE(config.flags & Config::kFv15k));
   CheckDlgButton(hdlg, IDC_SCREEN_DIGITALPAL,
-                 BSTATE(config.flags & Config::digitalpalette));
+                 BSTATE(config.flags & Config::kDigitalPalette));
   CheckDlgButton(hdlg, IDC_SCREEN_FORCE480,
-                 BSTATE(config.flags & Config::force480));
+                 BSTATE(config.flags & Config::kForce480));
   CheckDlgButton(hdlg, IDC_SCREEN_LOWPRIORITY,
-                 BSTATE(config.flags & Config::drawprioritylow));
+                 BSTATE(config.flags & Config::kDrawPriorityLow));
   CheckDlgButton(hdlg, IDC_SCREEN_FULLLINE,
-                 BSTATE(config.flags & Config::fullline));
+                 BSTATE(config.flags & Config::kFullline));
 
-  bool f = (config.flags & Config::fullspeed) ||
-           (config.flags & Config::cpuburst) || (config.speed != 1000);
+  bool f = (config.flags & Config::kFullspeed) ||
+           (config.flags & Config::kCPUBurst) || (config.speed != 1000);
   CheckDlgButton(hdlg, IDC_SCREEN_VSYNC,
-                 BSTATE(config.flag2 & Config::synctovsync));
+                 BSTATE(config.flag2 & Config::kSyncToVSync));
   EnableWindow(GetDlgItem(hdlg, IDC_SCREEN_VSYNC), BSTATE(!f));
 }
 
@@ -311,46 +311,46 @@ LPCSTR ConfigSound::GetTemplate() {
 bool ConfigSound::Clicked(HWND hdlg, HWND hwctl, UINT id) {
   switch (id) {
     case IDC_SOUND44_OPN:
-      config.flags &= ~Config::enableopna;
-      config.flag2 &= ~Config::disableopn44;
+      config.flags &= ~Config::kEnableOPNA;
+      config.flag2 &= ~Config::kDisableOPN44;
       return true;
 
     case IDC_SOUND44_OPNA:
-      config.flags |= Config::enableopna;
-      config.flag2 &= ~Config::disableopn44;
+      config.flags |= Config::kEnableOPNA;
+      config.flag2 &= ~Config::kDisableOPN44;
       return true;
 
     case IDC_SOUND44_NONE:
-      config.flags &= ~Config::enableopna;
-      config.flag2 |= Config::disableopn44;
+      config.flags &= ~Config::kEnableOPNA;
+      config.flag2 |= Config::kDisableOPN44;
       return true;
 
     case IDC_SOUNDA8_OPN:
-      config.flags = (config.flags & ~Config::opnaona8) | Config::opnona8;
+      config.flags = (config.flags & ~Config::kOPNAOnA8) | Config::kOPNOnA8;
       return true;
 
     case IDC_SOUNDA8_OPNA:
-      config.flags = (config.flags & ~Config::opnona8) | Config::opnaona8;
+      config.flags = (config.flags & ~Config::kOPNOnA8) | Config::kOPNAOnA8;
       return true;
 
     case IDC_SOUNDA8_NONE:
-      config.flags = config.flags & ~(Config::opnaona8 | Config::opnona8);
+      config.flags = config.flags & ~(Config::kOPNAOnA8 | Config::kOPNOnA8);
       return true;
 
     case IDC_SOUND_CMDSING:
-      config.flags ^= Config::disablesing;
+      config.flags ^= Config::kDisableSing;
       return true;
 
     case IDC_SOUND_MIXALWAYS:
-      config.flags ^= Config::mixsoundalways;
+      config.flags ^= Config::kMixSoundAlways;
       return true;
 
     case IDC_SOUND_PRECISEMIX:
-      config.flags ^= Config::precisemixing;
+      config.flags ^= Config::kPreciseMixing;
       return true;
 
     case IDC_SOUND_WAVEOUT:
-      config.flag2 ^= Config::usewaveoutdrv;
+      config.flag2 ^= Config::kUseWaveOutDrv;
       return true;
 
     case IDC_SOUND_NOSOUND:
@@ -386,19 +386,19 @@ bool ConfigSound::Clicked(HWND hdlg, HWND hwctl, UINT id) {
       return true;
 
     case IDC_SOUND_FMFREQ:
-      config.flag2 ^= Config::usefmclock;
+      config.flag2 ^= Config::kUseFMClock;
       return true;
 
     case IDC_SOUND_USENOTIFY:
-      config.flag2 ^= Config::usedsnotify;
+      config.flag2 ^= Config::kUseDSNotify;
       return true;
 
     case IDC_SOUND_LPF:
-      config.flag2 ^= Config::lpfenable;
+      config.flag2 ^= Config::kLPFEnable;
       EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFFC),
-                   !!(config.flag2 & Config::lpfenable));
+                   !!(config.flag2 & Config::kLPFEnable));
       EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFORDER),
-                   !!(config.flag2 & Config::lpfenable));
+                   !!(config.flag2 & Config::kLPFEnable));
       return true;
   }
   return false;
@@ -407,15 +407,15 @@ bool ConfigSound::Clicked(HWND hdlg, HWND hwctl, UINT id) {
 void ConfigSound::InitDialog(HWND hdlg) {
   config.soundbuffer = orgconfig.soundbuffer;
   CheckDlgButton(hdlg,
-                 config.flag2 & Config::disableopn44
+                 config.flag2 & Config::kDisableOPN44
                      ? IDC_SOUND44_NONE
-                     : (config.flags & Config::enableopna ? IDC_SOUND44_OPNA
-                                                          : IDC_SOUND44_OPN),
+                     : (config.flags & Config::kEnableOPNA ? IDC_SOUND44_OPNA
+                                                           : IDC_SOUND44_OPN),
                  BSTATE(true));
   CheckDlgButton(hdlg,
-                 config.flags & Config::opnaona8
+                 config.flags & Config::kOPNAOnA8
                      ? IDC_SOUNDA8_OPNA
-                     : (config.flags & Config::opnona8 ? IDC_SOUNDA8_OPN
+                     : (config.flags & Config::kOPNOnA8 ? IDC_SOUNDA8_OPN
                                                        : IDC_SOUNDA8_NONE),
                  BSTATE(true));
 }
@@ -481,27 +481,27 @@ void ConfigSound::Update(HWND hdlg) {
   CheckDlgButton(hdlg, IDC_SOUND_96K, BSTATE(config.sound == 96000));
 
   CheckDlgButton(hdlg, IDC_SOUND_CMDSING,
-                 BSTATE(!(config.flags & Config::disablesing)));
+                 BSTATE(!(config.flags & Config::kDisableSing)));
   CheckDlgButton(hdlg, IDC_SOUND_MIXALWAYS,
-                 BSTATE(config.flags & Config::mixsoundalways));
+                 BSTATE(config.flags & Config::kMixSoundAlways));
   CheckDlgButton(hdlg, IDC_SOUND_PRECISEMIX,
-                 BSTATE(config.flags & Config::precisemixing));
+                 BSTATE(config.flags & Config::kPreciseMixing));
   CheckDlgButton(hdlg, IDC_SOUND_WAVEOUT,
-                 BSTATE(config.flag2 & Config::usewaveoutdrv));
+                 BSTATE(config.flag2 & Config::kUseWaveOutDrv));
   CheckDlgButton(hdlg, IDC_SOUND_FMFREQ,
-                 BSTATE(config.flag2 & Config::usefmclock));
-  CheckDlgButton(hdlg, IDC_SOUND_LPF, BSTATE(config.flag2 & Config::lpfenable));
+                 BSTATE(config.flag2 & Config::kUseFMClock));
+  CheckDlgButton(hdlg, IDC_SOUND_LPF, BSTATE(config.flag2 & Config::kLPFEnable));
   CheckDlgButton(hdlg, IDC_SOUND_USENOTIFY,
-                 BSTATE(config.flag2 & Config::usedsnotify));
+                 BSTATE(config.flag2 & Config::kUseDSNotify));
 
   SetDlgItemInt(hdlg, IDC_SOUND_BUFFER, config.soundbuffer, false);
   SetDlgItemInt(hdlg, IDC_SOUND_LPFFC, config.lpffc / 1000, false);
   SetDlgItemInt(hdlg, IDC_SOUND_LPFORDER, config.lpforder, false);
 
   EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFFC),
-               !!(config.flag2 & Config::lpfenable));
+               !!(config.flag2 & Config::kLPFEnable));
   EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFORDER),
-               !!(config.flag2 & Config::lpfenable));
+               !!(config.flag2 & Config::kLPFEnable));
 }
 
 // ---------------------------------------------------------------------------
@@ -636,56 +636,56 @@ LPCSTR ConfigFunction::GetTemplate() {
 bool ConfigFunction::Clicked(HWND hdlg, HWND hwctl, UINT id) {
   switch (id) {
     case IDC_FUNCTION_SAVEDIR:
-      config.flags ^= Config::savedirectory;
+      config.flags ^= Config::kSaveDirectory;
       return true;
 
     case IDC_FUNCTION_ASKBEFORERESET:
-      config.flags ^= Config::askbeforereset;
+      config.flags ^= Config::kAskBeforeReset;
       return true;
 
     case IDC_FUNCTION_SUPPRESSMENU:
-      config.flags ^= Config::suppressmenu;
-      if (config.flags & Config::suppressmenu)
-        config.flags &= ~Config::enablemouse;
+      config.flags ^= Config::kSuppressMenu;
+      if (config.flags & Config::kSuppressMenu)
+        config.flags &= ~Config::kEnableMouse;
       Update(hdlg);
       return true;
 
     case IDC_FUNCTION_USEARROWFOR10:
-      config.flags ^= Config::usearrowfor10;
+      config.flags ^= Config::kUseArrowFor10;
       return true;
 
     case IDC_FUNCTION_SWAPPADBUTTONS:
-      config.flags ^= Config::swappadbuttons;
+      config.flags ^= Config::kSwappedButtons;
       return true;
 
     case IDC_FUNCTION_ENABLEPAD:
-      config.flags ^= Config::enablepad;
-      if (config.flags & Config::enablepad)
-        config.flags &= ~Config::enablemouse;
+      config.flags ^= Config::kEnablePad;
+      if (config.flags & Config::kEnablePad)
+        config.flags &= ~Config::kEnableMouse;
       Update(hdlg);
       return true;
 
     case IDC_FUNCTION_ENABLEMOUSE:
-      config.flags ^= Config::enablemouse;
-      if (config.flags & Config::enablemouse)
-        config.flags &= ~(Config::enablepad | Config::suppressmenu);
+      config.flags ^= Config::kEnableMouse;
+      if (config.flags & Config::kEnableMouse)
+        config.flags &= ~(Config::kEnablePad | Config::kSuppressMenu);
       Update(hdlg);
       return true;
 
     case IDC_FUNCTION_RESETF12:
-      config.flags ^= Config::disablef12reset;
+      config.flags ^= Config::kDisableF12Reset;
       return true;
 
     case IDC_FUNCTION_MOUSEJOY:
-      config.flags ^= Config::mousejoymode;
+      config.flags ^= Config::kMouseJoyMode;
       return true;
 
     case IDC_FUNCTION_SCREENSHOT_NAME:
-      config.flag2 ^= Config::genscrnshotname;
+      config.flag2 ^= Config::kGenScrnshotName;
       return true;
 
     case IDC_FUNCTION_COMPSNAP:
-      config.flag2 ^= Config::compresssnapshot;
+      config.flag2 ^= Config::kCompressSnapshot;
       return true;
   }
   return false;
@@ -708,31 +708,31 @@ void ConfigFunction::SetActive(HWND hdlg) {
 
 void ConfigFunction::Update(HWND hdlg) {
   CheckDlgButton(hdlg, IDC_FUNCTION_SAVEDIR,
-                 BSTATE(config.flags & Config::savedirectory));
+                 BSTATE(config.flags & Config::kSaveDirectory));
   CheckDlgButton(hdlg, IDC_FUNCTION_ASKBEFORERESET,
-                 BSTATE(config.flags & Config::askbeforereset));
+                 BSTATE(config.flags & Config::kAskBeforeReset));
   CheckDlgButton(hdlg, IDC_FUNCTION_SUPPRESSMENU,
-                 BSTATE(config.flags & Config::suppressmenu));
+                 BSTATE(config.flags & Config::kSuppressMenu));
   CheckDlgButton(hdlg, IDC_FUNCTION_USEARROWFOR10,
-                 BSTATE(config.flags & Config::usearrowfor10));
+                 BSTATE(config.flags & Config::kUseArrowFor10));
   CheckDlgButton(hdlg, IDC_FUNCTION_ENABLEPAD,
-                 BSTATE(config.flags & Config::enablepad) != 0);
+                 BSTATE(config.flags & Config::kEnablePad) != 0);
   EnableWindow(GetDlgItem(hdlg, IDC_FUNCTION_SWAPPADBUTTONS),
-               (config.flags & Config::enablepad));
+               (config.flags & Config::kEnablePad));
   CheckDlgButton(hdlg, IDC_FUNCTION_SWAPPADBUTTONS,
-                 BSTATE(config.flags & Config::swappadbuttons));
+                 BSTATE(config.flags & Config::kSwappedButtons));
   CheckDlgButton(hdlg, IDC_FUNCTION_RESETF12,
-                 BSTATE(!(config.flags & Config::disablef12reset)));
+                 BSTATE(!(config.flags & Config::kDisableF12Reset)));
   CheckDlgButton(hdlg, IDC_FUNCTION_ENABLEMOUSE,
-                 BSTATE(config.flags & Config::enablemouse));
+                 BSTATE(config.flags & Config::kEnableMouse));
   CheckDlgButton(hdlg, IDC_FUNCTION_MOUSEJOY,
-                 BSTATE(config.flags & Config::mousejoymode));
+                 BSTATE(config.flags & Config::kMouseJoyMode));
   EnableWindow(GetDlgItem(hdlg, IDC_FUNCTION_MOUSEJOY),
-               (config.flags & Config::enablemouse) != 0);
+               (config.flags & Config::kEnableMouse) != 0);
   CheckDlgButton(hdlg, IDC_FUNCTION_SCREENSHOT_NAME,
-                 BSTATE(config.flag2 & Config::genscrnshotname));
+                 BSTATE(config.flag2 & Config::kGenScrnshotName));
   CheckDlgButton(hdlg, IDC_FUNCTION_COMPSNAP,
-                 BSTATE(config.flag2 & Config::compresssnapshot));
+                 BSTATE(config.flag2 & Config::kCompressSnapshot));
 }
 
 void ConfigFunction::UpdateSlider(HWND hdlg) {
@@ -795,7 +795,7 @@ bool ConfigEnv::Clicked(HWND hdlg, HWND hwctl, UINT id) {
       return true;
 
     case IDC_ENV_PLACESBAR:
-      config.flag2 ^= Config::showplacesbar;
+      config.flag2 ^= Config::kShowPlacesBar;
       return true;
   }
   return false;
@@ -805,7 +805,7 @@ void ConfigEnv::Update(HWND hdlg) {
   static const int item[2] = {IDC_ENV_KEY106, IDC_ENV_KEY98};
   CheckDlgButton(hdlg, item[(config.keytype) & 1], BSTATE(true));
   CheckDlgButton(hdlg, IDC_ENV_PLACESBAR,
-                 BSTATE(config.flag2 & Config::showplacesbar));
+                 BSTATE(config.flag2 & Config::kShowPlacesBar));
 }
 
 // ---------------------------------------------------------------------------

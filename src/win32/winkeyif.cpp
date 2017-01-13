@@ -60,7 +60,7 @@ void IOCALL WinKeyIF::Reset(uint32_t, uint32_t) {
 //  設定反映
 //
 void WinKeyIF::ApplyConfig(const Config* config) {
-  usearrow = 0 != (config->flags & Config::usearrowfor10);
+  usearrow = 0 != (config->flags & Config::kUseArrowFor10);
   basicmode = config->basicmode;
 
   switch (config->keytype) {
