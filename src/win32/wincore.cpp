@@ -233,12 +233,11 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
     return false;
 
   // applyconfig
-  const uint32_t fl1a = Config::kSubCPUControl | Config::kFullspeed |
-                        Config::kEnableOPNA | Config::kEnablePCG |
-                        Config::kFv15k |
-                        Config::kCPUBurst | Config::kCPUClockMode |
-                        Config::kDigitalPalette | Config::kOPNOnA8 |
-                        Config::kOPNAOnA8 | Config::kEnableWait;
+  const uint32_t fl1a =
+      Config::kSubCPUControl | Config::kFullspeed | Config::kEnableOPNA |
+      Config::kEnablePCG | Config::kFv15k | Config::kCPUBurst |
+      Config::kCPUClockMode | Config::kDigitalPalette | Config::kOPNOnA8 |
+      Config::kOPNAOnA8 | Config::kEnableWait;
   const uint32_t fl2a = Config::kDisableOPN44;
 
   config.flags = (config.flags & ~fl1a) | (ssh.flags & fl1a);

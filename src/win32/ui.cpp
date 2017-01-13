@@ -317,8 +317,8 @@ LRESULT CALLBACK WinUI::WinProcGate(HWND hwnd,
 //  WinUI::M88SendKeyState
 //
 inline uint32_t WinUI::OnM88SendKeyState(HWND hwnd,
-                                       WPARAM wparam,
-                                       LPARAM lparam) {
+                                         WPARAM wparam,
+                                         LPARAM lparam) {
   uint8_t* dest = reinterpret_cast<uint8_t*>(wparam);
   GetKeyboardState(dest);
   SetEvent((HANDLE)lparam);
@@ -376,8 +376,7 @@ uint32_t WinUI::OnActivate(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if (prev_bg != background_) {
     // core.ActivateMouse(!background_);
     OnM88ClipCursor(hwnd,
-                    background_ ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE,
-                    0);
+                    background_ ? CLIPCURSOR_RELEASE : -CLIPCURSOR_RELEASE, 0);
     draw.SetGUIFlag(background_);
   }
   snapshotchanged = true;

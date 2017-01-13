@@ -658,8 +658,9 @@ void PC88::ApplyConfig(Config* cfg) {
     cpumode |= stopwhenidle;
 
   if (cfg->flags & pc88::Config::kEnablePad) {
-    joypad->SetButtonMode(cfg->flags & Config::kSwappedButtons ? JoyPad::SWAPPED
-                                                              : JoyPad::NORMAL);
+    joypad->SetButtonMode(cfg->flags & Config::kSwappedButtons
+                              ? JoyPad::SWAPPED
+                              : JoyPad::NORMAL);
   } else {
     joypad->SetButtonMode(JoyPad::DISABLED);
   }

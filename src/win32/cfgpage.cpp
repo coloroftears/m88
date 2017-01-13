@@ -416,7 +416,7 @@ void ConfigSound::InitDialog(HWND hdlg) {
                  config.flags & Config::kOPNAOnA8
                      ? IDC_SOUNDA8_OPNA
                      : (config.flags & Config::kOPNOnA8 ? IDC_SOUNDA8_OPN
-                                                       : IDC_SOUNDA8_NONE),
+                                                        : IDC_SOUNDA8_NONE),
                  BSTATE(true));
 }
 
@@ -490,7 +490,8 @@ void ConfigSound::Update(HWND hdlg) {
                  BSTATE(config.flag2 & Config::kUseWaveOutDrv));
   CheckDlgButton(hdlg, IDC_SOUND_FMFREQ,
                  BSTATE(config.flag2 & Config::kUseFMClock));
-  CheckDlgButton(hdlg, IDC_SOUND_LPF, BSTATE(config.flag2 & Config::kLPFEnable));
+  CheckDlgButton(hdlg, IDC_SOUND_LPF,
+                 BSTATE(config.flag2 & Config::kLPFEnable));
   CheckDlgButton(hdlg, IDC_SOUND_USENOTIFY,
                  BSTATE(config.flag2 & Config::kUseDSNotify));
 
