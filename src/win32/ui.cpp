@@ -780,7 +780,7 @@ uint32_t WinUI::OnInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
   EnableMenuItem(hmenu, IDM_N88V2CD,
                  core.IsCDSupported() ? MF_ENABLED : MF_GRAYED);
 
-  CheckMenuItem(hmenu, IDM_WATCHREGISTER, (config.dipsw != 1 && regmon.IsOpen())
+  CheckMenuItem(hmenu, IDM_WATCHREGISTER, (config.dipsw() != 1 && regmon.IsOpen())
                                               ? MF_CHECKED
                                               : MF_UNCHECKED);
   CheckMenuItem(hmenu, IDM_STATUSBAR, (config.flags & Config::kShowStatusBar)
@@ -873,8 +873,8 @@ uint32_t WinUI::OnM88ApplyConfig(HWND, WPARAM newconfig, LPARAM) {
 //
 void WinUI::ApplyConfig() {
   config.mainsubratio =
-      (config.clock >= 60 || (config.flags & Config::kFullspeed)) ? 2 : 1;
-  if (config.dipsw != 1) {
+      (config.clock() >= 60 || (config.flags & Config::kFullspeed)) ? 2 : 1;
+  if (config.dipsw() != 1) {
     config.flags &= ~Config::kSpecialPalette;
     config.flag2 &= ~(Config::kMask0 | Config::kMask1 | Config::kMask2);
   }
@@ -893,7 +893,7 @@ void WinUI::ApplyConfig() {
   SetMenuItemInfo(GetMenu(hwnd), IDM_RESET, false, &mii);
   ShowStatusWindow();
 
-  if (config.dipsw == 1) {
+  if (config.dipsw() == 1) {
     if (!hmenudbg) {
       hmenudbg = LoadMenu(hinst, MAKEINTRESOURCE(IDR_MENU_DEBUG));
 
@@ -1772,7 +1772,7 @@ void WinUI::ApplyCommandLine(const char* cmdline) {
 
         // clock を設定  -cクロック
         case 'c':
-          config.clock = Limit(strtoul(cmdline, &endptr, 10), 100, 1) * 10;
+          config.set_clock(Limit(strtoul(cmdline, &endptr, 10), 100, 1) * 10);
           cmdline = endptr;
           change = true;
           break;

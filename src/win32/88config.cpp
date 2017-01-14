@@ -71,11 +71,9 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   cfg->flag2 &= ~(Config::kMask0 | Config::kMask1 | Config::kMask2);
 
   if (LoadConfigEntry(inifile, "CPUClock", &n, 40, applydefault))
-    cfg->clock = Limit(n, 1000, 1);
+    cfg->set_clock(Limit(n, 1000, 1));
 
-  //  if (LoadConfigEntry(inifile, "Speed", &n, 1000, applydefault))
-  //      cfg->speed = Limit(n, 2000, 500);
-  cfg->speed = 1000;
+  cfg->set_speed(1000);
 
   if (LoadConfigEntry(inifile, "RefreshTiming", &n, 3, applydefault))
     cfg->refreshtiming = Limit(n, 4, 1);
@@ -98,17 +96,15 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
       cfg->sound = Limit(n, 55466 * 2, 8000);
   }
 
-  if (LoadConfigEntry(inifile, "OPNClock", &n, 3993600, applydefault))
-    cfg->opnclock = Limit(n, 10000000, 1000000);
-
   if (LoadConfigEntry(inifile, "ERAMBank", &n, 4, applydefault))
     cfg->erambanks = Limit(n, 256, 0);
 
   if (LoadConfigEntry(inifile, "KeyboardType", &n, 0, applydefault))
-    cfg->keytype = Config::KeyType(n);
+    cfg->keytype = static_cast<Config::KeyType>(n);
 
-  if (LoadConfigEntry(inifile, "Switches", &n, 1829, applydefault))
-    cfg->dipsw = n;
+  if (LoadConfigEntry(inifile, "Switches", &n,
+                      DipSwitch::DefaultValue(), applydefault))
+    cfg->set_dipsw(n);
 
   if (LoadConfigEntry(inifile, "SoundBuffer", &n, 200, applydefault))
     cfg->soundbuffer = Limit(n, 1000, 50);
@@ -118,12 +114,6 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
 
   if (LoadConfigEntry(inifile, "CPUMode", &n, Config::msauto, applydefault))
     cfg->cpumode = Limit(n, 2, 0);
-
-  if (LoadConfigEntry(inifile, "LPFCutoff", &n, 8000, applydefault))
-    cfg->lpffc = Limit(n, 24000, 3000);
-
-  if (LoadConfigEntry(inifile, "LPFOrder", &n, 4, applydefault))
-    cfg->lpforder = Limit(n, 16, 2);
 
   if (LoadConfigEntry(inifile, "ROMEOLatency", &n, 100, applydefault))
     cfg->romeolatency = Limit(n, 500, 0);
@@ -182,19 +172,16 @@ void SaveConfig(Config* cfg, const char* inifile, bool writedefault) {
 
   SaveEntry(inifile, "Flags", cfg->flags, writedefault);
   SaveEntry(inifile, "Flag2", cfg->flag2, writedefault);
-  SaveEntry(inifile, "CPUClock", cfg->clock, writedefault);
-  //  SaveEntry(inifile, "Speed", cfg->speed, writedefault);
+  SaveEntry(inifile, "CPUClock", cfg->clock(), writedefault);
   SaveEntry(inifile, "RefreshTiming", cfg->refreshtiming, writedefault);
   SaveEntry(inifile, "BASICMode", cfg->basicmode, writedefault);
   SaveEntry(inifile, "Sound", cfg->sound, writedefault);
-  SaveEntry(inifile, "Switches", cfg->dipsw, writedefault);
+  SaveEntry(inifile, "Switches", cfg->dipsw(), writedefault);
   SaveEntry(inifile, "SoundBuffer", cfg->soundbuffer, writedefault);
   SaveEntry(inifile, "MouseSensibility", cfg->mousesensibility, writedefault);
   SaveEntry(inifile, "CPUMode", cfg->cpumode, writedefault);
   SaveEntry(inifile, "KeyboardType", cfg->keytype, writedefault);
   SaveEntry(inifile, "ERAMBank", cfg->erambanks, writedefault);
-  SaveEntry(inifile, "LPFCutoff", cfg->lpffc, writedefault);
-  SaveEntry(inifile, "LPFOrder", cfg->lpforder, writedefault);
   SaveEntry(inifile, "ROMEOLatency", cfg->romeolatency, writedefault);
 
   SaveEntry(inifile, "VolumeFM", cfg->volfm + VOLUME_BIAS, writedefault);

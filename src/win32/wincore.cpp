@@ -106,13 +106,13 @@ void WinCore::Reset() {
 void WinCore::ApplyConfig(pc88::Config* cfg) {
   config = *cfg;
 
-  int c = cfg->clock;
+  int clock = cfg->clock();
   if (cfg->flags & pc88::Config::kFullspeed)
-    c = 0;
+    clock = 0;
   if (cfg->flags & pc88::Config::kCPUBurst)
-    c = -c;
-  seq.SetClock(c);
-  seq.SetSpeed(cfg->speed / 10);
+    clock = -clock;
+  seq.SetClock(clock);
+  seq.SetSpeed(cfg->speed() / 10);
   seq.SetRefreshTiming(cfg->refreshtiming);
 
   if (joypad)
@@ -192,7 +192,7 @@ bool WinCore::SaveSnapshot(const char* filename) {
     ssh.minor = ssminor;
     ssh.datasize = size;
     ssh.basicmode = config.basicmode;
-    ssh.clock = int16_t(config.clock);
+    ssh.clock = int16_t(config.clock());
     ssh.erambanks = uint16_t(config.erambanks);
     ssh.cpumode = int16_t(config.cpumode);
     ssh.mainsubratio = int16_t(config.mainsubratio);
@@ -243,7 +243,7 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
   config.flags = (config.flags & ~fl1a) | (ssh.flags & fl1a);
   config.flag2 = (config.flag2 & ~fl2a) | (ssh.flag2 & fl2a);
   config.basicmode = ssh.basicmode;
-  config.clock = ssh.clock;
+  config.set_clock(ssh.clock);
   config.erambanks = ssh.erambanks;
   config.cpumode = ssh.cpumode;
   config.mainsubratio = ssh.mainsubratio;

@@ -52,8 +52,8 @@ bool Base::Init(PC88* pc88) {
 //
 void Base::SetSwitch(const Config* cfg) {
   bmode = cfg->basicmode;
-  clock = cfg->clock;
-  dipsw = cfg->dipsw;
+  clock = cfg->clock();
+  dipsw = cfg->dipsw();
   flags = cfg->flags;
   fv15k = cfg->IsFV15k();
 }
@@ -62,7 +62,8 @@ void Base::SetSwitch(const Config* cfg) {
 //  りせっと
 //
 void IOCALL Base::Reset(uint32_t, uint32_t) {
-  port40 = 0xc0 + (fv15k ? 2 : 0) + ((dipsw & (1 << 11)) || !autoboot ? 8 : 0);
+  port40 = 0xc0 + (fv15k ? 2 : 0) +
+           ((dipsw & DipSwitch::kBootFromFDD) || !autoboot ? 8 : 0);
   sw6e = (sw6e & 0x7f) | ((!clock || abs(clock) >= 60) ? 0 : 0x80);
   sw31 = ((dipsw >> 5) & 0x3f) | (bmode & 1 ? 0x40 : 0) |
          (bmode & 0x10 ? 0 : 0x80);

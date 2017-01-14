@@ -148,13 +148,13 @@ bool ConfigCPU::Clicked(HWND hdlg, HWND hwctl, UINT id) {
 }
 
 void ConfigCPU::InitDialog(HWND hdlg) {
-  config.clock = orgconfig.clock;
-  config.speed = orgconfig.speed;
+  config.set_clock(orgconfig.clock());
+  config.set_speed(orgconfig.speed());
   SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_SETLINESIZE, 0, 1);
   SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_SETPAGESIZE, 0, 2);
   SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_SETRANGE, TRUE, MAKELONG(2, 20));
   SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_SETPOS, FALSE,
-                     config.speed / 100);
+                     config.speed() / 100);
 }
 
 void ConfigCPU::SetActive(HWND hdlg) {
@@ -173,9 +173,9 @@ BOOL ConfigCPU::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
       if (nc == EN_CHANGE) {
         int clock =
             Limit(GetDlgItemInt(hdlg, IDC_CPU_CLOCK, 0, false), 100, 1) * 10;
-        if (clock != config.clock)
+        if (clock != config.clock())
           base->PageChanged(hdlg);
-        config.clock = clock;
+        config.set_clock(clock);
         return TRUE;
       }
       break;
@@ -184,7 +184,7 @@ BOOL ConfigCPU::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
 }
 
 void ConfigCPU::Update(HWND hdlg) {
-  SetDlgItemInt(hdlg, IDC_CPU_CLOCK, config.clock / 10, false);
+  SetDlgItemInt(hdlg, IDC_CPU_CLOCK, config.clock() / 10, false);
   CheckDlgButton(hdlg, IDC_CPU_NOWAIT,
                  BSTATE(config.flags & Config::kFullspeed));
 
@@ -214,9 +214,9 @@ void ConfigCPU::Update(HWND hdlg) {
 
 void ConfigCPU::UpdateSlider(HWND hdlg) {
   char buf[8];
-  config.speed =
-      SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_GETPOS, 0, 0) * 100;
-  wsprintf(buf, "%d%%", config.speed / 10);
+  config.set_speed(
+      SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_GETPOS, 0, 0) * 100);
+  wsprintf(buf, "%d%%", config.speed() / 10);
   SetDlgItemText(hdlg, IDC_CPU_SPEED_TEXT, buf);
 }
 
@@ -295,7 +295,7 @@ void ConfigScreen::Update(HWND hdlg) {
                  BSTATE(config.flags & Config::kFullline));
 
   bool f = (config.flags & Config::kFullspeed) ||
-           (config.flags & Config::kCPUBurst) || (config.speed != 1000);
+           (config.flags & Config::kCPUBurst) || (config.speed() != 1000);
   CheckDlgButton(hdlg, IDC_SCREEN_VSYNC,
                  BSTATE(config.flag2 & Config::kSyncToVSync));
   EnableWindow(GetDlgItem(hdlg, IDC_SCREEN_VSYNC), BSTATE(!f));
@@ -392,14 +392,6 @@ bool ConfigSound::Clicked(HWND hdlg, HWND hwctl, UINT id) {
     case IDC_SOUND_USENOTIFY:
       config.flag2 ^= Config::kUseDSNotify;
       return true;
-
-    case IDC_SOUND_LPF:
-      config.flag2 ^= Config::kLPFEnable;
-      EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFFC),
-                   !!(config.flag2 & Config::kLPFEnable));
-      EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFORDER),
-                   !!(config.flag2 & Config::kLPFEnable));
-      return true;
   }
   return false;
 }
@@ -443,29 +435,6 @@ BOOL ConfigSound::Command(HWND hdlg, HWND hwctl, UINT nc, UINT id) {
         return TRUE;
       }
       break;
-
-    case IDC_SOUND_LPFFC:
-      if (nc == EN_CHANGE) {
-        uint32_t buf =
-            Limit(GetDlgItemInt(hdlg, IDC_SOUND_LPFFC, 0, false), 24, 3) * 1000;
-        if (buf != config.lpffc)
-          base->PageChanged(hdlg);
-        config.lpffc = buf;
-        return TRUE;
-      }
-      break;
-
-    case IDC_SOUND_LPFORDER:
-      if (nc == EN_CHANGE) {
-        uint32_t buf =
-            Limit(GetDlgItemInt(hdlg, IDC_SOUND_LPFORDER, 0, false), 16, 2) /
-            2 * 2;
-        if (buf != config.lpforder)
-          base->PageChanged(hdlg);
-        config.lpforder = buf;
-        return TRUE;
-      }
-      break;
   }
   return FALSE;
 }
@@ -490,19 +459,10 @@ void ConfigSound::Update(HWND hdlg) {
                  BSTATE(config.flag2 & Config::kUseWaveOutDrv));
   CheckDlgButton(hdlg, IDC_SOUND_FMFREQ,
                  BSTATE(config.flag2 & Config::kUseFMClock));
-  CheckDlgButton(hdlg, IDC_SOUND_LPF,
-                 BSTATE(config.flag2 & Config::kLPFEnable));
   CheckDlgButton(hdlg, IDC_SOUND_USENOTIFY,
                  BSTATE(config.flag2 & Config::kUseDSNotify));
 
   SetDlgItemInt(hdlg, IDC_SOUND_BUFFER, config.soundbuffer, false);
-  SetDlgItemInt(hdlg, IDC_SOUND_LPFFC, config.lpffc / 1000, false);
-  SetDlgItemInt(hdlg, IDC_SOUND_LPFORDER, config.lpforder, false);
-
-  EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFFC),
-               !!(config.flag2 & Config::kLPFEnable));
-  EnableWindow(GetDlgItem(hdlg, IDC_SOUND_LPFORDER),
-               !!(config.flag2 & Config::kLPFEnable));
 }
 
 // ---------------------------------------------------------------------------
@@ -754,15 +714,15 @@ bool ConfigSwitch::Clicked(HWND hdlg, HWND hwctl, UINT id) {
     int s = (id - IDC_DIPSW_1H) & 1;
 
     if (!s)  // ON
-      config.dipsw &= ~(1 << n);
+      config.clear_dipsw_bit(n);
     else
-      config.dipsw |= 1 << n;
+      config.set_dipsw_bit(n);
     return true;
   }
 
   switch (id) {
     case IDC_DIPSW_DEFAULT:
-      config.dipsw = 1829;
+      config.set_dipsw(DipSwitch::DefaultValue());
       Update(hdlg);
       return true;
   }
@@ -771,10 +731,8 @@ bool ConfigSwitch::Clicked(HWND hdlg, HWND hwctl, UINT id) {
 
 void ConfigSwitch::Update(HWND hdlg) {
   for (int i = 0; i < 12; i++) {
-    CheckDlgButton(hdlg, IDC_DIPSW_1L + i * 2,
-                   BSTATE(0 != (config.dipsw & (1 << i))));
-    CheckDlgButton(hdlg, IDC_DIPSW_1H + i * 2,
-                   BSTATE(0 == (config.dipsw & (1 << i))));
+    CheckDlgButton(hdlg, IDC_DIPSW_1L + i * 2, config.is_dipsw_on(i));
+    CheckDlgButton(hdlg, IDC_DIPSW_1H + i * 2, !config.is_dipsw_on(i));
   }
 }
 
