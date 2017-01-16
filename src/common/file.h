@@ -8,14 +8,19 @@
 
 #pragma once
 
+#ifdef WIN32
 #include <windows.h>
+#define NativeFileHandle HANDLE
+#else
+#include <stdio.h>
+#define NativeFileHandle FILE*
+#define MAX_PATH 1024
+#endif
 
 #include <stdint.h>
 #include <stdlib.h>
 
-// ---------------------------------------------------------------------------
-
-class FileIO {
+class FileIO final {
  public:
   enum Flags {
     open = 0x000001,
@@ -31,7 +36,6 @@ class FileIO {
 
   enum Error { success = 0, file_not_found, sharing_violation, unknown = -1 };
 
- public:
   FileIO();
   explicit FileIO(const char* filename, uint32_t flg = 0);
   virtual ~FileIO();
@@ -52,7 +56,7 @@ class FileIO {
   void SetLogicalOrigin(int32_t origin) { lorigin = origin; }
 
  private:
-  HANDLE hfile;
+  NativeFileHandle hfile;
   uint32_t flags;
   uint32_t lorigin;
   Error error;
