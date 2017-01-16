@@ -36,9 +36,6 @@
     <ClCompile Include="src\common\error.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\lpf.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\memory_manager.cpp">
       <Filter>common</Filter>
     </ClCompile>
@@ -309,9 +306,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\guid.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\lpf.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\memory_manager.h">

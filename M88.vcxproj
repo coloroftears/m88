@@ -420,7 +420,6 @@
     <ClCompile Include="src\common\device.cpp" />
     <ClCompile Include="src\common\diag.cpp" />
     <ClCompile Include="src\common\error.cpp" />
-    <ClCompile Include="src\common\lpf.cpp" />
     <ClCompile Include="src\common\memory_manager.cpp" />
     <ClCompile Include="src\common\scheduler.cpp" />
     <ClCompile Include="src\common\sequencer.cpp" />
@@ -532,7 +531,6 @@
     <ClInclude Include="src\common\error.h" />
     <ClInclude Include="src\common\file.h" />
     <ClInclude Include="src\common\guid.h" />
-    <ClInclude Include="src\common\lpf.h" />
     <ClInclude Include="src\common\memory_manager.h" />
     <ClInclude Include="src\common\scheduler.h" />
     <ClInclude Include="src\common\sequencer.h" />
