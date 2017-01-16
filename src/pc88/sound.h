@@ -7,7 +7,6 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/lpf.h"
 #include "common/sampling_rate_converter.h"
 #include "common/sound_source.h"
 
