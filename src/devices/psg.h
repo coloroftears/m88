@@ -10,6 +10,8 @@
 
 #define PSG_SAMPLETYPE int32_t  // int32_t or int16_t
 
+namespace fmgen {
+
 // ---------------------------------------------------------------------------
 //  class PSG
 //  PSG に良く似た音を生成する音源ユニット
@@ -43,16 +45,6 @@
 class PSG {
  public:
   using Sample = PSG_SAMPLETYPE;
-
-  enum {
-    noisetablesize = 1 << 11,  // ←メモリ使用量を減らしたいなら減らして
-    toneshift = 24,
-    envshift = 22,
-    noiseshift = 14,
-    oversampling = 2,  // ← 音質より速度が優先なら減らすといいかも
-  };
-
- public:
   PSG();
   ~PSG();
 
@@ -64,27 +56,38 @@ class PSG {
 
   void Reset();
   void SetReg(uint32_t regnum, uint8_t data);
-  uint32_t GetReg(uint32_t regnum) { return reg[regnum & 0x0f]; }
+  uint32_t GetReg(uint32_t regnum) const { return reg_[regnum & 0x0f]; }
 
- protected:
+ private:
   void MakeNoiseTable();
   void MakeEnvelopeTable();
-  static void StoreSample(Sample& dest, int32_t data);
 
-  uint8_t reg[16];
+  uint16_t GetTune(int ch) const {
+    return (reg_[ch * 2] + reg_[ch * 2 + 1] * 256) & 0xfff;
+  }
+  uint16_t GetNoisePeriod() const { return reg_[6] & 0x1f; }
+  uint16_t GetEnvelopePeriod() const {
+    return (reg_[11] + reg_[12] * 256) & 0xffff;
+  }
+  int GetInternalVolume(int vol) const { return (vol & 15) * 2 + 1; }
+  uint8_t reg_[16];
 
-  const uint32_t* envelope;
-  uint32_t olevel[3];
-  uint32_t scount[3], speriod[3];
-  uint32_t ecount, eperiod;
-  uint32_t ncount, nperiod;
+  const int32_t* envelope_;
+
+  int32_t olevel[3];
+  uint32_t scount[3];
+  uint32_t speriod[3];
+
+  uint32_t ecount;
+  uint32_t eperiod;
+
+  uint32_t ncount;
+  uint32_t nperiod;
+
   uint32_t tperiodbase;
   uint32_t eperiodbase;
   uint32_t nperiodbase;
-  int volume;
-  int mask;
 
-  static uint32_t envelopetable[16][64];
-  static uint32_t noisetable[noisetablesize];
-  static int EmitTable[32];
+  int mask_;
 };
+}  // namespace fmgen
