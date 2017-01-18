@@ -28,13 +28,6 @@ int32_t EmitTable[kVolumeLevels];
 uint32_t noisetable[noisetablesize];
 int32_t envelopetable[kEnvelopeTypes][64];
 
-inline void StoreSample(PSG::Sample& dest, int32_t data) {
-  if (sizeof(PSG::Sample) == 2)
-    dest = (PSG::Sample)Limit16(dest + data);
-  else
-    dest += data;
-}
-
 }  // namespace
 
 // ---------------------------------------------------------------------------

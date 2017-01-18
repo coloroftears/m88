@@ -15,20 +15,7 @@
 #include <stdint.h>
 
 #include "common/clamp.h"
-
-// ---------------------------------------------------------------------------
-//  定数その１
-//  静的テーブルのサイズ
-
-const int FM_LFOBITS = 8;  // 変更不可
-const int FM_TLBITS = 7;
-
-const int FM_TLENTS = (1 << FM_TLBITS);
-const int FM_LFOENTS = (1 << FM_LFOBITS);
-const int FM_TLPOS(FM_TLENTS / 4);
-
-//  サイン波の精度は 2^(1/256)
-const int FM_CLENTS = (0x1000 * 2);  // sin + TL + LFO
+#include "devices/fmgen_types.h"
 
 // ---------------------------------------------------------------------------
 
@@ -40,13 +27,6 @@ using Sample = int32_t;
 using ISample = int32_t;
 
 enum OpType { typeN = 0, typeM = 1 };
-
-inline void StoreSample(Sample& dest, ISample data) {
-  if (sizeof(Sample) == 2)
-    dest = (Sample)Limit(dest + data, 0x7fff, -0x8000);
-  else
-    dest += data;
-}
 
 class Chip;
 

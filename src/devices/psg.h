@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include "devices/fmgen_types.h"
+
 #define PSG_SAMPLETYPE int32_t  // int32_t or int16_t
 
 namespace fmgen {
