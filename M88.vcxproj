@@ -542,6 +542,7 @@
     <ClInclude Include="src\common\types.h" />
     <ClInclude Include="src\common\version.h" />
     <ClInclude Include="src\devices\fmgen.h" />
+    <ClInclude Include="src\devices\fmgen_types.h" />
     <ClInclude Include="src\devices\fmtimer.h" />
     <ClInclude Include="src\devices\opm.h" />
     <ClInclude Include="src\devices\opna.h" />

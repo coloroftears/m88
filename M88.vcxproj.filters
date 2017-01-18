@@ -599,6 +599,9 @@
     <ClInclude Include="src\common\toast.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="src\devices\fmgen_types.h">
+      <Filter>devices</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\win32\M88.rc">
