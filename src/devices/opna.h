@@ -80,6 +80,11 @@
 //      単位は約 1/2 dB，有効範囲の上限は 20 (10dB)
 //
 namespace fmgen {
+
+const int FM_TLBITS = 7;
+const int FM_TLENTS = 1 << FM_TLBITS;
+const int FM_TLPOS = FM_TLENTS / 4;
+
 //  OPN Base -------------------------------------------------------
 class OPNBase : public Timer {
  public:

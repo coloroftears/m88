@@ -10,8 +10,6 @@
 
 #include "devices/fmgen_types.h"
 
-#define PSG_SAMPLETYPE int32_t  // int32_t or int16_t
-
 namespace fmgen {
 
 // ---------------------------------------------------------------------------
@@ -46,7 +44,7 @@ namespace fmgen {
 //
 class PSG {
  public:
-  using Sample = PSG_SAMPLETYPE;
+  using Sample = int32_t;
   PSG();
   ~PSG();
 
