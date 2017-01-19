@@ -12,6 +12,7 @@
 #include <shellapi.h>
 
 #include <algorithm>
+#include <memory>
 
 #include "common/clamp.h"
 #include "common/error.h"
@@ -1409,11 +1410,11 @@ uint32_t WinUI::OnDropFiles(HWND hwnd, WPARAM wparam, LPARAM lparam) {
 void WinUI::CaptureScreen() {
   int bmpsize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFO) +
                 15 * sizeof(RGBQUAD) + 320 * 400;
-  uint8_t* bmp = new uint8_t[bmpsize];
+  std::unique_ptr<uint8_t[]> bmp(new uint8_t[bmpsize]);
   if (!bmp)
     return;
 
-  bmpsize = draw.CaptureScreen(bmp);
+  bmpsize = draw.CaptureScreen(bmp.get());
   if (bmpsize) {
     bool save;
     char filename[MAX_PATH];
@@ -1450,10 +1451,9 @@ void WinUI::CaptureScreen() {
     if (save) {
       FileIO file;
       if (file.Open(filename, FileIO::create))
-        file.Write(bmp, bmpsize);
+        file.Write(bmp.get(), bmpsize);
     }
   }
-  delete[] bmp;
 }
 
 // ---------------------------------------------------------------------------
