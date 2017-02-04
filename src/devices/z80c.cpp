@@ -121,7 +121,7 @@ void Z80C::SetPC(uint32_t newpc) {
 }
 
 #if 0
-inline uint32_t Z80C::GetPC() {
+inline uint32_t Z80C::GetPC() const {
   DEBUGCOUNT(6);
   return inst - instbase;
 }

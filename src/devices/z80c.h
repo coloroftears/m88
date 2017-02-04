@@ -97,7 +97,7 @@ class Z80C final : public Device {
     if (currentcpu)
       currentcpu->Stop(count);
   }
-  int GetCount();
+  int GetCount() const;
   static int GetCCount() {
     return currentcpu ? currentcpu->GetCount() - currentcpu->startcount : 0;
   }
@@ -107,9 +107,9 @@ class Z80C final : public Device {
   void IOCALL NMI(uint32_t = 0, uint32_t = 0);
   void Wait(bool flag);
 
-  uint32_t GetPC();
+  uint32_t GetPC() const;
   void SetPC(uint32_t newpc);
-  const Z80Reg& GetReg() { return reg; }
+  const Z80Reg& GetReg() const { return reg; }
 
   bool GetPages(MemoryPage** rd, MemoryPage** wr) {
     *rd = rdpages, *wr = wrpages;
@@ -240,12 +240,12 @@ class Z80C final : public Device {
 // ---------------------------------------------------------------------------
 //  クロックカウンタ取得
 //
-inline int Z80C::GetCount() {
+inline int Z80C::GetCount() const {
   return execcount + (clockcount << eshift);
 }
 
-inline uint32_t Z80C::GetPC() {
-  return inst - instbase;
+inline uint32_t Z80C::GetPC() const {
+  return static_cast<uint32_t>(inst - instbase);
 }
 
 inline Z80C::Statistics* Z80C::GetStatistics() {
