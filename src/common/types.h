@@ -24,6 +24,12 @@ using packed = uint32_t;
 #define __cdecl
 #define __stdcall
 #define CALLBACK
+using HANDLE = void*;
+
+struct POINT {
+  int x;
+  int y;
+};
 #endif
 
 #ifndef IFCALL
