@@ -44,11 +44,10 @@ namespace fmgen {
 //
 class PSG {
  public:
-  using Sample = int32_t;
   PSG();
   ~PSG();
 
-  void Mix(Sample* dest, int nsamples);
+  void Mix(FMSample* dest, int nsamples);
   void SetClock(int clock, int rate);
 
   void SetVolume(int vol);

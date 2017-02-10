@@ -8,8 +8,6 @@
 
 #include <math.h>
 
-#include "common/clamp.h"
-
 namespace fmgen {
 
 namespace {
@@ -27,7 +25,6 @@ int32_t EmitTable[kVolumeLevels];
 
 uint32_t noisetable[noisetablesize];
 int32_t envelopetable[kEnvelopeTypes][64];
-
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -210,7 +207,7 @@ void PSG::SetReg(uint32_t regnum, uint8_t data) {
 //  dest        PCM データを展開するポインタ
 //  nsamples    展開する PCM のサンプル数
 //
-void PSG::Mix(Sample* dest, int nsamples) {
+void PSG::Mix(FMSample* dest, int nsamples) {
   uint8_t r7 = ~reg_[7];
   if (!((r7 & 0x3f) | ((reg_[8] | reg_[9] | reg_[10]) & 0x1f)))
     return;
