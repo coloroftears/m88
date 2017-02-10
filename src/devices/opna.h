@@ -96,7 +96,7 @@ class OPNBase : public Timer {
 
   void SetVolumeFM(int db);
   void SetVolumePSG(int db);
-  void SetLPFCutoff(uint32_t freq) {}  // obsolete
+  void SetLPFCutoff(uint32_t) {}  // obsolete
 
  protected:
   void SetParameter(Channel4* ch, uint32_t addr, uint32_t data);
