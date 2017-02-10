@@ -1,5 +1,4 @@
-#ifndef DEVICES_OPNB_H_
-#define DEVICES_OPNB_H_
+#pragma once
 
 #include "devices/adpcma.h"
 #include "devices/fmgen.h"
@@ -52,5 +51,3 @@ class OPNB : public OPNABase {
 };
 
 }  // namespace fmgen
-
-#endif  // DEVICES_OPNB_H_

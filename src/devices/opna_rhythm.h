@@ -1,5 +1,4 @@
-#ifndef DEVICES_OPNA_RHYTHM_H_
-#define DEVICES_OPNA_RHYTHM_H_
+#pragma once
 
 #include <memory>
 #include "devices/fmgen.h"
@@ -29,4 +28,3 @@ struct OPNARhythm {
 };
 
 }  // namespace fmgen
-#endif
