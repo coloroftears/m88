@@ -7,6 +7,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <string.h>
 
 #include "common/device.h"
 #include "common/memory_manager.h"

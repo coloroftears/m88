@@ -6,6 +6,8 @@
 
 #include "common/device.h"
 
+#include <string.h>
+
 //#define LOGNAME "membus"
 #include "common/diag.h"
 
