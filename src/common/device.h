@@ -32,8 +32,8 @@ class Device : public IDevice {
   const ID& IFCALL GetID() const final { return id_; }
   const Descriptor* IFCALL GetDesc() const override { return nullptr; }
   uint32_t IFCALL GetStatusSize() override { return 0; }
-  bool IFCALL LoadStatus(const uint8_t* status) override { return false; }
-  bool IFCALL SaveStatus(uint8_t* status) override { return false; }
+  bool IFCALL LoadStatus(const uint8_t*) override { return false; }
+  bool IFCALL SaveStatus(uint8_t*) override { return false; }
 
  protected:
   void SetID(const ID& i) { id_ = i; }
@@ -117,7 +117,7 @@ class MemoryBus final : public IMemoryAccess {
 
   std::unique_ptr<Page[]> pages;
   std::unique_ptr<Owner[]> owners;
-  bool ownpages = false;
+  bool ownpages_ = false;
 };
 
 // ---------------------------------------------------------------------------
@@ -195,9 +195,9 @@ class IOBus : public IIOAccess, public IIOBus {
   bool ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func);
   bool ConnectOut(uint32_t bank, IDevice* device, OutFuncPtr func);
 
-  InBank* GetIns() { return ins.get(); }
-  OutBank* GetOuts() { return outs.get(); }
-  uint8_t* GetFlags() { return flags.get(); }
+  InBank* GetIns() { return ins_.get(); }
+  OutBank* GetOuts() { return outs_.get(); }
+  uint8_t* GetFlags() { return flags_.get(); }
 
   bool IsSyncPort(uint32_t port);
 
@@ -227,28 +227,14 @@ class IOBus : public IIOAccess, public IIOBus {
   };
 
  private:
-  std::unique_ptr<InBank[]> ins;
-  std::unique_ptr<OutBank[]> outs;
-  std::unique_ptr<uint8_t[]> flags;
-  DeviceList* devlist = nullptr;
+  std::unique_ptr<InBank[]> ins_;
+  std::unique_ptr<OutBank[]> outs_;
+  std::unique_ptr<uint8_t[]> flags_;
+  DeviceList* devlist_ = nullptr;
 
-  uint32_t banksize = 0;
+  uint32_t banksize_ = 0;
   static DummyIO dummyio;
 };
-
-// ---------------------------------------------------------------------------
-//  Bus
-//
-#if 0
-class Bus : public MemoryBus, public IOBus {
- public:
-  Bus() {}
-  ~Bus() {}
-
-  bool Init(uint32_t nports, uint32_t npages, Page* pages = nullptr);
-};
-#endif
-// ---------------------------------------------------------------------------
 
 #define DEV_ID(a, b, c, d)                                   \
   (Device::ID(a + (uint32_t(b) << 8) + (uint32_t(c) << 16) + \
@@ -257,7 +243,7 @@ class Bus : public MemoryBus, public IOBus {
 // ---------------------------------------------------------------------------
 
 inline bool IOBus::IsSyncPort(uint32_t port) {
-  return (flags[port >> iobankbits] & 1) != 0;
+  return (flags_[port >> iobankbits] & 1) != 0;
 }
 
 // ---------------------------------------------------------------------------

@@ -30,12 +30,12 @@ bool MemoryBus::Init(uint32_t npages, Page* _pages) {
 
   if (_pages) {
     pages.reset(_pages);
-    ownpages = false;
+    ownpages_ = false;
   } else {
     pages.reset(new Page[npages]);
     if (!pages)
       return false;
-    ownpages = true;
+    ownpages_ = true;
   }
   owners.reset(new Owner[npages]);
   if (!owners)
@@ -74,13 +74,13 @@ IOBus::DummyIO IOBus::dummyio;
 IOBus::IOBus() {}
 
 IOBus::~IOBus() {
-  for (uint32_t i = 0; i < banksize; i++) {
-    for (InBank* ib = ins[i].next; ib;) {
+  for (uint32_t i = 0; i < banksize_; i++) {
+    for (InBank* ib = ins_[i].next; ib;) {
       InBank* nxt = ib->next;
       delete ib;
       ib = nxt;
     }
-    for (OutBank* ob = outs[i].next; ob;) {
+    for (OutBank* ob = outs_[i].next; ob;) {
       OutBank* nxt = ob->next;
       delete ob;
       ob = nxt;
@@ -90,25 +90,25 @@ IOBus::~IOBus() {
 
 //  初期化
 bool IOBus::Init(uint32_t nbanks, DeviceList* dl) {
-  devlist = dl;
+  devlist_ = dl;
 
-  banksize = 0;
-  ins.reset(new InBank[nbanks]);
-  outs.reset(new OutBank[nbanks]);
-  flags.reset(new uint8_t[nbanks]);
-  if (!ins || !outs || !flags)
+  banksize_ = 0;
+  ins_.reset(new InBank[nbanks]);
+  outs_.reset(new OutBank[nbanks]);
+  flags_.reset(new uint8_t[nbanks]);
+  if (!ins_ || !outs_ || !flags_)
     return false;
-  banksize = nbanks;
+  banksize_ = nbanks;
 
-  memset(flags.get(), 0, nbanks);
+  memset(flags_.get(), 0, nbanks);
 
   for (uint32_t i = 0; i < nbanks; i++) {
-    ins[i].device = &dummyio;
-    ins[i].func = static_cast<InFuncPtr>(&DummyIO::dummyin);
-    ins[i].next = nullptr;
-    outs[i].device = &dummyio;
-    outs[i].func = static_cast<OutFuncPtr>(&DummyIO::dummyout);
-    outs[i].next = nullptr;
+    ins_[i].device = &dummyio;
+    ins_[i].func = static_cast<InFuncPtr>(&DummyIO::dummyin);
+    ins_[i].next = nullptr;
+    outs_[i].device = &dummyio;
+    outs_[i].func = static_cast<OutFuncPtr>(&DummyIO::dummyout);
+    outs_[i].next = nullptr;
   }
 
   return true;
@@ -116,8 +116,8 @@ bool IOBus::Init(uint32_t nbanks, DeviceList* dl) {
 
 //  デバイス接続
 bool IOBus::Connect(IDevice* device, const Connector* connector) {
-  if (devlist)
-    devlist->Add(device);
+  if (devlist_)
+    devlist_->Add(device);
 
   const IDevice::Descriptor* desc = device->GetDesc();
 
@@ -134,13 +134,13 @@ bool IOBus::Connect(IDevice* device, const Connector* connector) {
         break;
     }
     if (connector->rule & sync)
-      flags[connector->bank] = 1;
+      flags_[connector->bank] = 1;
   }
   return true;
 }
 
 bool IOBus::ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func) {
-  InBank* i = &ins[bank];
+  InBank* i = &ins_[bank];
   if (i->func == &DummyIO::dummyin) {
     // 最初の接続
     i->device = device;
@@ -159,7 +159,7 @@ bool IOBus::ConnectIn(uint32_t bank, IDevice* device, InFuncPtr func) {
 }
 
 bool IOBus::ConnectOut(uint32_t bank, IDevice* device, OutFuncPtr func) {
-  OutBank* i = &outs[bank];
+  OutBank* i = &outs_[bank];
   if (i->func == &DummyIO::dummyout) {
     // 最初の接続
     i->device = device;
@@ -178,13 +178,13 @@ bool IOBus::ConnectOut(uint32_t bank, IDevice* device, OutFuncPtr func) {
 }
 
 bool IOBus::Disconnect(IDevice* device) {
-  if (devlist)
-    devlist->Del(device);
+  if (devlist_)
+    devlist_->Del(device);
 
   uint32_t i;
-  for (i = 0; i < banksize; i++) {
-    InBank* current = &ins[i];
-    InBank* referer = 0;
+  for (i = 0; i < banksize_; i++) {
+    InBank* current = &ins_[i];
+    InBank* referer = nullptr;
     while (current) {
       InBank* next = current->next;
       if (current->device == device) {
@@ -196,7 +196,7 @@ bool IOBus::Disconnect(IDevice* device) {
           if (next) {
             // 次のアイテムの内容を複写して削除
             *current = *next;
-            referer = 0;
+            referer = nullptr;
             delete next;
             continue;
           } else {
@@ -209,9 +209,9 @@ bool IOBus::Disconnect(IDevice* device) {
     }
   }
 
-  for (i = 0; i < banksize; i++) {
-    OutBank* current = &outs[i];
-    OutBank* referer = 0;
+  for (i = 0; i < banksize_; i++) {
+    OutBank* current = &outs_[i];
+    OutBank* referer = nullptr;
     while (current) {
       OutBank* next = current->next;
       if (current->device == device) {
@@ -223,7 +223,7 @@ bool IOBus::Disconnect(IDevice* device) {
           if (next) {
             // 次のアイテムの内容を複写して削除
             *current = *next;
-            referer = 0;
+            referer = nullptr;
             delete next;
             continue;
           } else {
@@ -239,7 +239,7 @@ bool IOBus::Disconnect(IDevice* device) {
 }
 
 uint32_t IOBus::In(uint32_t port) {
-  InBank* list = &ins[port >> iobankbits];
+  InBank* list = &ins_[port >> iobankbits];
 
   uint32_t data = 0xff;
   do {
@@ -250,7 +250,7 @@ uint32_t IOBus::In(uint32_t port) {
 }
 
 void IOBus::Out(uint32_t port, uint32_t data) {
-  OutBank* list = &outs[port >> iobankbits];
+  OutBank* list = &outs_[port >> iobankbits];
   do {
     (list->device->*list->func)(port, data);
     list = list->next;
