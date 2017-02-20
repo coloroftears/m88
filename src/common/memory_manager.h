@@ -6,9 +6,12 @@
 
 #pragma once
 
-#include "interface/ifcommon.h"
-
 #include <assert.h>
+#include <stdlib.h>
+
+#include <memory>
+
+#include "interface/ifcommon.h"
 
 // ---------------------------------------------------------------------------
 //  メモリ管理クラス
@@ -48,10 +51,12 @@ class MemoryManagerBase {
              bool func);
 
   struct DPage {
+    DPage() : ptr(0) {}
     intptr_t ptr;
     bool func;
   };
   struct LocalSpace {
+    LocalSpace() : inst(nullptr), pages(nullptr) {}
     void* inst;
     DPage* pages;
   };
@@ -60,7 +65,7 @@ class MemoryManagerBase {
   uint32_t npages;
   bool ownpages;
 
-  uint8_t* priority;
+  std::unique_ptr<uint8_t[]> priority;
   LocalSpace lsp[ndevices];
 };
 
@@ -101,10 +106,10 @@ class WriteMemManager : public MemoryManagerBase {
 
 // ---------------------------------------------------------------------------
 
-class MemoryManager : public IMemoryManager,
-                      public IMemoryAccess,
-                      private ReadMemManager,
-                      private WriteMemManager {
+class MemoryManager final : public IMemoryManager,
+                            public IMemoryAccess,
+                            private ReadMemManager,
+                            private WriteMemManager {
  public:
   enum {
     pagebits = ::MemoryManagerBase::pagebits,
@@ -115,7 +120,9 @@ class MemoryManager : public IMemoryManager,
 
   bool Init(uint32_t sas, Page* read = 0, Page* write = 0);
 
-  // Overrides IMemoryManager.
+  bool Disconnect(void* inst);
+
+  // Overrides IMemoryManager
   int IFCALL Connect(void* inst, bool highpriority = false) override;
   bool IFCALL Disconnect(uint32_t pid) override;
   bool IFCALL AllocR(uint32_t pid,
@@ -155,9 +162,7 @@ class MemoryManager : public IMemoryManager,
     WriteMemManager::Write8P(pid, addr, data);
   }
 
-  bool Disconnect(void* inst);
-
-  // Overrides IMemoryAccess.
+  // Overrides IMemoryAccess
   uint32_t IFCALL Read8(uint32_t addr) override {
     return ReadMemManager::Read8(addr);
   }
@@ -177,7 +182,8 @@ inline bool MemoryManager::Init(uint32_t sas, Page* read, Page* write) {
 inline int IFCALL MemoryManager::Connect(void* inst, bool high) {
   int r = ReadMemManager::Connect(inst, high);
   int w = WriteMemManager::Connect(inst, high);
-  assert(r == w);
+  if (r != w)
+    abort();
   return r;
 }
 
@@ -202,7 +208,7 @@ inline bool MemoryManagerBase::Alloc(uint32_t pid,
   assert(ls.inst);
   assert(page < top);
 
-  uint8_t* pri = priority + page * ndevices;
+  uint8_t* pri = priority.get() + page * ndevices;
   for (; page < top; page++, pri += ndevices) {
     // 現在のページの owner が自分よりも低い優先度を持つ場合
     // priority の書き換えを行う
@@ -234,7 +240,7 @@ inline bool MemoryManagerBase::Release(uint32_t pid,
     LocalSpace& ls = lsp[pid];
     assert(ls.inst);
 
-    uint8_t* pri = priority + page * ndevices;
+    uint8_t* pri = priority.get() + page * ndevices;
     for (; page < top; page++, pri += ndevices) {
       // 自分が書き換えを所望するページならば
       if (pri[pid] == pid) {

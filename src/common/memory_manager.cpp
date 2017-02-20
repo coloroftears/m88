@@ -6,14 +6,16 @@
 
 #include "common/memory_manager.h"
 
+#include <cstring>
+
 #include "common/diag.h"
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
 //
 MemoryManagerBase::MemoryManagerBase()
-    : ownpages(false), pages(0), npages(0), priority(0) {
-  lsp[0].pages = 0;
+    : pages(nullptr), npages(0), ownpages(false) {
+  lsp[0].pages = nullptr;
 }
 
 MemoryManagerBase::~MemoryManagerBase() {
@@ -51,10 +53,10 @@ bool MemoryManagerBase::Init(uint32_t sas, Page* expages) {
   }
 
   // priority list
-  priority = new uint8_t[npages * ndevices];
+  priority.reset(new uint8_t[npages * ndevices]);
   if (!priority)
     return false;
-  memset(priority, ndevices - 1, npages * ndevices);
+  std::memset(priority.get(), ndevices - 1, npages * ndevices);
 
   return true;
 }
@@ -65,10 +67,9 @@ bool MemoryManagerBase::Init(uint32_t sas, Page* expages) {
 void MemoryManagerBase::Cleanup() {
   if (ownpages) {
     delete[] pages;
-    pages = 0;
+    pages = nullptr;
   }
-  delete[] priority;
-  priority = 0;
+  priority.reset();
   //  if (lsp)
   {
     delete[] lsp[0].pages;
@@ -151,9 +152,11 @@ uint32_t ReadMemManager::Read8P(uint32_t pid, uint32_t addr) {
 // ---------------------------------------------------------------------------
 //  えらー
 //
-uint32_t ReadMemManager::UndefinedRead(void*, uint32_t addr) {
-  LOG2("bus: Read on undefined memory page 0x%x. (addr:0x%.4x)\n",
-       addr >> pagebits, addr);
+uint32_t ReadMemManager::UndefinedRead(void*, uint32_t /*addr*/) {
+  /*
+      Log("bus: Read on undefined memory page 0x%x. (addr:0x%.4x)\n",
+           addr >> pagebits, addr);
+  */
   return 0xff;
 }
 
@@ -189,7 +192,9 @@ void WriteMemManager::Write8P(uint32_t pid, uint32_t addr, uint32_t data) {
 // ---------------------------------------------------------------------------
 //  えらー
 //
-void WriteMemManager::UndefinedWrite(void*, uint32_t addr, uint32_t) {
-  LOG2("bus: Write on undefined memory page 0x%x. (addr:0x%.4x)\n",
-       addr >> pagebits, addr);
+void WriteMemManager::UndefinedWrite(void*, uint32_t /*addr*/, uint32_t) {
+  /*
+      Log("bus: Write on undefined memory page 0x%x. (addr:0x%.4x)\n",
+           addr >> pagebits, addr);
+  */
 }
