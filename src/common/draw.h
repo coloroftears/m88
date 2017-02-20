@@ -22,6 +22,7 @@ class Draw {
   };
 
   struct Region {
+    Region() : left(32767), top(32767), right(-1), bottom(-1) {}
     void Reset() {
       top = left = 32767;
       bottom = right = -1;
@@ -64,5 +65,5 @@ class Draw {
                           uint32_t nents,
                           const Palette* pal) = 0;
   virtual void Flip() {}
-  virtual bool SetFlipMode(bool flip) = 0;
+  virtual bool SetFlipMode(bool) { return false; };
 };
