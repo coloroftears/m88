@@ -6,9 +6,50 @@
 
 #include "common/time_keeper.h"
 
-#include <windows.h>
-
 #include <assert.h>
+
+#if !defined(WIN32)
+#include <chrono>
+
+class TimeKeeperChrono final : public TimeKeeper {
+public:
+  ~TimeKeeperChrono() final {}
+
+  static TimeKeeper* create() {
+    return new TimeKeeperChrono();
+  }
+
+  SchedTime GetTime() {
+    auto new_base = Clock::now();
+    MicroSeconds diff =
+        std::chrono::duration_cast<MicroSeconds>(new_base - base_);
+    base_ = new_base;
+    time_ += diff;
+
+    return static_cast<uint32_t>(time_.count() / Scheduler::kPrecisionUs);
+  }
+
+ private:
+  using Clock = std::chrono::high_resolution_clock;
+  using TimePoint = std::chrono::time_point<Clock>;
+  using MicroSeconds = std::chrono::microseconds;
+  using MilliSeconds = std::chrono::milliseconds;
+
+  TimeKeeperChrono() : time_(0) {
+    base_ = Clock::now();
+  }
+
+  TimePoint base_;     // 最後の呼び出しの際の元クロックの値
+  MicroSeconds time_;  // 最後の呼び出しに返した値
+};
+
+// static
+TimeKeeper* TimeKeeper::create() {
+  return TimeKeeperChrono::create();
+}
+#else  // WIN32
+
+#include <windows.h>
 #include <mmsystem.h>
 
 class TimeKeeperImplQPC final : public TimeKeeper {
@@ -41,6 +82,8 @@ class TimeKeeperImplQPC final : public TimeKeeper {
     base_ = count.QuadPart;
   }
 
+  SchedTime time_ = 0;
+
   int64_t freq_;
   int64_t base_ = 0;
 };
@@ -69,6 +112,8 @@ class TimeKeeperImplWin final : public TimeKeeper {
  private:
   explicit TimeKeeperImplWin(int32_t base) : base_(base) {}
 
+  SchedTime time_ = 0;
+
   ScopedPrecisionKeeper keeper_;
   int32_t base_;
 };
@@ -79,3 +124,4 @@ TimeKeeper* TimeKeeper::create() {
     return impl;
   return TimeKeeperImplWin::create();
 }
+#endif  // !WIN32

@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 
-#include "interface/ifcommon.h"
+#include "common/scheduler.h"
 
 // ---------------------------------------------------------------------------
 //  TimeKeeper
@@ -21,8 +21,8 @@
 //
 class TimeKeeper {
  public:
+  // 1unit = 1/100ms = 10us
   static const int kUnit = 100;
-
   virtual ~TimeKeeper() {}
 
   static TimeKeeper* create();
@@ -36,6 +36,5 @@ class TimeKeeper {
   static SchedTimeDelta FromMicroSeconds(int us) { return (us + 9) / 10; }
 
  protected:
-  TimeKeeper() : time_(0) {}
-  SchedTime time_;
+  TimeKeeper() {}
 };
