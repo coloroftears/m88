@@ -140,7 +140,7 @@ struct IIOBus {
 // ----------------------------------------------------------------------------
 //  タイマー管理のためのインターフェース
 //
-struct SchedulerEvent;
+class SchedulerEvent;
 
 using SchedTime = int32_t;
 using SchedTimeDelta = int32_t;

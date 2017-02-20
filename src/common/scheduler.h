@@ -39,7 +39,7 @@ class EventQueue final
   size_t size() const { return parent::c.size(); }
 };
 
-struct SchedulerEvent {
+class SchedulerEvent final {
  public:
   SchedulerEvent() {}
   SchedulerEvent(IDevice* dev,

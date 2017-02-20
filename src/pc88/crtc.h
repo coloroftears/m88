@@ -142,7 +142,7 @@ class CRTC final : public Device {
   IOBus* bus;
   PD8257* dmac;
   Scheduler* scheduler;
-  Scheduler::Event* sev;
+  SchedulerEvent* sev;
   Draw* draw;
 
   int cmdm, cmdc;

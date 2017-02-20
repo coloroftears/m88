@@ -197,7 +197,7 @@ class FDC final : public Device {
   int pintr;
   Scheduler* scheduler = nullptr;
 
-  Scheduler::Event* timerhandle = nullptr;
+  SchedulerEvent* timerhandle = nullptr;
   SchedTimeDelta seektime = 0;
 
   uint32_t status;  // ステータスレジスタ
