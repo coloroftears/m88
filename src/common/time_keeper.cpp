@@ -15,7 +15,7 @@ class TimeKeeperChrono final : public TimeKeeper {
 public:
   ~TimeKeeperChrono() final {}
 
-  static TimeKeeper* create() {
+  static TimeKeeper* Get() {
     return new TimeKeeperChrono();
   }
 
@@ -44,8 +44,8 @@ public:
 };
 
 // static
-TimeKeeper* TimeKeeper::create() {
-  return TimeKeeperChrono::create();
+TimeKeeper* TimeKeeper::Get() {
+  return TimeKeeperChrono::Get();
 }
 #else  // WIN32
 
@@ -56,7 +56,7 @@ class TimeKeeperImplQPC final : public TimeKeeper {
  public:
   ~TimeKeeperImplQPC() final {}
 
-  static TimeKeeper* create() {
+  static TimeKeeper* Get() {
     LARGE_INTEGER freq;
     if (QueryPerformanceFrequency(&freq))
       return new TimeKeeperImplQPC(freq.QuadPart);
@@ -99,7 +99,7 @@ class TimeKeeperImplWin final : public TimeKeeper {
  public:
   ~TimeKeeperImplWin() final {}
 
-  static TimeKeeper* create() { return new TimeKeeperImplWin(timeGetTime()); }
+  static TimeKeeper* Get() { return new TimeKeeperImplWin(timeGetTime()); }
 
   SchedTime TimeKeeper::GetTime() final {
     int32_t t = timeGetTime();
@@ -119,9 +119,9 @@ class TimeKeeperImplWin final : public TimeKeeper {
 };
 
 // static
-TimeKeeper* TimeKeeper::create() {
-  if (TimeKeeper* impl = TimeKeeperImplQPC::create())
+TimeKeeper* TimeKeeper::Get() {
+  if (TimeKeeper* impl = TimeKeeperImplQPC::Get())
     return impl;
-  return TimeKeeperImplWin::create();
+  return TimeKeeperImplWin::Get();
 }
 #endif  // !WIN32

@@ -25,7 +25,7 @@ class TimeKeeper {
   static const int kUnit = 100;
   virtual ~TimeKeeper() {}
 
-  static TimeKeeper* create();
+  static TimeKeeper* Get();
   virtual SchedTime GetTime() = 0;
 
   // Returns ticks per second.

@@ -14,7 +14,7 @@
 #include "common/diag.h"
 
 Sequencer::Sequencer() {
-  keeper_.reset(TimeKeeper::create());
+  keeper_.reset(TimeKeeper::Get());
 }
 
 Sequencer::~Sequencer() {
