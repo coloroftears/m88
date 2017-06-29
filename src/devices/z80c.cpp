@@ -243,7 +243,8 @@ int Z80C::Exec(int clocks) {
   TestIntr();
   currentcpu = this;
   cbase = GetCount();
-  stopcount = execcount += clockcount + clocks;
+  execcount += clockcount + clocks;
+  stopcount = execcount;
   delaycount = clocks;
 
   for (clockcount = -clocks; clockcount < 0;) {
