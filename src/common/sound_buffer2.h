@@ -31,36 +31,36 @@ class SoundBuffer2 final : public SoundSource<Sample16> {
  private:
   int FillMain(int samples);
 
-  CriticalSection cs;
+  CriticalSection cs_;
 
-  SoundSource<Sample16>* source;
-  Sample16* buffer;
-  int buffersize;  // バッファのサイズ (in samples)
-  int read;        // 読込位置 (in samples)
-  int write;       // 書き込み位置 (in samples)
-  int ch;          // チャネル数(1sample = ch*Sample)
-  bool fillwhenempty;
+  SoundSource<Sample16>* source_;
+  Sample16* buffer_;
+  int buffersize_;  // バッファのサイズ (in samples)
+  int read_;        // 読込位置 (in samples)
+  int write_;       // 書き込み位置 (in samples)
+  int ch_;          // チャネル数(1sample = ch*Sample)
+  bool fillwhenempty_;
 };
 
 // ---------------------------------------------------------------------------
 
 inline void SoundBuffer2::FillWhenEmpty(bool f) {
-  fillwhenempty = f;
+  fillwhenempty_ = f;
 }
 
 inline uint32_t SoundBuffer2::GetRate() const {
-  return source ? source->GetRate() : 0;
+  return source_ ? source_->GetRate() : 0;
 }
 
 inline int SoundBuffer2::GetChannels() const {
-  return source ? ch : 0;
+  return source_ ? ch_ : 0;
 }
 
 inline int SoundBuffer2::GetAvail() const {
   int avail = 0;
-  if (write >= read)
-    avail = write - read;
+  if (write_ >= read_)
+    avail = write_ - read_;
   else
-    avail = buffersize + write - read;
+    avail = buffersize_ + write_ - read_;
   return avail;
 }

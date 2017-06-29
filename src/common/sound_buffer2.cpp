@@ -2,91 +2,98 @@
 
 #include "common/sound_buffer2.h"
 
+#include <string.h>
+
 #include <algorithm>
 
 // ---------------------------------------------------------------------------
 //  Sound Buffer
 //
-SoundBuffer2::SoundBuffer2() : source(0), buffer(0), buffersize(0) {
-  fillwhenempty = true;
-}
+SoundBuffer2::SoundBuffer2()
+    : source_(nullptr),
+      buffer_(nullptr),
+      buffersize_(0),
+      read_(0),
+      write_(0),
+      ch_(0),
+      fillwhenempty_(true) {}
 
 SoundBuffer2::~SoundBuffer2() {
   Cleanup();
 }
 
-bool SoundBuffer2::Init(SoundSource<Sample16>* _source, int _buffersize) {
-  CriticalSection::Lock lock(cs);
+bool SoundBuffer2::Init(SoundSource<Sample16>* source, int buffersize) {
+  CriticalSection::Lock lock(cs_);
 
-  delete[] buffer;
-  buffer = 0;
+  delete[] buffer_;
+  buffer_ = nullptr;
 
-  source = 0;
-  if (!_source)
+  source_ = nullptr;
+  if (!source)
     return true;
 
-  buffersize = _buffersize;
+  buffersize_ = buffersize;
 
-  ch = _source->GetChannels();
-  read = 0;
-  write = 0;
+  ch_ = source->GetChannels();
+  read_ = 0;
+  write_ = 0;
 
-  if (!ch || buffersize <= 0)
+  if (!ch_ || buffersize_ <= 0)
     return false;
 
-  buffer = new Sample16[ch * buffersize];
-  if (!buffer)
+  buffer_ = new Sample16[ch_ * buffersize_];
+  if (!buffer_)
     return false;
 
-  memset(buffer, 0, ch * buffersize * sizeof(Sample16));
-  source = _source;
+  memset(buffer_, 0, ch_ * buffersize_ * sizeof(Sample16));
+  source_ = source;
   return true;
 }
 
 void SoundBuffer2::Cleanup() {
-  CriticalSection::Lock lock(cs);
+  CriticalSection::Lock lock(cs_);
 
-  delete[] buffer;
-  buffer = 0;
+  delete[] buffer_;
+  buffer_ = nullptr;
 }
 
 // ---------------------------------------------------------------------------
 //  バッファに音を追加
 //
 int SoundBuffer2::Fill(int samples) {
-  CriticalSection::Lock lock(cs);
-  if (source)
+  CriticalSection::Lock lock(cs_);
+  if (source_)
     return FillMain(samples);
   return 0;
 }
 
 int SoundBuffer2::FillMain(int samples) {
   // リングバッファの空きを計算
-  int free = buffersize - GetAvail();
+  int free = buffersize_ - GetAvail();
 
-  if (!fillwhenempty && (samples > free - 1)) {
-    int skip = std::min(samples - free + 1, buffersize - free);
+  if (!fillwhenempty_ && (samples > free - 1)) {
+    int skip = std::min(samples - free + 1, buffersize_ - free);
     free += skip;
-    read += skip;
-    if (read > buffersize)
-      read -= buffersize;
+    read_ += skip;
+    if (read_ > buffersize_)
+      read_ -= buffersize_;
   }
 
   // 書きこむべきデータ量を計算
   samples = std::min(samples, free - 1);
   if (samples > 0) {
     // 書きこむ
-    if (buffersize - write >= samples) {
+    if (buffersize_ - write_ >= samples) {
       // 一度で書ける場合
-      source->Get(buffer + write * ch, samples);
+      source_->Get(buffer_ + write_ * ch_, samples);
     } else {
       // ２度に分けて書く場合
-      source->Get(buffer + write * ch, buffersize - write);
-      source->Get(buffer, samples - (buffersize - write));
+      source_->Get(buffer_ + write_ * ch_, buffersize_ - write_);
+      source_->Get(buffer_, samples - (buffersize_ - write_));
     }
-    write += samples;
-    if (write >= buffersize)
-      write -= buffersize;
+    write_ += samples;
+    if (write_ >= buffersize_)
+      write_ -= buffersize_;
   }
   return samples;
 }
@@ -95,35 +102,35 @@ int SoundBuffer2::FillMain(int samples) {
 //  バッファから音を貰う
 //
 int SoundBuffer2::Get(Sample16* dest, int samples) {
-  CriticalSection::Lock lock(cs);
-  if (!buffer)
+  CriticalSection::Lock lock(cs_);
+  if (!buffer_)
     return 0;
 
   for (int s = samples; s > 0;) {
-    int xsize = std::min(s, buffersize - read);
+    int xsize = std::min(s, buffersize_ - read_);
 
     int avail = GetAvail();
 
     // 供給不足なら追加
-    if (xsize <= avail || fillwhenempty) {
+    if (xsize <= avail || fillwhenempty_) {
       if (xsize > avail)
         FillMain(xsize - avail);
-      memcpy(dest, buffer + read * ch, xsize * ch * sizeof(Sample16));
-      dest += xsize * ch;
-      read += xsize;
+      memcpy(dest, buffer_ + read_ * ch_, xsize * ch_ * sizeof(Sample16));
+      dest += xsize * ch_;
+      read_ += xsize;
     } else {
       if (avail > 0) {
-        memcpy(dest, buffer + read * ch, avail * ch * sizeof(Sample16));
-        dest += avail * ch;
-        read += avail;
+        memcpy(dest, buffer_ + read_ * ch_, avail * ch_ * sizeof(Sample16));
+        dest += avail * ch_;
+        read_ += avail;
       }
-      memset(dest, 0, (xsize - avail) * ch * sizeof(Sample16));
-      dest += (xsize - avail) * ch;
+      memset(dest, 0, (xsize - avail) * ch_ * sizeof(Sample16));
+      dest += (xsize - avail) * ch_;
     }
 
     s -= xsize;
-    if (read >= buffersize)
-      read -= buffersize;
+    if (read_ >= buffersize_)
+      read_ -= buffersize_;
   }
   return samples;
 }
