@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#include <atomic>
 #include <memory>
 
 #include "common/critical_section.h"
@@ -87,6 +88,6 @@ class Sequencer final {
   uint32_t refresh_timing_ = 0;
   bool draw_next_frame_ = false;
 
-  volatile bool should_terminate_ = false;
-  volatile bool is_active_ = false;
+  std::atomic<bool> should_terminate_;
+  std::atomic<bool> is_active_;
 };

@@ -13,7 +13,7 @@
 #define LOGNAME "sequence"
 #include "common/diag.h"
 
-Sequencer::Sequencer() {
+Sequencer::Sequencer() : should_terminate_(false), is_active_(false) {
   keeper_.reset(TimeKeeper::Get());
 }
 
