@@ -57,9 +57,7 @@ bool Sequencer::Cleanup() {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  Core (Emulator) Thread
-//
+// Core (Emulator) Thread
 uint32_t Sequencer::ThreadMain() {
   time_ = keeper_->GetTime();
   effective_clock_ = 100;
@@ -78,20 +76,17 @@ uint32_t Sequencer::ThreadMain() {
   return 0;
 }
 
-// ---------------------------------------------------------------------------
-//  Entry point for emulation thread
+// Entry point for emulation thread
 //
 // static
 uint32_t CALLBACK Sequencer::ThreadEntry(void* arg) {
   return reinterpret_cast<Sequencer*>(arg)->ThreadMain();
 }
 
-// ---------------------------------------------------------------------------
-//  CPU Main loop
+// CPU Main loop
 //  clock   CPU clock (0.1MHz)
-//  length  Execution duration (0.01ms)
+//  length  Execution duration (1tick = 10us)
 //  eff     Effective clock (0.1MHz)
-//
 inline void Sequencer::Execute(SchedClock clk,
                                SchedTimeDelta length,
                                SchedClock eff) {
@@ -99,9 +94,7 @@ inline void Sequencer::Execute(SchedClock clk,
   exec_count_ += clk * delegate_->Proceed(length, clk, eff);
 }
 
-// ---------------------------------------------------------------------------
-//  Execute asynchronous to VSYNC signal
-//
+// Execute asynchronous to VSYNC signal
 void Sequencer::ExecuteAsynchronus() {
   SchedTimeDelta texec = delegate_->GetFramePeriod();
   SchedTimeDelta twork = texec * 100 / speed_;
@@ -157,9 +150,7 @@ void Sequencer::ExecuteBurst() {
       (std::min(1000, eclk) * effective_clock_ * 100 / ticks) + 1, 10000);
 }
 
-// ---------------------------------------------------------------------------
-//  Returns CPU executed clocks since last call.
-//
+// Returns CPU executed clocks since last call.
 int32_t Sequencer::GetExecCount() {
   // Uncomment below when precise value is required.
   // CriticalSection::Lock lock(cs_);
@@ -168,9 +159,7 @@ int32_t Sequencer::GetExecCount() {
   return i;
 }
 
-// ---------------------------------------------------------------------------
-//  Activate CPU emulation.
-//
+// Activate CPU emulation.
 void Sequencer::Activate(bool active) {
   CriticalSection::Lock lock(cs_);
   is_active_ = active;

@@ -77,7 +77,7 @@ class SchedulerDelegate {
 
   // Execute |ticks| time, and return executed time.
   virtual SchedTimeDelta Execute(SchedTimeDelta ticks) = 0;
-  // TODO: Fill description.
+  // TODO: fill description.
   virtual void Shorten(SchedTimeDelta ticks) = 0;
   // Get current VM time during Execute().
   virtual SchedTimeDelta GetTicks() = 0;
@@ -126,8 +126,6 @@ class Scheduler : public IScheduler, public ITime {
   int pool_index_ = 0;
   Event* pool_[kMaxEvents];
 };
-
-// ---------------------------------------------------------------------------
 
 inline SchedTime IFCALL Scheduler::GetTime() {
   return time_ + delegate_->GetTicks();

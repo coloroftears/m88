@@ -15,22 +15,15 @@ SchedulerEvent::SchedulerEvent(IDevice* dev,
                                SchedTimeDelta interval)
     : dev_(dev), func_(func), arg_(arg), time_(time), interval_(interval) {}
 
-// ---------------------------------------------------------------------------
-
 Scheduler::Scheduler(SchedulerDelegate* delegate) : delegate_(delegate) {}
 
 Scheduler::~Scheduler() {}
-
-// ---------------------------------------------------------------------------
 
 bool Scheduler::Init() {
   time_ = 0;
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  時間イベントを追加
-//
 Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
                                              IDevice* dev,
                                              IDevice::TimeFunc func,
@@ -57,9 +50,6 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   return ev;
 }
 
-// ---------------------------------------------------------------------------
-//  時間イベントの属性変更
-//
 void IFCALL Scheduler::SetEvent(Event* ev,
                                 int count,
                                 IDevice* dev,
@@ -76,9 +66,6 @@ void IFCALL Scheduler::SetEvent(Event* ev,
   // which is false.  Therefore not recommended.
 }
 
-// ---------------------------------------------------------------------------
-//  時間イベントを削除
-//
 bool IFCALL Scheduler::DelEvent(IDevice* dev) {
   for (auto it = queue_.begin(); it != queue_.end(); ++it) {
     if ((*it)->dev() == dev)
@@ -118,9 +105,9 @@ void Scheduler::DrainEvents() {
   }
 }
 
-// ---------------------------------------------------------------------------
 //  時間を進める
 //
+// 1 tick = 10us
 SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
   SchedTimeDelta remaining_ticks = ticks;
   while (remaining_ticks > 0) {

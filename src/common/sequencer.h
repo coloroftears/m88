@@ -72,7 +72,7 @@ class Sequencer final {
   HANDLE hthread_ = 0;
   uint32_t idthread_ = 0;
 
-  // CPU clocks in 1 tick.
+  // CPU clocks in 1 tick. If negative, run in burst mode.
   SchedClock clock_ = 1;
   SchedClock effective_clock_ = 1;
   // Speed ratio to specified clock (in %, 100 = 1.0x).
@@ -81,7 +81,7 @@ class Sequencer final {
   int32_t exec_count_ = 0;
   SchedTime time_ = 0;
 
-  // Housekeeping statistics for drawing frames.
+  // Bookkeeping statistics for drawing frames.
   uint32_t skipped_frames_ = 0;
   uint32_t refresh_count_ = 1;
   uint32_t refresh_timing_ = 0;
