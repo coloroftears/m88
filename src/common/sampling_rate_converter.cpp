@@ -170,8 +170,8 @@ void SamplingRateConverter::MakeFilter(uint32_t out) {
         double x = (double)ii / (double)(n);
         double x2 = x * x;
         double w = bessel0(sqrt(1.0 - x2) * a) / d;
-        double g = c * (double)ii;
-        double z = sin(g) / g * w;
+        double gg = c * (double)ii;
+        double z = sin(gg) / gg * w;
         h2[j] = gain * z;
       } else {
         h2[j] = gain;
@@ -191,8 +191,14 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
   if (!buffer)
     return 0;
 
+  // Try to keep fill more than half of the buffer.
+  if (Avail() < buffersize / 2)
+    FillInternal(std::max(240, (buffersize / 2 - Avail()) / 10));
+
   int ss = samples;
-  for (int count = samples; count > 0; --count) {
+  int avail = std::min(samples, Avail());
+
+  for (int count = avail; count > 0; --count) {
     int p = read;
 
     int i;
@@ -228,10 +234,11 @@ int SamplingRateConverter::Get(Sample16* dest, int samples) {
       if (read == buffersize)
         read = 0;
       if (Avail() < 2 * M + 1)
-        FillInternal(std::max(ss, count));
+        // FillInternal(std::max(ss, count));
+        FillInternal(240);
       ss = 0;
       oo += ic;
     }
   }
-  return samples;
+  return avail;
 }
