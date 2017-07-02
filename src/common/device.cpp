@@ -46,7 +46,7 @@ bool MemoryBus::Init(uint32_t npages, Page* _pages) {
   for (Page *b = pages.get(); npages > 0; npages--, b++) {
     b->read = (void*)(intptr_t(rddummy));
     b->write = (void*)(intptr_t(wrdummy));
-    b->inst = 0;
+    b->inst = nullptr;
     b->wait = 0;
   }
   return true;
