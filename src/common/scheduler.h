@@ -6,14 +6,11 @@
 
 #pragma once
 
+#include "common/device.h"
+
 #include <queue>
 #include <utility>
 #include <vector>
-
-#include "common/device.h"
-#include "interface/ifcommon.h"
-
-// ---------------------------------------------------------------------------
 
 template <class T>
 class EventComparator final {
@@ -83,12 +80,7 @@ class SchedulerDelegate {
   virtual SchedTimeDelta GetTicks() = 0;
 };
 
-class Scheduler : public IScheduler, public ITime {
- public:
-  enum {
-    kMaxEvents = 16,
-  };
-
+class Scheduler final : public IScheduler, public ITime {
  public:
   explicit Scheduler(SchedulerDelegate* delegate);
   virtual ~Scheduler();
@@ -102,30 +94,32 @@ class Scheduler : public IScheduler, public ITime {
                                   IDevice* dev,
                                   IDevice::TimeFunc func,
                                   int arg = 0,
-                                  bool repeat = false) override;
+                                  bool repeat = false) final;
   // Warning: deprecated, do not use.
   void IFCALL SetEvent(SchedulerEvent* ev,
                        int count,
                        IDevice* dev,
                        IDevice::TimeFunc func,
                        int arg = 0,
-                       bool repeat = false) override;
-  bool IFCALL DelEvent(IDevice* dev) override;
-  bool IFCALL DelEvent(SchedulerEvent* ev) override;
+                       bool repeat = false) final;
+  bool IFCALL DelEvent(IDevice* dev) final;
+  bool IFCALL DelEvent(SchedulerEvent* ev) final;
 
   // Overrides ITime
-  SchedTime IFCALL GetTime() override;
+  SchedTime IFCALL GetTime() final;
 
  private:
   SchedulerDelegate* delegate_ = nullptr;
 
-  SchedTime time_ = 0;  // Scheduler 内の現在時刻
+  // Current time in ticks in Scheduler.
+  SchedTime time_ticks_ = 0;
 
   EventQueue<SchedulerEvent*> queue_;
   int pool_index_ = 0;
-  SchedulerEvent* pool_[kMaxEvents];
+  static constexpr int kPoolSize = 16;
+  SchedulerEvent* pool_[kPoolSize];
 };
 
 inline SchedTime IFCALL Scheduler::GetTime() {
-  return time_ + delegate_->GetTicks();
+  return time_ticks_ + delegate_->GetTicks();
 }

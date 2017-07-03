@@ -20,7 +20,7 @@ Scheduler::Scheduler(SchedulerDelegate* delegate) : delegate_(delegate) {}
 Scheduler::~Scheduler() {}
 
 bool Scheduler::Init() {
-  time_ = 0;
+  time_ticks_ = 0;
   return true;
 }
 
@@ -39,8 +39,8 @@ SchedulerEvent* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
     ev = new (pool_[--pool_index_])
          SchedulerEvent(dev, func, arg, GetTime() + count, repeat ? count : 0);
   } else {
-    ev = new SchedulerEvent(dev, func, arg, GetTime() + count, repeat ?
-                            count : 0);
+    ev = new SchedulerEvent(dev, func, arg, GetTime() + count,
+                            repeat ? count : 0);
   }
   queue_.push(ev);
 
@@ -84,7 +84,7 @@ bool IFCALL Scheduler::DelEvent(SchedulerEvent* ev) {
 void Scheduler::DrainEvents() {
   while (!queue_.empty()) {
     SchedulerEvent* ev = queue_.top();
-    if (ev->time() > time_)
+    if (ev->time() > time_ticks_)
       return;
 
     queue_.pop();
@@ -98,7 +98,7 @@ void Scheduler::DrainEvents() {
       }
     }
 
-    if (pool_index_ < kMaxEvents) {
+    if (pool_index_ < kPoolSize) {
       pool_[pool_index_++] = ev;
       continue;
     }
@@ -113,9 +113,10 @@ SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
   while (remaining_ticks > 0) {
     SchedTimeDelta execution_ticks = remaining_ticks;
     if (!queue_.empty())
-      execution_ticks = std::min(execution_ticks, queue_.top()->time() - time_);
+      execution_ticks =
+          std::min(execution_ticks, queue_.top()->time() - time_ticks_);
     SchedTimeDelta executed_ticks = delegate_->Execute(execution_ticks);
-    time_ += executed_ticks;
+    time_ticks_ += executed_ticks;
     remaining_ticks -= executed_ticks;
     DrainEvents();
   }
