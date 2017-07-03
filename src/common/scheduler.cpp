@@ -24,22 +24,23 @@ bool Scheduler::Init() {
   return true;
 }
 
-Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
-                                             IDevice* dev,
-                                             IDevice::TimeFunc func,
-                                             int arg,
-                                             bool repeat) {
+SchedulerEvent* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
+                                           IDevice* dev,
+                                           IDevice::TimeFunc func,
+                                           int arg,
+                                           bool repeat) {
   assert(dev && func);
   assert(count > 0);
 
   SchedTime earliest_event = queue_.empty() ? 0 : queue_.top()->time();
 
-  Event* ev;
+  SchedulerEvent* ev;
   if (pool_index_ > 0) {
     ev = new (pool_[--pool_index_])
-        Event(dev, func, arg, GetTime() + count, repeat ? count : 0);
+         SchedulerEvent(dev, func, arg, GetTime() + count, repeat ? count : 0);
   } else {
-    ev = new Event(dev, func, arg, GetTime() + count, repeat ? count : 0);
+    ev = new SchedulerEvent(dev, func, arg, GetTime() + count, repeat ?
+                            count : 0);
   }
   queue_.push(ev);
 
@@ -50,7 +51,7 @@ Scheduler::Event* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   return ev;
 }
 
-void IFCALL Scheduler::SetEvent(Event* ev,
+void IFCALL Scheduler::SetEvent(SchedulerEvent* ev,
                                 int count,
                                 IDevice* dev,
                                 IDevice::TimeFunc func,
@@ -74,7 +75,7 @@ bool IFCALL Scheduler::DelEvent(IDevice* dev) {
   return true;
 }
 
-bool IFCALL Scheduler::DelEvent(Event* ev) {
+bool IFCALL Scheduler::DelEvent(SchedulerEvent* ev) {
   assert(ev);
   ev->set_deleted();
   return true;
@@ -82,7 +83,7 @@ bool IFCALL Scheduler::DelEvent(Event* ev) {
 
 void Scheduler::DrainEvents() {
   while (!queue_.empty()) {
-    Event* ev = queue_.top();
+    SchedulerEvent* ev = queue_.top();
     if (ev->time() > time_)
       return;
 
@@ -106,7 +107,6 @@ void Scheduler::DrainEvents() {
 }
 
 //  時間を進める
-//
 // 1 tick = 10us
 SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
   SchedTimeDelta remaining_ticks = ticks;

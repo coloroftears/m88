@@ -85,7 +85,6 @@ class SchedulerDelegate {
 
 class Scheduler : public IScheduler, public ITime {
  public:
-  using Event = SchedulerEvent;
   enum {
     kMaxEvents = 16,
   };
@@ -99,20 +98,20 @@ class Scheduler : public IScheduler, public ITime {
   void DrainEvents();
 
   // Overrides IScheduler.
-  Event* IFCALL AddEvent(SchedTimeDelta count,
-                         IDevice* dev,
-                         IDevice::TimeFunc func,
-                         int arg = 0,
-                         bool repeat = false) override;
+  SchedulerEvent* IFCALL AddEvent(SchedTimeDelta count,
+                                  IDevice* dev,
+                                  IDevice::TimeFunc func,
+                                  int arg = 0,
+                                  bool repeat = false) override;
   // Warning: deprecated, do not use.
-  void IFCALL SetEvent(Event* ev,
+  void IFCALL SetEvent(SchedulerEvent* ev,
                        int count,
                        IDevice* dev,
                        IDevice::TimeFunc func,
                        int arg = 0,
                        bool repeat = false) override;
   bool IFCALL DelEvent(IDevice* dev) override;
-  bool IFCALL DelEvent(Event* ev) override;
+  bool IFCALL DelEvent(SchedulerEvent* ev) override;
 
   // Overrides ITime
   SchedTime IFCALL GetTime() override;
@@ -122,9 +121,9 @@ class Scheduler : public IScheduler, public ITime {
 
   SchedTime time_ = 0;  // Scheduler 内の現在時刻
 
-  EventQueue<Event*> queue_;
+  EventQueue<SchedulerEvent*> queue_;
   int pool_index_ = 0;
-  Event* pool_[kMaxEvents];
+  SchedulerEvent* pool_[kMaxEvents];
 };
 
 inline SchedTime IFCALL Scheduler::GetTime() {
