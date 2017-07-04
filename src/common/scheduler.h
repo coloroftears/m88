@@ -45,17 +45,19 @@ class SchedulerEvent final {
                  SchedTime time,
                  SchedTimeDelta interval);
 
-  void RunCallback() { (dev_->*func_)(arg_); }
-  void UpdateTime() { time_ += interval_; }
-
   SchedTimeDelta interval() const { return interval_; }
   SchedTime time() const { return time_; }
 
   const IDevice* dev() const { return dev_; }
-  bool deleted() const { return deleted_; }
-  void set_deleted() { deleted_ = true; }
+  bool is_deleted() const { return deleted_; }
 
  private:
+  friend class Scheduler;
+  void set_deleted() { deleted_ = true; }
+
+  void RunCallback() { (dev_->*func_)(arg_); }
+  void UpdateTime() { time_ += interval_; }
+
   IDevice* dev_ = nullptr;
   IDevice::TimeFunc func_ = nullptr;
   int arg_ = 0;
@@ -74,7 +76,7 @@ class SchedulerDelegate {
 
   // Execute |ticks| time, and return executed time.
   virtual SchedTimeDelta Execute(SchedTimeDelta ticks) = 0;
-  // TODO: fill description.
+  // TODO: deprecated
   virtual void Shorten(SchedTimeDelta ticks) = 0;
   // Get current VM time during Execute().
   virtual SchedTimeDelta GetTicks() = 0;
@@ -83,11 +85,22 @@ class SchedulerDelegate {
 class Scheduler final : public IScheduler, public ITime {
  public:
   explicit Scheduler(SchedulerDelegate* delegate);
-  virtual ~Scheduler();
+  ~Scheduler();
+
+  // 1 SchedTime = 10microseconds
+  static constexpr int kPrecisionUs = 10;
+  static SchedTimeDelta SchedTimeDeltaFromMS(int ms) {
+    return ms / kPrecisionUs;
+  }
+  static int MSFromSchedTimeDelta(SchedTimeDelta delta) {
+    return delta * kPrecisionUs / 1000;
+  }
+  static int USFromSchedTimeDelta(SchedTimeDelta delta) {
+    return delta * kPrecisionUs;
+  }
 
   bool Init();
   SchedTimeDelta Proceed(SchedTimeDelta ticks);
-  void DrainEvents();
 
   // Overrides IScheduler.
   SchedulerEvent* IFCALL AddEvent(SchedTimeDelta count,
@@ -97,7 +110,7 @@ class Scheduler final : public IScheduler, public ITime {
                                   bool repeat = false) final;
   // Warning: deprecated, do not use.
   void IFCALL SetEvent(SchedulerEvent* ev,
-                       int count,
+                       SchedTimeDelta count,
                        IDevice* dev,
                        IDevice::TimeFunc func,
                        int arg = 0,
@@ -109,11 +122,18 @@ class Scheduler final : public IScheduler, public ITime {
   SchedTime IFCALL GetTime() final;
 
  private:
-  SchedulerDelegate* delegate_ = nullptr;
+  // Drain all expired events in |quque_|.
+  void DrainEvents();
 
-  // Current time in ticks in Scheduler.
+  SchedulerDelegate* delegate_;
+
+  // Current time in ticks in Schedule.
   SchedTime time_ticks_ = 0;
 
+  // Guards against queue_.
+  // std::mutex mtx_;
+
+  // No lock required, but has to run only in emulation thread.
   EventQueue<SchedulerEvent*> queue_;
   int pool_index_ = 0;
   static constexpr int kPoolSize = 16;

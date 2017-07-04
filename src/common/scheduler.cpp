@@ -7,6 +7,7 @@
 #include "common/scheduler.h"
 
 #include <assert.h>
+#include <algorithm>
 
 SchedulerEvent::SchedulerEvent(IDevice* dev,
                                IDevice::TimeFunc func,
@@ -32,27 +33,22 @@ SchedulerEvent* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   assert(dev && func);
   assert(count > 0);
 
-  SchedTime earliest_event = queue_.empty() ? 0 : queue_.top()->time();
-
   SchedulerEvent* ev;
   if (pool_index_ > 0) {
+    // std::lock_guard<std::mutex> lock(mtx_);
     ev = new (pool_[--pool_index_])
          SchedulerEvent(dev, func, arg, GetTime() + count, repeat ? count : 0);
   } else {
     ev = new SchedulerEvent(dev, func, arg, GetTime() + count,
                             repeat ? count : 0);
   }
+  // std::lock_guard<std::mutex> lock(mtx_);
   queue_.push(ev);
-
-  // 最短イベント発生時刻を更新する？
-  if ((earliest_event - ev->time()) > 0)
-    delegate_->Shorten(earliest_event - ev->time());
-
   return ev;
 }
 
 void IFCALL Scheduler::SetEvent(SchedulerEvent* ev,
-                                int count,
+                                SchedTimeDelta count,
                                 IDevice* dev,
                                 IDevice::TimeFunc func,
                                 int arg,
@@ -68,14 +64,16 @@ void IFCALL Scheduler::SetEvent(SchedulerEvent* ev,
 }
 
 bool IFCALL Scheduler::DelEvent(IDevice* dev) {
+  // std::lock_guard<std::mutex> lock(mtx_);
   for (auto it = queue_.begin(); it != queue_.end(); ++it) {
-    if ((*it)->dev() == dev)
+    if ((*it)->dev_ == dev)
       (*it)->set_deleted();
   }
   return true;
 }
 
 bool IFCALL Scheduler::DelEvent(SchedulerEvent* ev) {
+  // std::lock_guard<std::mutex> lock(mtx_);
   assert(ev);
   ev->set_deleted();
   return true;
@@ -89,7 +87,7 @@ void Scheduler::DrainEvents() {
 
     queue_.pop();
     assert(ev);
-    if (!ev->deleted()) {
+    if (!ev->is_deleted()) {
       ev->RunCallback();
       if (ev->interval()) {
         ev->UpdateTime();
@@ -106,7 +104,6 @@ void Scheduler::DrainEvents() {
   }
 }
 
-//  時間を進める
 // 1 tick = 10us
 SchedTimeDelta Scheduler::Proceed(SchedTimeDelta ticks) {
   SchedTimeDelta remaining_ticks = ticks;
