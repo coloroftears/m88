@@ -6,9 +6,11 @@
 
 #include "common/sequencer.h"
 
-#include <process.h>
+#include "common/time_keeper.h"
 
 #include <algorithm>
+#include <chrono>
+#include <utility>
 
 #define LOGNAME "sequence"
 #include "common/diag.h"
@@ -18,7 +20,7 @@ Sequencer::Sequencer() : should_terminate_(false), is_active_(false) {
 }
 
 Sequencer::~Sequencer() {
-  Cleanup();
+  // Cleanup();
 }
 
 bool Sequencer::Init(SequencerDelegate* delegate) {
@@ -27,82 +29,64 @@ bool Sequencer::Init(SequencerDelegate* delegate) {
   should_terminate_ = false;
   is_active_ = false;
 
+  execcount_ = 0;
   clock_ = 1;
-  effective_clock_ = 1;
-  speed_ = 100;
-  exec_count_ = 0;
-  time_ = 0;
 
   draw_next_frame_ = false;
   skipped_frames_ = 0;
-  refresh_count_ = 0;
   refresh_timing_ = 1;
+  refresh_count_ = 0;
 
-  if (!hthread_) {
-    hthread_ = (HANDLE)_beginthreadex(
-        nullptr, 0, ThreadEntry, reinterpret_cast<void*>(this), 0, &idthread_);
-  }
-  return !!hthread_;
+  vm_thread_ = std::thread(&Sequencer::ThreadMain, this);
+  return vm_thread_.joinable();
 }
 
 bool Sequencer::Cleanup() {
-  if (hthread_) {
-    should_terminate_ = true;
-    if (WAIT_TIMEOUT == WaitForSingleObject(hthread_, 3000)) {
-      TerminateThread(hthread_, 0);
-    }
-    CloseHandle(hthread_);
-    hthread_ = 0;
-  }
+  if (!vm_thread_.joinable())
+    return true;
+  should_terminate_ = true;
+  cv_.notify_one();
+  vm_thread_.join();
   return true;
 }
 
 // Core (Emulator) Thread
-uint32_t Sequencer::ThreadMain() {
+void Sequencer::ThreadMain() {
   time_ = keeper_->GetTime();
-  effective_clock_ = 100;
 
   while (!should_terminate_) {
     if (is_active_) {
       if (clock_ <= 0)
         ExecuteBurst();
       else
-        ExecuteAsynchronus();
+        ExecuteAsynchronous();
       continue;
     }
-    Sleep(20);
+    std::unique_lock<std::mutex> lock(mtx_);
+    cv_.wait_for(lock, std::chrono::milliseconds(20));
     time_ = keeper_->GetTime();
   }
-  return 0;
 }
 
-// Entry point for emulation thread
-//
-// static
-uint32_t CALLBACK Sequencer::ThreadEntry(void* arg) {
-  return reinterpret_cast<Sequencer*>(arg)->ThreadMain();
-}
-
-// CPU Main loop
+// CPU main loop
 //  clock   CPU clock (0.1MHz)
 //  length  Execution duration (1tick = 10us)
 //  eff     Effective clock (0.1MHz)
-inline void Sequencer::Execute(SchedClock clk,
+inline void Sequencer::Execute(SchedClock clock,
                                SchedTimeDelta length,
-                               SchedClock eff) {
-  CriticalSection::Lock lock(cs_);
-  exec_count_ += clk * delegate_->Proceed(length, clk, eff);
+                               SchedClock effective_clock) {
+  execcount_ += clock * delegate_->Proceed(length, clock, effective_clock);
 }
 
 // Execute asynchronous to VSYNC signal
-void Sequencer::ExecuteAsynchronus() {
+void Sequencer::ExecuteAsynchronous() {
+  std::unique_lock<std::mutex> lock(mtx_);
   SchedTimeDelta texec = delegate_->GetFramePeriod();
-  SchedTimeDelta twork = texec * 100 / speed_;
   delegate_->TimeSync();
-  Execute(clock_, texec, clock_ * speed_ / 100);
+  Execute(clock_, texec, 0);
 
   SchedTimeDelta tcpu = keeper_->GetTime() - time_;
-  if (tcpu < twork) {
+  if (tcpu < texec) {
     if (draw_next_frame_ && ++refresh_count_ >= refresh_timing_) {
       delegate_->UpdateScreen();
       skipped_frames_ = 0;
@@ -111,19 +95,19 @@ void Sequencer::ExecuteAsynchronus() {
 
     SchedTimeDelta tdraw = keeper_->GetTime() - time_;
 
-    if (tdraw > twork) {
+    if (tdraw > texec) {
       draw_next_frame_ = false;
     } else {
-      int it = TimeKeeper::ToMilliSeconds(twork - tdraw);
+      int it = Scheduler::MSFromSchedTimeDelta(texec - tdraw);
       if (it > 0)
-        Sleep(it);
+        cv_.wait_for(lock, std::chrono::milliseconds(it));
       draw_next_frame_ = true;
     }
-    time_ += twork;
+    time_ += texec;
     return;
   }
 
-  time_ += twork;
+  time_ += texec;
   if (++skipped_frames_ >= 20) {
     delegate_->UpdateScreen();
     skipped_frames_ = 0;
@@ -153,14 +137,13 @@ void Sequencer::ExecuteBurst() {
 // Returns CPU executed clocks since last call.
 int32_t Sequencer::GetExecCount() {
   // Uncomment below when precise value is required.
-  // CriticalSection::Lock lock(cs_);
-  int32_t i = exec_count_;
-  exec_count_ = 0;
+  // std::lock_guard<std::mutex> lock(mtx_);
+  uint32_t i = execcount_;
+  execcount_ = 0;
   return i;
 }
 
 // Activate CPU emulation.
 void Sequencer::Activate(bool active) {
-  CriticalSection::Lock lock(cs_);
   is_active_ = active;
 }

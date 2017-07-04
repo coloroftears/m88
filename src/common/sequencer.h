@@ -8,14 +8,16 @@
 
 // ---------------------------------------------------------------------------
 
+#include "common/scheduler.h"
+
 #include <stdint.h>
 
 #include <atomic>
-#include <memory>
+#include <condition_variable>
+#include <mutex>
+#include <thread>
 
-#include "common/critical_section.h"
-#include "common/time_keeper.h"
-#include "interface/ifcommon.h"
+class TimeKeeper;
 
 // Interface to be implemented by Sequencer class user.
 class SequencerDelegate {
@@ -48,30 +50,28 @@ class Sequencer final {
   int32_t GetExecCount();
   void Activate(bool active);
 
-  void Lock() { cs_.lock(); }
-  void Unlock() { cs_.unlock(); }
+  void Lock() { mtx_.lock(); }
+  void Unlock() { mtx_.unlock(); }
 
   void SetClock(SchedClock clock) { clock_ = clock; }
   void SetSpeed(int speed) { speed_ = speed; }
+  // Set redraw rate (1 / rti).
   void SetRefreshTiming(uint32_t rti) { refresh_timing_ = rti; }
 
  private:
   void Execute(SchedClock clock,
                SchedTimeDelta length,
                SchedClock effective_clock);
-  void ExecuteAsynchronus();
+  void ExecuteAsynchronous();
   void ExecuteBurst();
-
-  uint32_t ThreadMain();
-  static uint32_t CALLBACK ThreadEntry(LPVOID arg);
+  void ThreadMain();
 
   std::unique_ptr<TimeKeeper> keeper_;
   SequencerDelegate* delegate_ = nullptr;
 
-  CriticalSection cs_;
-
-  HANDLE hthread_ = 0;
-  uint32_t idthread_ = 0;
+  std::thread vm_thread_;
+  std::mutex mtx_;
+  std::condition_variable cv_;
 
   // CPU clocks in 1 tick. If negative, run in burst mode.
   SchedClock clock_ = 1;
@@ -79,7 +79,7 @@ class Sequencer final {
   // Speed ratio to specified clock (in %, 100 = 1.0x).
   int speed_ = 100;
   // CPU executed clocks since last GetExecCount() call.
-  int32_t exec_count_ = 0;
+  uint32_t execcount_ = 0;
   SchedTime time_ = 0;
 
   // Bookkeeping statistics for drawing frames.
