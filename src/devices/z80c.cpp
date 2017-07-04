@@ -6,8 +6,6 @@
 
 #include "devices/z80c.h"
 
-//#define NO_UNOFFICIALFLAGS
-
 //#define LOGNAME "Z80C"
 #include "common/diag.h"
 
@@ -368,6 +366,7 @@ inline void Z80C::Outp(uint32_t port, uint32_t data) {
 #define SF (uint8_t(1 << 7))
 
 #define WF (uint8_t(1 << 3))
+#define YF (uint8_t(1 << 5))
 
 // Macros
 #define RegA (reg.r.b.a)
@@ -397,10 +396,11 @@ inline void Z80C::Outp(uint32_t port, uint32_t data) {
 
 #define RES(n, bit) ((n) & ~(1 << (bit)))
 #define SET(n, bit) ((n) | (1 << (bit)))
-#define BIT(n, bit)                                                         \
-  (void)SetFlags(ZF | HF | NF | SF,                                         \
-                 HF | (((n) & (1 << (bit))) ? n & SF & (1 << (bit)) : ZF)), \
-      SetXF(n)
+#define BIT(n, bit)                                                 \
+  (void)SetFlags(ZF | HF | NF | SF | PF,                            \
+                 HF | (((n) & (1 << (bit))) ? n & SF & (1 << (bit)) \
+                       : ZF | PF)),                                 \
+  SetXF(n)
 
 void IOCALL Z80C::Reset(uint32_t, uint32_t) {
   memset(&reg, 0, sizeof(reg));
@@ -503,6 +503,7 @@ uint32_t Z80C::GetAF() {
 inline void Z80C::SetAF(uint32_t n) {
   RegAF = n;
   uf = 0;
+  SetXF(n);
 }
 
 inline void Z80C::Push(uint32_t n) {
@@ -621,6 +622,7 @@ uint32_t Z80C::ADD16(uint32_t x, uint32_t y) {
   uf = CF | HF | WF;
   SetFlags(NF, 0);
   nfa = 0;
+  SetXF(((x + y) >> 8));
   return x + y;
 }
 
@@ -793,48 +795,55 @@ void Z80C::SingleStep(uint32_t m) {
 
     // arthimatic operation
 
-    case 0x27:  // DAA
+    case 0x27: { // DAA
       b = 0;
-      if (!GetNF()) {
+      uint8_t new_a = RegA;
+      if (!GetNF()) { // addition
         if ((RegA & 0x0f) > 9 || GetHF()) {
           if ((RegA & 0x0f) > 9)
             b = HF;
-          RegA += 6;
+          new_a += 6;
         }
-        if (RegA > 0x9f || GetCF()) {
-          RegA += 0x60;
+        if (RegA > 0x99 || GetCF()) {
+          new_a += 0x60;
           b |= CF;
         }
-      } else {
+      } else { // subtraction
         if ((RegA & 0x0f) > 9 || GetHF()) {
           if ((RegA & 0x0f) < 6)
             b = HF;
-          RegA -= 6;
+          new_a -= 6;
         }
-        if (RegA > 0x9f || GetCF()) {
-          RegA -= 0x60;
+        if (RegA > 0x99 || GetCF()) {
+          new_a -= 0x60;
           b |= CF;
         }
       }
+      RegA = new_a;
       SetZSP(RegA);
+      SetXF(RegA);
       SetFlags(HF | CF, b);
       CLK(4);
+    }
       break;
 
     case 0x2f:  // CPL
       RegA = ~RegA;
       SetFlags(NF | HF, NF | HF);
+      SetXF(RegA);
       CLK(4);
       break;
 
     case 0x37:  // SCF
       SetFlags(CF | NF | HF, CF);
+      SetXF(RegA);
       CLK(4);
       break;
 
     case 0x3f:  // CCF
       b = GetCF();
-      SetFlags(CF | NF, b ^ CF);
+      SetFlags(CF | NF | HF, b ^ CF | ((b & CF) << 4));
+      SetXF(RegA);
       CLK(4);
       break;
 
@@ -1647,17 +1656,10 @@ void Z80C::SingleStep(uint32_t m) {
       Push(RegXHL);
       CLK(11);
       break;
-#ifndef NO_UNOFFICIALFLAGS
     case 0xf5: /*AF*/
       Push(GetAF());
       CLK(11);
       break;
-#else
-    case 0xf5: /*AF*/
-      Push(GetAF() & 0xffd7);
-      CLK(11);
-      break;
-#endif
 
     // POP
     case 0xc1: /*BC*/
@@ -2334,20 +2336,28 @@ void Z80C::SingleStep(uint32_t m) {
           break;
 
         // Block transfer
-        case 0xa0:  // LDI
-          Write8(RegDE++, Read8(RegHL++));
+        case 0xa0: { // LDI
+          uint8_t n = Read8(RegHL++);
+          Write8(RegDE++, n);
           SetFlags(PF | NF | HF, --RegBC & 0xffff ? PF : 0);
+          SetXYForBlockInstruction(n + RegA);
           CLK(16);
+        }
           break;
 
-        case 0xa8:  // LDD
-          Write8(RegDE--, Read8(RegHL--));
+        case 0xa8: { // LDD
+          uint8_t n = Read8(RegHL--);
+          Write8(RegDE--, n);
           SetFlags(PF | NF | HF, --RegBC & 0xffff ? PF : 0);
+          SetXYForBlockInstruction(n + RegA);
           CLK(16);
+        }
           break;
 
-        case 0xb0:  // LDIR
-          Write8(RegDE++, Read8(RegHL++));
+        case 0xb0: { // LDIR
+          uint8_t n = Read8(RegHL++);
+          Write8(RegDE++, n);
+          SetXYForBlockInstruction(n + RegA);
           if (--RegBC & 0xffff) {
             SetFlags(PF | NF | HF, PF);
             PCDec(2), CLK(21);
@@ -2355,10 +2365,13 @@ void Z80C::SingleStep(uint32_t m) {
             SetFlags(PF | NF | HF, 0);
             CLK(16);
           }
+        }
           break;
 
-        case 0xb8:  // LDDR
-          Write8(RegDE--, Read8(RegHL--));
+        case 0xb8: { // LDDR
+          uint8_t n = Read8(RegHL--);
+          Write8(RegDE--, n);
+          SetXYForBlockInstruction(n + RegA);
           if (--RegBC & 0xffff) {
             SetFlags(PF | NF | HF, PF);
             PCDec(2), CLK(21);
@@ -2366,6 +2379,7 @@ void Z80C::SingleStep(uint32_t m) {
             SetFlags(PF | NF | HF, 0);
             CLK(16);
           }
+        }
           break;
 
         // Block search
@@ -2613,6 +2627,7 @@ void Z80C::CodeCB() {
       case 1:
         BIT(d, bit);
         CLK(12);
+        SetXF(b >> 8);
         break;
       case 2:
         Write8(b, RES(d, bit));
@@ -2634,7 +2649,15 @@ void Z80C::CPI() {
 
   SetFlags(HF | PF | NF, f);
   SetZS(RegA - n);
+  SetXYForBlockInstruction(RegA - n - ((f & HF) >> 4));
   CLK(16);
+}
+
+void Z80C::SetXYForBlockInstruction(uint32_t n) {
+  uint8_t xy_flag = 0;
+  xy_flag |= ((n << 4) & YF);
+  xy_flag |= (n & WF);
+  SetXF(xy_flag);
 }
 
 void Z80C::CPD() {
@@ -2644,6 +2667,7 @@ void Z80C::CPD() {
   f = (((RegA & 0x0f) < (n & 0x0f)) ? HF : 0) | (RegBC ? PF : 0) | NF;
   SetFlags(HF | PF | NF, f);
   SetZS(RegA - n);
+  SetXYForBlockInstruction(RegA - n - ((f & HF) >> 4));
   CLK(16);
 }
 

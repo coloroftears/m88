@@ -198,6 +198,7 @@ class Z80C final : public Device {
 
  private:
   void CLK(int count) { clockcount += count; }
+  void SetXYForBlockInstruction(uint32_t n);
 
   // Memory and I/O interfaces.
 
