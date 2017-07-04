@@ -11,9 +11,7 @@
 //#define LOGNAME "Z80C"
 #include "common/diag.h"
 
-// ---------------------------------------------------------------------------
-//  マクロ 1
-//
+// Register accessor macros
 #define RegA (reg.r.b.a)
 #define RegB (reg.r.b.b)
 #define RegC (reg.r.b.c)
@@ -32,18 +30,35 @@
 #define RegAF (reg.r.w.af)
 #define RegSP (reg.r.w.sp)
 
-#define CLK(count) (clockcount += (count))
-
-#if defined(LOGNAME) && defined(_DEBUG)
+#if !defined(NDEBUG) && defined(LOGNAME)
+enum {
+  kFetch8 = 0,
+  kFetch8B = 1,
+  kFetch8BSpecial = 2,
+  kFetch16 = 3,
+  kSetPCMemory = 4,
+  kSetPCSpecial = 5,
+  kGetPC = 6,
+  kPCDecIn = 7,
+  kPCDecOut = 19,
+  kJumpIn = 9,
+  kJumpOut = 10,
+  kReinitPage = 11,
+  kRead8Direct = 12,
+  kRead8Special = 8,
+  kRead16Direct = 13,
+  kWrite8Direct = 14,
+  kWrite8Special = 16,
+  kWrite16 = 15,
+  kJumpRelativeIn = 17,
+  kJumpRelativeOut = 18
+};
 static int testcount[24];
 #define DEBUGCOUNT(i) testcount[i]++
 #else
 #define DEBUGCOUNT(i) 0
 #endif
 
-// ---------------------------------------------------------------------------
-//  コンストラクタ・デストラクタ
-//
 Z80C::Z80C(const ID& id) : Device(id) {
   /* テーブル初期化 */
   ref_h[USEHL] = &RegH;
@@ -61,10 +76,10 @@ Z80C::Z80C(const ID& id) : Device(id) {
   ref_byte[3] = &RegE;
   ref_byte[4] = &RegH;
   ref_byte[5] = &RegL;
-  ref_byte[6] = 0;
+  ref_byte[6] = nullptr;
   ref_byte[7] = &RegA;
 
-  dumplog = 0;
+  dumplog_fp_ = nullptr;
 }
 
 Z80C::~Z80C() {
@@ -91,126 +106,106 @@ Z80C::~Z80C() {
   LOG1("JumpRelative(out) = %10d\n", testcount[18]);
   LOG0("\n");
 #endif
-  if (dumplog)
-    fclose(dumplog);
+  if (dumplog_fp_)
+    fclose(dumplog_fp_);
 }
 
-#define PAGESMASK ((1 << (16 - pagebits)) - 1)
-
-// ---------------------------------------------------------------------------
-//  PC 読み書き
-//
 void Z80C::SetPC(uint32_t newpc) {
-  MemoryPage& page = rdpages[(newpc >> pagebits) & PAGESMASK];
+  const uint32_t pages_mask = (1 << (16 - pagebits)) - 1;
+  MemoryPage& page = rdpages[(newpc >> pagebits) & pages_mask];
 
   if (!page.func) {
-    DEBUGCOUNT(4);
+    DEBUGCOUNT(kSetPCMemory);
     // instruction is on memory
-    instpage = ((uint8_t*)page.ptr);
-    instbase = ((uint8_t*)page.ptr) - (newpc & ~pagemask & 0xffff);
-    instlim = ((uint8_t*)page.ptr) + (1 << pagebits);
-    inst = ((uint8_t*)page.ptr) + (newpc & pagemask);
-    return;
+    instpage_ = reinterpret_cast<uint8_t*>(page.ptr);
+    instbase_ = reinterpret_cast<uint8_t*>(page.ptr) - (newpc & ~pagemask & 0xffff);
+    instlim_ = reinterpret_cast<uint8_t*>(page.ptr) + (1 << pagebits);
+    inst_ = instpage_ + (newpc & pagemask);
   } else {
-    DEBUGCOUNT(5);
-    instbase = instlim = 0;
-    instpage = (uint8_t*)~0;
-    inst = (uint8_t*)newpc;
-    return;
+    DEBUGCOUNT(kSetPCSpecial);
+    instbase_ = nullptr;
+    instlim_ = nullptr;
+    instpage_ = reinterpret_cast<uint8_t*>(~0);
+    inst_ = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(newpc));
   }
 }
 
 #if 0
-inline uint32_t Z80C::GetPC() const {
-  DEBUGCOUNT(6);
-  return inst - instbase;
+// TODO: Use this instead of inlined version in the header.
+inline uint32_t Z80C::GetPC()
+{
+  DEBUGCOUNT(kGetPC);
+  return static_cast<uint32_t>(inst_ - instbase_);
 }
 #endif
 
 inline void Z80C::PCInc(uint32_t inc) {
-  inst += inc;
+  inst_ += inc;
 }
 
 inline void Z80C::PCDec(uint32_t dec) {
-  inst -= dec;
-  if (inst >= instpage) {
-    DEBUGCOUNT(7);
+  inst_ -= dec;
+  if (inst_ >= instpage_) {
+    DEBUGCOUNT(kPCDecIn);
     return;
   }
-  DEBUGCOUNT(19);
-  SetPC(inst - instbase);
+  DEBUGCOUNT(kPCDecOut);
+  SetPC(GetPC());
   return;
 }
 
 inline void Z80C::Jump(uint32_t dest) {
-  inst = instbase + dest;
-  if (inst >= instpage) {
-    DEBUGCOUNT(9);
+  inst_ = instbase_ + dest;
+  if (inst_ >= instpage_) {
+    DEBUGCOUNT(kJumpIn);
     return;
   }
-  DEBUGCOUNT(10);
-  SetPC(dest);  // inst-instbase
+  DEBUGCOUNT(kJumpOut);
+  SetPC(dest);
   return;
 }
 
-// ninst = inst + rel
 inline void Z80C::JumpR() {
-  inst += int8_t(Fetch8());
+  inst_ += int8_t(Fetch8());
   CLK(5);
-  if (inst >= instpage) {
-    DEBUGCOUNT(17);
+  if (inst_ >= instpage_) {
+    DEBUGCOUNT(kJumpRelativeIn);
     return;
   }
-  DEBUGCOUNT(18);
-  SetPC(inst - instbase);
+  DEBUGCOUNT(kJumpRelativeOut);
+  SetPC(GetPC());
   return;
 }
 
-// ---------------------------------------------------------------------------
-//  インストラクション読み込み
-//
 inline uint32_t Z80C::Fetch8() {
-  DEBUGCOUNT(0);
-  if (inst < instlim)
-    return *inst++;
-  else
-    return Fetch8B();
+  // Fast path.
+  DEBUGCOUNT(kFetch8);
+  if (inst_ < instlim_)
+    return *inst_++;
+
+  DEBUGCOUNT(kFetch8B);
+  if (instlim_) {
+    SetPC(GetPC());
+    if (instlim_)
+      return *inst_++;
+  }
+  DEBUGCOUNT(kFetch8BSpecial);
+  return Read8(inst_++ - instbase_);
 }
 
 inline uint32_t Z80C::Fetch16() {
-  DEBUGCOUNT(3);
-  return Fetch16B();
-}
-
-uint32_t Z80C::Fetch8B() {
-  DEBUGCOUNT(1);
-  if (instlim) {
-    SetPC(GetPC());
-    if (instlim)
-      return *inst++;
-  }
-  DEBUGCOUNT(2);
-  return Read8(inst++ - instbase);
-}
-
-uint32_t Z80C::Fetch16B() {
+  DEBUGCOUNT(kFetch16);
   uint32_t r = Fetch8();
   return r | (Fetch8() << 8);
 }
 
-// ---------------------------------------------------------------------------
-//  WAIT モード設定
-//
 void Z80C::Wait(bool wait) {
   if (wait)
-    waitstate |= 2;
+    wait_state_ |= kWaitCPU;
   else
-    waitstate &= ~2;
+    wait_state_ &= ~kWaitCPU;
 }
 
-// ---------------------------------------------------------------------------
-//  CPU 初期化
-//
 bool Z80C::Init(MemoryManager* mem, IOBus* _bus, int iack) {
   bus = _bus, intack = iack;
 
@@ -224,9 +219,6 @@ bool Z80C::Init(MemoryManager* mem, IOBus* _bus, int iack) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  １命令実行
-//
 int Z80C::ExecOne() {
   execcount += clockcount;
   clockcount = 0;
@@ -235,17 +227,14 @@ int Z80C::ExecOne() {
   return clockcount;
 }
 
-// ---------------------------------------------------------------------------
-//  命令遂行
-//
 int Z80C::Exec(int clocks) {
   SingleStep();
   TestIntr();
-  currentcpu = this;
-  cbase = GetCount();
+  Z80Util::SetCurrentCPU(this);
+  int cbase = GetCount();
   execcount += clockcount + clocks;
   stopcount = execcount;
-  delaycount = clocks;
+  delay_count_ = clocks;
 
   for (clockcount = -clocks; clockcount < 0;) {
     SingleStep();
@@ -256,90 +245,17 @@ int Z80C::Exec(int clocks) {
   return GetCount() - cbase;
 }
 
-// ---------------------------------------------------------------------------
-//  命令遂行
-//
-int Z80C::ExecSingle(Z80C* first, Z80C* second, int clocks) {
-  int c = first->GetCount();
-
-  currentcpu = first;
-  first->startcount = first->delaycount = c;
-  first->SingleStep();
-  first->TestIntr();
-
-  cbase = c;
-  first->Exec0(c + clocks, c);
-
-  c = first->GetCount();
-  second->execcount = c;
-  second->clockcount = 0;
-
-  return c - cbase;
-}
-
-// ---------------------------------------------------------------------------
-//  2CPU 実行
-//
-int Z80C::ExecDual(Z80C* first, Z80C* second, int count) {
-  currentcpu = second;
-  second->startcount = second->delaycount = first->GetCount();
-  second->SingleStep();
-  second->TestIntr();
-  currentcpu = first;
-  first->startcount = first->delaycount = second->GetCount();
-  first->SingleStep();
-  first->TestIntr();
-
-  int c1 = first->GetCount(), c2 = second->GetCount();
-  int delay = c2 - c1;
-  cbase = delay > 0 ? c1 : c2;
-  int stop = cbase + count;
-
-  while ((stop - first->GetCount() > 0) || (stop - second->GetCount() > 0)) {
-    stop = first->Exec0(stop, second->GetCount());
-    stop = second->Exec0(stop, first->GetCount());
-  }
-  return stop - cbase;
-}
-
-// ---------------------------------------------------------------------------
-//  2CPU 実行
-//
-int Z80C::ExecDual2(Z80C* first, Z80C* second, int count) {
-  currentcpu = second;
-  second->startcount = second->delaycount = first->GetCount();
-  second->SingleStep();
-  second->TestIntr();
-  currentcpu = first;
-  first->startcount = first->delaycount = second->GetCount();
-  first->SingleStep();
-  first->TestIntr();
-
-  int c1 = first->GetCount(), c2 = second->GetCount();
-  int delay = c2 - c1;
-  cbase = delay > 0 ? c1 : c2;
-  int stop = cbase + count;
-
-  while ((stop - first->GetCount() > 0) || (stop - second->GetCount() > 0)) {
-    stop = first->Exec0(stop, second->GetCount());
-    stop = second->Exec1(stop, first->GetCount());
-  }
-  return stop - cbase;
-}
-
-// ---------------------------------------------------------------------------
-//  片方実行
-//
+// Execute main CPU
 int Z80C::Exec0(int stop, int other) {
   int clocks = stop - GetCount();
   if (clocks > 0) {
     eshift = 0;
-    currentcpu = this;
+    Z80Util::SetCurrentCPU(this);
     stopcount = stop;
-    delaycount = other;
+    delay_count_ = other;
     execcount += clockcount + clocks;
 
-    if (dumplog) {
+    if (dumplog_fp_) {
       for (clockcount = -clocks; clockcount < 0;) {
         DumpLog();
         SingleStep();
@@ -348,25 +264,23 @@ int Z80C::Exec0(int stop, int other) {
       for (clockcount = -clocks; clockcount < 0;)
         SingleStep();
     }
-    currentcpu = 0;
+    Z80Util::SetCurrentCPU(nullptr);
     return stopcount;
   } else {
     return stop;
   }
 }
 
-// ---------------------------------------------------------------------------
-//  片方実行
-//
+// Execute sub CPU
 int Z80C::Exec1(int stop, int other) {
   int clocks = stop - GetCount();
   if (clocks > 0) {
     eshift = 1;
-    currentcpu = this;
+    Z80Util::SetCurrentCPU(this);
     stopcount = stop;
-    delaycount = other;
+    delay_count_ = other;
     execcount += clockcount * 2 + clocks;
-    if (dumplog) {
+    if (dumplog_fp_) {
       for (clockcount = -clocks / 2; clockcount < 0;) {
         DumpLog();
         SingleStep();
@@ -376,55 +290,39 @@ int Z80C::Exec1(int stop, int other) {
         SingleStep();
       }
     }
-    currentcpu = 0;
+    Z80Util::SetCurrentCPU(nullptr);
     return stopcount;
   } else {
     return stop;
   }
 }
 
-// ---------------------------------------------------------------------------
-//  同期チェック
-//
+// Check
 bool Z80C::Sync() {
-  // もう片方のCPUよりも遅れているか？
-  if (GetCount() - delaycount <= 1)
+  // Is this CPU has delay from other one?
+  if (GetCount() - delay_count_ <= 1)
     return true;
-  // 進んでいた場合 Exec0 を抜ける
+
+  // If advanced, exit EXEC0
   execcount += clockcount << eshift;
   clockcount = 0;
   return false;
 }
 
-// ---------------------------------------------------------------------------
-//  Exec を途中で中断
-//
+// Abort Exec().
 void Z80C::Stop(int count) {
   execcount = stopcount = GetCount() + count;
   clockcount = -count >> eshift;
 }
 
-Z80C* Z80C::currentcpu;
-int Z80C::cbase;
-
-// ---------------------------------------------------------------------------
-//  1 命令実行
-//
-inline void Z80C::SingleStep() {
-  SingleStep(Fetch8());
-}
-
-// ---------------------------------------------------------------------------
-//  I/O 処理の定義 -----------------------------------------------------------
-
 inline uint32_t Z80C::Read8(uint32_t addr) {
   addr &= 0xffff;
   MemoryPage& page = rdpages[addr >> pagebits];
   if (!page.func) {
-    DEBUGCOUNT(12);
+    DEBUGCOUNT(kRead8Direct);
     return ((uint8_t*)page.ptr)[addr & pagemask];
   } else {
-    DEBUGCOUNT(8);
+    DEBUGCOUNT(kRead8Special);
     return (*MemoryManager::RdFunc(intptr_t(page.ptr)))(page.inst, addr);
   }
 }
@@ -433,10 +331,10 @@ inline void Z80C::Write8(uint32_t addr, uint32_t data) {
   addr &= 0xffff;
   MemoryPage& page = wrpages[addr >> pagebits];
   if (!page.func) {
-    DEBUGCOUNT(14);
+    DEBUGCOUNT(kWrite8Direct);
     ((uint8_t*)page.ptr)[addr & pagemask] = data;
   } else {
-    DEBUGCOUNT(16);
+    DEBUGCOUNT(kWrite8Special);
     (*MemoryManager::WrFunc(intptr_t(page.ptr)))(page.inst, addr, data);
   }
 }
@@ -446,7 +344,7 @@ inline uint32_t Z80C::Read16(uint32_t addr) {
 }
 
 inline void Z80C::Write16(uint32_t addr, uint32_t data) {
-  DEBUGCOUNT(15);
+  DEBUGCOUNT(kWrite16);
   Write8(addr, data & 0xff);
   Write8(addr + 1, data >> 8);
 }
@@ -458,12 +356,10 @@ inline uint32_t Z80C::Inp(uint32_t port) {
 inline void Z80C::Outp(uint32_t port, uint32_t data) {
   bus->Out(port & 0xff, data);
   SetPC(GetPC());
-  DEBUGCOUNT(11);
+  DEBUGCOUNT(kReinitPage);
 }
 
-// ---------------------------------------------------------------------------
-//  フラグ定義 ---------------------------------------------------------------
-
+// Flags
 #define CF (uint8_t(1 << 0))
 #define NF (uint8_t(1 << 1))
 #define PF (uint8_t(1 << 2))
@@ -473,9 +369,7 @@ inline void Z80C::Outp(uint32_t port, uint32_t data) {
 
 #define WF (uint8_t(1 << 3))
 
-// ---------------------------------------------------------------------------
-//  マクロ群 -----------------------------------------------------------------
-
+// Macros
 #define RegA (reg.r.b.a)
 #define RegB (reg.r.b.b)
 #define RegC (reg.r.b.c)
@@ -508,9 +402,6 @@ inline void Z80C::Outp(uint32_t port, uint32_t data) {
                  HF | (((n) & (1 << (bit))) ? n & SF & (1 << (bit)) : ZF)), \
       SetXF(n)
 
-// ---------------------------------------------------------------------------
-//  リセット
-//
 void IOCALL Z80C::Reset(uint32_t, uint32_t) {
   memset(&reg, 0, sizeof(reg));
 
@@ -521,21 +412,19 @@ void IOCALL Z80C::Reset(uint32_t, uint32_t) {
 
   RegF = 0;
   uf = 0;
-  instlim = 0;
-  instbase = 0;
+  instlim_ = nullptr;
+  instbase_ = nullptr;
 
-  //  SetFlags(0xff, 0);      /* フラグリセット */
+  //  SetFlags(0xff, 0); // Reset flags
   reg.intmode = 0; /* IM0 */
   SetPC(0);        /* pc, sp = 0 */
   RegSP = 0;
-  waitstate = 0;
-  intr = false;  // 割り込みクリア
+  wait_state_ = kWaitNone;
+  intr = false;  // Clear interrupts
   execcount = 0;
 }
 
-// ---------------------------------------------------------------------------
-//  強制割り込み
-//
+// Non-maskable interrupt
 void IOCALL Z80C::NMI(uint32_t, uint32_t) {
   reg.iff2 = reg.iff1;
   reg.iff1 = false;
@@ -544,16 +433,14 @@ void IOCALL Z80C::NMI(uint32_t, uint32_t) {
   SetPC(0x66);
 }
 
-// ---------------------------------------------------------------------------
-//  割り込む
-//
+// Interrupt?
 void Z80C::TestIntr() {
   if (reg.iff1 && intr) {
     reg.iff1 = false;
     reg.iff2 = false;
 
-    if (waitstate & 1) {
-      waitstate = 0;
+    if (wait_state_ & kWaitHalt) {
+      wait_state_ = kWaitNone;
       PCInc(1);
     }
     int intno = bus->In(intack);
@@ -579,9 +466,6 @@ void Z80C::TestIntr() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  分岐関数 -----------------------------------------------------------------
-
 inline void Z80C::Call() {
   uint32_t d = Fetch16();
   Push(GetPC());
@@ -589,9 +473,7 @@ inline void Z80C::Call() {
   CLK(7);
 }
 
-// ---------------------------------------------------------------------------
-//  アクセス補助関数 ---------------------------------------------------------
-
+// Auxlliary accessors.
 void Z80C::SetM(uint32_t n) {
   if (index_mode == USEHL)
     Write8(RegHL, n);
@@ -623,9 +505,6 @@ inline void Z80C::SetAF(uint32_t n) {
   uf = 0;
 }
 
-// ---------------------------------------------------------------------------
-//  スタック関数 -------------------------------------------------------------
-
 inline void Z80C::Push(uint32_t n) {
   RegSP -= 2;
   Write16(RegSP, n);
@@ -636,9 +515,6 @@ inline uint32_t Z80C::Pop() {
   RegSP += 2;
   return a;
 }
-
-// ---------------------------------------------------------------------------
-//  算術演算関数 -------------------------------------------------------------
 
 void Z80C::ADDA(uint8_t n) {
   fx = uint32_t(RegA) * 2;
@@ -773,9 +649,6 @@ void Z80C::SBCHL(uint32_t y) {
   SetXF(RegH);
 }
 
-// ---------------------------------------------------------------------------
-//  ローテート・シフト命令 ---------------------------------------------------
-
 uint8_t Z80C::RLC(uint8_t d) {
   uint8_t f = (d & 0x80) ? CF : 0;
   d = (d << 1) + f; /* CF == 1 */
@@ -840,9 +713,7 @@ uint8_t Z80C::SRL(uint8_t d) {
   return d;
 }
 
-// ---------------------------------------------------------------------------
-//   フラグテーブル
-//
+// Flag table
 static const uint8_t ZSPTable[256] = {
     ZF | PF, 0,       0,       PF,      0,       PF,      PF,      0,
     0,       PF,      PF,      0,       PF,      0,       0,       PF,
@@ -878,17 +749,15 @@ static const uint8_t ZSPTable[256] = {
     SF,      PF | SF, PF | SF, SF,      PF | SF, SF,      SF,      PF | SF,
 };
 
-// ---------------------------------------------------------------------------
-//  １命令実行
-//
 void Z80C::SingleStep(uint32_t m) {
+  // M1 state - increment R register.
   reg.rreg++;
 
   switch (m) {
     uint8_t b;
     uint32_t w;
 
-    // ローテートシフト系
+    // Rotate/Shift
 
     case 0x07:  // RLCA
       b = (0 != (RegA & 0x80));
@@ -1369,7 +1238,7 @@ void Z80C::SingleStep(uint32_t m) {
 
     case 0x76:  // HALT
       PCDec(1);
-      waitstate = 1;
+      wait_state_ = kWaitHalt;
       if (intr) {
         TestIntr();
         CLK(64);
@@ -2210,8 +2079,6 @@ void Z80C::SingleStep(uint32_t m) {
       w = Fetch8();
       reg.rreg++;
       switch (w) {
-        // 入出力 ED 系
-
         // IN r,(c)
         case 0x40:
           if (bus->IsSyncPort(RegBC & 0xff) && !Sync()) {
@@ -2466,8 +2333,7 @@ void Z80C::SingleStep(uint32_t m) {
           OutTestIntr();
           break;
 
-        // ブロック転送系
-
+        // Block transfer
         case 0xa0:  // LDI
           Write8(RegDE++, Read8(RegHL++));
           SetFlags(PF | NF | HF, --RegBC & 0xffff ? PF : 0);
@@ -2502,8 +2368,7 @@ void Z80C::SingleStep(uint32_t m) {
           }
           break;
 
-        // ブロックサーチ系
-
+        // Block search
         case 0xa1:  // CPI
           CPI();
           break;
@@ -2597,7 +2462,6 @@ void Z80C::SingleStep(uint32_t m) {
           break;
 
         // 桁移動命令
-
         case 0x6f:  // RLD
         {
           uint8_t d, e;
@@ -2628,8 +2492,7 @@ void Z80C::SingleStep(uint32_t m) {
           CLK(18);
         } break;
 
-        // ED系 16 ビットロード
-
+        // 16bit load
         // LD (nn),dd
         case 0x43: /*BC*/
           Write16(Fetch16(), RegBC);
@@ -2666,8 +2529,7 @@ void Z80C::SingleStep(uint32_t m) {
           CLK(20);
           break;
 
-        // ED系 16 ビット演算
-
+        // 16bit arihmetic
         // ADC HL,dd
         case 0x4a: /*BC*/
           ADCHL(RegBC);
@@ -2709,7 +2571,7 @@ void Z80C::SingleStep(uint32_t m) {
 }
 
 // ---------------------------------------------------------------------------
-//  CB 系
+//  CB - bit manipulation
 //
 void Z80C::CodeCB() {
   using RotFuncPtr = uint8_t (Z80C::*)(uint8_t);
@@ -2724,7 +2586,7 @@ void Z80C::CodeCB() {
   uint32_t bit = (fn >> 3) & 7;
 
   if (rg != 6) {
-    uint8_t* p = ref_byte[rg]; /* 操作対象へのポインタ */
+    uint8_t* p = ref_byte[rg]; // pointer to operand
     switch ((fn >> 6) & 3) {
       case 0:
         *p = (this->*func[bit])(*p);
@@ -2764,9 +2626,6 @@ void Z80C::CodeCB() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  ブロック比較 -------------------------------------------------------------
-//
 void Z80C::CPI() {
   uint8_t n, f;
   n = Read8(RegHL++);
@@ -2787,9 +2646,6 @@ void Z80C::CPD() {
   SetZS(RegA - n);
   CLK(16);
 }
-
-// ---------------------------------------------------------------------------
-//  フラグ関数 ---------------------------------------------------------------
 
 uint8_t Z80C::GetCF() {
   if (uf & CF) {
@@ -2928,7 +2784,7 @@ static inline void ToHex(char** p, uint32_t d) {
 //
 void Z80C::DumpLog() {
   char buf[64];
-  memset(buf, 0x20, 64);
+  memset(buf, ' ', 64);
 
   // pc
   char* ptr = buf;
@@ -2963,7 +2819,8 @@ void Z80C::DumpLog() {
   ptr++;
   *ptr++ = 10;
 
-  fwrite(buf, 1, ptr - buf, dumplog);
+  if (dumplog_fp_)
+    fwrite(buf, 1, ptr - buf, dumplog_fp_);
 }
 
 // ---------------------------------------------------------------------------
@@ -2971,24 +2828,21 @@ void Z80C::DumpLog() {
 //
 bool Z80C::EnableDump(bool dump) {
   if (dump) {
-    if (!dumplog) {
+    if (!dumplog_fp_) {
       char buf[12];
       *(uint32_t*)buf = GetID();
       strcpy(buf + 4, ".dmp");
-      dumplog = fopen(buf, "w");
+      dumplog_fp_ = fopen(buf, "w");
     }
   } else {
-    if (dumplog) {
-      fclose(dumplog);
-      dumplog = 0;
+    if (dumplog_fp_) {
+      fclose(dumplog_fp_);
+      dumplog_fp_ = nullptr;
     }
   }
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  状態保存
-//
 uint32_t IFCALL Z80C::GetStatusSize() {
   return sizeof(Status);
 }
@@ -3000,7 +2854,7 @@ bool IFCALL Z80C::SaveStatus(uint8_t* s) {
   st->reg = reg;
   st->reg.pc = GetPC();
   st->intr = intr;
-  st->wait = waitstate;
+  st->wait = wait_state_;
   st->xf = xf;
   st->execcount = execcount;
 
@@ -3012,12 +2866,13 @@ bool IFCALL Z80C::LoadStatus(const uint8_t* s) {
   if (st->rev != ssrev)
     return false;
   reg = st->reg;
-  instbase = instlim = 0;
-  instpage = (uint8_t*)~0;
-  inst = (uint8_t*)reg.pc;
+  instbase_ = nullptr;
+  instlim_ = nullptr;
+  instpage_ = reinterpret_cast<uint8_t*>(~0);
+  inst_ = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(reg.pc));
 
   intr = st->intr;
-  waitstate = st->wait;
+  wait_state_ = st->wait;
   xf = st->xf;
   execcount = st->execcount;
   return true;
@@ -3033,3 +2888,86 @@ const Device::OutFuncPtr Z80C::outdef[] = {
     static_cast<Device::OutFuncPtr>(&Z80C::IRQ),
     static_cast<Device::OutFuncPtr>(&Z80C::NMI),
 };
+
+// static
+int Z80Util::ExecSingle(Z80C* first, Z80C* second, int clocks) {
+  int c = first->GetCount();
+
+  current_cpu_ = first;
+  first->set_start_count(c);
+  first->set_delay_count(c);
+
+  first->SingleStep();
+  first->TestIntr();
+
+  int cbase = c;
+  first->Exec0(c + clocks, c);
+
+  c = first->GetCount();
+  second->execcount = c;
+  second->clockcount = 0;
+
+  return c - cbase;
+}
+
+// Execute 2 CPUs
+// static
+int Z80Util::ExecDual(Z80C* first, Z80C* second, int count) {
+  current_cpu_ = second;
+  second->set_start_count(first->GetCount());
+  second->set_delay_count(first->GetCount());
+
+  second->SingleStep();
+  second->TestIntr();
+
+  current_cpu_ = first;
+  first->set_start_count(second->GetCount());
+  first->set_delay_count(second->GetCount());
+
+  first->SingleStep();
+  first->TestIntr();
+
+  int c1 = first->GetCount();
+  int c2 = second->GetCount();
+  int delay = c2 - c1;
+  int cbase = delay > 0 ? c1 : c2;
+  int stop = cbase + count;
+
+  while ((stop - first->GetCount() > 0) || (stop - second->GetCount() > 0)) {
+    stop = first->Exec0(stop, second->GetCount());
+    stop = second->Exec0(stop, first->GetCount());
+  }
+  return stop - cbase;
+}
+
+// Execute 2 CPUs
+// static
+int Z80Util::ExecDual2(Z80C* first, Z80C* second, int count) {
+  current_cpu_ = second;
+  second->set_start_count(first->GetCount());
+  second->set_delay_count(first->GetCount());
+
+  second->SingleStep();
+  second->TestIntr();
+
+  current_cpu_ = first;
+  first->set_start_count(second->GetCount());
+  first->set_delay_count(second->GetCount());
+
+  first->SingleStep();
+  first->TestIntr();
+
+  int c1 = first->GetCount();
+  int c2 = second->GetCount();
+  int delay = c2 - c1;
+  int cbase = delay > 0 ? c1 : c2;
+  int stop = cbase + count;
+
+  while ((stop - first->GetCount() > 0) || (stop - second->GetCount() > 0)) {
+    stop = first->Exec0(stop, second->GetCount());
+    stop = second->Exec1(stop, first->GetCount());
+  }
+  return stop - cbase;
+}
+
+Z80C* Z80Util::current_cpu_;

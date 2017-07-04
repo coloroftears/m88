@@ -2,7 +2,7 @@
 //  Z80 emulator.
 //  Copyright (C) cisc 1997, 1999.
 // ---------------------------------------------------------------------------
-//  Z80 のレジスタ定義
+//  Register definition Z80
 // ---------------------------------------------------------------------------
 //  $Id: Z80.h,v 1.1.1.1 1999/02/19 09:00:40 cisc Exp $
 
@@ -11,10 +11,6 @@
 #include "common/types.h"
 
 #define Z80_WORDREG_IN_INT
-
-// ---------------------------------------------------------------------------
-//  Z80 のレジスタセット
-// ---------------------------------------------------------------------------
 
 struct Z80Reg {
 #ifdef Z80_WORDREG_IN_INT
@@ -65,11 +61,14 @@ struct Z80Reg {
     } b;
   } r;
 
-  wordreg r_af, r_hl, r_de, r_bc; /* 裏レジスタ */
+  // Shadow register sets
+  wordreg r_af, r_hl, r_de, r_bc;
   wordreg pc;
   uint8_t ireg;
-  uint8_t rreg, rreg7; /* R(0-6 bit), R(7th bit) */
-  uint8_t intmode;     /* 割り込みモード */
+  // R (bit 0-6) / R(bit7)
+  uint8_t rreg, rreg7;
+  // Intterupt mode (0,1,2)
+  uint8_t intmode;
   bool iff1, iff2;
 };
 

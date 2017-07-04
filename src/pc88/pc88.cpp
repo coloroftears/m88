@@ -161,11 +161,11 @@ SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   int exc = ticks * clock_;
   if (!(cpumode & stopwhenidle) || subsys->IsBusy() || fdc->IsBusy()) {
     if ((cpumode & 1) == ms11)
-      exc = Z80::ExecDual(&cpu1, &cpu2, exc);
+      exc = Z80Util::ExecDual(&cpu1, &cpu2, exc);
     else
-      exc = Z80::ExecDual2(&cpu1, &cpu2, exc);
+      exc = Z80Util::ExecDual2(&cpu1, &cpu2, exc);
   } else {
-    exc = Z80::ExecSingle(&cpu1, &cpu2, exc);
+    exc = Z80Util::ExecSingle(&cpu1, &cpu2, exc);
   }
   exc += dexc;
   dexc = exc % clock_;
@@ -177,11 +177,11 @@ SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
 //  実行クロック数変更
 //
 void PC88::Shorten(SchedTimeDelta ticks) {
-  Z80::StopDual(ticks * clock_);
+  Z80Util::StopDual(ticks * clock_);
 }
 
 SchedTimeDelta PC88::GetTicks() {
-  return (Z80::GetCCount() + dexc) / clock_;
+  return (Z80Util::GetCCount() + dexc) / clock_;
 }
 
 // ---------------------------------------------------------------------------
@@ -296,9 +296,11 @@ void PC88::Reset() {
 //  デバイス接続
 //
 bool PC88::ConnectDevices() {
-  static const IOBus::Connector c_cpu1[] = {{pres, IOBus::portout, Z80::reset},
-                                            {pirq, IOBus::portout, Z80::irq},
-                                            {0, 0, 0}};
+  static const IOBus::Connector c_cpu1[] = {
+    {pres, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
+    {pirq, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
+    {0, 0, 0}
+  };
   if (!bus1.Connect(&cpu1, c_cpu1))
     return false;
   if (!cpu1.Init(&mm1, &bus1, piack))
@@ -592,9 +594,11 @@ bool PC88::ConnectDevices() {
 //  デバイス接続(サブCPU)
 //
 bool PC88::ConnectDevices2() {
-  static const IOBus::Connector c_cpu2[] = {{pres2, IOBus::portout, Z80::reset},
-                                            {pirq2, IOBus::portout, Z80::irq},
-                                            {0, 0, 0}};
+  static const IOBus::Connector c_cpu2[] = {
+    {pres2, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
+    {pirq2, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
+    {0, 0, 0}
+  };
   if (!bus2.Connect(&cpu2, c_cpu2))
     return false;
   if (!cpu2.Init(&mm2, &bus2, piac2))
