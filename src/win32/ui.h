@@ -129,11 +129,11 @@ class WinUI {
   // Monitors
   win32::BasicMonitor basmon;
   win32::CodeMonitor codemon;
-  win32::OPNMonitor opnmon;
   win32::IOMonitor iomon;
-  win32::MemoryMonitor memmon;
-  win32::Z80RegMonitor regmon;
   win32::LoadMonitor loadmon;
+  win32::MemoryMonitor memmon;
+  win32::OPNMonitor opnmon;
+  win32::Z80RegMonitor regmon;
 
   std::unique_ptr<DiskManager> diskmgr;
   std::unique_ptr<TapeManager> tapemgr;
