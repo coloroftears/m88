@@ -11,6 +11,8 @@
 
 #include "win32/resource.h"
 
+namespace win32 {
+
 #ifdef ENABLE_LOADMONITOR
 
 LoadMonitor* LoadMonitor::instance = 0;
@@ -134,3 +136,5 @@ void LoadMonitor::ProcEnd(const char* name) {
 }
 
 #endif
+
+}  // namespace win32

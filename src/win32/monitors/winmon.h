@@ -15,6 +15,8 @@
 
 // ---------------------------------------------------------------------------
 
+namespace win32 {
+
 class WinMonitor {
  public:
   WinMonitor();
@@ -113,3 +115,5 @@ class WinMonitor {
   int timer;
   int timerinterval;
 };
+
+}  // namespace win32

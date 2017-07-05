@@ -17,6 +17,8 @@
 
 // ---------------------------------------------------------------------------
 
+namespace win32 {
+
 #ifdef ENABLE_LOADMONITOR
 
 class LoadMonitor final : public WinMonitor {
@@ -68,7 +70,7 @@ inline void LOADEND(const char* key) {
     lm->ProcEnd(key);
 }
 
-#else
+#else  // ENABLE_LOADMONITOR
 
 class LoadMonitor {
  public:
@@ -83,4 +85,6 @@ class LoadMonitor {
 #define LOADBEGIN(a)
 #define LOADEND(a)
 
-#endif
+#endif  // ENABLE_LOADMONITOR
+
+} // namespace win32

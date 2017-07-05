@@ -9,6 +9,8 @@
 #include "pc88/pc88.h"
 #include "win32/resource.h"
 
+namespace win32 {
+
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
@@ -79,3 +81,5 @@ void Z80RegMonitor::UpdateText() {
   Putf("I :%.2x   IM:   %x   I :%.2x   IM:   %x\n", r1.ireg, r1.intmode,
        r2.ireg, r2.intmode);
 }
+
+}  // namespace win32

@@ -14,7 +14,7 @@
 
 class PC88;
 
-namespace pc88 {
+namespace win32 {
 
 class MemViewMonitor : public WinMonitor {
  public:
@@ -33,6 +33,8 @@ class MemViewMonitor : public WinMonitor {
   uint32_t StatExec(uint32_t a);
   virtual void SetBank();
 
+  using MemoryViewer = pc88::MemoryViewer;
+
   MemoryViewer mv;
 
   MemoryViewer::Type GetA0() { return a0; }
@@ -45,4 +47,5 @@ class MemViewMonitor : public WinMonitor {
   MemoryViewer::Type a6;
   MemoryViewer::Type af;
 };
-}  // namespace pc88
+
+}  // namespace win32

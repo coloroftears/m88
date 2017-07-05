@@ -15,7 +15,7 @@
 
 class PC88;
 
-namespace pc88 {
+namespace win32 {
 
 class IOMonitor final : public WinMonitor {
  public:
@@ -31,10 +31,10 @@ class IOMonitor final : public WinMonitor {
   void Start() final;
   void Stop() final;
 
-  IOViewer iov;
+  pc88::IOViewer iov;
   WinCore* pc;
   bool bank;
 
   static COLORREF ctbl[0x100];
 };
-}  // namespace pc88
+}  // namespace win32

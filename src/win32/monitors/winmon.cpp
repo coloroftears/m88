@@ -17,6 +17,8 @@
 #include "common/clamp.h"
 #include "win32/resource.h"
 
+namespace win32 {
+
 // ---------------------------------------------------------------------------
 //  構築/消滅
 //
@@ -666,3 +668,5 @@ INT_PTR WinMonitor::DlgProcGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
     return FALSE;
   return monitor->DlgProc(hwnd, m, w, l);
 }
+
+}  // namespace win32

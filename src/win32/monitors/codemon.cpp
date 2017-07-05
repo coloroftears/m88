@@ -12,7 +12,7 @@
 #include "pc88/pc88.h"
 #include "win32/resource.h"
 
-namespace pc88 {
+namespace win32 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -177,4 +177,4 @@ bool CodeMonitor::DumpImage() {
   }
   return false;
 }
-}  // namespace pc88
+}  // namespace win32

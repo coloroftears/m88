@@ -12,7 +12,7 @@
 
 class PC88;
 
-// ---------------------------------------------------------------------------
+namespace win32 {
 
 class Z80RegMonitor final : public WinMonitor {
  public:
@@ -29,3 +29,5 @@ class Z80RegMonitor final : public WinMonitor {
 
   PC88* pc;
 };
+
+}  // namespace win32

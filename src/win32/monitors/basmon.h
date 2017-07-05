@@ -16,7 +16,7 @@
 
 class PC88;
 
-namespace pc88 {
+namespace win32 {
 
 class BasicMonitor final : public WinMonitor {
  public:
@@ -36,7 +36,7 @@ class BasicMonitor final : public WinMonitor {
   int line[0x4000];
   int nlines;
 
-  MemoryViewer mv;
+  pc88::MemoryViewer mv;
   MemoryBus* bus;
 
   uint32_t Read8(uint32_t adr);
@@ -47,4 +47,4 @@ class BasicMonitor final : public WinMonitor {
 
   static const char* rsvdword[];
 };
-}  // namespace pc88
+}  // namespace win32

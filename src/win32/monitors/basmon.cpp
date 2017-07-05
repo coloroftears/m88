@@ -11,7 +11,7 @@
 
 #include "win32/resource.h"
 
-namespace pc88 {
+namespace win32 {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -24,9 +24,9 @@ bool BasicMonitor::Init(PC88* pc88) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_BASMON)))
     return false;
   mv.Init(pc88);
-  mv.SelectBank(MemoryViewer::mainram, MemoryViewer::mainram,
-                MemoryViewer::mainram, MemoryViewer::mainram,
-                MemoryViewer::mainram);
+  mv.SelectBank(pc88::MemoryViewer::mainram, pc88::MemoryViewer::mainram,
+                pc88::MemoryViewer::mainram, pc88::MemoryViewer::mainram,
+                pc88::MemoryViewer::mainram);
   bus = mv.GetBus();
 
   SetUpdateTimer(2000);
@@ -281,4 +281,4 @@ const char* BasicMonitor::rsvdword[] = {
     "",       "",          "",       "",       "",        "",        "",
     "",       "",          "",       "",
 };
-}  // namespace pc88
+}  // namespace win32
