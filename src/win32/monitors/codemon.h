@@ -17,7 +17,7 @@
 
 class PC88;
 
-namespace win32 {
+namespace m88win {
 
 class CodeMonitor final : public MemViewMonitor {
  public:
@@ -37,4 +37,4 @@ class CodeMonitor final : public MemViewMonitor {
 
   Z80Diag diag;
 };
-}  // namespace win32
+}  // namespace m88win

@@ -15,7 +15,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace win32 {
+namespace m88win {
 
 class WinMonitor {
  public:
@@ -116,4 +116,4 @@ class WinMonitor {
   int timerinterval;
 };
 
-}  // namespace win32
+}  // namespace m88win

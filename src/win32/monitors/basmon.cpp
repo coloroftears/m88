@@ -11,7 +11,7 @@
 
 #include "win32/resource.h"
 
-namespace win32 {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -281,4 +281,4 @@ const char* BasicMonitor::rsvdword[] = {
     "",       "",          "",       "",       "",        "",        "",
     "",       "",          "",       "",
 };
-}  // namespace win32
+}  // namespace m88win

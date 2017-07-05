@@ -17,7 +17,7 @@
 #include "common/clamp.h"
 #include "win32/resource.h"
 
-namespace win32 {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -669,4 +669,4 @@ INT_PTR WinMonitor::DlgProcGate(HWND hwnd, UINT m, WPARAM w, LPARAM l) {
   return monitor->DlgProc(hwnd, m, w, l);
 }
 
-}  // namespace win32
+}  // namespace m88win

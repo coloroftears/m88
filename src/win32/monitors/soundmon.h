@@ -16,7 +16,7 @@ namespace pc88 {
 class OPNInterface;
 }  // namespace pc88
 
-namespace win32 {
+namespace m88win {
 
 class OPNMonitor final : public WinMonitor, public ISoundSource {
  public:
@@ -60,4 +60,4 @@ class OPNMonitor final : public WinMonitor, public ISoundSource {
   int buf[2][bufsize];
 };
 
-}  // namespace win32
+}  // namespace m88win

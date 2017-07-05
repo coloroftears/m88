@@ -15,7 +15,7 @@
 
 class PC88;
 
-namespace win32 {
+namespace m88win {
 
 class MemoryMonitor final : public MemViewMonitor {
  public:
@@ -67,4 +67,4 @@ class MemoryMonitor final : public MemViewMonitor {
 
   static COLORREF col[0x100];
 };
-}  // namespace win32
+}  // namespace m88win

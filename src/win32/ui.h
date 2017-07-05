@@ -127,13 +127,13 @@ class WinUI {
   WinNewDisk newdisk;
 
   // Monitors
-  win32::BasicMonitor basmon;
-  win32::CodeMonitor codemon;
-  win32::IOMonitor iomon;
-  win32::LoadMonitor loadmon;
-  win32::MemoryMonitor memmon;
-  win32::OPNMonitor opnmon;
-  win32::Z80RegMonitor regmon;
+  m88win::BasicMonitor basmon;
+  m88win::CodeMonitor codemon;
+  m88win::IOMonitor iomon;
+  m88win::LoadMonitor loadmon;
+  m88win::MemoryMonitor memmon;
+  m88win::OPNMonitor opnmon;
+  m88win::Z80RegMonitor regmon;
 
   std::unique_ptr<DiskManager> diskmgr;
   std::unique_ptr<TapeManager> tapemgr;

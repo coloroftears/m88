@@ -15,7 +15,7 @@
 
 class PC88;
 
-namespace win32 {
+namespace m88win {
 
 class IOMonitor final : public WinMonitor {
  public:
@@ -37,4 +37,4 @@ class IOMonitor final : public WinMonitor {
 
   static COLORREF ctbl[0x100];
 };
-}  // namespace win32
+}  // namespace m88win

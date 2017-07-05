@@ -22,9 +22,9 @@
 
 class PC88;
 
-namespace win32 {
+namespace m88win {
 class OPNMonitor;
-}  // namespace win32
+}  // namespace m88win
 
 class SoundDumpPipe final : public SoundSource<Sample16> {
  public:
@@ -78,7 +78,7 @@ class WinSound : public Sound {
   bool DumpEnd();
   bool IsDumping() { return dumper.IsDumping(); }
 
-  void SetSoundMonitor(win32::OPNMonitor* mon) { soundmon = mon; }
+  void SetSoundMonitor(m88win::OPNMonitor* mon) { soundmon = mon; }
 
  private:
   void Cleanup();
@@ -91,7 +91,7 @@ class WinSound : public Sound {
   uint32_t currentbuflen;
   uint32_t samprate;
 
-  win32::OPNMonitor* soundmon;
+  m88win::OPNMonitor* soundmon;
   bool wodrv;
   bool useds2;
 

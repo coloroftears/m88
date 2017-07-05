@@ -16,7 +16,7 @@
 
 class PC88;
 
-namespace win32 {
+namespace m88win {
 
 class BasicMonitor final : public WinMonitor {
  public:
@@ -47,4 +47,4 @@ class BasicMonitor final : public WinMonitor {
 
   static const char* rsvdword[];
 };
-}  // namespace win32
+}  // namespace m88win

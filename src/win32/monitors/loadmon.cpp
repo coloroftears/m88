@@ -11,7 +11,7 @@
 
 #include "win32/resource.h"
 
-namespace win32 {
+namespace m88win {
 
 #ifdef ENABLE_LOADMONITOR
 
@@ -137,4 +137,4 @@ void LoadMonitor::ProcEnd(const char* name) {
 
 #endif
 
-}  // namespace win32
+}  // namespace m88win

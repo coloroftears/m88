@@ -12,7 +12,7 @@
 #include "pc88/opn_interface.h"
 #include "win32/resource.h"
 
-namespace win32 {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -282,4 +282,4 @@ void OPNMonitor::Stop() {
     soundcontrol->Disconnect(this);
 }
 
-}  // namespace win32
+}  // namespace m88win

@@ -16,7 +16,7 @@
 #define LOGNAME "memmon"
 #include "common/diag.h"
 
-namespace win32 {
+namespace m88win {
 
 COLORREF MemoryMonitor::col[0x100] = {0};
 
@@ -413,4 +413,4 @@ INT_PTR CALLBACK MemoryMonitor::EDlgProcGate(HWND hwnd,
     return FALSE;
   return monitor->EDlgProc(hwnd, m, w, l);
 }
-}  // namespace win32
+}  // namespace m88win

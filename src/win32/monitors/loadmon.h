@@ -17,7 +17,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace win32 {
+namespace m88win {
 
 #ifdef ENABLE_LOADMONITOR
 
@@ -87,4 +87,4 @@ class LoadMonitor {
 
 #endif  // ENABLE_LOADMONITOR
 
-} // namespace win32
+} // namespace m88win
