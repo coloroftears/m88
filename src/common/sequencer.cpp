@@ -55,16 +55,18 @@ void Sequencer::ThreadMain() {
   time_ = keeper_->GetTime();
 
   while (!should_terminate_) {
-    if (is_active_) {
-      if (clock_ <= 0)
-        ExecuteBurst();
-      else
-        ExecuteAsynchronous();
+    if (!is_active_) {
+      std::unique_lock<std::mutex> lock(mtx_);
+      cv_.wait_for(lock, std::chrono::milliseconds(20));
+      time_ = keeper_->GetTime();
       continue;
     }
-    std::unique_lock<std::mutex> lock(mtx_);
-    cv_.wait_for(lock, std::chrono::milliseconds(20));
-    time_ = keeper_->GetTime();
+
+    if (clock_ > 0) {
+      ExecuteAsynchronous();
+    } else {
+      ExecuteBurst();
+    }
   }
 }
 
@@ -81,9 +83,10 @@ inline void Sequencer::Execute(SchedClock clock,
 // Execute asynchronous to VSYNC signal
 void Sequencer::ExecuteAsynchronous() {
   std::unique_lock<std::mutex> lock(mtx_);
+
   SchedTimeDelta texec = delegate_->GetFramePeriod();
   delegate_->TimeSync();
-  Execute(clock_, texec, 0);
+  Execute(clock_, texec, clock_);
 
   SchedTimeDelta tcpu = keeper_->GetTime() - time_;
   if (tcpu < texec) {
