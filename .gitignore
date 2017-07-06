@@ -14,6 +14,7 @@ Tuning/
 *.suo
 *.user
 .vs/
+.vscode
 
 # Binary files
 *.D88
