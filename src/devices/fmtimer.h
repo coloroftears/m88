@@ -37,12 +37,12 @@ class Timer {
   virtual void TimerA() {}
   uint8_t regta_[2];
 
-  int32_t timera_;
-  int32_t timera_count_;
+  int32_t timera_ = 0;
+  int32_t timera_count_ = 0;
 
-  int32_t timerb_;
-  int32_t timerb_count_;
+  int32_t timerb_ = 0;
+  int32_t timerb_count_ = 0;
 
-  int32_t timer_step_;
+  int32_t timer_step_ = 0;
 };
 }  // namespace fmgen
