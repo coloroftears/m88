@@ -11,6 +11,10 @@
 // ---------------------------------------------------------------------------
 
 namespace fmgen {
+
+class StatusSink;
+class TimerASink;
+
 class Timer {
  public:
   virtual ~Timer() {}
@@ -33,8 +37,15 @@ class Timer {
   uint8_t status;
   uint8_t regtc;
 
+  void set_status_sink(StatusSink* sink) { status_sink_ = sink; }
+  void set_timera_sink(TimerASink* sink) { timera_sink_ = sink; }
+
  private:
   virtual void TimerA() {}
+
+  StatusSink* status_sink_ = nullptr;
+  TimerASink* timera_sink_ = nullptr;
+
   uint8_t regta_[2];
 
   int32_t timera_ = 0;
