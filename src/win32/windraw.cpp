@@ -149,7 +149,7 @@ void WinDraw::RequestPaint() {
   drawing_ = true;
   PaintWindow();
 #endif
-  //  LOG1("Request at %d\n", GetTickCount());
+  //  Log("Request at %d\n", GetTickCount());
 }
 
 // ---------------------------------------------------------------------------
@@ -157,7 +157,7 @@ void WinDraw::RequestPaint() {
 //
 void WinDraw::DrawScreen(const Region& region) {
   if (!drawing_) {
-    LOG2("Draw %d to %d\n", region.top, region.bottom);
+    Log("Draw %d to %d\n", region.top, region.bottom);
     drawing_ = true;
     drawarea.left = std::max(0, region.left);
     drawarea.top = std::max(0, region.top);
@@ -191,7 +191,7 @@ void WinDraw::PaintWindow() {
     draw_all_ = false;
     if (rect.left < rect.right && rect.top < rect.bottom) {
       drawcount++;
-      LOG4("\t\t\t(%3d,%3d)-(%3d,%3d)\n", rect.left, rect.top, rect.right - 1,
+      Log("\t\t\t(%3d,%3d)-(%3d,%3d)\n", rect.left, rect.top, rect.right - 1,
            rect.bottom - 1);
       // Toast::Show(100, 0, "(%.3d, %.3d)-(%.3d, %.3d)",
       //             rect.left, rect.top, rect.right-1, rect.bottom-1);
@@ -466,7 +466,7 @@ int WinDraw::CaptureScreen(uint8_t* dest) {
     rgb.rgbBlue = palette[0x40 + index].peBlue;
     rgb.rgbRed = palette[0x40 + index].peRed;
     rgb.rgbGreen = palette[0x40 + index].peGreen;
-    //      LOG4("c[%.2x] = G:%.2x R:%.2x B:%.2x\n", index, rgb.rgbGreen,
+    //      Log("c[%.2x] = G:%.2x R:%.2x B:%.2x\n", index, rgb.rgbGreen,
     //      rgb.rgbRed, rgb.rgbBlue);
     uint32_t entry = *((uint32_t*)&rgb);
 
@@ -476,7 +476,7 @@ int WinDraw::CaptureScreen(uint8_t* dest) {
         goto match;
     }
     if (colors < 15) {
-      //          LOG4("pal[%.2x] = G:%.2x R:%.2x B:%.2x\n", colors,
+      //          Log("pal[%.2x] = G:%.2x R:%.2x B:%.2x\n", colors,
       //          rgb.rgbGreen, rgb.rgbRed, rgb.rgbBlue);
       pal[colors++] = rgb;
     } else

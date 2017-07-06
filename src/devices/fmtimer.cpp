@@ -38,7 +38,7 @@ void Timer::SetTimerA(uint32_t addr, uint32_t data) {
   regta_[addr & 1] = uint8_t(data);
   tmp = (regta_[0] << 2) + (regta_[1] & 3);
   timera_ = (1024 - tmp) * timer_step_;
-  //  LOG2("Timer A = %d   %d us\n", tmp, timera_ >> 16);
+  //  Log("Timer A = %d   %d us\n", tmp, timera_ >> 16);
 }
 
 // ---------------------------------------------------------------------------
@@ -46,7 +46,7 @@ void Timer::SetTimerA(uint32_t addr, uint32_t data) {
 //
 void Timer::SetTimerB(uint32_t data) {
   timerb_ = (256 - data) * timer_step_;
-  //  LOG2("Timer B = %d   %d us\n", data, timerb_ >> 12);
+  //  Log("Timer B = %d   %d us\n", data, timerb_ >> 12);
 }
 
 // ---------------------------------------------------------------------------
