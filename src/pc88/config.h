@@ -71,7 +71,7 @@ class Config {
     N88V2 = 0x31,
     N88V2CD = 0x71,
   };
-  enum KeyType { AT106 = 0, PC98 = 1 };
+  enum KeyType { AT106 = 0, PC98 = 1, AT101 = 2 };
   enum CPUType {
     ms11 = 0,
     ms21,
