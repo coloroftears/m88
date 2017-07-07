@@ -14,34 +14,34 @@ namespace pc88 {
 
 class DipSwitch {
  public:
-   enum Bits {
-     // Boot mode - terminal(0) / BASIC(1)
-     kMode = 1,
-     // Width - 80(0) / 40(1)
-     kWidth = 1 << 1,
-     // Lines - 25(0) / 20(1)
-     kLine = 1 << 2,
-     // S parameter (serial) - Enabled(0) / Disabled(1)
-     kSparameter = 1 << 3,
-     // DEL handling (serial) - Enabled(0) / Ignored(1)
-     kDEL = 1 << 4,
-     // Parity Check (serial) - Enabled(0) / Disabled(1)
-     kParityCheck = 1 << 5,
-     // Parity (serial) - Even(0) / Odd(1)
-     kParity = 1 << 6,
-     // Data bits (serial) - 8bits(0) / 7bits(1)
-     kDataBits = 1 << 7,
-     // Stop bits (serial) - 2bits(0) / 1bit(1)
-     kStopBits = 1 << 8,
-     // X parameter (serial) - Enabled(0) / Disabled(1)
-     kXParameter = 1 << 9,
-     // Communication (serial) - Half Duplex(0) / Full Duplex(1)
-     kCommunication = 1 << 10,
-     // Boot from FDD - Enabled(0) / Disabled(1)
-     kBootFromFDD = 1 << 11
-   };
+  enum Bits {
+    // Boot mode - terminal(0) / BASIC(1)
+    kMode = 1,
+    // Width - 80(0) / 40(1)
+    kWidth = 1 << 1,
+    // Lines - 25(0) / 20(1)
+    kLine = 1 << 2,
+    // S parameter (serial) - Enabled(0) / Disabled(1)
+    kSparameter = 1 << 3,
+    // DEL handling (serial) - Enabled(0) / Ignored(1)
+    kDEL = 1 << 4,
+    // Parity Check (serial) - Enabled(0) / Disabled(1)
+    kParityCheck = 1 << 5,
+    // Parity (serial) - Even(0) / Odd(1)
+    kParity = 1 << 6,
+    // Data bits (serial) - 8bits(0) / 7bits(1)
+    kDataBits = 1 << 7,
+    // Stop bits (serial) - 2bits(0) / 1bit(1)
+    kStopBits = 1 << 8,
+    // X parameter (serial) - Enabled(0) / Disabled(1)
+    kXParameter = 1 << 9,
+    // Communication (serial) - Half Duplex(0) / Full Duplex(1)
+    kCommunication = 1 << 10,
+    // Boot from FDD - Enabled(0) / Disabled(1)
+    kBootFromFDD = 1 << 11
+  };
 
-   DipSwitch() : dipsw_(0) {}
+  DipSwitch() : dipsw_(0) {}
 
   static constexpr uint32_t DefaultValue() { return 1829; }
 

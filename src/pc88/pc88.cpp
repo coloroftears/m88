@@ -297,10 +297,9 @@ void PC88::Reset() {
 //
 bool PC88::ConnectDevices() {
   static const IOBus::Connector c_cpu1[] = {
-    {pres, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
-    {pirq, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
-    {0, 0, 0}
-  };
+      {pres, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
+      {pirq, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
+      {0, 0, 0}};
   if (!bus1.Connect(&cpu1, c_cpu1))
     return false;
   if (!cpu1.Init(&mm1, &bus1, piack))
@@ -595,10 +594,9 @@ bool PC88::ConnectDevices() {
 //
 bool PC88::ConnectDevices2() {
   static const IOBus::Connector c_cpu2[] = {
-    {pres2, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
-    {pirq2, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
-    {0, 0, 0}
-  };
+      {pres2, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
+      {pirq2, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
+      {0, 0, 0}};
   if (!bus2.Connect(&cpu2, c_cpu2))
     return false;
   if (!cpu2.Init(&mm2, &bus2, piac2))
