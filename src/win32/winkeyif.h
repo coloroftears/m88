@@ -66,7 +66,7 @@ class WinKeyIF final : public Device {
 
   uint32_t GetKey(const Key* key);
 
-  static const Key KeyTable98[16 * 8][8];
+  static const Key KeyTable101[16 * 8][8];
   static const Key KeyTable106[16 * 8][8];
 
   const Key* keytable;

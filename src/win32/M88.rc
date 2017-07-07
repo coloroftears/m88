@@ -603,7 +603,7 @@ BEGIN
     GROUPBOX        "キーボード",IDC_STATIC,5,5,110,35,WS_TABSTOP
     CONTROL         "日本語 106 キーボード(&J)",IDC_ENV_KEY106,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,10,15,100,10
-    CONTROL         "PC-9801 キーボード(&9)",IDC_ENV_KEY98,"Button",
+    CONTROL         "英語 101 キーボード(&E)",IDC_ENV_KEY101,"Button",
                     BS_AUTORADIOBUTTON,10,25,99,10
     CONTROL         "ファイルダイアログの位置バーを表示する(&P)",
                     IDC_ENV_PLACESBAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,

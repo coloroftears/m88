@@ -745,10 +745,11 @@ LPCSTR ConfigEnv::GetTemplate() {
 
 bool ConfigEnv::Clicked(HWND hdlg, HWND hwctl, UINT id) {
   switch (id) {
-    case IDC_ENV_KEY98:
-      config.keytype = Config::PC98;
+    case IDC_ENV_KEY101:
+      config.keytype = Config::AT101;
       return true;
 
+    case IDC_ENV_KEY98:  // Obsolete, fallback.
     case IDC_ENV_KEY106:
       config.keytype = Config::AT106;
       return true;
@@ -761,8 +762,8 @@ bool ConfigEnv::Clicked(HWND hdlg, HWND hwctl, UINT id) {
 }
 
 void ConfigEnv::Update(HWND hdlg) {
-  static const int item[2] = {IDC_ENV_KEY106, IDC_ENV_KEY98};
-  CheckDlgButton(hdlg, item[(config.keytype) & 1], BSTATE(true));
+  static const int item[3] = {IDC_ENV_KEY106, IDC_ENV_KEY98, IDC_ENV_KEY101};
+  CheckDlgButton(hdlg, item[config.keytype], BSTATE(true));
   CheckDlgButton(hdlg, IDC_ENV_PLACESBAR,
                  BSTATE(config.flag2 & Config::kShowPlacesBar));
 }
