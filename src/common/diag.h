@@ -31,10 +31,12 @@ static Diag diag__(LOGNAME ".dmp");
 
 #define DIAGINIT(z)  // Diag::Init(z)
 #define LOGGING
+#define DEBUG_ONLY(a) a
 
 #else  // _DEBUG && LOGNAME
 
 #define Log(format, ...) void(0)
 #define DIAGINIT(z)
+#define DEBUG_ONLY(a)
 
 #endif  // _DEBUG && LOGNAME
