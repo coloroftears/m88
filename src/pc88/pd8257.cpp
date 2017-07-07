@@ -109,7 +109,7 @@ void IOCALL PD8257::SetCount(uint32_t d, uint32_t p) {
     stat.count[3] = stat.count[2], stat.mode[3] = stat.mode[3];
   stat.ff = !stat.ff;
   Log("Bank %d: count = %.4x  flag = %.4x\n", bank, stat.count[bank] & 0x3fff,
-       stat.mode[bank]);
+      stat.mode[bank]);
 }
 
 // ---------------------------------------------------------------------------
@@ -203,7 +203,7 @@ uint32_t IFCALL PD8257::RequestRead(uint32_t bank,
           stat.ptr[2] = stat.ptr[3];
           stat.count[2] = stat.count[3];
           Log("DMA READ: Bank%d auto init (%.4x:%.4x).\n", bank, stat.ptr[2],
-               stat.count[2] + 1);
+              stat.count[2] + 1);
         } else {
           stat.status |= 1 << bank;  // TC
           Log("DMA READ: Bank%d end transmittion.\n", bank);
@@ -254,7 +254,7 @@ uint32_t IFCALL PD8257::RequestWrite(uint32_t bank,
           stat.ptr[2] = stat.ptr[3];
           stat.count[2] = stat.count[3];
           Log("DMA WRITE: Bank%d auto init (%.4x:%.4x).\n", bank, stat.ptr[2],
-               stat.count[2] + 1);
+              stat.count[2] + 1);
         } else {
           stat.status |= 1 << bank;  // TC
           Log("DMA WRITE: Bank%d end transmittion.\n", bank);

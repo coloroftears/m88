@@ -930,7 +930,7 @@ void FDC::CmdWriteID() {
 
     case commandphase:
       Log("(%.2x %.2x %.2x %.2x %.2x)", buffer[0], buffer[1], buffer[2],
-           buffer[3], buffer[4]);
+          buffer[3], buffer[4]);
 
       wid.idr = 0;
       hdu = buffer[0];
@@ -971,7 +971,7 @@ void FDC::WriteID() {
   Log("\tWriteID  sc:%.2x N:%.2x\n", wid.sc, wid.n);
   for (int i = 0; i < wid.sc; i++) {
     Log("\t%.2x %.2x %.2x %.2x\n", wid.idr[i].c, wid.idr[i].h, wid.idr[i].r,
-         wid.idr[i].n);
+        wid.idr[i].n);
   }
 #endif
 
@@ -1116,7 +1116,7 @@ uint32_t FDC::CheckCondition(bool write) {
 //
 void FDC::GetSectorParameters() {
   Log("(%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x)\n", buffer[0], buffer[1],
-       buffer[2], buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
+      buffer[2], buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
 
   hdu = hdue = buffer[0];
   idr.c = buffer[1];

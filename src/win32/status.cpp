@@ -155,8 +155,7 @@ bool StatusDisplay::Show(int priority,
   entry->clear = duration != 0;
   list = entry;
 
-  Log("reg : [%s] p:%5d d:%8d\n", entry->msg, entry->priority,
-       entry->duration);
+  Log("reg : [%s] p:%5d d:%8d\n", entry->msg, entry->priority, entry->duration);
   updatemessage = true;
   return true;
 }
@@ -180,7 +179,7 @@ void StatusDisplay::Update() {
     }
     if (entry) {
       Log("show: [%s] p:%5d d:%8d\n", entry->msg, entry->priority,
-           entry->duration);
+          entry->duration);
       memcpy(buf, entry->msg, 128);
       PostMessage(hwnd, SB_SETTEXT, SBT_OWNERDRAW | 0, (LPARAM)buf);
 

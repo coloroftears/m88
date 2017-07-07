@@ -284,8 +284,7 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
 
           screenwidth = 640;
           screenheight = std::min(400U, linesperchar * height);
-          Log(
-              "\nscrn=(%d, %d), vrtc = %d, linetime = %d0 us, frametime0 = %d "
+          Log("\nscrn=(%d, %d), vrtc = %d, linetime = %d0 us, frametime0 = %d "
               "us\n",
               screenwidth, screenheight, vretrace, linetime,
               linetime * (height + vretrace));
@@ -319,7 +318,7 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
           status &= ~0x10;
 
         Log(" Start Display [%.2x;%.3x;%2d] vrtc %d  tvram size = %.4x ",
-             status, mode, width, vretrace, tvramsize);
+            status, mode, width, vretrace, tvramsize);
       }
       break;
 
