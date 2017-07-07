@@ -63,8 +63,8 @@ void LoadConfigDirectory(Config* cfg,
 void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   int n;
 
-  n = Config::kSubCPUControl | Config::kSaveDirectory |
-	  Config::kUseArrowFor10 | Config::kOPNAOnA8;
+  n = Config::kSubCPUControl | Config::kSaveDirectory | Config::kUseArrowFor10 |
+      Config::kOPNAOnA8;
   LoadConfigEntry(inifile, "Flags", &cfg->flags, n, applydefault);
   cfg->flags &= ~Config::kSpecialPalette;
 
@@ -103,8 +103,8 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   if (LoadConfigEntry(inifile, "KeyboardType", &n, 0, applydefault))
     cfg->keytype = static_cast<Config::KeyType>(n);
 
-  if (LoadConfigEntry(inifile, "Switches", &n,
-                      DipSwitch::DefaultValue(), applydefault))
+  if (LoadConfigEntry(inifile, "Switches", &n, DipSwitch::DefaultValue(),
+                      applydefault))
     cfg->set_dipsw(n);
 
   if (LoadConfigEntry(inifile, "SoundBuffer", &n, 200, applydefault))

@@ -214,8 +214,8 @@ void ConfigCPU::Update(HWND hdlg) {
 
 void ConfigCPU::UpdateSlider(HWND hdlg) {
   char buf[8];
-  config.set_speed(
-      SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_GETPOS, 0, 0) * 100);
+  config.set_speed(SendDlgItemMessage(hdlg, IDC_CPU_SPEED, TBM_GETPOS, 0, 0) *
+                   100);
   wsprintf(buf, "%d%%", config.speed() / 10);
   SetDlgItemText(hdlg, IDC_CPU_SPEED_TEXT, buf);
 }

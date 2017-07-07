@@ -87,4 +87,4 @@ class LoadMonitor {
 
 #endif  // ENABLE_LOADMONITOR
 
-} // namespace m88win
+}  // namespace m88win

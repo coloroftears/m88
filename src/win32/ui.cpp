@@ -798,10 +798,10 @@ uint32_t WinUI::OnInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
                 loadmon.IsOpen() ? MF_CHECKED : MF_UNCHECKED);
   CheckMenuItem(hmenu, IDM_MEMMON, memmon.IsOpen() ? MF_CHECKED : MF_UNCHECKED);
   CheckMenuItem(hmenu, IDM_SOUNDMON,
-	            opnmon.IsOpen() ? MF_CHECKED : MF_UNCHECKED);
-  CheckMenuItem(hmenu, IDM_WATCHREGISTER, (config.dipsw() != 1 && regmon.IsOpen())
-	  ? MF_CHECKED
-	  : MF_UNCHECKED);
+                opnmon.IsOpen() ? MF_CHECKED : MF_UNCHECKED);
+  CheckMenuItem(
+      hmenu, IDM_WATCHREGISTER,
+      (config.dipsw() != 1 && regmon.IsOpen()) ? MF_CHECKED : MF_UNCHECKED);
 
   CheckMenuItem(hmenu, IDM_RECORDPCM,
                 core.GetSound()->IsDumping() ? MF_CHECKED : MF_UNCHECKED);
