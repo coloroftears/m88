@@ -521,31 +521,31 @@ uint32_t WinUI::OnCommand(HWND hwnd, WPARAM wparam, LPARAM lparam) {
       ApplyConfig();
       break;
 
-	case IDM_BASMON:
-		basmon.Show(hinst, hwnd, !basmon.IsOpen());
-		break;
+    case IDM_BASMON:
+      basmon.Show(hinst, hwnd, !basmon.IsOpen());
+      break;
 
-	case IDM_CODEMON:
+    case IDM_CODEMON:
       codemon.Show(hinst, hwnd, !codemon.IsOpen());
       break;
 
-	case IDM_IOMON:
-		iomon.Show(hinst, hwnd, !iomon.IsOpen());
-		break;
+    case IDM_IOMON:
+      iomon.Show(hinst, hwnd, !iomon.IsOpen());
+      break;
 
-	case IDM_LOADMON:
+    case IDM_LOADMON:
       loadmon.Show(hinst, hwnd, !loadmon.IsOpen());
       break;
 
-	case IDM_MEMMON:
-		memmon.Show(hinst, hwnd, !memmon.IsOpen());
-		break;
+    case IDM_MEMMON:
+      memmon.Show(hinst, hwnd, !memmon.IsOpen());
+      break;
 
-	case IDM_SOUNDMON:
-		opnmon.Show(hinst, hwnd, !opnmon.IsOpen());
-		break;
+    case IDM_SOUNDMON:
+      opnmon.Show(hinst, hwnd, !opnmon.IsOpen());
+      break;
 
-	case IDM_WATCHREGISTER:
+    case IDM_WATCHREGISTER:
       config.flags &= ~pc88::Config::kWatchRegister;
       regmon.Show(hinst, hwnd, !regmon.IsOpen());
       break;
