@@ -153,11 +153,7 @@ class Z80C final : public Device {
   int intack;
   int intr;
 
-  enum {
-    kWaitNone = 0,
-    kWaitHalt = 1,
-    kWaitCPU = 2
-  };
+  enum { kWaitNone = 0, kWaitHalt = 1, kWaitCPU = 2 };
   int wait_state_ = kWaitNone;
 
   int eshift;
@@ -298,8 +294,8 @@ class Z80Util {
   }
 
   static int GetCCount() {
-    return current_cpu_ ?
-        current_cpu_->GetCount() - current_cpu_->start_count() : 0;
+    return current_cpu_ ? current_cpu_->GetCount() - current_cpu_->start_count()
+                        : 0;
   }
 
   static void SetCurrentCPU(Z80C* cpu) { current_cpu_ = cpu; }

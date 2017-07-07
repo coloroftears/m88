@@ -116,7 +116,8 @@ void Z80C::SetPC(uint32_t newpc) {
     DEBUGCOUNT(kSetPCMemory);
     // instruction is on memory
     instpage_ = reinterpret_cast<uint8_t*>(page.ptr);
-    instbase_ = reinterpret_cast<uint8_t*>(page.ptr) - (newpc & ~pagemask & 0xffff);
+    instbase_ =
+        reinterpret_cast<uint8_t*>(page.ptr) - (newpc & ~pagemask & 0xffff);
     instlim_ = reinterpret_cast<uint8_t*>(page.ptr) + (1 << pagebits);
     inst_ = instpage_ + (newpc & pagemask);
   } else {
@@ -396,11 +397,11 @@ inline void Z80C::Outp(uint32_t port, uint32_t data) {
 
 #define RES(n, bit) ((n) & ~(1 << (bit)))
 #define SET(n, bit) ((n) | (1 << (bit)))
-#define BIT(n, bit)                                                 \
-  (void)SetFlags(ZF | HF | NF | SF | PF,                            \
-                 HF | (((n) & (1 << (bit))) ? n & SF & (1 << (bit)) \
-                       : ZF | PF)),                                 \
-  SetXF(n)
+#define BIT(n, bit)                                                   \
+  (void)SetFlags(                                                     \
+      ZF | HF | NF | SF | PF,                                         \
+      HF | (((n) & (1 << (bit))) ? n & SF & (1 << (bit)) : ZF | PF)), \
+      SetXF(n)
 
 void IOCALL Z80C::Reset(uint32_t, uint32_t) {
   memset(&reg, 0, sizeof(reg));
@@ -795,10 +796,10 @@ void Z80C::SingleStep(uint32_t m) {
 
     // arthimatic operation
 
-    case 0x27: { // DAA
+    case 0x27: {  // DAA
       b = 0;
       uint8_t new_a = RegA;
-      if (!GetNF()) { // addition
+      if (!GetNF()) {  // addition
         if ((RegA & 0x0f) > 9 || GetHF()) {
           if ((RegA & 0x0f) > 9)
             b = HF;
@@ -808,7 +809,7 @@ void Z80C::SingleStep(uint32_t m) {
           new_a += 0x60;
           b |= CF;
         }
-      } else { // subtraction
+      } else {  // subtraction
         if ((RegA & 0x0f) > 9 || GetHF()) {
           if ((RegA & 0x0f) < 6)
             b = HF;
@@ -824,8 +825,7 @@ void Z80C::SingleStep(uint32_t m) {
       SetXF(RegA);
       SetFlags(HF | CF, b);
       CLK(4);
-    }
-      break;
+    } break;
 
     case 0x2f:  // CPL
       RegA = ~RegA;
@@ -2336,25 +2336,23 @@ void Z80C::SingleStep(uint32_t m) {
           break;
 
         // Block transfer
-        case 0xa0: { // LDI
+        case 0xa0: {  // LDI
           uint8_t n = Read8(RegHL++);
           Write8(RegDE++, n);
           SetFlags(PF | NF | HF, --RegBC & 0xffff ? PF : 0);
           SetXYForBlockInstruction(n + RegA);
           CLK(16);
-        }
-          break;
+        } break;
 
-        case 0xa8: { // LDD
+        case 0xa8: {  // LDD
           uint8_t n = Read8(RegHL--);
           Write8(RegDE--, n);
           SetFlags(PF | NF | HF, --RegBC & 0xffff ? PF : 0);
           SetXYForBlockInstruction(n + RegA);
           CLK(16);
-        }
-          break;
+        } break;
 
-        case 0xb0: { // LDIR
+        case 0xb0: {  // LDIR
           uint8_t n = Read8(RegHL++);
           Write8(RegDE++, n);
           SetXYForBlockInstruction(n + RegA);
@@ -2365,10 +2363,9 @@ void Z80C::SingleStep(uint32_t m) {
             SetFlags(PF | NF | HF, 0);
             CLK(16);
           }
-        }
-          break;
+        } break;
 
-        case 0xb8: { // LDDR
+        case 0xb8: {  // LDDR
           uint8_t n = Read8(RegHL--);
           Write8(RegDE--, n);
           SetXYForBlockInstruction(n + RegA);
@@ -2379,8 +2376,7 @@ void Z80C::SingleStep(uint32_t m) {
             SetFlags(PF | NF | HF, 0);
             CLK(16);
           }
-        }
-          break;
+        } break;
 
         // Block search
         case 0xa1:  // CPI
@@ -2600,7 +2596,7 @@ void Z80C::CodeCB() {
   uint32_t bit = (fn >> 3) & 7;
 
   if (rg != 6) {
-    uint8_t* p = ref_byte[rg]; // pointer to operand
+    uint8_t* p = ref_byte[rg];  // pointer to operand
     switch ((fn >> 6) & 3) {
       case 0:
         *p = (this->*func[bit])(*p);
