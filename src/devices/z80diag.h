@@ -4,8 +4,7 @@
 // ---------------------------------------------------------------------------
 //  $Id: Z80diag.h,v 1.3 1999/10/10 01:46:26 cisc Exp $
 
-#ifndef Z80DIAG_H
-#define Z80DIAG_H
+#pragma once
 
 #include <stdint.h>
 
@@ -44,5 +43,3 @@ class Z80Diag {
   static const int8_t SizeTable[0x100];
   static const int8_t SizeTableED[0x80];
 };
-
-#endif  // Z80DIAG_H
