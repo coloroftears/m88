@@ -12,12 +12,10 @@
 #include <chrono>
 
 class TimeKeeperChrono final : public TimeKeeper {
-public:
+ public:
   ~TimeKeeperChrono() final {}
 
-  static TimeKeeper* Get() {
-    return new TimeKeeperChrono();
-  }
+  static TimeKeeper* Get() { return new TimeKeeperChrono(); }
 
   SchedTime GetTime() {
     auto new_base = Clock::now();
@@ -35,9 +33,7 @@ public:
   using MicroSeconds = std::chrono::microseconds;
   using MilliSeconds = std::chrono::milliseconds;
 
-  TimeKeeperChrono() : time_(0) {
-    base_ = Clock::now();
-  }
+  TimeKeeperChrono() : time_(0) { base_ = Clock::now(); }
 
   TimePoint base_;     // 最後の呼び出しの際の元クロックの値
   MicroSeconds time_;  // 最後の呼び出しに返した値

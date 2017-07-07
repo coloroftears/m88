@@ -37,7 +37,7 @@ SchedulerEvent* IFCALL Scheduler::AddEvent(SchedTimeDelta count,
   if (pool_index_ > 0) {
     // std::lock_guard<std::mutex> lock(mtx_);
     ev = new (pool_[--pool_index_])
-         SchedulerEvent(dev, func, arg, GetTime() + count, repeat ? count : 0);
+        SchedulerEvent(dev, func, arg, GetTime() + count, repeat ? count : 0);
   } else {
     ev = new SchedulerEvent(dev, func, arg, GetTime() + count,
                             repeat ? count : 0);
