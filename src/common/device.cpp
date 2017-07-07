@@ -55,15 +55,17 @@ bool MemoryBus::Init(uint32_t npages, Page* _pages) {
 // ---------------------------------------------------------------------------
 //  ダミー入出力関数
 //
-uint32_t MEMCALL MemoryBus::rddummy(void*, uint32_t addr) {
+uint32_t MEMCALL MemoryBus::rddummy(void*, uint32_t DEBUG_ONLY(addr)) {
   Log("bus: Read on undefined memory page 0x%x. (addr:0x%.4x)\n",
-       addr >> pagebits, addr);
+      addr >> pagebits, addr);
   return 0xff;
 }
 
-void MEMCALL MemoryBus::wrdummy(void*, uint32_t addr, uint32_t data) {
+void MEMCALL MemoryBus::wrdummy(void*,
+                                uint32_t DEBUG_ONLY(addr),
+                                uint32_t DEBUG_ONLY(data)) {
   Log("bus: Write on undefined memory page 0x%x, (addr:0x%.4x data:0x%.2x)\n",
-       addr >> pagebits, addr, data);
+      addr >> pagebits, addr, data);
 }
 
 // ---------------------------------------------------------------------------
