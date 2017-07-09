@@ -26,7 +26,7 @@ CDROM::CDROM() {
   aspi = 0;
   ntracks = 0;
   memset(track, 0xff, sizeof(track));
-  LOG0("construct\n");
+  Log("construct\n");
 }
 
 // --------------------------------------------------------------------------
@@ -43,7 +43,7 @@ bool CDROM::Init() {
   if (!aspi)
     aspi = new ASPI;
   if (aspi) {
-    LOG0("init\n");
+    Log("init\n");
     if (FindDrive())
       return true;
     delete aspi;
@@ -59,11 +59,11 @@ bool CDROM::FindDrive() {
   for (uint32_t a = 0; a < aspi->GetNHostAdapters(); a++) {
     uint32_t ntargets;
     if (aspi->InquiryAdapter(a, &ntargets, 0)) {
-      LOG2("Adapter %d : %d IDs\n", a, ntargets);
+      Log("Adapter %d : %d IDs\n", a, ntargets);
       for (uint32_t i = 0; i < ntargets; i++) {
         int type = aspi->GetDeviceType(a, i, 0);
         if (type == 5) {
-          LOG2("CDROM on %d:%d\n", a, i);
+          Log("CDROM on %d:%d\n", a, i);
           ha = a, id = i;
           return true;
         }
@@ -90,7 +90,7 @@ int CDROM::ReadTOC() {
   cdb.flags = 2;
   cdb.length = 12;
 
-  LOG0("Read TOC ");
+  Log("Read TOC ");
   for (int i = 0; i < 2; i++) {
     r = aspi->ExecuteSCSICommand(ha, id, 0, &cdb, sizeof(cdb), ASPI::in, &toc,
                                  12);
@@ -98,7 +98,7 @@ int CDROM::ReadTOC() {
       break;
   }
   if (r < 0) {
-    LOG0("failed\n");
+    Log("failed\n");
     return 0;
   }
 
@@ -106,7 +106,7 @@ int CDROM::ReadTOC() {
   trstart = BCDtoN((r >> 16) & 0xff) * 75 * 60 + BCDtoN((r >> 8) & 0xff) * 75 +
             BCDtoN((r >> 0) & 0xff);
 
-  LOG3("[%d]-[%d] (%d)\n", toc.header.start, toc.header.end, trstart);
+  Log("[%d]-[%d] (%d)\n", toc.header.start, toc.header.end, trstart);
   //  printf("[%d]-[%d]\n", toc.header.start, toc.header.end);
 
   // 各トラックの位置を取得
@@ -120,7 +120,7 @@ int CDROM::ReadTOC() {
   r = aspi->ExecuteSCSICommand(ha, id, 0, &cdb, sizeof(cdb), ASPI::in, &toc,
                                tsize);
   if (r < 0) {
-    LOG0("failed\n");
+    Log("failed\n");
     return 0;
   }
 
@@ -136,9 +136,9 @@ int CDROM::ReadTOC() {
     if (shift && tr->addr >= 13578)
       tr->addr -= 228;
 #endif
-    LOG3("Track %.2d: %6d %.2x\n", start + t, tr->addr, tr->control);
+    Log("Track %.2d: %6d %.2x\n", start + t, tr->addr, tr->control);
   }
-  LOG0("\n");
+  Log("\n");
 
   return end;
 }
