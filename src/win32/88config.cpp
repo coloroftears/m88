@@ -14,7 +14,7 @@
 
 static const char* AppName = "M88p2 for Windows";
 
-namespace pc88core {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  LoadConfigEntry
@@ -42,7 +42,7 @@ void LoadConfigDirectory(Config* cfg,
                          const char* inifile,
                          const char* entry,
                          bool readalways) {
-  if (readalways || (cfg->flags & Config::kSaveDirectory)) {
+  if (readalways || (cfg->flags & pc88core::Config::kSaveDirectory)) {
     char path[MAX_PATH];
     if (GetPrivateProfileString(AppName, entry, ";", path, MAX_PATH, inifile)) {
       if (path[0] != ';')
@@ -103,7 +103,7 @@ void LoadConfig(Config* cfg, const char* inifile, bool applydefault) {
   if (LoadConfigEntry(inifile, "KeyboardType", &n, 0, applydefault))
     cfg->keytype = static_cast<Config::KeyType>(n);
 
-  if (LoadConfigEntry(inifile, "Switches", &n, DipSwitch::DefaultValue(),
+  if (LoadConfigEntry(inifile, "Switches", &n, pc88core::DipSwitch::DefaultValue(),
                       applydefault))
     cfg->set_dipsw(n);
 
@@ -166,7 +166,7 @@ static bool SaveEntry(const char* inifile,
 // ---------------------------------------------------------------------------
 //  SaveConfig
 //
-void SaveConfig(Config* cfg, const char* inifile, bool writedefault) {
+void SaveConfig(pc88core::Config* cfg, const char* inifile, bool writedefault) {
   char buf[MAX_PATH];
   GetCurrentDirectory(MAX_PATH, buf);
   SaveEntry(inifile, "Directory", buf, writedefault);
@@ -197,4 +197,5 @@ void SaveConfig(Config* cfg, const char* inifile, bool writedefault) {
   SaveEntry(inifile, "VolumeTOM", cfg->voltom + VOLUME_BIAS, writedefault);
   SaveEntry(inifile, "VolumeRIM", cfg->volrim + VOLUME_BIAS, writedefault);
 }
-}  // namespace pc88core
+
+}  // namespace m88win

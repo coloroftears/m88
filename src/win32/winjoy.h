@@ -9,6 +9,8 @@
 #include "common/device.h"
 #include "interface/ifui.h"
 
+namespace m88win {
+
 class WinPadIF final : public IPadInput {
  public:
   WinPadIF();
@@ -22,3 +24,4 @@ class WinPadIF final : public IPadInput {
  private:
   bool enabled;
 };
+}  // namespace m88win

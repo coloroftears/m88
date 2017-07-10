@@ -63,8 +63,13 @@ class SoundDumpPipe final : public SoundSource<Sample16> {
 
 namespace pc88core {
 class Config;
+}  // namespace pc88core
 
-class WinSound : public Sound {
+namespace m88win {
+
+using Config = pc88core::Config;
+
+class WinSound : public pc88core::Sound {
  public:
   WinSound();
   ~WinSound();
@@ -97,4 +102,4 @@ class WinSound : public Sound {
 
   SoundDumpPipe dumper;
 };
-}  // namespace pc88core
+}  // namespace m88win

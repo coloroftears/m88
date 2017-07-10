@@ -26,9 +26,9 @@
 #define LOGNAME "wincore"
 #include "common/diag.h"
 
+namespace m88win {
+
 using Config = pc88core::Config;
-using ExtendModule = pc88core::ExtendModule;
-using WinKeyIF = pc88core::WinKeyIF;
 
 //                   0123456789abcdef
 #define SNAPSHOT_ID "M88 SnapshotData"
@@ -416,3 +416,4 @@ bool WinCore::EnableMouse(bool enable)
     return true;
 }
 */
+}  // namespace m88win

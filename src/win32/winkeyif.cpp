@@ -16,7 +16,7 @@
 //#define LOGNAME "keyif"
 #include "common/diag.h"
 
-namespace pc88core {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  Construct/Destruct
@@ -638,4 +638,4 @@ const Device::OutFuncPtr WinKeyIF::outdef[] = {
 const Device::InFuncPtr WinKeyIF::indef[] = {
     static_cast<Device::InFuncPtr>(&WinKeyIF::In),
 };
-}  // namespace pc88core
+}  // namespace m88win

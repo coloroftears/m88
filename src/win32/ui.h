@@ -27,7 +27,7 @@
 #include "win32/windraw.h"
 #include "win32/winkeyif.h"
 
-// ---------------------------------------------------------------------------
+namespace m88win {
 
 class WinUI {
  public:
@@ -121,9 +121,9 @@ class WinUI {
 
   WinCore core;
   WinDraw draw;
-  pc88core::WinKeyIF keyif;
+  WinKeyIF keyif;
   pc88core::Config config;
-  pc88core::WinConfig winconfig;
+  WinConfig winconfig;
   WinNewDisk newdisk;
 
   // Monitors
@@ -175,3 +175,4 @@ class WinUI {
   uint32_t OnMouseMove(HWND, WPARAM, LPARAM);
   uint32_t OnSetCursor(HWND, WPARAM, LPARAM);
 };
+}  // namespace m88win

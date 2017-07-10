@@ -15,7 +15,7 @@
 #include "common/toast.h"
 #include "pc88/config.h"
 
-using namespace pc88core;
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -60,3 +60,4 @@ void IFCALL WinPadIF::GetState(PadState* d) {
   } else
     d->direction = d->button = 0;
 }
+}  // namespace m88win

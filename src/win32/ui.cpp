@@ -36,7 +36,7 @@
 extern char m88dir[MAX_PATH];
 extern char m88ini[MAX_PATH];
 
-using namespace pc88core;
+namespace m88win {
 
 // TODO: Remove this
 WinUI* g_ui;
@@ -81,14 +81,14 @@ bool WinUI::InitM88(const char* cmdline) {
 
   //  設定よみこみ
   Log("%d\tLoadConfig\n", timeGetTime());
-  pc88core::LoadConfig(&config, m88ini, true);
+  LoadConfig(&config, m88ini, true);
 
   //  現在の path 保存
   char path[MAX_PATH];
   GetCurrentDirectory(MAX_PATH, path);
 
   //  デバイスの初期化
-  pc88core::LoadConfigDirectory(&config, m88ini, "BIOSPath", true);
+  LoadConfigDirectory(&config, m88ini, "BIOSPath", true);
 
   Log("%d\tdiskmanager\n", timeGetTime());
   if (!diskmgr)
@@ -145,7 +145,7 @@ bool WinUI::InitM88(const char* cmdline) {
   // あとごちゃごちゃしたもの
   Log("%d\tetc\n", timeGetTime());
   if (!diskinfo[0].filename[0])
-    pc88core::LoadConfigDirectory(&config, m88ini, "Directory", false);
+    LoadConfigDirectory(&config, m88ini, "Directory", false);
   ChangeDisplayType(true);
   ResizeWindow(640, 400);
 
@@ -159,7 +159,7 @@ bool WinUI::InitM88(const char* cmdline) {
 //
 void WinUI::CleanupM88() {
   pc88core::Config cfg = config;
-  pc88core::SaveConfig(&cfg, m88ini, true);
+  SaveConfig(&cfg, m88ini, true);
   core.Cleanup();
 }
 
@@ -244,7 +244,7 @@ int WinUI::Main(const char* cmdline) {
     DispatchMessage(&msg);
   }
 
-  OPNInterface* opn = core.GetOPN1();
+  pc88core::OPNInterface* opn = core.GetOPN1();
   if (opn)
     opn->Reset();
   CleanupM88();
@@ -1820,3 +1820,4 @@ void WinUI::ApplyCommandLine(const char* cmdline) {
     break;
   }
 }
+}  // namespace m88win

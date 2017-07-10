@@ -20,11 +20,10 @@
 #include "win32/winjoy.h"
 #include "win32/winsound.h"
 
-namespace pc88core {
-class WinKeyIF;
-class ExtendModule;
-}
+namespace m88win {
 
+class ExtendModule;
+class WinKeyIF;
 class WinUI;
 
 // ---------------------------------------------------------------------------
@@ -38,7 +37,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
             HWND hwnd,
             Draw* draw,
             DiskManager* diskmgr,
-            pc88core::WinKeyIF* keyb,
+            WinKeyIF* keyb,
             IConfigPropBase* cpb,
             TapeManager* tapemgr);
   bool Cleanup();
@@ -49,7 +48,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   bool SaveSnapshot(const char* filename);
   bool LoadSnapshot(const char* filename, const char* diskname = 0);
 
-  pc88core::WinSound* GetSound() { return &sound; }
+  WinSound* GetSound() { return &sound; }
 
   int32_t GetExecCount() { return seq.GetExecCount(); }
   void Wait(bool dowait) { seq.Activate(!dowait); }
@@ -92,7 +91,7 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   };
 
  private:
-  bool ConnectDevices(pc88core::WinKeyIF* keyb);
+  bool ConnectDevices(WinKeyIF* keyb);
   bool ConnectExternalDevices();
 
   WinUI* ui;
@@ -101,9 +100,10 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   Sequencer seq;
   WinPadIF padif;
 
-  using ExtendModules = std::vector<pc88core::ExtendModule*>;
+  using ExtendModules = std::vector<ExtendModule*>;
   ExtendModules extmodules;
 
-  pc88core::WinSound sound;
+  WinSound sound;
   pc88core::Config config;
 };
+}  // namespace m88win

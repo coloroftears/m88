@@ -11,7 +11,7 @@
 
 #define BSTATE(b) (b ? BST_CHECKED : BST_UNCHECKED)
 
-namespace pc88core {
+namespace m88win {
 
 // ---------------------------------------------------------------------------
 
@@ -722,7 +722,7 @@ bool ConfigSwitch::Clicked(HWND hdlg, HWND hwctl, UINT id) {
 
   switch (id) {
     case IDC_DIPSW_DEFAULT:
-      config.set_dipsw(DipSwitch::DefaultValue());
+      config.set_dipsw(pc88core::DipSwitch::DefaultValue());
       Update(hdlg);
       return true;
   }
@@ -813,4 +813,4 @@ void ConfigROMEO::SetText(HWND hdlg, int id, int val) {
   wsprintf(buf, "%d ms", val);
   SetDlgItemText(hdlg, id, buf);
 }
-}  // namespace pc88core
+}  // namespace m88win

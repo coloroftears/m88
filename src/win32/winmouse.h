@@ -9,6 +9,8 @@
 #include "common/device.h"
 #include "interface/ifui.h"
 
+namespace m88win {
+
 class WinUI;
 
 class WinMouseUI final : public IMouseUI {
@@ -40,3 +42,4 @@ class WinMouseUI final : public IMouseUI {
 
   uint32_t refcount;
 };
+}  // namespace m88win

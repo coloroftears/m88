@@ -15,6 +15,8 @@
 #include "win32/messages.h"
 #include "win32/ui.h"
 
+namespace m88win {
+
 WinMouseUI::WinMouseUI() : enable(false), ui(0), refcount(0) {
   activetime = 0;
 }
@@ -125,3 +127,4 @@ POINT WinMouseUI::GetWindowCenter() {
   p.y = (rect.bottom + rect.top) / 2;
   return p;
 }
+}  // namespace m88win

@@ -11,10 +11,14 @@
 #include "common/critical_section.h"
 #include "common/device.h"
 
-// ---------------------------------------------------------------------------
 namespace pc88core {
-
 class Config;
+}  // namespace pc88core
+
+
+namespace m88win {
+
+using Config = pc88core::Config;
 
 class WinKeyIF final : public Device {
  public:
@@ -87,4 +91,4 @@ class WinKeyIF final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88core
+}  // namespace m88win

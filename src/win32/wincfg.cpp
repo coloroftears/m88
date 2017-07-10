@@ -11,7 +11,7 @@
 #include "win32/messages.h"
 #include "win32/resource.h"
 
-namespace pc88core {
+namespace m88win {
 
 // TODO: Remove this.
 static WinConfig* g_proc;
@@ -195,4 +195,4 @@ void IFCALL WinConfig::_ChangeVolume(bool current) {
   PostMessage(hwndparent, WM_M88_CHANGEVOLUME,
               (WPARAM)(current ? &config : &orgconfig), 0);
 }
-}  // namespace pc88core
+}  // namespace m88win
