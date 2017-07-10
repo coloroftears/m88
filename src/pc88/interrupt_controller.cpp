@@ -13,7 +13,7 @@
 //#define LOGNAME "intc"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築破壊
@@ -145,4 +145,4 @@ const Device::OutFuncPtr InterruptController::outdef[] = {
 const Device::InFuncPtr InterruptController::indef[] = {
     static_cast<Device::InFuncPtr>(&InterruptController::IntAck),
 };
-}  // namespace pc88
+}  // namespace pc88core

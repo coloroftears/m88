@@ -13,7 +13,7 @@
 #include "pc88/pc88.h"
 #include "pc88/subsys.h"
 
-namespace pc88 {
+namespace pc88core {
 // ----------------------------------------------------------------------------
 //  0   N88 N80 RAM ERAM             SUB
 //  60  N88 N80 RAM ERAM E0 E1 E2 E3 SUB
@@ -95,4 +95,4 @@ inline uint32_t* MemoryViewer::StatExecBuf() {
 #endif
   return 0;
 }
-}  // namespace pc88
+}  // namespace pc88core

@@ -18,7 +18,7 @@
 class PC88;
 class Scheduler;
 
-namespace pc88 {
+namespace pc88core {
 class Sound;
 class Config;
 
@@ -79,4 +79,4 @@ class Sound : public Device,
   std::vector<ISoundSource*> sslist_;
   CriticalSection cs_ss;
 };
-}  // namespace pc88
+}  // namespace pc88core

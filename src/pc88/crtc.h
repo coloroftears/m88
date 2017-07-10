@@ -13,7 +13,7 @@
 #include "common/scheduler.h"
 #include "common/types.h"
 
-namespace pc88 {
+namespace pc88core {
 class PD8257;
 class Config;
 
@@ -212,4 +212,4 @@ class CRTC final : public Device {
 inline SchedTimeDelta CRTC::GetFramePeriod() {
   return linetime * (height + vretrace);
 }
-}  // namespace pc88
+}  // namespace pc88core

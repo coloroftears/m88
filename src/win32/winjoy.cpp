@@ -15,7 +15,7 @@
 #include "common/toast.h"
 #include "pc88/config.h"
 
-using namespace pc88;
+using namespace pc88core;
 
 // ---------------------------------------------------------------------------
 //  構築/消滅

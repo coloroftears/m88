@@ -7,7 +7,7 @@
 
 #define EXTDEVAPI __declspec(dllexport)
 
-using DiskIO = pc88::DiskIO;
+using DiskIO = pc88core::DiskIO;
 
 // ---------------------------------------------------------------------------
 

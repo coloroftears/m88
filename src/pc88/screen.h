@@ -22,7 +22,7 @@
 //  BITMAP BIT 配置     -- -- G  RE TE TG TB TR
 //  ATTR BIT 配置       G  R  B  CG UL OL SE RE
 //
-namespace pc88 {
+namespace pc88core {
 
 class Memory;
 class CRTC;
@@ -148,4 +148,4 @@ class Screen final : public Device {
   static const OutFuncPtr outdef[];
   static const int16_t RegionTable[];
 };
-}  // namespace pc88
+}  // namespace pc88core

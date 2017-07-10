@@ -9,7 +9,7 @@
 #include "common/device.h"
 #include "common/file.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 
@@ -70,4 +70,4 @@ class DiskIO : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

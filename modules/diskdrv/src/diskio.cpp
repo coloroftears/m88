@@ -13,7 +13,7 @@
 #define LOGNAME "DiskIO"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築破壊
@@ -297,4 +297,4 @@ const Device::InFuncPtr DiskIO::indef[] = {
     static_cast<Device::InFuncPtr>(&GetStatus),
     static_cast<Device::InFuncPtr>(&GetData),
 };
-}  // namespace pc88
+}  // namespace pc88core

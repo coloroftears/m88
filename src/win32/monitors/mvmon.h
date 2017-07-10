@@ -33,7 +33,7 @@ class MemViewMonitor : public WinMonitor {
   uint32_t StatExec(uint32_t a);
   virtual void SetBank();
 
-  using MemoryViewer = pc88::MemoryViewer;
+  using MemoryViewer = pc88core::MemoryViewer;
 
   MemoryViewer mv;
 

@@ -11,7 +11,7 @@
 #include "pc88/disk_manager.h"
 #include "pc88/fdc.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -400,4 +400,4 @@ uint32_t FDU::ReadDiag(uint8_t* data, uint8_t** cursor, IDR idr) {
     return 0;
   return FDC::ST1_ND;
 }
-}  // namespace pc88
+}  // namespace pc88core

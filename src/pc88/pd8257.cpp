@@ -14,7 +14,7 @@
 //#define LOGNAME   "pd8257"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -305,4 +305,4 @@ const Device::InFuncPtr PD8257::indef[] = {
     static_cast<Device::InFuncPtr>(&PD8257::GetCount),
     static_cast<Device::InFuncPtr>(&PD8257::GetStatus),
 };
-}  // namespace pc88
+}  // namespace pc88core

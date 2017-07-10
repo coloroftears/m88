@@ -12,7 +12,7 @@
 #include "common/device.h"
 
 // ---------------------------------------------------------------------------
-namespace pc88 {
+namespace pc88core {
 
 class Config;
 
@@ -87,4 +87,4 @@ class WinKeyIF final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

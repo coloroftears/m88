@@ -10,7 +10,7 @@
 
 class DiskManager;
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  FDU
@@ -73,4 +73,4 @@ class FDU {
   int drive;
   int track;
 };
-}  // namespace pc88
+}  // namespace pc88core

@@ -36,7 +36,7 @@ class BasicMonitor final : public WinMonitor {
   int line[0x4000];
   int nlines;
 
-  pc88::MemoryViewer mv;
+  pc88core::MemoryViewer mv;
   MemoryBus* bus;
 
   uint32_t Read8(uint32_t adr);

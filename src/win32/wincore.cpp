@@ -26,9 +26,9 @@
 #define LOGNAME "wincore"
 #include "common/diag.h"
 
-using Config = pc88::Config;
-using ExtendModule = pc88::ExtendModule;
-using WinKeyIF = pc88::WinKeyIF;
+using Config = pc88core::Config;
+using ExtendModule = pc88core::ExtendModule;
+using WinKeyIF = pc88core::WinKeyIF;
 
 //                   0123456789abcdef
 #define SNAPSHOT_ID "M88 SnapshotData"
@@ -103,13 +103,13 @@ void WinCore::Reset() {
 // ---------------------------------------------------------------------------
 //  設定を反映する
 //
-void WinCore::ApplyConfig(pc88::Config* cfg) {
+void WinCore::ApplyConfig(pc88core::Config* cfg) {
   config = *cfg;
 
   int clock = cfg->clock();
-  if (cfg->flags & pc88::Config::kFullspeed)
+  if (cfg->flags & pc88core::Config::kFullspeed)
     clock = 0;
-  if (cfg->flags & pc88::Config::kCPUBurst)
+  if (cfg->flags & pc88core::Config::kCPUBurst)
     clock = -clock;
   seq.SetClock(clock);
   seq.SetSpeed(cfg->speed() / 10);

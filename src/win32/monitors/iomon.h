@@ -31,7 +31,7 @@ class IOMonitor final : public WinMonitor {
   void Start() final;
   void Stop() final;
 
-  pc88::IOViewer iov;
+  pc88core::IOViewer iov;
   WinCore* pc;
   bool bank;
 

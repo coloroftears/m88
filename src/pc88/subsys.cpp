@@ -14,7 +14,7 @@
 //#define LOGNAME "subsys"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -298,4 +298,4 @@ const Device::OutFuncPtr SubSystem::outdef[] = {
     static_cast<Device::OutFuncPtr>(&SubSystem::S_Set2),
     static_cast<Device::OutFuncPtr>(&SubSystem::S_SetCW),
 };
-}  // namespace pc88
+}  // namespace pc88core

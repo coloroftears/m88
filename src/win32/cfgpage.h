@@ -14,7 +14,7 @@
 #include "interface/ifcommon.h"
 #include "pc88/config.h"
 
-namespace pc88 {
+namespace pc88core {
 
 class ConfigPage : public IConfigPropSheet {
  public:
@@ -158,4 +158,4 @@ class ConfigROMEO final : public ConfigPage {
   static void InitSlider(HWND hdlg, UINT id, int val);
   static void SetText(HWND hdlg, int id, int val);
 };
-}  // namespace pc88
+}  // namespace pc88core

@@ -14,7 +14,7 @@
 
 static const char* AppName = "M88p2 for Windows";
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  LoadConfigEntry
@@ -197,4 +197,4 @@ void SaveConfig(Config* cfg, const char* inifile, bool writedefault) {
   SaveEntry(inifile, "VolumeTOM", cfg->voltom + VOLUME_BIAS, writedefault);
   SaveEntry(inifile, "VolumeRIM", cfg->volrim + VOLUME_BIAS, writedefault);
 }
-}  // namespace pc88
+}  // namespace pc88core

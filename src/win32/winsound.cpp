@@ -22,7 +22,7 @@
 
 using namespace WinSoundDriver;
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -165,7 +165,7 @@ bool WinSound::DumpEnd() {
   //  FillWhenEmpty(true);
   return true;
 }
-}  // namespace pc88
+}  // namespace pc88core
 
 // ---------------------------------------------------------------------------
 //  合成の場合

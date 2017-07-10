@@ -6,7 +6,7 @@
 
 #pragma once
 
-namespace pc88 {
+namespace pc88core {
 
 class Config;
 
@@ -16,4 +16,4 @@ void LoadConfigDirectory(Config* cfg,
                          const char* inifile,
                          const char* entry,
                          bool readalways);
-}  // namespace pc88
+}  // namespace pc88core

@@ -121,9 +121,9 @@ class WinUI {
 
   WinCore core;
   WinDraw draw;
-  pc88::WinKeyIF keyif;
-  pc88::Config config;
-  pc88::WinConfig winconfig;
+  pc88core::WinKeyIF keyif;
+  pc88core::Config config;
+  pc88core::WinConfig winconfig;
   WinNewDisk newdisk;
 
   // Monitors

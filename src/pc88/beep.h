@@ -12,7 +12,7 @@
 
 class PC88;
 
-namespace pc88 {
+namespace pc88core {
 class Sound;
 class Config;
 class OPNInterface;
@@ -70,4 +70,4 @@ class Beep final : public Device, public ISoundSource {
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

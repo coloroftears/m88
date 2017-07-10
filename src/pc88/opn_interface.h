@@ -18,7 +18,7 @@ class PiccoloChip;
 
 //#define USE_OPN
 
-namespace pc88 {
+namespace pc88core {
 class Config;
 // ---------------------------------------------------------------------------
 //  88 用の OPN Unit
@@ -171,4 +171,4 @@ class OPNInterface final : public Device, public ISoundSource {
 inline void OPNInterface::SetChannelMask(uint32_t ch) {
   opn.SetChannelMask(ch);
 }
-}  // namespace pc88
+}  // namespace pc88core

@@ -10,7 +10,7 @@
 
 #include "common/file.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築/消滅
@@ -77,4 +77,4 @@ const Device::InFuncPtr KanjiROM::indef[] = {
     static_cast<Device::InFuncPtr>(&KanjiROM::ReadL),
     static_cast<Device::InFuncPtr>(&KanjiROM::ReadH),
 };
-}  // namespace pc88
+}  // namespace pc88core

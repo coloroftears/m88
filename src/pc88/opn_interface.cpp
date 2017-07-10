@@ -18,7 +18,7 @@
 #define LOGNAME "opnif"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // OPNInterface* OPNInterface::romeo_user = 0;
 
@@ -480,4 +480,4 @@ const Device::InFuncPtr OPNInterface::indef[] = {
     static_cast<Device::InFuncPtr>(&OPNInterface::ReadData0),
     static_cast<Device::InFuncPtr>(&OPNInterface::ReadData1),
 };
-}  // namespace pc88
+}  // namespace pc88core

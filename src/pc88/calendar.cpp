@@ -16,7 +16,7 @@
 //#define LOGNAME "calender"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  Construct/Destruct
@@ -229,4 +229,4 @@ const Device::OutFuncPtr Calendar::outdef[] = {
 const Device::InFuncPtr Calendar::indef[] = {
     static_cast<Device::InFuncPtr>(&Calendar::In40),
 };
-}  // namespace pc88
+}  // namespace pc88core

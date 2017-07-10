@@ -24,9 +24,9 @@ bool BasicMonitor::Init(PC88* pc88) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_BASMON)))
     return false;
   mv.Init(pc88);
-  mv.SelectBank(pc88::MemoryViewer::mainram, pc88::MemoryViewer::mainram,
-                pc88::MemoryViewer::mainram, pc88::MemoryViewer::mainram,
-                pc88::MemoryViewer::mainram);
+  mv.SelectBank(pc88core::MemoryViewer::mainram, pc88core::MemoryViewer::mainram,
+                pc88core::MemoryViewer::mainram, pc88core::MemoryViewer::mainram,
+                pc88core::MemoryViewer::mainram);
   bus = mv.GetBus();
 
   SetUpdateTimer(2000);

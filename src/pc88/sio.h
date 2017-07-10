@@ -12,7 +12,7 @@
 
 class Scheduler;
 
-namespace pc88 {
+namespace pc88core {
 
 class SIO final : public Device {
  public:
@@ -96,4 +96,4 @@ class SIO final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

@@ -10,7 +10,7 @@
 
 #include "common/device.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 
@@ -52,4 +52,4 @@ class InterruptController final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

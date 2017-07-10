@@ -19,7 +19,7 @@
 #include "pc88/crtc.h"
 #include "win32/status.h"
 
-namespace pc88 {
+namespace pc88core {
 
 // ----------------------------------------------------------------------------
 //  Constructor / Destructor
@@ -1198,4 +1198,4 @@ uint32_t IFCALL Memory::GetWrBank(uint32_t addr) {
     return mRAM;
   return GetHiBank(addr);
 }
-}  // namespace pc88
+}  // namespace pc88core

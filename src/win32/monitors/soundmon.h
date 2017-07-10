@@ -12,9 +12,9 @@
 
 // ---------------------------------------------------------------------------
 
-namespace pc88 {
+namespace pc88core {
 class OPNInterface;
-}  // namespace pc88
+}  // namespace pc88core
 
 namespace m88win {
 
@@ -23,7 +23,7 @@ class OPNMonitor final : public WinMonitor, public ISoundSource {
   OPNMonitor();
   ~OPNMonitor() final;
 
-  bool Init(pc88::OPNInterface* opn, ISoundControl* soundcontrol);
+  bool Init(pc88core::OPNInterface* opn, ISoundControl* soundcontrol);
 
   // Overrides ISoundSource.
   bool IFCALL SetRate(uint32_t rate) final { return true; }
@@ -46,7 +46,7 @@ class OPNMonitor final : public WinMonitor, public ISoundSource {
   void Start() final;
   void Stop() final;
 
-  pc88::OPNInterface* opn;
+  pc88core::OPNInterface* opn;
   const uint8_t* regs;
 
   ISoundControl* soundcontrol;

@@ -15,7 +15,7 @@
 
 class MemoryManager;
 
-namespace pc88 {
+namespace pc88core {
 class CRTC;
 
 class Memory final : public Device, public IGetMemoryBank {
@@ -246,4 +246,4 @@ class Memory final : public Device, public IGetMemoryBank {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

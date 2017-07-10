@@ -30,7 +30,7 @@
 class DiskManager;
 class TapeManager;
 
-namespace pc88 {
+namespace pc88core {
 class Base;
 class Beep;
 class CRTC;
@@ -82,21 +82,21 @@ class PC88 : public SchedulerDelegate,
   uint32_t IFCALL GetCPUTick() final { return cpu1.GetCount(); }
   uint32_t IFCALL GetCPUSpeed() final { return clock_; }
 
-  void ApplyConfig(pc88::Config*);
-  void SetVolume(pc88::Config*);
+  void ApplyConfig(pc88core::Config*);
+  void SetVolume(pc88core::Config*);
 
   uint32_t GetEffectiveSpeed() { return eclock_; }
 
   bool IsCDSupported();
 
-  pc88::Memory* GetMem1() { return mem1; }
-  pc88::SubSystem* GetMem2() { return subsys; }
-  pc88::OPNInterface* GetOPN1() { return opn1; }
-  pc88::OPNInterface* GetOPN2() { return opn2; }
+  pc88core::Memory* GetMem1() { return mem1; }
+  pc88core::SubSystem* GetMem2() { return subsys; }
+  pc88core::OPNInterface* GetOPN1() { return opn1; }
+  pc88core::OPNInterface* GetOPN2() { return opn2; }
   Z80* GetCPU1() { return &cpu1; }
   Z80* GetCPU2() { return &cpu2; }
-  pc88::PD8257* GetDMAC() { return dmac; }
-  pc88::Beep* GetBEEP() { return beep; }
+  pc88core::PD8257* GetDMAC() { return dmac; }
+  pc88core::Beep* GetBEEP() { return beep; }
 
   Scheduler* GetScheduler() const { return sched_.get(); }
 
@@ -161,28 +161,28 @@ class PC88 : public SchedulerDelegate,
   uint32_t cfgflag2;
   bool updated;
 
-  pc88::Memory* mem1;
-  pc88::KanjiROM* knj1;
-  pc88::KanjiROM* knj2;
-  pc88::Screen* scrn;
-  pc88::InterruptController* intc;
-  pc88::CRTC* crtc;
-  pc88::Base* base;
-  pc88::FDC* fdc;
-  pc88::SubSystem* subsys;
-  pc88::SIO* siotape;
-  pc88::SIO* siomidi;
-  pc88::OPNInterface* opn1;
-  pc88::OPNInterface* opn2;
-  pc88::Calendar* caln;
-  pc88::Beep* beep;
-  pc88::PD8257* dmac;
+  pc88core::Memory* mem1;
+  pc88core::KanjiROM* knj1;
+  pc88core::KanjiROM* knj2;
+  pc88core::Screen* scrn;
+  pc88core::InterruptController* intc;
+  pc88core::CRTC* crtc;
+  pc88core::Base* base;
+  pc88core::FDC* fdc;
+  pc88core::SubSystem* subsys;
+  pc88core::SIO* siotape;
+  pc88core::SIO* siomidi;
+  pc88core::OPNInterface* opn1;
+  pc88core::OPNInterface* opn2;
+  pc88core::Calendar* caln;
+  pc88core::Beep* beep;
+  pc88core::PD8257* dmac;
 
  protected:
   Draw* draw;
   DiskManager* diskmgr;
   TapeManager* tapemgr;
-  pc88::JoyPad* joypad;
+  pc88core::JoyPad* joypad;
 
   MemoryManager mm1, mm2;
   IOBus bus1, bus2;
@@ -192,7 +192,7 @@ class PC88 : public SchedulerDelegate,
   Z80 cpu1;
   Z80 cpu2;
 
-  friend class pc88::Base;
+  friend class pc88core::Base;
 };
 
 inline bool PC88::IsCDSupported() {

@@ -16,7 +16,7 @@
 #define LOGNAME "screen"
 #include "common/diag.h"
 
-namespace pc88 {
+namespace pc88core {
 
 #define GVRAMC_BIT 0xf0
 #define GVRAMC_CLR 0xc0
@@ -1539,4 +1539,4 @@ const Device::OutFuncPtr Screen::outdef[] = {
     static_cast<Device::OutFuncPtr>(&Screen::Out54),
     static_cast<Device::OutFuncPtr>(&Screen::Out55to5b),
 };
-}  // namespace pc88
+}  // namespace pc88core

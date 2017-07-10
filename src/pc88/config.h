@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------
 
-namespace pc88 {
+namespace pc88core {
 
 class DipSwitch {
  public:
@@ -199,4 +199,4 @@ class Config {
   // Relative emulation speed (in permill, 1000 = 1.000x)
   int speed_;
 };
-}  // namespace pc88
+}  // namespace pc88core

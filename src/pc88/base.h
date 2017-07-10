@@ -13,7 +13,7 @@
 class PC88;
 class TapeManager;
 
-namespace pc88 {
+namespace pc88core {
 
 class Config;
 
@@ -60,4 +60,4 @@ class Base final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core

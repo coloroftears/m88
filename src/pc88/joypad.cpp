@@ -8,7 +8,7 @@
 
 #include <utility>
 
-namespace pc88 {
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -94,4 +94,4 @@ const Device::InFuncPtr JoyPad::indef[] = {
     static_cast<Device::InFuncPtr>(&JoyPad::GetDirection),
     static_cast<Device::InFuncPtr>(&JoyPad::GetButton),
 };
-}  // namespace pc88
+}  // namespace pc88core

@@ -12,7 +12,7 @@
 
 class MemoryManager;
 
-namespace pc88 {
+namespace pc88core {
 
 class SubSystem final : public Device {
  public:
@@ -95,4 +95,4 @@ class SubSystem final : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
-}  // namespace pc88
+}  // namespace pc88core
