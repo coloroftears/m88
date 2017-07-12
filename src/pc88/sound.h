@@ -15,12 +15,13 @@
 
 // ---------------------------------------------------------------------------
 
-class PC88;
 class Scheduler;
 
 namespace pc88core {
-class Sound;
+
 class Config;
+class Sound;
+class PC88;
 
 class Sound : public Device,
               public ISoundControl,

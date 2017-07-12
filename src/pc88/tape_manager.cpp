@@ -19,6 +19,7 @@
 
 #define T88ID "PC-8801 Tape Image(T88)"
 
+namespace pc88core {
 // ---------------------------------------------------------------------------
 //  構築
 //
@@ -385,3 +386,4 @@ const Device::OutFuncPtr TapeManager::outdef[] = {
 const Device::InFuncPtr TapeManager::indef[] = {
     static_cast<Device::InFuncPtr>(&TapeManager::In40),
 };
+}  // namespace pc88core

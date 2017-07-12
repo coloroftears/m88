@@ -32,7 +32,7 @@ struct SectorHeader {
 };
 }  // namespace D88
 
-// ---------------------------------------------------------------------------
+namespace pc88core {
 
 class DiskImageHolder {
  public:
@@ -105,12 +105,12 @@ class DiskManager {
   void Modified(int drive = -1, int track = -1);
   CriticalSection& GetCS() { return cs; }
 
-  pc88core::FDU* GetFDU(int dr) { return dr < max_drives ? &drive[dr].fdu : 0; }
+  FDU* GetFDU(int dr) { return dr < max_drives ? &drive[dr].fdu : 0; }
 
  private:
   struct Drive {
     FloppyDisk disk;
-    pc88core::FDU fdu;
+    FDU fdu;
     DiskImageHolder* holder;
     int index;
     bool sizechanged;
@@ -132,3 +132,4 @@ class DiskManager {
 
   CriticalSection cs;
 };
+}  // namespace pc88core

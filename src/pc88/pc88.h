@@ -24,19 +24,15 @@
 #include "devices/z80c.h"
 #endif
 
-// ---------------------------------------------------------------------------
-//  仮宣言
-//
-class DiskManager;
-class TapeManager;
-
 namespace pc88core {
+
 class Base;
 class Beep;
 class CRTC;
 class Calendar;
 class Config;
 class DiskIO;
+class DiskManager;
 class FDC;
 class InterruptController;
 class JoyPad;
@@ -47,7 +43,7 @@ class PD8257;
 class SIO;
 class Screen;
 class SubSystem;
-}
+class TapeManager;
 
 // ---------------------------------------------------------------------------
 //  PC8801 クラス
@@ -180,13 +176,13 @@ class PC88 : public SchedulerDelegate,
 
  protected:
   Draw* draw;
-  DiskManager* diskmgr;
-  TapeManager* tapemgr;
+  DiskManager* diskmgr_;
+  TapeManager* tapemgr_;
   pc88core::JoyPad* joypad;
 
   MemoryManager mm1, mm2;
   IOBus bus1, bus2;
-  DeviceList devlist;
+  DeviceList devlist_;
 
  private:
   Z80 cpu1;
@@ -196,5 +192,7 @@ class PC88 : public SchedulerDelegate,
 };
 
 inline bool PC88::IsCDSupported() {
-  return devlist.Find(DEV_ID('c', 'd', 'i', 'f')) != 0;
+  return devlist_.Find(DEV_ID('c', 'd', 'i', 'f')) != 0;
 }
+
+}  // namespace pc88core

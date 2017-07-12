@@ -10,12 +10,12 @@
 #include "common/scheduler.h"
 #include "devices/z80c.h"
 
-class PC88;
-class TapeManager;
 
 namespace pc88core {
 
 class Config;
+class PC88;
+class TapeManager;
 
 class Base final : public Device {
  public:

@@ -9,9 +9,8 @@
 #include "common/device.h"
 #include "common/scheduler.h"
 
-// ---------------------------------------------------------------------------
-//
-//
+namespace pc88core {
+
 class TapeManager : public Device {
  public:
   enum {
@@ -120,3 +119,4 @@ class TapeManager : public Device {
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
+}  // namespace pc88core

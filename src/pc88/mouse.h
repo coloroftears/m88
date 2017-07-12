@@ -9,11 +9,10 @@
 #include "common/device.h"
 #include "interface/ifui.h"
 
-class PC88;
-
 namespace pc88core {
 
 class Config;
+class PC88;
 
 class Mouse final : public Device {
  public:

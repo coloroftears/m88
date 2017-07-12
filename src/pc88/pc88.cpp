@@ -37,21 +37,7 @@
 //#define LOGNAME "pc88"
 #include "common/diag.h"
 
-using Base = pc88core::Base;
-using CRTC = pc88core::CRTC;
-using Calendar = pc88core::Calendar;
-using Config = pc88core::Config;
-using DiskIO = pc88core::DiskIO;
-using FDC = pc88core::FDC;
-using InterruptController = pc88core::InterruptController;
-using JoyPad = pc88core::JoyPad;
-using KanjiROM = pc88core::KanjiROM;
-using Memory = pc88core::Memory;
-using OPNInterface = pc88core::OPNInterface;
-using PD8257 = pc88core::PD8257;
-using SIO = pc88core::SIO;
-using Screen = pc88core::Screen;
-using SubSystem = pc88core::SubSystem;
+namespace pc88core {
 
 // ---------------------------------------------------------------------------
 //  構築・破棄
@@ -73,7 +59,7 @@ PC88::PC88()
       opn1(0),
       opn2(0),
       caln(0),
-      diskmgr(0),
+      diskmgr_(0),
       beep(0),
       siomidi(0),
       joypad(0) {
@@ -84,7 +70,7 @@ PC88::PC88()
 }
 
 PC88::~PC88() {
-  //  devlist.Cleanup();
+  //  devlist_.Cleanup();
 
   delete base;
   delete mem1;
@@ -107,8 +93,8 @@ PC88::~PC88() {
 //
 bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   draw = _draw;
-  diskmgr = disk;
-  tapemgr = tape;
+  diskmgr_ = disk;
+  tapemgr_ = tape;
 
   if (!sched_->Init())
     return false;
@@ -116,7 +102,7 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   if (!draw->Init(640, 400, 8))
     return false;
 
-  if (!tapemgr->Init(sched_.get(), 0, 0))
+  if (!tapemgr_->Init(sched_.get(), 0, 0))
     return false;
 
   MemoryPage *read, *write;
@@ -129,7 +115,7 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   if (!mm2.Init(0x10000, read, write))
     return false;
 
-  if (!bus1.Init(portend, &devlist) || !bus2.Init(portend2, &devlist))
+  if (!bus1.Init(portend, &devlist_) || !bus2.Init(portend2, &devlist_))
     return false;
 
   if (!ConnectDevices() || !ConnectDevices2())
@@ -248,7 +234,7 @@ void PC88::Reset() {
   if (IsCDSupported())
     cd = (base->GetBasicMode() & 0x40) != 0;
 
-  base->SetFDBoot(cd || diskmgr->GetCurrentDisk(0) >= 0);
+  base->SetFDBoot(cd || diskmgr_->GetCurrentDisk(0) >= 0);
   base->Reset();  // Switch 関係の更新
 
   bool isv2 = (bus1.In(0x31) & 0x40) != 0;
@@ -318,7 +304,7 @@ bool PC88::ConnectDevices() {
     return false;
   if (!base->Init(this))
     return false;
-  devlist.Add(tapemgr);
+  devlist_.Add(tapemgr_);
 
   static const IOBus::Connector c_dmac[] = {
       {pres, IOBus::portout, PD8257::kReset},
@@ -497,9 +483,9 @@ bool PC88::ConnectDevices() {
       {0x30, IOBus::portout, TapeManager::out30},
       {0x40, IOBus::portin, TapeManager::in40},
       {0, 0, 0}};
-  if (!bus1.Connect(tapemgr, c_tape))
+  if (!bus1.Connect(tapemgr_, c_tape))
     return false;
-  if (!tapemgr->Init(sched_.get(), &bus1, psioin))
+  if (!tapemgr_->Init(sched_.get(), &bus1, psioin))
     return false;
 
   static const IOBus::Connector c_opn1[] = {
@@ -629,7 +615,7 @@ bool PC88::ConnectDevices2() {
   fdc = new pc88core::FDC(DEV_ID('F', 'D', 'C', ' '));
   if (!bus2.Connect(fdc, c_fdc))
     return false;
-  if (!fdc->Init(diskmgr, sched_.get(), &bus2, pirq2, pfdstat))
+  if (!fdc->Init(diskmgr_, sched_.get(), &bus2, pirq2, pfdstat))
     return false;
 
   return true;
@@ -694,3 +680,5 @@ SchedTimeDelta PC88::GetFramePeriod() const {
 void PC88::TimeSync() {
   bus1.Out(ptimesync, 0);
 }
+
+}  // namespace pc88core

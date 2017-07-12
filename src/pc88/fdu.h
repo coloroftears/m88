@@ -8,9 +8,9 @@
 
 #include "pc88/floppy.h"
 
-class DiskManager;
-
 namespace pc88core {
+
+class DiskManager;
 
 // ---------------------------------------------------------------------------
 //  FDU

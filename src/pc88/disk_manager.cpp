@@ -12,6 +12,8 @@
 
 #include "common/toast.h"
 
+namespace pc88core {
+
 using ImageHeader = D88::ImageHeader;
 using SectorHeader = D88::SectorHeader;
 
@@ -864,3 +866,4 @@ bool DiskManager::FormatDisk(uint32_t dr) {
   delete[] buf;
   return true;
 }
+}  // namespace pc88core
