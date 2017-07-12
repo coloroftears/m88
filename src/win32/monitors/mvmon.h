@@ -10,9 +10,9 @@
 #include "win32/monitors/winmon.h"
 #include "pc88/memview.h"
 
-// ---------------------------------------------------------------------------
-
+namespace pc88core {
 class PC88;
+}  // namespace pc88core
 
 namespace m88win {
 
@@ -21,7 +21,7 @@ class MemViewMonitor : public WinMonitor {
   MemViewMonitor();
   ~MemViewMonitor() override;
 
-  bool Init(LPCTSTR tmpl, PC88*);
+  bool Init(LPCTSTR tmpl, pc88core::PC88*);
 
  protected:
   MemoryBus* GetBus() { return bus; }

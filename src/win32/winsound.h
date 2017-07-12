@@ -20,11 +20,13 @@
 #include "pc88/sound.h"
 #include "win32/sounddrv.h"
 
-class PC88;
+namespace pc88core {
+class Config;
+}  // namespace pc88core
+
 
 namespace m88win {
 class OPNMonitor;
-}  // namespace m88win
 
 class SoundDumpPipe final : public SoundSource<Sample16> {
  public:
@@ -61,12 +63,6 @@ class SoundDumpPipe final : public SoundSource<Sample16> {
   CriticalSection cs_;
 };
 
-namespace pc88core {
-class Config;
-}  // namespace pc88core
-
-namespace m88win {
-
 using Config = pc88core::Config;
 
 class WinSound : public pc88core::Sound {
@@ -74,7 +70,7 @@ class WinSound : public pc88core::Sound {
   WinSound();
   ~WinSound();
 
-  bool Init(PC88* pc, HWND hwnd, uint32_t rate, uint32_t buflen);
+  bool Init(pc88core::PC88* pc, HWND hwnd, uint32_t rate, uint32_t buflen);
   bool ChangeRate(uint32_t rate, uint32_t buflen, bool wo);
 
   void ApplyConfig(const Config* config);

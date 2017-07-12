@@ -20,7 +20,7 @@ BasicMonitor::BasicMonitor() {}
 
 BasicMonitor::~BasicMonitor() {}
 
-bool BasicMonitor::Init(PC88* pc88) {
+bool BasicMonitor::Init(pc88core::PC88* pc88) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_BASMON)))
     return false;
   mv.Init(pc88);

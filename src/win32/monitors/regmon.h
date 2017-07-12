@@ -10,8 +10,6 @@
 #include "win32/monitors/winmon.h"
 #include "pc88/pc88.h"
 
-class PC88;
-
 namespace m88win {
 
 class Z80RegMonitor final : public WinMonitor {
@@ -19,7 +17,7 @@ class Z80RegMonitor final : public WinMonitor {
   Z80RegMonitor();
   ~Z80RegMonitor();
 
-  bool Init(PC88* pc);
+  bool Init(pc88core::PC88* pc);
 
  private:
   // Overrides WinMonitor.
@@ -27,7 +25,7 @@ class Z80RegMonitor final : public WinMonitor {
   INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
   void DrawMain(HDC, bool);
 
-  PC88* pc;
+  pc88core::PC88* pc;
 };
 
 }  // namespace m88win

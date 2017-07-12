@@ -18,7 +18,7 @@ Z80RegMonitor::Z80RegMonitor() {}
 
 Z80RegMonitor::~Z80RegMonitor() {}
 
-bool Z80RegMonitor::Init(PC88* _pc) {
+bool Z80RegMonitor::Init(pc88core::PC88* _pc) {
   if (!WinMonitor::Init(MAKEINTRESOURCE(IDD_REGMON)))
     return false;
 
@@ -59,8 +59,8 @@ INT_PTR Z80RegMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
 //  状態を表示
 //
 void Z80RegMonitor::UpdateText() {
-  PC88::Z80* c1 = pc->GetCPU1();
-  PC88::Z80* c2 = pc->GetCPU2();
+  pc88core::PC88::Z80* c1 = pc->GetCPU1();
+  pc88core::PC88::Z80* c2 = pc->GetCPU2();
   const Z80Reg& r1 = c1->GetReg();
   const Z80Reg& r2 = c2->GetReg();
 

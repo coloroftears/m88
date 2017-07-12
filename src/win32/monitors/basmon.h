@@ -12,9 +12,9 @@
 #include "common/device.h"
 #include "pc88/memview.h"
 
-// ---------------------------------------------------------------------------
-
+namespace pc88core {
 class PC88;
+}  // namespace pc88core
 
 namespace m88win {
 
@@ -23,7 +23,7 @@ class BasicMonitor final : public WinMonitor {
   BasicMonitor();
   ~BasicMonitor() final;
 
-  bool Init(PC88*);
+  bool Init(pc88core::PC88*);
 
  private:
   void Decode(bool always);

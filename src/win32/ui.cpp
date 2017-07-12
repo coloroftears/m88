@@ -92,11 +92,11 @@ bool WinUI::InitM88(const char* cmdline) {
 
   Log("%d\tdiskmanager\n", timeGetTime());
   if (!diskmgr)
-    diskmgr.reset(new DiskManager);
+    diskmgr.reset(new pc88core::DiskManager);
   if (!diskmgr || !diskmgr->Init())
     return false;
   if (!tapemgr)
-    tapemgr.reset(new TapeManager);
+    tapemgr.reset(new pc88core::TapeManager);
   if (!tapemgr)
     return false;
 

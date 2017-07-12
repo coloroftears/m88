@@ -23,7 +23,7 @@ MemViewMonitor::~MemViewMonitor() {}
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool MemViewMonitor::Init(LPCTSTR tmpl, PC88* pc88) {
+bool MemViewMonitor::Init(LPCTSTR tmpl, pc88core::PC88* pc88) {
   if (!WinMonitor::Init(tmpl))
     return false;
   mv.Init(pc88);

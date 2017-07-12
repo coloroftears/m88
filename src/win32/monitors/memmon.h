@@ -11,10 +11,6 @@
 #include "pc88/memview.h"
 #include "win32/wincore.h"
 
-// ---------------------------------------------------------------------------
-
-class PC88;
-
 namespace m88win {
 
 class MemoryMonitor final : public MemViewMonitor {

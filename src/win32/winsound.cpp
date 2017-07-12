@@ -40,7 +40,7 @@ WinSound::~WinSound() {
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool WinSound::Init(PC88* pc, HWND hwindow, uint32_t rate, uint32_t buflen) {
+bool WinSound::Init(pc88core::PC88* pc, HWND hwindow, uint32_t rate, uint32_t buflen) {
   currentrate = 100;
   currentbuflen = 0;
   hwnd = hwindow;
@@ -165,7 +165,6 @@ bool WinSound::DumpEnd() {
   //  FillWhenEmpty(true);
   return true;
 }
-}  // namespace m88win
 
 // ---------------------------------------------------------------------------
 //  合成の場合
@@ -305,3 +304,4 @@ void SoundDumpPipe::Dump(Sample16* dest, int samples) {
     }
   }
 }
+}  // namespace m88win

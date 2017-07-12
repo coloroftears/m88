@@ -11,10 +11,6 @@
 #include "pc88/ioview.h"
 #include "win32/wincore.h"
 
-// ---------------------------------------------------------------------------
-
-class PC88;
-
 namespace m88win {
 
 class IOMonitor final : public WinMonitor {

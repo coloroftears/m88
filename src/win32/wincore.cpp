@@ -48,10 +48,10 @@ WinCore::~WinCore() {
 bool WinCore::Init(WinUI* _ui,
                    HWND hwnd,
                    Draw* draw,
-                   DiskManager* disk,
+                   pc88core::DiskManager* disk,
                    WinKeyIF* keyb,
                    IConfigPropBase* cp,
-                   TapeManager* tape) {
+                   pc88core::TapeManager* tape) {
   ui = _ui;
   cfgprop = cp;
 
@@ -168,13 +168,13 @@ bool WinCore::SaveSnapshot(const char* filename) {
 
   bool docomp = !!(config.flag2 & Config::kCompressSnapshot);
 
-  uint32_t size = devlist.GetStatusSize();
+  uint32_t size = devlist_.GetStatusSize();
   uint8_t* buf = new uint8_t[docomp ? size * 129 / 64 + 20 : size];
   if (!buf)
     return false;
   memset(buf, 0, size);
 
-  if (devlist.SaveStatus(buf)) {
+  if (devlist_.SaveStatus(buf)) {
     uLongf esize = size * 129 / 64 + 20 - 4;
     if (docomp) {
       if (Z_OK != compress(buf + size + 4, &esize, buf, size)) {
@@ -199,7 +199,7 @@ bool WinCore::SaveSnapshot(const char* filename) {
     ssh.flags = config.flags | (esize < size ? 0x80000000 : 0);
     ssh.flag2 = config.flag2;
     for (uint32_t i = 0; i < 2; i++)
-      ssh.disk[i] = (int8_t)diskmgr->GetCurrentDisk(i);
+      ssh.disk[i] = (int8_t)diskmgr_->GetCurrentDisk(i);
 
     FileIO file;
     if (file.Open(filename, FileIO::create)) {
@@ -279,11 +279,11 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
       read = file.Read(buf, ssh.datasize) == ssh.datasize;
 
     if (read) {
-      r = devlist.LoadStatus(buf);
+      r = devlist_.LoadStatus(buf);
       if (r && diskname) {
         for (uint32_t i = 0; i < 2; i++) {
-          diskmgr->Unmount(i);
-          diskmgr->Mount(i, diskname, false, ssh.disk[i], false);
+          diskmgr_->Unmount(i);
+          diskmgr_->Mount(i, diskname, false, ssh.disk[i], false);
         }
       }
       if (!r) {

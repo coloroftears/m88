@@ -28,7 +28,7 @@ class WinUI;
 
 // ---------------------------------------------------------------------------
 
-class WinCore : public PC88, public ISystem, public ILockCore {
+class WinCore : public pc88core::PC88, public ISystem, public ILockCore {
  public:
   WinCore();
   ~WinCore();
@@ -36,10 +36,10 @@ class WinCore : public PC88, public ISystem, public ILockCore {
   bool Init(WinUI* ui,
             HWND hwnd,
             Draw* draw,
-            DiskManager* diskmgr,
+            pc88core::DiskManager* diskmgr,
             WinKeyIF* keyb,
             IConfigPropBase* cpb,
-            TapeManager* tapemgr);
+            pc88core::TapeManager* tapemgr);
   bool Cleanup();
 
   // Overrides PC88.

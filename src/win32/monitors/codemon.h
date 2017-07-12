@@ -13,9 +13,9 @@
 
 #include <stdio.h>
 
-// ---------------------------------------------------------------------------
-
+namespace pc88core {
 class PC88;
+}  // namespace pc88core
 
 namespace m88win {
 
@@ -24,7 +24,7 @@ class CodeMonitor final : public MemViewMonitor {
   CodeMonitor();
   ~CodeMonitor();
 
-  bool Init(PC88*);
+  bool Init(pc88core::PC88*);
 
  private:
   // Overrides WinMonitor

@@ -21,7 +21,7 @@ CodeMonitor::CodeMonitor() {}
 
 CodeMonitor::~CodeMonitor() {}
 
-bool CodeMonitor::Init(PC88* pc88) {
+bool CodeMonitor::Init(pc88core::PC88* pc88) {
   if (!MemViewMonitor::Init(MAKEINTRESOURCE(IDD_CODEMON), pc88))
     return false;
   if (!diag.Init(GetBus()))

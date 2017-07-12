@@ -135,8 +135,8 @@ class WinUI {
   m88win::OPNMonitor opnmon;
   m88win::Z80RegMonitor regmon;
 
-  std::unique_ptr<DiskManager> diskmgr;
-  std::unique_ptr<TapeManager> tapemgr;
+  std::unique_ptr<pc88core::DiskManager> diskmgr;
+  std::unique_ptr<pc88core::TapeManager> tapemgr;
 
  private:
   // メッセージ関数
