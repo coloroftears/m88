@@ -319,6 +319,7 @@
       <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>.;..\;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)sample2.m88</OutputFile>
@@ -331,6 +332,7 @@
       <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>STRICT;WIN32_LEAN_AND_MEAN;NOMINMAX;</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>.;..\;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)sample2.m88</OutputFile>
