@@ -8,6 +8,8 @@
 
 #include "pc88/screen.h"
 
+#include <string.h>
+
 // #include "common/toast.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"

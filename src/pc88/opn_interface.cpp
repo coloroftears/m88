@@ -6,6 +6,8 @@
 
 #include "pc88/opn_interface.h"
 
+#include <string.h>
+
 #include "common/scheduler.h"
 #include "common/time_keeper.h"
 #include "common/toast.h"

@@ -6,6 +6,8 @@
 
 #include "pc88/subsys.h"
 
+#include <string.h>
+
 #include "common/device.h"
 #include "common/file.h"
 #include "common/memory_manager.h"

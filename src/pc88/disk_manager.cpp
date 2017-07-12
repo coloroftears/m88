@@ -6,6 +6,8 @@
 
 #include "pc88/disk_manager.h"
 
+#include <string.h>
+
 #include <algorithm>
 
 #include "common/toast.h"

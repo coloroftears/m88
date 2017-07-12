@@ -6,6 +6,8 @@
 
 #include "pc88/fdu.h"
 
+#include <string.h>
+
 #include <algorithm>
 
 #include "pc88/disk_manager.h"

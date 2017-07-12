@@ -9,6 +9,8 @@
 //#include <stdio.h>
 #include "pc88/pd8257.h"
 
+#include <string.h>
+
 #include <algorithm>
 
 //#define LOGNAME   "pd8257"

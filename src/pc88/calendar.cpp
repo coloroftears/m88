@@ -10,6 +10,7 @@
 #include "pc88/calendar.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "common/bcd.h"
 

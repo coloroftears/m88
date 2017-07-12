@@ -8,6 +8,8 @@
 
 #include "pc88/kanjirom.h"
 
+#include <string.h>
+
 #include "common/file.h"
 
 namespace pc88core {

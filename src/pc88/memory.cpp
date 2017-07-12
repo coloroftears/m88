@@ -10,6 +10,8 @@
 
 #include "pc88/memory.h"
 
+#include <string.h>
+
 #include <algorithm>
 
 #include "common/error.h"
