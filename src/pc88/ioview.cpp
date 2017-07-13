@@ -6,7 +6,7 @@
 
 #include "pc88/ioview.h"
 
-#include "win32/status.h"
+#include "common/status.h"
 
 namespace pc88core {
 

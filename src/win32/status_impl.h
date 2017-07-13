@@ -12,27 +12,28 @@
 #include "common/critical_section.h"
 #include "common/toast.h"
 
-class StatusDisplay {
+class StatusImpl {
  public:
-  StatusDisplay();
-  ~StatusDisplay();
+  StatusImpl();
+  ~StatusImpl();
 
   bool Init(HWND hwndparent);
   void Cleanup();
 
   bool Enable(bool sfs = false);
   bool Disable();
-  int GetHeight() { return height; }
+  int GetHeight() const { return height; }
   void DrawItem(DRAWITEMSTRUCT* dis);
-  void FDAccess(uint32_t dr, bool hd, bool active);
-  void UpdateDisplay();
-  void WaitSubSys() { litstat[2] = 9; }
 
-  bool Show(int priority, int duration, const char* msg, va_list args);
   void Update();
   uint32_t GetTimerID() { return timerid; }
 
   HWND GetHWnd() { return hwnd; }
+
+  bool Show(int priority, int duration, const char* msg, va_list args);
+  void FDAccess(uint32_t dr, bool hd, bool active);
+  void UpdateDisplay();
+  void WaitSubSys() { litstat[2] = 9; }
 
  private:
   struct List {
@@ -42,6 +43,7 @@ class StatusDisplay {
     char msg[127];
     bool clear;
   };
+
   struct Border {
     int horizontal;
     int vertical;
@@ -67,5 +69,5 @@ class StatusDisplay {
 
   char buf[128];
 };
-
-extern StatusDisplay statusdisplay;
+//
+//extern StatusDisplay statusdisplay;

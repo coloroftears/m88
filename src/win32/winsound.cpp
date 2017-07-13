@@ -9,9 +9,9 @@
 #include <algorithm>
 
 #include "common/clamp.h"
+#include "common/status.h"
 #include "common/toast.h"
 #include "pc88/config.h"
-#include "win32/status.h"
 #include "win32/soundds.h"
 #include "win32/soundds2.h"
 #include "win32/soundwo.h"

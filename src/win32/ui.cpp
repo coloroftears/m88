@@ -17,6 +17,7 @@
 #include "common/clamp.h"
 #include "common/error.h"
 #include "common/file.h"
+#include "common/status.h"
 #include "common/toast.h"
 #include "pc88/disk_manager.h"
 #include "pc88/opn_interface.h"
@@ -27,7 +28,7 @@
 #include "win32/filetest.h"
 #include "win32/messages.h"
 #include "win32/resource.h"
-#include "win32/status.h"
+#include "win32/status_impl.h"
 #include "win32/winexapi.h"
 
 #define LOGNAME "ui"
@@ -218,7 +219,7 @@ int WinUI::Main(const char* cmdline) {
   if (InitM88(cmdline)) {
     timerid = ::SetTimer(hwnd, 1, 1000, 0);
     ::SetTimer(hwnd, 2, 100, 0);
-    statusdisplay.Init(hwnd);
+    statusdisplay.impl()->Init(hwnd);
 
     ShowWindow(hwnd, SW_SHOWDEFAULT);
     UpdateWindow(hwnd);
@@ -248,7 +249,7 @@ int WinUI::Main(const char* cmdline) {
   if (opn)
     opn->Reset();
   CleanupM88();
-  statusdisplay.Cleanup();
+  statusdisplay.impl()->Cleanup();
   return msg.wParam;
 }
 
@@ -742,8 +743,8 @@ uint32_t WinUI::OnTimer(HWND hwnd, WPARAM wparam, LPARAM lparam) {
     InvalidateRect(hwnd, 0, false);
     return 0;
   }
-  if (wparam == statusdisplay.GetTimerID()) {
-    statusdisplay.Update();
+  if (wparam == statusdisplay.impl()->GetTimerID()) {
+    statusdisplay.impl()->Update();
     return 0;
   }
   return 0;
@@ -839,7 +840,7 @@ uint32_t WinUI::OnInitMenu(HWND hwnd, WPARAM wp, LPARAM lp) {
 //  WM_SIZE
 //
 uint32_t WinUI::OnSize(HWND hwnd, WPARAM wp, LPARAM lp) {
-  HWND hwndstatus = statusdisplay.GetHWnd();
+  HWND hwndstatus = statusdisplay.impl()->GetHWnd();
   if (hwndstatus)
     PostMessage(hwndstatus, WM_SIZE, wp, lp);
   active = wp != SIZE_MINIMIZED;
@@ -1220,7 +1221,7 @@ void WinUI::ResizeWindow(uint32_t width, uint32_t height) {
   rect.left = 0;
   rect.right = width;
   rect.top = 0;
-  rect.bottom = height + statusdisplay.GetHeight();
+  rect.bottom = height + statusdisplay.impl()->GetHeight();
 
   AdjustWindowRectEx(&rect, wstyle, TRUE, 0);
   SetWindowPos(hwnd, 0, 0, 0, rect.right - rect.left, rect.bottom - rect.top,
@@ -1234,9 +1235,10 @@ void WinUI::ResizeWindow(uint32_t width, uint32_t height) {
 void WinUI::ShowStatusWindow() {
   if (!fullscreen) {
     if (config.flags & pc88core::Config::kShowStatusBar)
-      statusdisplay.Enable((config.flags & pc88core::Config::kShowFDCStatus) != 0);
+      statusdisplay.impl()->Enable(
+          (config.flags & pc88core::Config::kShowFDCStatus) != 0);
     else
-      statusdisplay.Disable();
+      statusdisplay.impl()->Disable();
     ResizeWindow(640, 400);
   }
 }
@@ -1247,7 +1249,7 @@ void WinUI::ShowStatusWindow() {
 //
 uint32_t WinUI::OnDrawItem(HWND hwnd, WPARAM wparam, LPARAM lparam) {
   if ((UINT)wparam == 1)
-    statusdisplay.DrawItem((DRAWITEMSTRUCT*)lparam);
+    statusdisplay.impl()->DrawItem((DRAWITEMSTRUCT*)lparam);
   return TRUE;
 }
 
@@ -1264,7 +1266,7 @@ void WinUI::ToggleDisplayMode() {
   fullscreen = !fullscreen;
 
   if (fullscreen)
-    statusdisplay.Disable();
+    statusdisplay.impl()->Disable();
   ChangeDisplayType(fullscreen);
 }
 

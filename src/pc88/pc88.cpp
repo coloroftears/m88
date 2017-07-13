@@ -12,6 +12,7 @@
 
 #include <algorithm>
 
+#include "common/status.h"
 #include "common/time_keeper.h"
 #include "common/toast.h"
 #include "pc88/base.h"
@@ -32,7 +33,6 @@
 #include "pc88/subsys.h"
 #include "pc88/tape_manager.h"
 #include "win32/monitors/loadmon.h"
-#include "win32/status.h"
 
 //#define LOGNAME "pc88"
 #include "common/diag.h"

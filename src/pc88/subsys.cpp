@@ -11,7 +11,7 @@
 #include "common/device.h"
 #include "common/file.h"
 #include "common/memory_manager.h"
-#include "win32/status.h"
+#include "common/status.h"
 
 //#define LOGNAME "subsys"
 #include "common/diag.h"

@@ -4,7 +4,8 @@
 // ---------------------------------------------------------------------------
 //  $Id: status.cpp,v 1.8 2002/04/07 05:40:10 cisc Exp $
 
-#include "win32/status.h"
+#include "common/status.h"
+#include "win32/status_impl.h"
 
 #include <assert.h>
 #include <commctrl.h>
@@ -14,18 +15,19 @@
 
 StatusDisplay statusdisplay;
 
-// ---------------------------------------------------------------------------
-//  Constructor/Destructor
-//
-StatusDisplay::StatusDisplay() {
-  litstat[0] = litstat[1] = 0;
+StatusDisplay::StatusDisplay() : impl_(new StatusImpl) {}
+StatusDisplay::~StatusDisplay() {}
+
+
+StatusImpl::StatusImpl() {
   for (int i = 0; i < 3; ++i) {
     litstat[i] = 0;
     litcurrent[i] = 0;
   }
 }
 
-StatusDisplay::~StatusDisplay() {
+StatusImpl::~StatusImpl() {
+  Cleanup();
   while (list) {
     List* next = list->next;
     delete list;
@@ -33,39 +35,40 @@ StatusDisplay::~StatusDisplay() {
   }
 }
 
-bool StatusDisplay::Init(HWND hwndp) {
+bool StatusImpl::Init(HWND hwndp) {
   hwndparent = hwndp;
   return true;
 }
 
-bool StatusDisplay::Enable(bool showfd) {
+bool StatusImpl::Enable(bool showfd) {
   if (!hwnd) {
     hwnd = CreateStatusWindow(WS_CHILD | WS_VISIBLE, 0, hwndparent, 1);
-
     if (!hwnd)
       return false;
-    showfdstat = showfd;
-
-    SendMessage(hwnd, SB_GETBORDERS, 0, (LPARAM)&border);
-
-    RECT rect;
-    GetWindowRect(hwndparent, &rect);
-    int widths[2];
-    widths[0] = (rect.right - rect.left - border.vertical) -
-                1 * ((showfd ? 80 : 64) + border.split);
-    widths[1] = -1;
-    SendMessage(hwnd, SB_SETPARTS, 2, (LPARAM)widths);
-    InvalidateRect(hwndparent, 0, false);
-
-    GetWindowRect(hwnd, &rect);
-    height = rect.bottom - rect.top;
-
-    PostMessage(hwnd, SB_SETTEXT, SBT_OWNERDRAW | 1, 0);
   }
+
+  showfdstat = showfd;
+
+  SendMessage(hwnd, SB_GETBORDERS, 0, (LPARAM)&border);
+
+  RECT rect;
+  GetWindowRect(hwndparent, &rect);
+  int widths[2];
+  widths[0] = (rect.right - rect.left - border.vertical) -
+                1 * ((showfd ? 80 : 64) + border.split);
+  widths[1] = -1;
+  SendMessage(hwnd, SB_SETPARTS, 2, (LPARAM)widths);
+  InvalidateRect(hwndparent, 0, false);
+
+  GetWindowRect(hwnd, &rect);
+  height = rect.bottom - rect.top;
+
+  PostMessage(hwnd, SB_SETTEXT, SBT_OWNERDRAW | 1, 0);
+
   return true;
 }
 
-bool StatusDisplay::Disable() {
+bool StatusImpl::Disable() {
   if (hwnd) {
     DestroyWindow(hwnd);
     hwnd = 0;
@@ -74,15 +77,18 @@ bool StatusDisplay::Disable() {
   return true;
 }
 
-void StatusDisplay::Cleanup() {
-  if (timerid)
+void StatusImpl::Cleanup() {
+  Disable();
+  if (timerid) {
     KillTimer(hwndparent, timerid);
+    timerid = 0;
+  }
 }
 
 // ---------------------------------------------------------------------------
 //  DrawItem
 //
-void StatusDisplay::DrawItem(DRAWITEMSTRUCT* dis) {
+void StatusImpl::DrawItem(DRAWITEMSTRUCT* dis) {
   switch (dis->itemID) {
     case 0: {
       SetBkColor(dis->hDC, GetSysColor(COLOR_3DFACE));
@@ -131,10 +137,19 @@ void StatusDisplay::DrawItem(DRAWITEMSTRUCT* dis) {
 // ---------------------------------------------------------------------------
 //  メッセージ追加
 //
-bool StatusDisplay::Show(int priority,
-                         int duration,
-                         const char* msg,
-                         va_list args) {
+
+bool StatusDisplay::Show(int priority, int duration, const char* msg, ...) {
+  va_list ap;
+  va_start(ap, msg);
+  bool rv = impl()->Show(priority, duration, msg, ap);
+  va_end(ap);
+  return rv;
+}
+  
+bool StatusImpl::Show(int priority,
+                      int duration,
+                      const char* msg,
+                      va_list args) {
   CriticalSection::Lock lock(cs);
 
   if (currentpriority < priority)
@@ -163,7 +178,7 @@ bool StatusDisplay::Show(int priority,
 // ---------------------------------------------------------------------------
 //  更新
 //
-void StatusDisplay::Update() {
+void StatusImpl::Update() {
   updatemessage = false;
   if (hwnd) {
     CriticalSection::Lock lock(cs);
@@ -210,7 +225,7 @@ void StatusDisplay::Update() {
 // ---------------------------------------------------------------------------
 //  必要ないエントリの削除
 //
-void StatusDisplay::Clean() {
+void StatusImpl::Clean() {
   List** prev = &list;
   int c = GetTickCount();
   while (*prev) {
@@ -227,6 +242,10 @@ void StatusDisplay::Clean() {
 //
 //
 void StatusDisplay::FDAccess(uint32_t dr, bool hd, bool active) {
+  impl()->FDAccess(dr, hd, active);
+}
+
+void StatusImpl::FDAccess(uint32_t dr, bool hd, bool active) {
   dr &= 1;
   if (!(litstat[dr] & 4)) {
     litstat[dr] = (hd ? 0x22 : 0) | (active ? 0x11 : 0) | 4;
@@ -237,6 +256,10 @@ void StatusDisplay::FDAccess(uint32_t dr, bool hd, bool active) {
 }
 
 void StatusDisplay::UpdateDisplay() {
+  impl()->UpdateDisplay();
+}
+
+void StatusImpl::UpdateDisplay() {
   bool update = false;
   for (int d = 0; d < 3; d++) {
     if ((litstat[d] ^ litcurrent[d]) & 3) {
@@ -254,11 +277,15 @@ void StatusDisplay::UpdateDisplay() {
   }
 }
 
+void StatusDisplay::WaitSubSys() {
+  impl()->WaitSubSys();
+}
+
 // static
 bool Toast::Show(int priority, int duration, const char* msg, ...) {
   va_list marker;
   va_start(marker, msg);
-  bool r = statusdisplay.Show(priority, duration, msg, marker);
+  bool r = statusdisplay.impl()->Show(priority, duration, msg, marker);
   va_end(marker);
   return r;
 }

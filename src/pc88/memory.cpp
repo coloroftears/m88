@@ -17,9 +17,9 @@
 #include "common/error.h"
 #include "common/file.h"
 #include "common/memory_manager.h"
+#include "common/status.h"
 #include "pc88/config.h"
 #include "pc88/crtc.h"
-#include "win32/status.h"
 
 namespace pc88core {
 

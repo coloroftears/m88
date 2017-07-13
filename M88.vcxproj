@@ -541,6 +541,7 @@
     <ClInclude Include="src\common\sound_buffer2.h" />
     <ClInclude Include="src\common\sound_source.h" />
     <ClInclude Include="src\common\sampling_rate_converter.h" />
+    <ClInclude Include="src\common\status.h" />
     <ClInclude Include="src\common\time_keeper.h" />
     <ClInclude Include="src\common\toast.h" />
     <ClInclude Include="src\common\types.h" />
@@ -613,7 +614,7 @@
     <ClInclude Include="src\win32\soundds.h" />
     <ClInclude Include="src\win32\soundds2.h" />
     <ClInclude Include="src\win32\soundwo.h" />
-    <ClInclude Include="src\win32\status.h" />
+    <ClInclude Include="src\win32\status_impl.h" />
     <ClInclude Include="src\win32\ui.h" />
     <ClInclude Include="src\win32\wincfg.h" />
     <ClInclude Include="src\win32\wincore.h" />

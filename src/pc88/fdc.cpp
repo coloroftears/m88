@@ -14,11 +14,11 @@
 #include <algorithm>
 
 #include "common/critical_section.h"
+#include "common/status.h"
 #include "common/toast.h"
 #include "pc88/config.h"
 #include "pc88/disk_manager.h"
 #include "pc88/fdu.h"
-#include "win32/status.h"
 
 #define LOGNAME "fdc"
 #include "common/diag.h"
