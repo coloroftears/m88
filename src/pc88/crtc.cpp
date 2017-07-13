@@ -467,7 +467,7 @@ void IOCALL CRTC::StartDisplay(uint32_t) {
   column = 0;
   mode &= ~suppressdisplay;
   //  Log("DisplayStart\n");
-  bus->Out(PC88::vrtc, 0);
+  bus->Out(PC88::kVRTC, 0);
   if (++frametime > blinkrate)
     frametime = 0;
   ExpandLine();
@@ -544,7 +544,7 @@ int CRTC::ExpandLineSub() {
 
 inline void IOCALL CRTC::ExpandLineEnd(uint32_t) {
   //  Log("Vertical Retrace\n");
-  bus->Out(PC88::vrtc, 1);
+  bus->Out(PC88::kVRTC, 1);
   event = -1;
   sev = scheduler->AddEvent(linetime * vretrace, this,
                             static_cast<TimeFunc>(&CRTC::StartDisplay), 0);

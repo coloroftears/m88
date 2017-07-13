@@ -109,7 +109,7 @@ void IOCALL Base::Reset(uint32_t, uint32_t) {
 //  Real Time Clock Interrupt (600Hz)
 //
 void IOCALL Base::RTC(uint32_t) {
-  pc->bus1.Out(PC88::pint2, 1);
+  pc->bus1.Out(PC88::kPortInt2, 1);
   //  Log("RTC\n");
 }
 
@@ -119,7 +119,7 @@ void IOCALL Base::RTC(uint32_t) {
 void IOCALL Base::VRTC(uint32_t, uint32_t en) {
   if (en) {
     pc->VSync();
-    pc->bus1.Out(PC88::pint1, 1);
+    pc->bus1.Out(PC88::kPortInt1, 1);
     port40 |= 0x20;
     //      Log("CRTC: Retrace\n");
   } else {

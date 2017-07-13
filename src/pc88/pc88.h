@@ -98,32 +98,32 @@ class PC88 : public SchedulerDelegate,
 
  public:
   enum SpecialPort {
-    pint0 = 0x100,
-    pint1,
-    pint2,
-    pint3,
-    pint4,
-    pint5,
-    pint6,
-    pint7,
-    pres,     // reset
-    pirq,     // IRQ
-    piack,    // interrupt acknowledgement
-    vrtc,     // vertical retrace
-    popnio,   // OPN の入出力ポート 1
-    popnio2,  // OPN の入出力ポート 2 (連番)
-    psioin,   // SIO 関係
-    psioreq,
-    ptimesync,
-    portend
+    kPortInt0 = 0x100,
+    kPortInt1,
+    kPortInt2,
+    kPortInt3,
+    kPortInt4,
+    kPortInt5,
+    kPortInt6,
+    kPortInt7,
+    kPortReset,   // reset
+    kPortIRQ,     // IRQ
+    kPortIntAck,  // interrupt acknowledgement
+    kVRTC,        // vertical retrace
+    kPortOPNIO,   // OPN の入出力ポート 1
+    kPortOPNIO2,  // OPN の入出力ポート 2 (連番)
+    kPortSIOIn,   // SIO 関係
+    kPortSIOReq,
+    kPortTimeSync,
+    kPortEnd
   };
 
   enum SpecialPort2 {
-    pres2 = 0x100,
-    pirq2,
-    piac2,
-    pfdstat,  // FD の動作状況 (b0-1 = LAMP, b2-3 = MODE, b4=SEEK)
-    portend2
+    kPortReset2 = 0x100,
+    kPortIRQ2,
+    kPortIntAck2,
+    kPortFDStat,  // FD の動作状況 (b0-1 = LAMP, b2-3 = MODE, b4=SEEK)
+    kPortEnd2
   };
 
  private:
