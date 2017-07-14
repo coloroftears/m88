@@ -8,8 +8,6 @@
 
 #include "pc88/sio.h"
 
-#include "common/scheduler.h"
-
 #define LOGNAME "sio"
 #include "common/diag.h"
 
@@ -36,7 +34,7 @@ bool SIO::Init(IOBus* _bus, uint32_t _prxrdy, uint32_t _preq) {
 //  りせっと
 //
 void SIO::Reset(uint32_t, uint32_t) {
-  mode = clear;
+  mode_ = clear;
   status = TXRDY | TXE;
   baseclock = 1200 * 64;
 }
@@ -47,12 +45,12 @@ void SIO::Reset(uint32_t, uint32_t) {
 void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
   Log("[%.2x] ", d);
 
-  switch (mode) {
+  switch (mode_) {
     case clear:
       // Mode Instruction
       if (d & 3) {
         // Asynchronus mode
-        mode = async;
+        mode_ = async;
         // b7 b6 b5 b4 b3 b2 b1 b0
         // STOP  EP PE CHAR  RATE
         static const int clockdiv[] = {1, 1, 16, 64};
@@ -64,7 +62,7 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
             datalen, stop == 3 ? "2" : stop == 2 ? "1.5" : "1");
       } else {
         // Synchronus mode
-        mode = sync1;
+        mode_ = sync1;
         clock = 0;
         parity = d & 0x10 ? (d & 0x20 ? even : odd) : none;
         Log("Sync: %d baud, Parity:%c / ", clock, parity);
@@ -72,11 +70,11 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
       break;
 
     case sync1:
-      mode = sync2;
+      mode_ = sync2;
       break;
 
     case sync2:
-      mode = sync;
+      mode_ = sync;
       Log("\n");
       break;
 
@@ -88,7 +86,7 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
       if (d & 0x40) {
         // Reset!
         Log(" Internal Reset!\n");
-        mode = clear;
+        mode_ = clear;
         break;
       }
       // b5 - request to send
@@ -110,7 +108,7 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
       Log(" RxE:%d TxE:%d\n", rxen, txen);
       break;
     default:
-      Log("internal error? <%d>\n", mode);
+      Log("internal error? <%d>\n", mode_);
       break;
   }
 }
@@ -118,8 +116,8 @@ void IOCALL SIO::SetControl(uint32_t, uint32_t d) {
 // ---------------------------------------------------------------------------
 //  でーたせっと
 //
-void IOCALL SIO::SetData(uint32_t, uint32_t d) {
-  Log("<%.2x ", d);
+void IOCALL SIO::SetData(uint32_t, uint32_t /* d*/) {
+  // Log("<%.2x ", d);
 }
 
 // ---------------------------------------------------------------------------
@@ -169,29 +167,29 @@ uint32_t IFCALL SIO::GetStatusSize() {
 }
 
 bool IFCALL SIO::SaveStatus(uint8_t* s) {
-  Status* status = (Status*)s;
-  status->rev = ssrev;
-  status->baseclock = baseclock;
-  status->clock = clock;
-  status->datalen = datalen;
-  status->stop = stop;
-  status->data = data;
-  status->mode = mode;
-  status->parity = parity;
+  Status* ss = (Status*)s;
+  ss->rev = SSREV;
+  ss->baseclock = baseclock;
+  ss->clock = clock;
+  ss->datalen = datalen;
+  ss->stop = stop;
+  ss->data = data;
+  ss->mode_ = mode_;
+  ss->parity = parity;
   return true;
 }
 
 bool IFCALL SIO::LoadStatus(const uint8_t* s) {
-  const Status* status = (const Status*)s;
-  if (status->rev != ssrev)
+  const Status* ss = (const Status*)s;
+  if (ss->rev != SSREV)
     return false;
-  baseclock = status->baseclock;
-  clock = status->clock;
-  datalen = status->datalen;
-  stop = status->stop;
-  data = status->data;
-  mode = status->mode;
-  parity = status->parity;
+  baseclock = ss->baseclock;
+  clock = ss->clock;
+  datalen = ss->datalen;
+  stop = ss->stop;
+  data = ss->data;
+  mode_ = ss->mode_;
+  parity = ss->parity;
   return true;
 }
 

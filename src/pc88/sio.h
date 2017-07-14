@@ -58,7 +58,7 @@ class SIO final : public Device {
   uint32_t stop;
   uint32_t status;
   uint32_t data;
-  Mode mode;
+  Mode mode_;
   Parity parity;
   bool rxen;
   bool txen;
@@ -74,7 +74,7 @@ class SIO final : public Device {
     SYNDET = 0x40,
     DSR = 0x80,
 
-    ssrev = 1,
+    SSREV = 1,
   };
   struct Status {
     uint8_t rev;
@@ -87,7 +87,7 @@ class SIO final : public Device {
     uint32_t stop;
     uint32_t status;
     uint32_t data;
-    Mode mode;
+    Mode mode_;
     Parity parity;
   };
 
