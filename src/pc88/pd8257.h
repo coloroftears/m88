@@ -51,7 +51,7 @@ class PD8257 final : public Device, public IDMAAccess {
 
  private:
   enum {
-    ssrev = 1,
+    SSREV = 1,
   };
   struct Status {
     uint8_t rev;
@@ -62,7 +62,7 @@ class PD8257 final : public Device, public IDMAAccess {
     uint32_t addr[4];
     int count[4];
     uint32_t ptr[4];
-    uint8_t mode[4];
+    uint8_t mode_[4];
   };
 
   Status stat;

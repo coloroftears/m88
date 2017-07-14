@@ -6,7 +6,6 @@
 // ---------------------------------------------------------------------------
 //  $Id: pd8257.cpp,v 1.14 1999/10/10 01:47:09 cisc Exp $
 
-//#include <stdio.h>
 #include "pc88/pd8257.h"
 
 #include <string.h>
@@ -70,13 +69,15 @@ bool PD8257::ConnectWr(uint8_t* mem, uint32_t addr, uint32_t length) {
 //  Reset
 //
 void IOCALL PD8257::Reset(uint32_t, uint32_t) {
+  stat.autoinit = 0;
   stat.ff = false;
   stat.enabled = 0;
   stat.status = 0;
   for (int i = 0; i < 4; i++) {
+    stat.addr[i] = 0;
     stat.ptr[i] = 0;
     stat.count[i] = 0;
-    stat.mode[i] = 0;
+    stat.mode_[i] = 0;
   }
 }
 
@@ -104,14 +105,14 @@ void IOCALL PD8257::SetCount(uint32_t d, uint32_t p) {
   if (!stat.ff)
     stat.count[bank] = (stat.count[bank] & 0xff00) | p;
   else {
-    stat.mode[bank] = p & 0xc0;
+    stat.mode_[bank] = p & 0xc0;
     stat.count[bank] = (stat.count[bank] & 0x00ff) | ((p & 0x3f) << 8);
   }
   if (stat.autoinit && bank == 2)
-    stat.count[3] = stat.count[2], stat.mode[3] = stat.mode[3];
+    stat.count[3] = stat.count[2], stat.mode_[3] = stat.mode_[3];
   stat.ff = !stat.ff;
   Log("Bank %d: count = %.4x  flag = %.4x\n", bank, stat.count[bank] & 0x3fff,
-      stat.mode[bank]);
+      stat.mode_[bank]);
 }
 
 // ---------------------------------------------------------------------------
@@ -121,7 +122,7 @@ void IOCALL PD8257::SetMode(uint32_t, uint32_t d) {
   Log("Mode: %.2x\n", d);
   stat.autoinit = (d & 0x80) != 0;
 
-  uint8_t pe = stat.enabled;
+  // uint8_t pe = stat.enabled;
   stat.enabled = (uint8_t)(d & 15);
 
   stat.status &= ~stat.enabled;
@@ -154,7 +155,7 @@ uint32_t IOCALL PD8257::GetCount(uint32_t p) {
   if (stat.ff)
     return stat.count[bank] & 0xff;
   else
-    return ((stat.count[bank] >> 8) & 0x3f) | stat.mode[bank];
+    return ((stat.count[bank] >> 8) & 0x3f) | stat.mode_[bank];
 }
 
 // ---------------------------------------------------------------------------
@@ -177,7 +178,7 @@ uint32_t IFCALL PD8257::RequestRead(uint32_t bank,
                                     uint32_t nbytes) {
   uint32_t n = nbytes;
   Log("Request ");
-  if ((stat.enabled & (1 << bank)) && !(stat.mode[bank] & 0x40)) {
+  if ((stat.enabled & (1 << bank)) && !(stat.mode_[bank] & 0x40)) {
     while (n > 0) {
       uint32_t size = std::min(static_cast<int>(n), stat.count[bank] + 1);
       if (!size)
@@ -230,7 +231,7 @@ uint32_t IFCALL PD8257::RequestWrite(uint32_t bank,
                                      uint8_t* data,
                                      uint32_t nbytes) {
   uint32_t n = nbytes;
-  if ((stat.enabled & (1 << bank)) && !(stat.mode[bank] & 0x80)) {
+  if ((stat.enabled & (1 << bank)) && !(stat.mode_[bank] & 0x80)) {
     while (n > 0) {
       uint32_t size = std::min(static_cast<int>(n), stat.count[bank] + 1);
       if (!size)
@@ -278,13 +279,13 @@ uint32_t IFCALL PD8257::GetStatusSize() {
 bool IFCALL PD8257::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
   *st = stat;
-  st->rev = ssrev;
+  st->rev = SSREV;
   return true;
 }
 
 bool IFCALL PD8257::LoadStatus(const uint8_t* s) {
   const Status* st = (const Status*)s;
-  if (st->rev != ssrev)
+  if (st->rev != SSREV)
     return false;
   stat = *st;
   return true;
