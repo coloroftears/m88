@@ -15,7 +15,7 @@ namespace D88 {
 struct ImageHeader {
   char title[17];
   uint8_t reserved[9];
-  uint8_t readonly;
+  uint8_t readonly_;
   uint8_t disktype;
   uint32_t disksize;
   uint32_t trackptr[164];
@@ -34,7 +34,7 @@ struct SectorHeader {
 
 namespace pc88core {
 
-class DiskImageHolder {
+class DiskImageHolder final {
  public:
   enum {
     max_disks = 64,
@@ -50,10 +50,10 @@ class DiskImageHolder {
 
   const char* GetTitle(int index);
   FileIO* GetDisk(int index);
-  uint32_t GetNumDisks() { return ndisks; }
+  uint32_t GetNumDisks() { return ndisks_; }
   bool SetDiskSize(int index, int newsize);
-  bool IsReadOnly() { return readonly; }
-  uint32_t IsOpen() { return ref > 0; }
+  bool IsReadOnly() { return readonly_; }
+  uint32_t IsOpen() { return ref_ > 0; }
   bool AddDisk(const char* title, uint32_t type);
 
  private:
@@ -66,17 +66,17 @@ class DiskImageHolder {
   void Close();
   bool IsValidHeader(D88::ImageHeader&);
 
-  FileIO fio;
-  int ndisks;
-  int ref;
-  bool readonly;
-  DiskInfo disks[max_disks];
-  char diskname[MAX_PATH];
+  FileIO fio_;
+  int ndisks_;
+  int ref_;
+  bool readonly_;
+  DiskInfo disks_[max_disks];
+  char diskname_[MAX_PATH];
 };
 
 // ---------------------------------------------------------------------------
 
-class DiskManager {
+class DiskManager final {
  public:
   enum {
     max_drives = 2,
@@ -105,7 +105,7 @@ class DiskManager {
   void Modified(int drive = -1, int track = -1);
   CriticalSection& GetCS() { return cs; }
 
-  FDU* GetFDU(int dr) { return dr < max_drives ? &drive[dr].fdu : 0; }
+  FDU* GetFDU(int dr) { return dr < max_drives ? &drive_[dr].fdu : 0; }
 
  private:
   struct Drive {
@@ -127,8 +127,8 @@ class DiskManager {
   uint32_t GetDiskImageSize(Drive* drive);
   void UpdateDrive(Drive* drive);
 
-  DiskImageHolder holder[max_drives];
-  Drive drive[max_drives];
+  DiskImageHolder holder_[max_drives];
+  Drive drive_[max_drives];
 
   CriticalSection cs;
 };

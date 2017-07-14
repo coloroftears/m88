@@ -19,12 +19,12 @@ namespace pc88core {
 //  構築・破棄
 //
 FDU::FDU() {
-  disk = 0;
-  cylinder = 0;
+  disk_ = 0;
+  cylinder_ = 0;
 }
 
 FDU::~FDU() {
-  if (disk)
+  if (disk_)
     Unmount();
 }
 
@@ -32,8 +32,8 @@ FDU::~FDU() {
 //  初期化
 //
 bool FDU::Init(DiskManager* dm, int dr) {
-  diskmgr = dm;
-  drive = dr;
+  diskmgr_ = dm;
+  drive_ = dr;
   return true;
 }
 
@@ -42,8 +42,8 @@ bool FDU::Init(DiskManager* dm, int dr) {
 //  イメージを割り当てる（＝ドライブにディスクを入れる）
 //
 bool FDU::Mount(FloppyDisk* fd) {
-  disk = fd;
-  sector = 0;
+  disk_ = fd;
+  sector_ = 0;
 
   return true;
 }
@@ -52,7 +52,7 @@ bool FDU::Mount(FloppyDisk* fd) {
 //  FDU::Unmount
 //
 bool FDU::Unmount() {
-  disk = 0;
+  disk_ = 0;
   return true;
 }
 
@@ -61,9 +61,9 @@ bool FDU::Unmount() {
 //  ヘッドの指定
 //
 inline void FDU::SetHead(uint32_t hd) {
-  head = hd & 1;
-  track = (cylinder << 1) + (hd & 1);
-  disk->Seek(track);
+  head_ = hd & 1;
+  track_ = (cylinder_ << 1) + (hd & 1);
+  disk_->Seek(track_);
 }
 
 // ---------------------------------------------------------------------------
@@ -71,22 +71,22 @@ inline void FDU::SetHead(uint32_t hd) {
 //  セクタを一個とってくる
 //
 uint32_t FDU::ReadID(uint32_t flags, IDR* id) {
-  if (disk) {
+  if (disk_) {
     SetHead(flags);
 
-    for (int i = disk->GetNumSectors(); i > 0; i--) {
-      sector = disk->GetSector();
-      if (!sector)
+    for (int i = disk_->GetNumSectors(); i > 0; i--) {
+      sector_ = disk_->GetSector();
+      if (!sector_)
         break;
 
-      if ((flags & 0xc0) == (sector->flags & 0xc0)) {
-        *id = sector->id;
+      if ((flags & 0xc0) == (sector_->flags & 0xc0)) {
+        *id = sector_->id;
         return 0;
       }
     }
+    disk_->IndexHole();
   }
 
-  disk->IndexHole();
   return FDC::ST0_AT | FDC::ST1_MA;
 }
 
@@ -97,7 +97,7 @@ uint32_t FDU::ReadID(uint32_t flags, IDR* id) {
 //  cylinder シーク先
 //
 uint32_t FDU::Seek(uint32_t cy) {
-  cylinder = cy;
+  cylinder_ = cy;
   return 0;
 }
 
@@ -110,12 +110,12 @@ uint32_t FDU::Seek(uint32_t cy) {
 //  data    データの転送先
 //
 uint32_t FDU::ReadSector(uint32_t flags, IDR id, uint8_t* data) {
-  if (!disk)
+  if (!disk_)
     return FDC::ST0_AT | FDC::ST1_MA;
   SetHead(flags);
 
   int cy = -1;
-  int i = disk->GetNumSectors();
+  int i = disk_->GetNumSectors();
   if (!i)
     return FDC::ST0_AT | FDC::ST1_MA;
 
@@ -126,18 +126,18 @@ uint32_t FDU::ReadSector(uint32_t flags, IDR id, uint8_t* data) {
     cy = rid.c;
 
     if (rid == id) {
-      memcpy(data, sector->image, std::min(0x2000U, sector->size));
+      memcpy(data, sector_->image.get(), std::min(0x2000U, sector_->size));
 
-      if (sector->flags & FloppyDisk::datacrc)
+      if (sector_->flags & FloppyDisk::DATA_CRC)
         return FDC::ST0_AT | FDC::ST1_DE | FDC::ST2_DD;
 
-      if (sector->flags & FloppyDisk::deleted)
+      if (sector_->flags & FloppyDisk::DELETED)
         return FDC::ST2_CM;
 
       return 0;
     }
   }
-  disk->IndexHole();
+  disk_->IndexHole();
   if (cy != id.c && cy != -1) {
     if (cy == 0xff)
       return FDC::ST0_AT | FDC::ST1_ND | FDC::ST2_BC;
@@ -155,14 +155,14 @@ uint32_t FDU::WriteSector(uint32_t flags,
                           IDR id,
                           const uint8_t* data,
                           bool deleted) {
-  if (!disk)
+  if (!disk_)
     return FDC::ST0_AT | FDC::ST1_MA;
   SetHead(flags);
 
-  if (disk->IsReadOnly())
+  if (disk_->IsReadOnly())
     return FDC::ST0_AT | FDC::ST1_NW;
 
-  int i = disk->GetNumSectors();
+  int i = disk_->GetNumSectors();
   if (!i)
     return FDC::ST0_AT | FDC::ST1_MA;
 
@@ -176,19 +176,19 @@ uint32_t FDU::WriteSector(uint32_t flags,
     if (rid == id) {
       uint32_t writesize = 0x80 << std::min(8, static_cast<int>(id.n));
 
-      if (writesize > sector->size) {
-        if (!disk->Resize(sector, writesize))
+      if (writesize > sector_->size) {
+        if (!disk_->Resize(sector_, writesize))
           return 0;
       }
 
-      memcpy(sector->image, data, writesize);
-      sector->flags = (flags & 0xc0) | (deleted ? FloppyDisk::deleted : 0);
-      sector->size = writesize;
-      diskmgr->Modified(drive, track);
+      memcpy(sector_->image.get(), data, writesize);
+      sector_->flags = (flags & 0xc0) | (deleted ? FloppyDisk::DELETED : 0);
+      sector_->size = writesize;
+      diskmgr_->Modified(drive_, track_);
       return 0;
     }
   }
-  disk->IndexHole();
+  disk_->IndexHole();
   if (cy != id.c && cy != -1) {
     if (cy == 0xff)
       return FDC::ST0_AT | FDC::ST1_ND | FDC::ST2_BC;
@@ -203,9 +203,9 @@ uint32_t FDU::WriteSector(uint32_t flags,
 //  デバイス・スタータスを得る
 //
 uint32_t FDU::SenceDeviceStatus() {
-  uint32_t result = 0x20 | (cylinder ? 0 : 0x10) | (head ? 4 : 0);
-  if (disk)
-    result |= disk->IsReadOnly() ? 0x48 : 8;
+  uint32_t result = 0x20 | (cylinder_ ? 0 : 0x10) | (head_ ? 4 : 0);
+  if (disk_)
+    result |= disk_->IsReadOnly() ? 0x48 : 8;
   return result;
 }
 
@@ -215,9 +215,9 @@ uint32_t FDU::SenceDeviceStatus() {
 uint32_t FDU::WriteID(uint32_t flags, WIDDESC* wid) {
   int i;
 
-  if (!disk)
+  if (!disk_)
     return FDC::ST0_AT | FDC::ST1_MA;
-  if (disk->IsReadOnly())
+  if (disk_->IsReadOnly())
     return FDC::ST0_AT | FDC::ST1_NW;
 
   SetHead(flags);
@@ -227,7 +227,7 @@ uint32_t FDU::WriteID(uint32_t flags, WIDDESC* wid) {
   uint32_t sos = 0x80 << std::min(8, static_cast<int>(wid->n));
 
   for (i = wid->sc; i > 0; i--) {
-    if (sot + sos + 0x40 > disk->GetTrackCapacity())
+    if (sot + sos + 0x40 > disk_->GetTrackCapacity())
       break;
     sot += sos + 0x40;
   }
@@ -235,23 +235,23 @@ uint32_t FDU::WriteID(uint32_t flags, WIDDESC* wid) {
   wid->sc -= i;
 
   if (wid->sc) {
-    if (!disk->FormatTrack(wid->sc, sos)) {
-      diskmgr->Modified(drive, track);
+    if (!disk_->FormatTrack(wid->sc, sos)) {
+      diskmgr_->Modified(drive_, track_);
       return FDC::ST0_AT | FDC::ST0_EC;
     }
 
     for (i = wid->sc; i > 0; i--) {
-      FloppyDisk::Sector* sec = disk->GetSector();
+      FloppyDisk::Sector* sec = disk_->GetSector();
       sec->id = *wid->idr++;
       sec->flags = flags & 0xc0;
-      memset(sec->image, wid->d, sec->size);
+      memset(sec->image.get(), wid->d, sec->size);
     }
   } else {
     // unformat
-    disk->FormatTrack(0, 0);
+    disk_->FormatTrack(0, 0);
   }
-  disk->IndexHole();
-  diskmgr->Modified(drive, track);
+  disk_->IndexHole();
+  diskmgr_->Modified(drive_, track_);
   return 0;
 }
 
@@ -259,20 +259,20 @@ uint32_t FDU::WriteID(uint32_t flags, WIDDESC* wid) {
 //  FindID
 //
 uint32_t FDU::FindID(uint32_t flags, IDR id) {
-  if (!disk)
+  if (!disk_)
     return FDC::ST0_AT | FDC::ST1_MA;
 
   SetHead(flags);
 
-  if (!disk->FindID(id, flags & 0xc0)) {
-    FloppyDisk::Sector* sec = disk->GetSector();
+  if (!disk_->FindID(id, flags & 0xc0)) {
+    FloppyDisk::Sector* sec = disk_->GetSector();
     if (sec && sec->id.c != id.c) {
       if (sec->id.c == 0xff)
         return FDC::ST0_AT | FDC::ST1_ND | FDC::ST2_BC;
       else
         return FDC::ST0_AT | FDC::ST1_ND | FDC::ST2_NC;
     }
-    disk->IndexHole();
+    disk_->IndexHole();
     return FDC::ST0_AT | FDC::ST1_ND;
   }
   return 0;
@@ -282,17 +282,17 @@ uint32_t FDU::FindID(uint32_t flags, IDR id) {
 //  ReadDiag 用のデータ作成
 //
 uint32_t FDU::MakeDiagData(uint32_t flags, uint8_t* data, uint32_t* size) {
-  if (!disk)
+  if (!disk_)
     return FDC::ST0_AT | FDC::ST1_MA;
   SetHead(flags);
 
-  FloppyDisk::Sector* sec = disk->GetFirstSector(track);
+  FloppyDisk::Sector* sec = disk_->GetFirstSector(track_);
   if (!sec)
     return FDC::ST0_AT | FDC::ST1_ND;
-  if (sec->flags & FloppyDisk::mam)
+  if (sec->flags & FloppyDisk::MAM)
     return FDC::ST0_AT | FDC::ST1_MA | FDC::ST2_MD;
 
-  int capacity = disk->GetTrackCapacity();
+  int capacity = disk_->GetTrackCapacity();
   if ((flags & 0x40) == 0)
     capacity >>= 1;
 
@@ -337,7 +337,7 @@ uint32_t FDU::MakeDiagData(uint32_t flags, uint8_t* data, uint32_t* size) {
         dest[56] = 0xa1;
         dest[57] = 0xa1;  // IDAM
         dest[58] = 0xa1;
-        dest[59] = sec->flags & FloppyDisk::deleted ? 0xfb : 0xf8;
+        dest[59] = sec->flags & FloppyDisk::DELETED ? 0xfb : 0xf8;
         dest += 60;
       } else {               // FM
         memset(dest, 0, 6);  // SYNC
@@ -348,7 +348,7 @@ uint32_t FDU::MakeDiagData(uint32_t flags, uint8_t* data, uint32_t* size) {
         dest[10] = sec->id.n;
         memset(dest + 11, 0xff, 11 + 2);  // CRC+GAP2
         memset(dest + 24, 0, 6);          // SYNC
-        dest[30] = sec->flags & FloppyDisk::deleted ? 0xfb : 0xf8;
+        dest[30] = sec->flags & FloppyDisk::DELETED ? 0xfb : 0xf8;
         dest += 31;
       }
 
@@ -357,7 +357,7 @@ uint32_t FDU::MakeDiagData(uint32_t flags, uint8_t* data, uint32_t* size) {
       diaginfo->data = dest;
       diaginfo++;
 
-      memcpy(dest, sec->image, sec->size);
+      memcpy(dest, sec->image.get(), sec->size);
       dest += sec->size;
       if (flags & 0x40)
         memset(dest, 0x4e, 2 + 0x20), dest += 0x22;

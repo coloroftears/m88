@@ -6,20 +6,22 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <memory>
+
+#include "common/types.h"
 
 // ---------------------------------------------------------------------------
 //  フロッピーディスク
 //
-class FloppyDisk {
+class FloppyDisk final {
  public:
   enum SectorFlags {
-    deleted = 1,
-    datacrc = 2,
-    idcrc = 4,
-    mam = 8,
-    density = 0x40,      // MFM = 0x40, FM = 0x00
-    highdensity = 0x80,  // 2HD?
+    DELETED = 1,
+    DATA_CRC = 2,
+    ID_CRC = 4,
+    MAM = 8,
+    DENSITY = 0x40,       // MFM = 0x40, FM = 0x00
+    HIGH_DENSITY = 0x80,  // 2HD?
   };
   enum DiskType { MD2D = 0, MD2DD, MD2HD };
   struct IDR {
@@ -33,7 +35,7 @@ class FloppyDisk {
   struct Sector {
     IDR id;
     uint32_t flags;
-    uint8_t* image;
+    std::unique_ptr<uint8_t[]> image;
     uint32_t size;
     Sector* next;
   };
@@ -44,7 +46,6 @@ class FloppyDisk {
     ~Track() {
       for (Sector* s = sector; s;) {
         Sector* n = s->next;
-        delete[] s->image;
         delete s;
         s = n;
       }
@@ -57,10 +58,10 @@ class FloppyDisk {
   FloppyDisk();
   ~FloppyDisk();
 
-  bool Init(DiskType type, bool readonly);
+  bool Init(DiskType type, bool readonly_);
 
-  bool IsReadOnly() { return readonly; }
-  DiskType GetType() { return type; }
+  bool IsReadOnly() { return readonly_; }
+  DiskType GetType() { return disk_type_; }
 
   void Seek(uint32_t tr);
   Sector* GetSector();
@@ -68,20 +69,20 @@ class FloppyDisk {
   uint32_t GetNumSectors();
   uint32_t GetTrackCapacity();
   uint32_t GetTrackSize();
-  uint32_t GetNumTracks() { return ntracks; }
+  uint32_t GetNumTracks() { return num_tracks_; }
   bool Resize(Sector* sector, uint32_t newsize);
   bool FormatTrack(int nsec, int secsize);
   Sector* AddSector(int secsize);
   Sector* GetFirstSector(uint32_t track);
-  void IndexHole() { cursector = 0; }
+  void IndexHole() { current_sector_ = 0; }
 
  private:
-  Track tracks[168];
-  int ntracks;
-  DiskType type;
-  bool readonly;
+  Track tracks_[168];
+  int num_tracks_;
+  DiskType disk_type_;
+  bool readonly_;
 
-  Track* curtrack;
-  Sector* cursector;
-  uint32_t curtracknum;
+  Track* current_track_;
+  Sector* current_sector_;
+  uint32_t current_track_number_;
 };

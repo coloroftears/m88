@@ -21,7 +21,7 @@ class DiskManager;
 //
 //  WriteSector(ID id, uint8_t* data);
 //
-class FDU {
+class FDU final {
  public:
   using IDR = FloppyDisk::IDR;
   struct WIDDESC {
@@ -32,7 +32,7 @@ class FDU {
  public:
   enum Flags {
     MFM = 0x40,
-    head1 = 0x01,
+    HEAD1 = 0x01,
   };
 
   FDU();
@@ -43,7 +43,7 @@ class FDU {
   bool Mount(FloppyDisk* disk);
   bool Unmount();
 
-  bool IsMounted() { return disk != 0; }
+  bool IsMounted() const { return disk_ != 0; }
   uint32_t ReadSector(uint32_t flags, IDR id, uint8_t* data);
   uint32_t WriteSector(uint32_t flags,
                        IDR id,
@@ -65,12 +65,12 @@ class FDU {
 
   void SetHead(uint32_t hd);
 
-  FloppyDisk* disk;
-  FloppyDisk::Sector* sector;
-  DiskManager* diskmgr;
-  int cylinder;
-  int head;
-  int drive;
-  int track;
+  FloppyDisk* disk_;
+  FloppyDisk::Sector* sector_;
+  DiskManager* diskmgr_;
+  int cylinder_;
+  int head_;
+  int drive_;
+  int track_;
 };
 }  // namespace pc88core
