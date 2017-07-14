@@ -43,10 +43,10 @@ class InterruptController final : public Device {
   };
   void IRQ(bool);
 
-  IOBus* bus;
-  Status stat;
-  uint32_t irqport;
-  uint32_t iportbase;
+  IOBus* bus_;
+  Status status_;
+  uint32_t irq_port_;
+  uint32_t i_portbase_;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

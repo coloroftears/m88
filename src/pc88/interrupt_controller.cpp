@@ -26,9 +26,9 @@ InterruptController::~InterruptController() {}
 //  Init
 //
 bool InterruptController::Init(IOBus* b, uint32_t ip, uint32_t ipbase) {
-  bus = b;
-  irqport = ip;
-  iportbase = ipbase;
+  bus_ = b;
+  irq_port_ = ip;
+  i_portbase_ = ipbase;
   Reset();
   return true;
 }
@@ -37,7 +37,7 @@ bool InterruptController::Init(IOBus* b, uint32_t ip, uint32_t ipbase) {
 //  割り込み状況の更新
 //
 inline void InterruptController::IRQ(bool flag) {
-  bus->Out(irqport, flag);
+  bus_->Out(irq_port_, flag);
   Log("irq(%d)\n", flag);
 }
 
@@ -45,7 +45,7 @@ inline void InterruptController::IRQ(bool flag) {
 //  Reset
 //
 void IOCALL InterruptController::Reset(uint32_t, uint32_t) {
-  stat.irq = stat.mask = stat.mask2 = 0;
+  status_.irq = status_.mask = status_.mask2 = 0;
   IRQ(false);
 }
 
@@ -53,22 +53,22 @@ void IOCALL InterruptController::Reset(uint32_t, uint32_t) {
 //  割り込み要請
 //
 void IOCALL InterruptController::Request(uint32_t port, uint32_t en) {
-  uint32_t bit = 1 << (port - iportbase);
+  uint32_t bit = 1 << (port - i_portbase_);
   if (en) {
-    bit &= stat.mask2;
+    bit &= status_.mask2;
     // request
-    Log("INT%d REQ - %s :", port - iportbase,
-        bit ? (bit & stat.mask ? "accept" : "denied") : "discarded");
-    if (!(stat.irq & bit)) {
-      stat.irq |= bit;
-      IRQ((stat.irq & stat.mask & stat.mask2) != 0);
+    Log("INT%d REQ - %s :", port - i_portbase_,
+        bit ? (bit & status_.mask ? "accept" : "denied") : "discarded");
+    if (!(status_.irq & bit)) {
+      status_.irq |= bit;
+      IRQ((status_.irq & status_.mask & status_.mask2) != 0);
     } else
       Log("\n");
   } else {
     // cancel
-    if (stat.irq & bit) {
-      stat.irq &= ~bit;
-      IRQ((stat.irq & stat.mask & stat.mask2) != 0);
+    if (status_.irq & bit) {
+      status_.irq &= ~bit;
+      IRQ((status_.irq & status_.mask & status_.mask2) != 0);
     }
   }
 }
@@ -77,11 +77,11 @@ void IOCALL InterruptController::Request(uint32_t port, uint32_t en) {
 //  CPU が割り込みを受け取った
 //
 uint32_t IOCALL InterruptController::IntAck(uint32_t) {
-  uint32_t ai = stat.irq & stat.mask & stat.mask2;
+  uint32_t ai = status_.irq & status_.mask & status_.mask2;
   for (int i = 0; i < 8; i++, ai >>= 1) {
     if (ai & 1) {
-      stat.irq &= ~(1 << i);
-      stat.mask = 0;
+      status_.irq &= ~(1 << i);
+      status_.mask = 0;
       Log("INT%d ACK  : ", i);
       IRQ(false);
 
@@ -95,21 +95,21 @@ uint32_t IOCALL InterruptController::IntAck(uint32_t) {
 //  マスク設定(porte6)
 //
 void IOCALL InterruptController::SetMask(uint32_t, uint32_t data) {
-  static const int8_t table[8] = {~7, ~3, ~5, ~1, ~6, ~2, ~4, ~0};
-  stat.mask2 = table[data & 7];
-  stat.irq &= stat.mask2;
-  Log("p[e6] = %.2x (%.2x) : ", data, stat.mask2);
-  IRQ((stat.irq & stat.mask & stat.mask2) != 0);
+  const static int8_t table[8] = {~7, ~3, ~5, ~1, ~6, ~2, ~4, ~0};
+  status_.mask2 = table[data & 7];
+  status_.irq &= status_.mask2;
+  Log("p[e6] = %.2x (%.2x) : ", data, status_.mask2);
+  IRQ((status_.irq & status_.mask & status_.mask2) != 0);
 }
 
 // ---------------------------------------------------------------------------
 //  レジスタ設定(porte4)
 //
 void IOCALL InterruptController::SetRegister(uint32_t, uint32_t data) {
-  stat.mask = ~(-1 << std::min(8U, data));
+  status_.mask = ~(-1 << std::min(8U, data));
   //  mode = (data & 7) != 0;
   Log("p[e4] = %.2x  : ", data);
-  IRQ((stat.irq & stat.mask & stat.mask2) != 0);
+  IRQ((status_.irq & status_.mask & status_.mask2) != 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -120,12 +120,12 @@ uint32_t IFCALL InterruptController::GetStatusSize() {
 }
 
 bool IFCALL InterruptController::SaveStatus(uint8_t* s) {
-  *(Status*)s = stat;
+  *(Status*)s = status_;
   return true;
 }
 
 bool IFCALL InterruptController::LoadStatus(const uint8_t* s) {
-  stat = *(const Status*)s;
+  status_ = *(const Status*)s;
   return true;
 }
 
