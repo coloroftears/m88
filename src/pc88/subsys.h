@@ -6,8 +6,9 @@
 
 #pragma once
 
+#include <memory>
+
 #include "common/device.h"
-#include "pc88/fdc.h"
 #include "pc88/pio.h"
 
 class MemoryManager;
@@ -42,7 +43,7 @@ class SubSystem final : public Device {
   bool IFCALL LoadStatus(const uint8_t* status) final;
 
   uint8_t* GetRAM() { return ram; }
-  uint8_t* GetROM() { return rom; }
+  uint8_t* GetROM() { return rom.get(); }
 
   bool IsBusy();
 
@@ -83,7 +84,7 @@ class SubSystem final : public Device {
 
   MemoryManager* mm;
   int mid;
-  uint8_t* rom;
+  std::unique_ptr<uint8_t[]> rom;
   uint8_t* ram;
   uint8_t* dummy;
   PIO piom, pios;

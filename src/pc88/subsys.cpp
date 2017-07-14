@@ -21,14 +21,13 @@ namespace pc88core {
 // ---------------------------------------------------------------------------
 //  構築・破棄
 //
-SubSystem::SubSystem(const ID& id) : Device(id), mm(0), mid(-1), rom(0) {
+SubSystem::SubSystem(const ID& id) : Device(id), mm(0), mid(-1) {
   cw_m = cw_s = 0x80;
 }
 
 SubSystem::~SubSystem() {
   if (mid != -1)
     mm->Disconnect(mid);
-  delete[] rom;
 }
 
 // ---------------------------------------------------------------------------
@@ -54,8 +53,8 @@ bool SubSystem::InitMemory() {
   const uint32_t pagesize = 1 << MemoryManagerBase::pagebits;
 
   if (!rom)
-    rom = new uint8_t[0x2000 + 0x4000 + 2 * pagesize];
-  ram = rom + 0x2000;
+    rom.reset(new uint8_t[0x2000 + 0x4000 + 2 * pagesize]);
+  ram = rom.get() + 0x2000;
   dummy = ram + 0x4000;
   if (!rom)
     return false;
@@ -71,7 +70,7 @@ bool SubSystem::InitMemory() {
     mm->AllocW(mid, i, pagesize, dummy + pagesize);
   }
 
-  mm->AllocR(mid, 0, 0x2000, rom);
+  mm->AllocR(mid, 0, 0x2000, rom.get());
   mm->AllocR(mid, 0x4000, 0x4000, ram);
   mm->AllocW(mid, 0x4000, 0x4000, ram);
   return true;
@@ -81,17 +80,17 @@ bool SubSystem::InitMemory() {
 //  ROM 読み込み
 //
 bool SubSystem::LoadROM() {
-  memset(rom, 0xff, 0x2000);
+  memset(rom.get(), 0xff, 0x2000);
 
   FileIO fio;
   if (fio.Open("PC88.ROM", FileIO::readonly)) {
     fio.Seek(0x14000, FileIO::begin);
-    fio.Read(rom, 0x2000);
+    fio.Read(rom.get(), 0x2000);
     return true;
   }
   if (fio.Open("DISK.ROM", FileIO::readonly)) {
     fio.Seek(0, FileIO::begin);
-    fio.Read(rom, 0x2000);
+    fio.Read(rom.get(), 0x2000);
     return true;
   }
   rom[0] = 0xf3;
