@@ -21,7 +21,16 @@ namespace pc88core {
 // ---------------------------------------------------------------------------
 //  構築
 //
-Mouse::Mouse(const ID& id) : Device(id), ui(0) {}
+Mouse::Mouse(const ID& id)
+    : Device(id),
+      pc(nullptr),
+      port40(0),
+      joymode(false),
+      phase(0),
+      triggertime(0),
+      sensibility(0),
+      data_(0),
+      ui(nullptr) {}
 
 Mouse::~Mouse() {
   RELEASE(ui);
@@ -48,21 +57,21 @@ bool Mouse::Connect(IUnk* unk) {
 uint32_t IOCALL Mouse::GetMove(uint32_t) {
   Log("%c", 'w' + phase);
   if (joymode) {
-    if (data == -1) {
-      data = 0xff;
+    if (data_ == -1) {
+      data_ = 0xff;
       if (ui) {
         ui->GetMovement(&move);
         if (move.x >= sensibility)
-          data &= ~4;
+          data_ &= ~4;
         if (move.x <= -sensibility)
-          data &= ~8;
+          data_ &= ~8;
         if (move.y >= sensibility)
-          data &= ~1;
+          data_ &= ~1;
         if (move.y <= -sensibility)
-          data &= ~2;
+          data_ &= ~2;
       }
     }
-    return data;
+    return data_;
   } else {
     switch (phase & 3) {
       case 1:  // x
@@ -117,7 +126,7 @@ void IOCALL Mouse::Strobe(uint32_t, uint32_t data) {
 //
 //
 void IOCALL Mouse::VSync(uint32_t, uint32_t) {
-  data = -1;
+  data_ = -1;
 }
 
 // ---------------------------------------------------------------------------

@@ -48,7 +48,7 @@ class Mouse final : public Device {
   int phase;
   SchedTime triggertime;
   int sensibility;
-  int data;
+  int data_;
 
   IMouseUI* ui;
 
