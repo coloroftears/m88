@@ -13,7 +13,7 @@
 
 namespace pc88core {
 
-class PIO {
+class PIO final {
  public:
   PIO() { Reset(); }
 
