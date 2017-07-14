@@ -75,7 +75,7 @@ class PC88 : public SchedulerDelegate,
   SchedTimeDelta GetFramePeriod() const final;
 
   // Override ICPUTime.
-  uint32_t IFCALL GetCPUTick() final { return cpu1.GetCount(); }
+  uint32_t IFCALL GetCPUTick() final { return main_cpu_.GetCount(); }
   uint32_t IFCALL GetCPUSpeed() final { return clock_; }
 
   void ApplyConfig(pc88core::Config*);
@@ -89,8 +89,8 @@ class PC88 : public SchedulerDelegate,
   pc88core::SubSystem* GetMem2() { return subsys; }
   pc88core::OPNInterface* GetOPN1() { return opn1; }
   pc88core::OPNInterface* GetOPN2() { return opn2; }
-  Z80* GetCPU1() { return &cpu1; }
-  Z80* GetCPU2() { return &cpu2; }
+  Z80* GetCPU1() { return &main_cpu_; }
+  Z80* GetCPU2() { return &sub_cpu_; }
   pc88core::PD8257* GetDMAC() { return dmac; }
   pc88core::Beep* GetBEEP() { return beep; }
 
@@ -187,8 +187,8 @@ class PC88 : public SchedulerDelegate,
   DeviceList devlist_;
 
  private:
-  Z80 cpu1;
-  Z80 cpu2;
+  Z80 main_cpu_;
+  Z80 sub_cpu_;
 
   friend class pc88core::Base;
 };

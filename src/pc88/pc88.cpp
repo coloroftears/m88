@@ -43,8 +43,8 @@ namespace pc88core {
 //  構築・破棄
 //
 PC88::PC88()
-    : cpu1(DEV_ID('C', 'P', 'U', '1')),
-      cpu2(DEV_ID('C', 'P', 'U', '2')),
+    : main_cpu_(DEV_ID('C', 'P', 'U', '1')),
+      sub_cpu_(DEV_ID('C', 'P', 'U', '2')),
       base(0),
       mem1(0),
       dmac(0),
@@ -65,7 +65,7 @@ PC88::PC88()
       joypad(0) {
   assert((1 << MemoryManager::pagebits) <= 0x400);
   sched_.reset(new Scheduler(this));
-  DIAGINIT(&cpu1);
+  DIAGINIT(&main_cpu_);
   dexc = 0;
 }
 
@@ -107,11 +107,11 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
 
   MemoryPage *read, *write;
 
-  cpu1.GetPages(&read, &write);
+  main_cpu_.GetPages(&read, &write);
   if (!main_mm_.Init(0x10000, read, write))
     return false;
 
-  cpu2.GetPages(&read, &write);
+  sub_cpu_.GetPages(&read, &write);
   if (!sub_mm_.Init(0x10000, read, write))
     return false;
 
@@ -147,11 +147,11 @@ SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   int exc = ticks * clock_;
   if (!(cpumode & stopwhenidle) || subsys->IsBusy() || fdc->IsBusy()) {
     if ((cpumode & 1) == ms11)
-      exc = Z80Util::ExecDual(&cpu1, &cpu2, exc);
+      exc = Z80Util::ExecDual(&main_cpu_, &sub_cpu_, exc);
     else
-      exc = Z80Util::ExecDual2(&cpu1, &cpu2, exc);
+      exc = Z80Util::ExecDual2(&main_cpu_, &sub_cpu_, exc);
   } else {
-    exc = Z80Util::ExecSingle(&cpu1, &cpu2, exc);
+    exc = Z80Util::ExecSingle(&main_cpu_, &sub_cpu_, exc);
   }
   exc += dexc;
   dexc = exc % clock_;
@@ -176,8 +176,8 @@ SchedTimeDelta PC88::GetTicks() {
 void PC88::VSync() {
   statusdisplay.UpdateDisplay();
   if (cfgflags & Config::kWatchRegister)
-    Toast::Show(10, 0, "%.4X(%.2X)/%.4X", cpu1.GetPC(), cpu1.GetReg().ireg,
-                cpu2.GetPC());
+    Toast::Show(10, 0, "%.4X(%.2X)/%.4X", main_cpu_.GetPC(), main_cpu_.GetReg().ireg,
+                sub_cpu_.GetPC());
 }
 
 // ---------------------------------------------------------------------------
@@ -286,9 +286,9 @@ bool PC88::ConnectDevices() {
       {kPortReset, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
       {kPortIRQ, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
       {0, 0, 0}};
-  if (!main_bus_.Connect(&cpu1, c_cpu1))
+  if (!main_bus_.Connect(&main_cpu_, c_cpu1))
     return false;
-  if (!cpu1.Init(&main_mm_, &main_bus_, kPortIntAck))
+  if (!main_cpu_.Init(&main_mm_, &main_bus_, kPortIntAck))
     return false;
 
   static const IOBus::Connector c_base[] = {
@@ -377,7 +377,7 @@ bool PC88::ConnectDevices() {
   mem1 = new Memory(DEV_ID('M', 'E', 'M', '1'));
   if (!mem1 || !main_bus_.Connect(mem1, c_mem1))
     return false;
-  if (!mem1->Init(&main_mm_, &main_bus_, crtc, cpu1.GetWaits()))
+  if (!mem1->Init(&main_mm_, &main_bus_, crtc, main_cpu_.GetWaits()))
     return false;
 
   if (!crtc->Init(&main_bus_, sched_.get(), dmac, draw))
@@ -583,9 +583,9 @@ bool PC88::ConnectDevices2() {
       {kPortReset2, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
       {kPortIRQ2, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
       {0, 0, 0}};
-  if (!sub_bus_.Connect(&cpu2, c_cpu2))
+  if (!sub_bus_.Connect(&sub_cpu_, c_cpu2))
     return false;
-  if (!cpu2.Init(&sub_mm_, &sub_bus_, kPortIntAck2))
+  if (!sub_cpu_.Init(&sub_mm_, &sub_bus_, kPortIntAck2))
     return false;
 
   static const IOBus::Connector c_mem2[] = {
