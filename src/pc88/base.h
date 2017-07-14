@@ -7,9 +7,7 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/scheduler.h"
 #include "devices/z80c.h"
-
 
 namespace pc88core {
 
@@ -31,9 +29,9 @@ class Base final : public Device {
   const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
 
   void SetSwitch(const Config* cfg);
-  uint32_t GetBasicMode() const { return bmode; }
+  uint32_t GetBasicMode() const { return bmode_; }
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
-  void SetFDBoot(bool autoboot_) { autoboot = autoboot_; }
+  void SetFDBoot(bool autoboot) { autoboot_ = autoboot; }
 
   void IOCALL RTC(uint32_t = 0);
   void IOCALL VRTC(uint32_t, uint32_t en);
@@ -44,17 +42,20 @@ class Base final : public Device {
   uint32_t IOCALL In6e(uint32_t);
 
  private:
-  PC88* pc;
+  PC88* pc_;
 
-  int dipsw;
-  int flags;
-  int clock;
-  int bmode;
+  int dipsw_;
+  int flags_;
+  int clock_;
+  int bmode_;
 
-  uint8_t port40;
-  uint8_t sw30, sw31, sw6e;
-  bool autoboot;
-  bool fv15k;
+  uint8_t port40_;
+  uint8_t sw30_;
+  uint8_t sw31_;
+  uint8_t sw6e_;
+
+  bool autoboot_;
+  bool fv15k_;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

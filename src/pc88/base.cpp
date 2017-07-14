@@ -7,14 +7,13 @@
 #include "pc88/base.h"
 
 #include <stdlib.h>
-
-#include <algorithm>
+#include <string.h>
 
 #include "common/draw.h"
-#include "common/time_keeper.h"
+#include "common/status.h"
 #include "common/toast.h"
-#include "pc88/pc88.h"
 #include "pc88/config.h"
+#include "pc88/pc88.h"
 #include "pc88/tape_manager.h"
 
 #define LOGNAME "base"
@@ -26,8 +25,8 @@ namespace pc88core {
 //  構築・破壊
 //
 Base::Base(const ID& id) : Device(id) {
-  port40 = 0;
-  autoboot = true;
+  port40_ = 0;
+  autoboot_ = true;
 }
 
 Base::~Base() {}
@@ -36,14 +35,17 @@ Base::~Base() {}
 //  初期化
 //
 bool Base::Init(PC88* pc88) {
-  pc = pc88;
+  pc_ = pc88;
   RTC();
-  sw30 = 0xcb;
-  sw31 = 0x79;
-  sw6e = 0xff;
-  int rtc_interval = TimeKeeper::GetResolution() / 600 + 1;
-  pc->GetScheduler()->AddEvent(rtc_interval, this,
-                               static_cast<TimeFunc>(&Base::RTC), 0, true);
+  sw30_ = 0xcb;
+  sw31_ = 0x79;
+  sw6e_ = 0xff;
+
+  // 1/600 RTC interrupt.
+  const SchedTimeDelta kRTCInterval =
+      Scheduler::SchedTimeDeltaFromMS(1000000 / 600);
+  pc_->GetScheduler()->AddEvent(kRTCInterval, this,
+                                static_cast<TimeFunc>(&Base::RTC), 0, true);
   return true;
 }
 
@@ -51,32 +53,32 @@ bool Base::Init(PC88* pc88) {
 //  スイッチ更新
 //
 void Base::SetSwitch(const Config* cfg) {
-  bmode = cfg->basicmode;
-  clock = cfg->clock();
-  dipsw = cfg->dipsw();
-  flags = cfg->flags;
-  fv15k = cfg->IsFV15k();
+  bmode_ = cfg->basicmode;
+  clock_ = cfg->clock();
+  dipsw_ = cfg->dipsw();
+  flags_ = cfg->flags;
+  fv15k_ = cfg->IsFV15k();
 }
 
 // ---------------------------------------------------------------------------
 //  りせっと
 //
 void IOCALL Base::Reset(uint32_t, uint32_t) {
-  port40 = 0xc0 + (fv15k ? 2 : 0) +
-           ((dipsw & DipSwitch::kBootFromFDD) || !autoboot ? 8 : 0);
-  sw6e = (sw6e & 0x7f) | ((!clock || abs(clock) >= 60) ? 0 : 0x80);
-  sw31 = ((dipsw >> 5) & 0x3f) | (bmode & 1 ? 0x40 : 0) |
-         (bmode & 0x10 ? 0 : 0x80);
+  port40_ =
+      0xc0 + (fv15k_ ? 2 : 0) + ((dipsw_ & (1 << 11)) || !autoboot_ ? 8 : 0);
+  sw6e_ = (sw6e_ & 0x7f) | ((!clock_ || abs(clock_) >= 60) ? 0 : 0x80);
+  sw31_ = ((dipsw_ >> 5) & 0x3f) | (bmode_ & 1 ? 0x40 : 0) |
+          (bmode_ & 0x10 ? 0 : 0x80);
 
-  if (bmode & 2) {
+  if (bmode_ & 2) {
     //  N80モードのときもDipSWを返すようにする(Xanadu対策)
-    sw30 = ~((bmode & 0x10) >> 3);
+    sw30_ = ~((bmode_ & 0x10) >> 3);
   } else {
-    sw30 = 0xc0 | ((dipsw << 1) & 0x3e) | (bmode & 0x22 ? 1 : 0);
+    sw30_ = 0xc0 | ((dipsw_ << 1) & 0x3e) | (bmode_ & 0x22 ? 1 : 0);
   }
 
   const char* mode;
-  switch (bmode) {
+  switch (bmode_) {
     case Config::N80:
       mode = "N";
       break;
@@ -109,7 +111,7 @@ void IOCALL Base::Reset(uint32_t, uint32_t) {
 //  Real Time Clock Interrupt (600Hz)
 //
 void IOCALL Base::RTC(uint32_t) {
-  pc->bus1.Out(PC88::kPortInt2, 1);
+  pc_->main_bus_.Out(PC88::kPortInt2, 1);
   //  Log("RTC\n");
 }
 
@@ -118,12 +120,12 @@ void IOCALL Base::RTC(uint32_t) {
 //
 void IOCALL Base::VRTC(uint32_t, uint32_t en) {
   if (en) {
-    pc->VSync();
-    pc->bus1.Out(PC88::kPortInt1, 1);
-    port40 |= 0x20;
+    pc_->VSync();
+    pc_->main_bus_.Out(PC88::kPortInt1, 1);
+    port40_ |= 0x20;
     //      Log("CRTC: Retrace\n");
   } else {
-    port40 &= ~0x20;
+    port40_ &= ~0x20;
     //      Log("CRTC: Display\n");
   }
 }
@@ -132,19 +134,19 @@ void IOCALL Base::VRTC(uint32_t, uint32_t en) {
 //  In
 //
 uint32_t IOCALL Base::In30(uint32_t) {
-  return sw30;
+  return sw30_;
 }
 
 uint32_t IOCALL Base::In31(uint32_t) {
-  return sw31;
+  return sw31_;
 }
 
 uint32_t IOCALL Base::In40(uint32_t) {
-  return IOBus::Active(port40, 0x2a);
+  return IOBus::Active(port40_, 0x2a);
 }
 
 uint32_t IOCALL Base::In6e(uint32_t) {
-  return sw6e | 0x7f;
+  return sw6e_ | 0x7f;
 }
 
 // ---------------------------------------------------------------------------
@@ -163,4 +165,5 @@ const Device::InFuncPtr Base::indef[] = {
     static_cast<Device::InFuncPtr>(&Base::In40),
     static_cast<Device::InFuncPtr>(&Base::In6e),
 };
+
 }  // namespace pc88core
