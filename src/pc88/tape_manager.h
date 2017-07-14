@@ -7,11 +7,13 @@
 #pragma once
 
 #include "common/device.h"
-#include "common/scheduler.h"
+
+class Scheduler;
+class SchedulerEvent;
 
 namespace pc88core {
 
-class TapeManager : public Device {
+class TapeManager final : public Device {
  public:
   enum {
     requestdata = 0,
@@ -28,7 +30,7 @@ class TapeManager : public Device {
   bool Close();
   bool Rewind(bool timer = true);
 
-  bool IsOpen() { return !!tags; }
+  bool IsOpen() { return !!tags_; }
 
   bool Motor(bool on);
   bool Carrier();
@@ -51,7 +53,7 @@ class TapeManager : public Device {
  private:
   enum {
     T88VER = 0x100,
-    ssrev = 1,
+    SSREV = 1,
   };
   enum Mode {
     T_END = 0,
@@ -95,28 +97,29 @@ class TapeManager : public Device {
   void Send(uint32_t);
   void SetTimer(int t);
 
-  Scheduler* scheduler;
-  SchedulerEvent* event;
-  Tag* tags;
-  Tag* pos;
-  int offset;
-  uint32_t tick;
-  Mode mode;
-  SchedTime time;  // motor on: タイマー開始時間
-  SchedTimeDelta timercount;
-  SchedTimeDelta timerremain;  // タイマー残り
-  bool motor;
+  Scheduler* scheduler_;
+  SchedulerEvent* event_ = nullptr;
+  Tag* tags_;
+  Tag* pos_;
+  int offset_;
+  uint32_t tick_;  // per 4800bps
+  Mode mode_;
+  SchedTime time_;        // motor on: タイマー開始時間
+  uint32_t timercount_;   // per 4800bps
+  uint32_t timerremain_;  // タイマー残り (per 4800bps)
+  bool motor_;
 
-  IOBus* bus;
-  int pinput;
+  IOBus* bus_;
+  int pinput_;
 
-  uint8_t* data;
-  int datasize;
-  int datatype;
+  uint8_t* data_;
+  int datasize_;
+  int datatype_;
 
  private:
   static const Descriptor descriptor;
   static const InFuncPtr indef[];
   static const OutFuncPtr outdef[];
 };
+
 }  // namespace pc88core
