@@ -10,6 +10,8 @@
 
 #include "common/device.h"
 
+#include <memory>
+
 namespace pc88core {
 
 class KanjiROM final : public Device {
@@ -33,17 +35,17 @@ class KanjiROM final : public Device {
   const Descriptor* IFCALL GetDesc() const final { return &descriptor; }
   uint32_t IFCALL GetStatusSize() final { return sizeof(uint32_t); }
   bool IFCALL SaveStatus(uint8_t* status) final {
-    *(uint32_t*)status = adr;
+    *(uint32_t*)status = address_;
     return true;
   }
   bool IFCALL LoadStatus(const uint8_t* status) final {
-    adr = *(const uint32_t*)status;
+    address_ = *(const uint32_t*)status;
     return true;
   }
 
  private:
-  uint32_t adr;
-  uint8_t* image;
+  uint32_t address_;
+  std::unique_ptr<uint8_t[]> image_;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

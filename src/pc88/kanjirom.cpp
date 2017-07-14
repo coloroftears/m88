@@ -18,29 +18,22 @@ namespace pc88core {
 //  構築/消滅
 // ---------------------------------------------------------------------------
 
-KanjiROM::KanjiROM(const ID& id) : Device(id) {
-  image = 0;
-  adr = 0;
-}
+KanjiROM::KanjiROM(const ID& id) : Device(id), address_(0) {}
 
-KanjiROM::~KanjiROM() {
-  delete[] image;
-}
+KanjiROM::~KanjiROM() {}
 
 // ---------------------------------------------------------------------------
 //  初期化
 //
 bool KanjiROM::Init(const char* filename) {
-  if (!image)
-    image = new uint8_t[0x20000];
-  if (!image)
-    return false;
-  memset(image, 0xff, 0x20000);
+  if (!image_)
+    image_.reset(new uint8_t[0x20000]);
+  memset(image_.get(), 0xff, 0x20000);
 
   FileIO file(filename, FileIO::readonly);
   if (file.GetFlags() & FileIO::open) {
     file.Seek(0, FileIO::begin);
-    file.Read(image, 0x20000);
+    file.Read(image_.get(), 0x20000);
   }
   return true;
 }
@@ -49,19 +42,19 @@ bool KanjiROM::Init(const char* filename) {
 //  I/O
 //
 void IOCALL KanjiROM::SetL(uint32_t, uint32_t d) {
-  adr = (adr & ~0xff) | d;
+  address_ = (address_ & ~0xff) | d;
 }
 
 void IOCALL KanjiROM::SetH(uint32_t, uint32_t d) {
-  adr = (adr & 0xff) | (d * 0x100);
+  address_ = (address_ & 0xff) | (d * 0x100);
 }
 
 uint32_t IOCALL KanjiROM::ReadL(uint32_t) {
-  return image[adr * 2 + 1];
+  return image_[address_ * 2 + 1];
 }
 
 uint32_t IOCALL KanjiROM::ReadH(uint32_t) {
-  return image[adr * 2];
+  return image_[address_ * 2];
 }
 
 // ---------------------------------------------------------------------------
