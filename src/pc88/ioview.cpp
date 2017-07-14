@@ -69,6 +69,6 @@ void IOCALL IOViewer::Out(uint32_t a, uint32_t d) {
 const Device::Descriptor IOViewer::descriptor = {0, outdef};
 
 const Device::OutFuncPtr IOViewer::outdef[] = {
-    static_cast<Device::OutFuncPtr>(&IOViewer::Out)};
-
+    static_cast<Device::OutFuncPtr>(&IOViewer::Out)
+};
 }  // namespace pc88core
