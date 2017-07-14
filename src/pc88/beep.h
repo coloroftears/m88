@@ -15,7 +15,6 @@ class PC88;
 namespace pc88core {
 class Sound;
 class Config;
-class OPNInterface;
 
 // ---------------------------------------------------------------------------
 //
@@ -31,8 +30,8 @@ class Beep final : public Device, public ISoundSource {
   bool Init();
   void Cleanup();
   void EnableSING(bool s) {
-    p40mask = s ? 0xa0 : 0x20;
-    port40 &= p40mask;
+    p40mask_ = s ? 0xa0 : 0x20;
+    port40_ &= p40mask_;
   }
 
   // Overrides ISoundSource.
@@ -58,14 +57,14 @@ class Beep final : public Device, public ISoundSource {
     uint32_t prevtime;
   };
 
-  ISoundControl* soundcontrol;
-  int bslice;
-  int pslice;
-  int bcount;
-  int bperiod;
+  ISoundControl* soundcontrol_;
+  int bslice_;
+  int pslice_;
+  int bcount_;
+  int bperiod_;
 
-  uint32_t port40;
-  uint32_t p40mask;
+  uint32_t port40_;
+  uint32_t p40mask_;
 
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];
