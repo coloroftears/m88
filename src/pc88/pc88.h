@@ -180,8 +180,10 @@ class PC88 : public SchedulerDelegate,
   TapeManager* tapemgr_;
   pc88core::JoyPad* joypad;
 
-  MemoryManager mm1, mm2;
-  IOBus bus1, bus2;
+  MemoryManager main_mm_;
+  MemoryManager sub_mm_;
+  IOBus main_bus_;
+  IOBus sub_bus_;
   DeviceList devlist_;
 
  private:

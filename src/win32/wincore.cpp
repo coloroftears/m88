@@ -147,7 +147,7 @@ bool WinCore::ConnectDevices(WinKeyIF* keyb) {
       {0x0e, IOBus::portin, WinKeyIF::in},
       {0x0f, IOBus::portin, WinKeyIF::in},
       {0, 0, 0}};
-  if (!bus1.Connect(keyb, c_keyb))
+  if (!main_bus_.Connect(keyb, c_keyb))
     return false;
 
   if (FAILED(GetOPN1()->Connect(&sound)))
@@ -301,21 +301,21 @@ bool WinCore::LoadSnapshot(const char* filename, const char* diskname) {
 //
 void* WinCore::QueryIF(REFIID id) {
   if (id == M88IID_IOBus1)
-    return static_cast<IIOBus*>(&bus1);
+    return static_cast<IIOBus*>(&main_bus_);
   if (id == M88IID_IOBus2)
-    return static_cast<IIOBus*>(&bus2);
+    return static_cast<IIOBus*>(&sub_bus_);
   if (id == M88IID_IOAccess1)
-    return static_cast<IIOAccess*>(&bus1);
+    return static_cast<IIOAccess*>(&main_bus_);
   if (id == M88IID_IOAccess2)
-    return static_cast<IIOAccess*>(&bus2);
+    return static_cast<IIOAccess*>(&sub_bus_);
   if (id == M88IID_MemoryManager1)
-    return static_cast<IMemoryManager*>(&mm1);
+    return static_cast<IMemoryManager*>(&main_mm_);
   if (id == M88IID_MemoryManager2)
-    return static_cast<IMemoryManager*>(&mm2);
+    return static_cast<IMemoryManager*>(&sub_mm_);
   if (id == M88IID_MemoryAccess1)
-    return static_cast<IMemoryAccess*>(&mm1);
+    return static_cast<IMemoryAccess*>(&main_mm_);
   if (id == M88IID_MemoryAccess2)
-    return static_cast<IMemoryAccess*>(&mm2);
+    return static_cast<IMemoryAccess*>(&sub_mm_);
   if (id == M88IID_SoundControl)
     return static_cast<ISoundControl*>(&sound);
   if (id == M88IID_Scheduler)
@@ -374,12 +374,12 @@ bool WinCore::EnablePad(bool enable)
             { PC88::vrtc,     IOBus::portout, WinJoyPad::vsync },
             { 0, 0, 0 }
         };
-        if (!bus1.Connect(&pad, c_pad)) return false;
+        if (!main_bus_.Connect(&pad, c_pad)) return false;
         pad.Init();
     }
     else
     {
-        bus1.Disconnect(&pad);
+        main_bus_.Disconnect(&pad);
     }
     return true;
 }
@@ -405,12 +405,12 @@ bool WinCore::EnableMouse(bool enable)
             { PC88::vrtc,     IOBus::portout, WinMouse::vsync },
             { 0, 0, 0 }
         };
-        if (!bus1.Connect(&mouse, c_mouse)) return false;
+        if (!main_bus_.Connect(&mouse, c_mouse)) return false;
         ActivateMouse(true);
     }
     else
     {
-        bus1.Disconnect(&mouse);
+        main_bus_.Disconnect(&mouse);
         ActivateMouse(false);
     }
     return true;
