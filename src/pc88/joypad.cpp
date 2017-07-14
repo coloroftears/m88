@@ -13,7 +13,7 @@ namespace pc88core {
 // ---------------------------------------------------------------------------
 //  構築・破棄
 //
-JoyPad::JoyPad() : Device(0), ui(0) {
+JoyPad::JoyPad() : Device(0), ui_(nullptr) {
   SetButtonMode(NORMAL);
 }
 
@@ -22,53 +22,56 @@ JoyPad::~JoyPad() {}
 // ---------------------------------------------------------------------------
 //
 //
-bool JoyPad::Connect(IPadInput* u) {
-  ui = u;
+bool JoyPad::Connect(IPadInput* ui) {
+  ui_ = ui;
 
-  return !!ui;
+  return !!ui_;
 }
 
 // ---------------------------------------------------------------------------
 //  入力
 //
 uint32_t IOCALL JoyPad::GetDirection(uint32_t) {
-  if (!paravalid)
+  if (!paravalid_)
     Update();
-  return data[0];
+  return data_[0];
 }
 
 uint32_t IOCALL JoyPad::GetButton(uint32_t) {
-  if (!paravalid)
+  if (!paravalid_)
     Update();
-  return data[1];
+  return data_[1];
 }
 
 void JoyPad::Update() {
   PadState ps;
-  if (ui) {
-    ui->GetState(&ps);
-    data[0] = ~ps.direction | directionmask;
-    data[1] =
-        (ps.button & button1 ? 0 : 1) | (ps.button & button2 ? 0 : 2) | 0xfc;
+  if (ui_) {
+    ui_->GetState(&ps);
+    data_[0] = ~ps.direction | directionmask_;
+    data_[1] =
+        (ps.button & button1_ ? 0 : 1) | (ps.button & button2_ ? 0 : 2) | 0xfc;
   } else {
-    data[0] = data[1] = 0xff;
+    data_[0] = 0xff;
+    data_[1] = 0xff;
   }
-  paravalid = true;
+  paravalid_ = true;
 }
 
 void JoyPad::SetButtonMode(ButtonMode mode) {
-  button1 = 1 | 4;
-  button2 = 2 | 8;
-  directionmask = 0xf0;
+  button1_ = 1 | 4;
+  button2_ = 2 | 8;
+  directionmask_ = 0xf0;
 
   switch (mode) {
     case SWAPPED:
-      std::swap(button1, button2);
+      std::swap(button1_, button2_);
       break;
     case DISABLED:
-      button1 = 0;
-      button2 = 0;
-      directionmask = 0xff;
+      button1_ = 0;
+      button2_ = 0;
+      directionmask_ = 0xff;
+      break;
+    default:
       break;
   }
 }
@@ -78,7 +81,7 @@ void JoyPad::SetButtonMode(ButtonMode mode) {
 //
 void IOCALL JoyPad::VSync(uint32_t, uint32_t d) {
   if (d)
-    paravalid = false;
+    paravalid_ = false;
 }
 
 // ---------------------------------------------------------------------------
