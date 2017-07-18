@@ -58,13 +58,15 @@ class Calendar final : public Device {
   void SetTime();
   void GetTime();
 
-  time_t diff;
+  time_t diff_;
 
-  bool dataoutmode;
-  bool hold;
-  uint8_t datain;
-  uint8_t strobe;
-  uint8_t cmd, scmd, pcmd;
+  bool dataoutmode_;
+  bool hold_;
+  uint8_t datain_;
+  uint8_t strobe_;
+  uint8_t cmd_;
+  uint8_t scmd_;
+  uint8_t pcmd_;
   uint8_t reg[6];
 
   static const Descriptor descriptor;
