@@ -8,15 +8,19 @@
 
 #pragma once
 
+#include <memory>
+
 #include "common/device.h"
-#include "common/scheduler.h"
 #include "pc88/fdu.h"
 #include "pc88/floppy.h"
 
-class DiskManager;
+class Scheduler;
+class SchedulerEvent;
 
 namespace pc88core {
+
 class Config;
+class DiskManager;
 
 // ---------------------------------------------------------------------------
 //  FDC (765)
@@ -92,7 +96,7 @@ class FDC final : public Device {
             int statport = -1);
   void ApplyConfig(const Config* cfg);
 
-  bool IsBusy() { return phase != idlephase; }
+  bool IsBusy() { return phase_ != kIdlePhase; }
 
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
   void IOCALL DriveControl(uint32_t, uint32_t data);  // 2HD/2DD 切り替えとか
@@ -110,15 +114,15 @@ class FDC final : public Device {
 
  private:
   enum Phase {
-    idlephase,
-    commandphase,
-    executephase,
-    execreadphase,
-    execwritephase,
-    resultphase,
-    tcphase,
-    timerphase,
-    execscanphase,
+    kIdlePhase,
+    kCommandPhase,
+    kExecutePhase,
+    kExecReadPhase,
+    kExecWritePhase,
+    kResultPhase,
+    kTCPhase,
+    kTimerPhase,
+    kExecScanPhase,
   };
 
   struct Drive {
@@ -192,47 +196,53 @@ class FDC final : public Device {
 
   uint32_t GetDeviceStatus(uint32_t dr);
 
-  DiskManager* diskmgr;
-  IOBus* bus;
+  DiskManager* diskmgr_;
+  IOBus* bus_;
   int pintr;
-  Scheduler* scheduler = nullptr;
+  Scheduler* scheduler_ = nullptr;
 
-  SchedulerEvent* timerhandle = nullptr;
-  SchedTimeDelta seektime = 0;
+  SchedulerEvent* timer_handle_ = nullptr;
+  SchedTimeDelta seek_time_ = 0;
 
-  uint32_t status;  // ステータスレジスタ
-  uint8_t* buffer;
-  uint8_t* bufptr;
-  int count;         // Exec*Phase での転送残りバイト
-  uint32_t command;  // 現在処理中のコマンド
-  uint32_t data;     // データレジスタ
-  Phase phase, prevphase;
-  Phase t_phase;
-  bool int_requested;  // SENCEINTSTATUS の呼び出しを要求した
-  bool accepttc;
-  bool showstatus;
+  // ステータスレジスタ
+  uint32_t status_;
+  std::unique_ptr<uint8_t[]> buffer_;
+  uint8_t* bufptr_;
+  // Exec*Phase での転送残りバイト
+  int count_;
+  // 現在処理中のコマンド
+  uint32_t command_;
+  // データレジスタ
+  uint32_t data_;
+  Phase phase_;
+  Phase prev_phase_;
+  Phase t_phase_;
+  // SENCEINTSTATUS の呼び出しを要求した
+  bool int_requested_;
+  bool accept_tc_;
+  bool show_status_;
 
-  bool diskwait;
+  bool disk_wait_;
 
-  IDR idr;
-  uint32_t hdu;  // HD US1 US0
-  uint32_t hdue;
-  uint32_t dtl;
-  uint32_t eot;
-  uint32_t seekstate;
-  uint32_t result;
+  IDR idr_;
+  uint32_t hdu_;  // HD US1 US0
+  uint32_t hdue_;
+  uint32_t dtl_;
+  uint32_t eot_;
+  uint32_t seek_state_;
+  uint32_t result_;
 
-  uint8_t* readdiagptr = nullptr;
-  uint8_t* readdiaglim = nullptr;
-  uint32_t xbyte;
-  uint32_t readdiagcount;
+  uint8_t* readdiag_ptr_ = nullptr;
+  uint8_t* readdiag_lim_ = nullptr;
+  uint32_t xbyte_;
+  uint32_t readdiag_count_;
 
-  uint32_t litdrive;
-  uint32_t fdstat;
-  uint32_t pfdstat;
+  uint32_t litdrive_;
+  uint32_t fdstat_;
+  uint32_t pfdstat_;
 
-  WIDDESC wid;
-  Drive drive[4];
+  WIDDESC wid_;
+  Drive drive_[4];
 
   static const CommandFunc CommandTable[32];
 
