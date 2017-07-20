@@ -139,64 +139,70 @@ class CRTC final : public Device {
   void PutLineNormalW(packed* dest, uint8_t attr);
   void PutLineReversedW(packed* dest, uint8_t attr);
 
-  IOBus* bus;
-  PD8257* dmac;
-  Scheduler* scheduler;
-  SchedulerEvent* sev;
-  Draw* draw;
+  IOBus* bus_ = nullptr;
+  PD8257* dmac_ = nullptr;
+  Scheduler* scheduler_ = nullptr;
+  SchedulerEvent* sev_ = nullptr;
+  Draw* draw_ = nullptr;
 
-  int cmdm, cmdc;
-  uint32_t cursormode;
-  uint32_t linesize;
-  bool line200;  // 15KHz モード
-  uint8_t attr;
-  uint8_t attr_cursor;
-  uint8_t attr_blink;
-  uint32_t status;
-  uint32_t column;
-  SchedTimeDelta linetime;
-  uint32_t frametime;
-  uint32_t pcgadr;
-  uint32_t pcgdat;
+  int cmdm_;
+  int cmdc_;
 
-  int bpl;
-  packed pat_col;
-  packed pat_mask;
-  packed pat_rev;
-  int underlineptr;
+  uint32_t cursormode_ = 0;
+  uint32_t linesize_ = 0;
 
-  uint8_t* fontrom;
-  uint8_t* hirarom;
-  uint8_t* font;
-  uint8_t* pcgram;
-  uint8_t* vram[2];
-  uint8_t* attrcache;
+  bool is_15khz_ = false;
 
-  uint32_t bank;          // VRAM Cache のバンク
-  uint32_t tvramsize;     // 1画面のテキストサイズ
-  uint32_t screenwidth;   // 画面の幅
-  uint32_t screenheight;  // 画面の高さ
+  uint8_t attr_;
+  uint8_t attr_cursor_;
+  uint8_t attr_blink_;
+  uint32_t status_;
+  uint32_t column_;
+  SchedTimeDelta linetime_;
+  uint32_t frametime_;
+  uint32_t pcgadr_;
+  uint32_t pcgdat_;
 
-  uint32_t cursor_x;  // カーソル位置
-  uint32_t cursor_y;
-  uint32_t attrperline;    // 1行あたりのアトリビュート数
-  uint32_t linecharlimit;  // 1行あたりのテキスト高さ
-  uint32_t linesperchar;   // 1行のドット数
-  uint32_t width;          // テキスト画面の幅
-  uint32_t height;         // テキスト画面の高さ
-  uint32_t blinkrate;      // ブリンクの速度
-  int cursor_type;         // b0:blink, b1:underline (-1=none)
-  uint32_t vretrace;       //
-  uint32_t mode;
-  bool widefont;
-  bool pcgenable;
-  bool kanaenable;   // ひらカナ選択有効
-  uint8_t kanamode;  // b4 = ひらがなモード
+  int bpl_;
+  packed pat_col_;
+  packed pat_mask_;
+  packed pat_rev_;
+  int underlineptr_;
 
-  uint8_t pcount[2];
-  uint8_t param0[6];
-  uint8_t param1;
-  uint8_t event;
+  uint8_t* fontrom_;
+  uint8_t* hirarom_;
+  uint8_t* font_;
+  uint8_t* pcgram_;
+  uint8_t* vram_[2];
+  uint8_t* attrcache_;
+
+  uint32_t bank_;          // VRAM Cache のバンク
+  //uint32_t tvramsize;     // 1画面のテキストサイズ
+  uint32_t screen_width_;   // 画面の幅
+  uint32_t screen_height_;  // 画面の高さ
+
+  uint32_t cursor_x_;  // カーソル位置
+  uint32_t cursor_y_;
+  uint32_t attr_per_line_;    // 1行あたりのアトリビュート数
+  uint32_t linecharlimit_;  // 1行あたりのテキスト高さ
+  uint32_t lines_per_char_;   // 1行のドット数
+  uint32_t width_;          // テキスト画面の幅
+  uint32_t height_;         // テキスト画面の高さ
+  uint32_t blink_rate_;      // ブリンクの速度
+  int cursor_type_;         // b0:blink, b1:underline (-1=none)
+  uint32_t vretrace_;       //
+
+  uint32_t mode_;
+
+  bool widefont_;
+  bool pcg_enable_;
+  bool kana_enable_;   // ひらカナ選択有効
+  uint8_t kana_mode_;  // b4 = ひらがなモード
+
+  uint8_t pcount_[2];
+  uint8_t param0_[6];
+  uint8_t param1_;
+  uint8_t event_;
 
  private:
   static const Descriptor descriptor;
@@ -210,6 +216,6 @@ class CRTC final : public Device {
 //  1 フレーム分に相当する時間を求める
 //
 inline SchedTimeDelta CRTC::GetFramePeriod() {
-  return linetime * (height + vretrace);
+  return linetime_ * (height_ + vretrace_);
 }
 }  // namespace pc88core

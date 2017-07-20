@@ -67,42 +67,42 @@ namespace pc88core {
 // 構築/消滅
 //
 CRTC::CRTC(const ID& id) : Device(id) {
-  font = 0;
-  fontrom = 0;
-  hirarom = 0;
-  vram[0] = 0;
-  pcgram = 0;
-  pcgadr = 0;
-  pcgdat = 0;
-  pcgenable = 0;
-  kanaenable = false;
+  font_ = 0;
+  fontrom_ = 0;
+  hirarom_ = 0;
+  vram_[0] = 0;
+  pcgram_ = 0;
+  pcgadr_ = 0;
+  pcgdat_ = 0;
+  pcg_enable_ = 0;
+  kana_enable_ = false;
 }
 
 CRTC::~CRTC() {
-  delete[] font;
-  delete[] fontrom;
-  delete[] vram[0];
-  delete[] pcgram;
-  delete[] hirarom;
+  delete[] font_;
+  delete[] fontrom_;
+  delete[] vram_[0];
+  delete[] pcgram_;
+  delete[] hirarom_;
 }
 
 // ---------------------------------------------------------------------------
 //  初期化
 //
 bool CRTC::Init(IOBus* b, Scheduler* s, PD8257* d, Draw* _draw) {
-  bus = b, scheduler = s, dmac = d, draw = _draw;
+  bus_ = b, scheduler_ = s, dmac_ = d, draw_ = _draw;
 
-  delete[] font;
-  delete[] fontrom;
-  delete[] vram[0];
-  delete[] pcgram;
+  delete[] font_;
+  delete[] fontrom_;
+  delete[] vram_[0];
+  delete[] pcgram_;
 
-  font = new uint8_t[0x8000 + 0x10000];
-  fontrom = new uint8_t[0x800];
-  vram[0] = new uint8_t[0x1e00 + 0x1e00 + 0x1400];
-  pcgram = new uint8_t[0x400];
+  font_ = new uint8_t[0x8000 + 0x10000];
+  fontrom_ = new uint8_t[0x800];
+  vram_[0] = new uint8_t[0x1e00 + 0x1e00 + 0x1400];
+  pcgram_ = new uint8_t[0x400];
 
-  if (!font || !fontrom || !vram[0] || !pcgram) {
+  if (!font_ || !fontrom_ || !vram_[0] || !pcgram_) {
     Error::SetError(Errno::OutOfMemory);
     return false;
   }
@@ -113,16 +113,16 @@ bool CRTC::Init(IOBus* b, Scheduler* s, PD8257* d, Draw* _draw) {
   CreateTFont();
   CreateGFont();
 
-  vram[1] = vram[0] + 0x1e00;
-  attrcache = vram[1] + 0x1e00;
+  vram_[1] = vram_[0] + 0x1e00;
+  attrcache_ = vram_[1] + 0x1e00;
 
-  bank = 0;
-  mode = 0;
-  column = 0;
+  bank_ = 0;
+  mode_ = 0;
+  column_ = 0;
   SetTextMode(true);
   EnablePCG(true);
 
-  sev = 0;
+  sev_ = 0;
   return true;
 }
 
@@ -138,16 +138,16 @@ uint32_t IOCALL CRTC::In(uint32_t) {
 }
 
 uint32_t IOCALL CRTC::GetStatus(uint32_t) {
-  return status;
+  return status_;
 }
 
 // ---------------------------------------------------------------------------
 //  Reset
 //
 void IOCALL CRTC::Reset(uint32_t, uint32_t) {
-  line200 = (bus->In(0x40) & 2) != 0;
-  memcpy(pcgram, fontrom + 0x400, 0x400);
-  kanamode = 0;
+  is_15khz_ = (bus_->In(0x40) & 2) != 0;
+  memcpy(pcgram_, fontrom_ + 0x400, 0x400);
+  kana_mode_ = 0;
   CreateTFont();
   HotReset();
 }
@@ -156,25 +156,25 @@ void IOCALL CRTC::Reset(uint32_t, uint32_t) {
 //  パラメータリセット
 //
 void CRTC::HotReset() {
-  status = 0;  // 1
+  status_ = 0;  // 1
 
-  cursor_type = cursormode = -1;
-  tvramsize = 0;
-  linesize = 0;
-  screenwidth = 640;
-  screenheight = 400;
+  cursor_type_ = cursormode_ = -1;
+  // tvramsize = 0;
+  linesize_ = 0;
+  screen_width_ = 640;
+  screen_height_ = 400;
 
-  linetime =
-      line200 ? static_cast<int>(6.258 * 8) : static_cast<int>(4.028 * 16);
-  height = 25;
-  vretrace = line200 ? 7 : 3;
-  mode = clear | resize;
+  linetime_ =
+      is_15khz_ ? static_cast<int>(6.258 * 8) : static_cast<int>(4.028 * 16);
+  height_ = 25;
+  vretrace_ = is_15khz_ ? 7 : 3;
+  mode_ = clear | resize;
 
-  pcount[0] = 0;
-  pcount[1] = 0;
+  pcount_[0] = 0;
+  pcount_[1] = 0;
 
-  if (sev)
-    scheduler->DelEvent(sev);
+  if (sev_)
+    scheduler_->DelEvent(sev_);
   StartDisplay();
 }
 
@@ -183,21 +183,21 @@ void CRTC::HotReset() {
 //
 void CRTC::SetTextMode(bool color) {
   if (color) {
-    pat_rev = PACK(0x08);
-    pat_mask = ~PACK(0x0f);
+    pat_rev_ = PACK(0x08);
+    pat_mask_ = ~PACK(0x0f);
   } else {
-    pat_rev = PACK(0x10);
-    pat_mask = ~PACK(0x1f);
+    pat_rev_ = PACK(0x10);
+    pat_mask_ = ~PACK(0x1f);
   }
-  mode |= refresh;
+  mode_ |= refresh;
 }
 
 // ---------------------------------------------------------------------------
 //  文字サイズの変更
 //
 void CRTC::SetTextSize(bool wide) {
-  widefont = wide;
-  memset(attrcache, secret, 0x1400);
+  widefont_ = wide;
+  memset(attrcache_, secret, 0x1400);
 }
 
 // ---------------------------------------------------------------------------
@@ -220,75 +220,75 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
   Log(a0 ? "\ncmd:%.2x " : "%.2x ", data);
 
   if (a0)
-    cmdc = 0, cmdm = data >> 5;
+    cmdc_ = 0, cmdm_ = data >> 5;
 
-  switch (cmdm) {
+  switch (cmdm_) {
     case 0:  // RESET
-      if (cmdc < 6)
-        pcount[0] = cmdc + 1, param0[cmdc] = data;
-      switch (cmdc) {
+      if (cmdc_ < 6)
+        pcount_[0] = cmdc_ + 1, param0_[cmdc_] = data;
+      switch (cmdc_) {
         case 0:
-          status = 0;  // 1
-          attr = 7 << 5;
-          mode |= clear;
-          pcount[1] = 0;
+          status_ = 0;  // 1
+          attr_ = 7 << 5;
+          mode_ |= clear;
+          pcount_[1] = 0;
           break;
 
         //  b0-b6   width-2 (char)
         //  b7      ???
         case 1:
-          width = (data & 0x7f) + 2;
+          width_ = (data & 0x7f) + 2;
           break;
 
         //  b0-b5   height-1 (char)
         //  b6-b7   カーソル点滅速度 (0:16 - 3:64 frame)
         case 2:
-          blinkrate = 32 * (1 + (data >> 6));
-          height = (data & 0x3f) + 1;
+          blink_rate_ = 32 * (1 + (data >> 6));
+          height_ = (data & 0x3f) + 1;
           break;
 
         //  b0-b4   文字のライン数
         //  b5-b6   カーソルの種別 (b5:点滅 b6:ボックス/~アンダーライン)
         //  b7      1 行置きモード
         case 3:
-          cursormode = (data >> 5) & 3;
-          linesperchar = (data & 0x1f) + 1;
+          cursormode_ = (data >> 5) & 3;
+          lines_per_char_ = (data & 0x1f) + 1;
 
-          linetime = (line200 ? static_cast<int>(6.258 * 1024)
+          linetime_ = (is_15khz_ ? static_cast<int>(6.258 * 1024)
                               : static_cast<int>(4.028 * 1024)) *
-                     linesperchar / 1024;
+                     lines_per_char_ / 1024;
           if (data & 0x80)
-            mode |= skipline;
-          if (line200)
-            linesperchar *= 2;
+            mode_ |= skipline;
+          if (is_15khz_)
+            lines_per_char_ *= 2;
 
-          linecharlimit = std::min(linesperchar, 16U);
+          linecharlimit_ = std::min(lines_per_char_, 16U);
           break;
 
         //  b0-b4   Horizontal Retrace-2 (char)
         //  b5-b7   Vertical Retrace-1 (char)
         case 4:
           //          hretrace = (data & 0x1f) + 2;
-          vretrace = ((data >> 5) & 7) + 1;
-          //          linetime = 1667 / (height+vretrace-1);
+          vretrace_ = ((data >> 5) & 7) + 1;
+          //          linetime_ = 1667 / (height_+vretrace_-1);
           break;
 
         //  b0-b4   １行あたりのアトリビュート数 - 1
         //  b5-b7   テキスト画面モード
         case 5:
-          mode &= ~(enable | color | control | attribute | nontransparent);
-          mode |= modetbl[(data >> 5) & 7];
-          attrperline = mode & attribute ? (data & 0x1f) + 1 : 0;
-          if (attrperline + width > 120)
-            mode &= ~enable;
+          mode_ &= ~(enable | color | control | attribute | nontransparent);
+          mode_ |= modetbl[(data >> 5) & 7];
+          attr_per_line_ = mode_ & attribute ? (data & 0x1f) + 1 : 0;
+          if (attr_per_line_ + width_ > 120)
+            mode_ &= ~enable;
 
-          screenwidth = 640;
-          screenheight = std::min(400U, linesperchar * height);
+          screen_width_ = 640;
+          screen_height_ = std::min(400U, lines_per_char_ * height_);
           Log("\nscrn=(%d, %d), vrtc = %d, linetime = %d0 us, frametime0 = %d "
               "us\n",
-              screenwidth, screenheight, vretrace, linetime,
-              linetime * (height + vretrace));
-          mode |= resize;
+              screen_width_, screen_height_, vretrace_, linetime_,
+              linetime_ * (height_ + vretrace_));
+          mode_ |= resize;
           break;
       }
       break;
@@ -296,54 +296,54 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
     // START DISPLAY
     // b0   invert
     case 1:
-      if (cmdc == 0) {
-        pcount[1] = 1, param1 = data;
+      if (cmdc_ == 0) {
+        pcount_[1] = 1, param1_ = data;
 
-        linesize = width + attrperline * 2;
+        linesize_ = width_ + attr_per_line_ * 2;
         int tvramsize =
-            (mode & skipline ? (height + 1) / 2 : height) * linesize;
+            (mode_ & skipline ? (height_ + 1) / 2 : height_) * linesize_;
 
-        Log("[%.2x]", status);
-        mode = (mode & ~inverse) | (data & 1 ? inverse : 0);
-        if (mode & enable) {
-          if (!(status & 0x10)) {
-            status |= 0x10;
-            scheduler->DelEvent(sev);
-            event = -1;
-            sev = scheduler->AddEvent(
-                linetime * vretrace, this,
+        Log("[%.2x]", status_);
+        mode_ = (mode_ & ~inverse) | (data & 1 ? inverse : 0);
+        if (mode_ & enable) {
+          if (!(status_ & 0x10)) {
+            status_ |= 0x10;
+            scheduler_->DelEvent(sev_);
+            event_ = -1;
+            sev_ = scheduler_->AddEvent(
+                linetime_ * vretrace_, this,
                 static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
           }
         } else
-          status &= ~0x10;
+          status_ &= ~0x10;
 
         Log(" Start Display [%.2x;%.3x;%2d] vrtc %d  tvram size = %.4x ",
-            status, mode, width, vretrace, tvramsize);
+            status_, mode_, width_, vretrace_, tvramsize);
       }
       break;
 
     case 2:  // SET INTERRUPT MASK
       if (!(data & 1)) {
-        mode |= clear;
-        status = 0;
+        mode_ |= clear;
+        status_ = 0;
       }
       break;
 
     case 3:  // READ LIGHT PEN
-      status &= ~1;
+      status_ &= ~1;
       break;
 
     case 4:  // LOAD CURSOR POSITION
-      switch (cmdc) {
+      switch (cmdc_) {
         // b0   display cursor
         case 0:
-          cursor_type = data & 1 ? cursormode : -1;
+          cursor_type_ = data & 1 ? cursormode_ : -1;
           break;
         case 1:
-          cursor_x = data;
+          cursor_x_ = data;
           break;
         case 2:
-          cursor_y = data;
+          cursor_y_ = data;
           break;
       }
       break;
@@ -352,14 +352,14 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
       break;
 
     case 6:           // RESET COUNTERS
-      mode |= clear;  // タイミングによっては
-      status = 0;     // 消えないこともあるかも？
+      mode_ |= clear;  // タイミングによっては
+      status_ = 0;     // 消えないこともあるかも？
       break;
 
     default:
       break;
   }
-  cmdc++;
+  cmdc_++;
   return result;
 }
 
@@ -370,20 +370,20 @@ bool CRTC::LoadFontFile() {
   FileIO file;
 
   if (file.Open("HIRAFONT.ROM", FileIO::readonly)) {
-    delete[] hirarom;
-    hirarom = new uint8_t[0x200];
+    delete[] hirarom_;
+    hirarom_ = new uint8_t[0x200];
     file.Seek(0, FileIO::begin);
-    file.Read(hirarom, 0x200);
+    file.Read(hirarom_, 0x200);
   }
 
   if (file.Open("FONT.ROM", FileIO::readonly)) {
     file.Seek(0, FileIO::begin);
-    file.Read(fontrom, 0x800);
+    file.Read(fontrom_, 0x800);
     return true;
   }
   if (file.Open("KANJI1.ROM", FileIO::readonly)) {
     file.Seek(0x1000, FileIO::begin);
-    file.Read(fontrom, 0x800);
+    file.Read(fontrom_, 0x800);
     return true;
   }
   return false;
@@ -394,18 +394,18 @@ bool CRTC::LoadFontFile() {
 //  src     フォント ROM
 //
 void CRTC::CreateTFont() {
-  CreateTFont(fontrom, 0, 0xa0);
+  CreateTFont(fontrom_, 0, 0xa0);
   CreateKanaFont();
-  CreateTFont(fontrom + 8 * 0xe0, 0xe0, 0x20);
+  CreateTFont(fontrom_ + 8 * 0xe0, 0xe0, 0x20);
 }
 
 void CRTC::CreateKanaFont() {
-  CreateTFont((kanamode && hirarom) ? hirarom : fontrom + 8 * 0xa0, 0xa0, 0x40);
+  CreateTFont((kana_mode_ && hirarom_) ? hirarom_ : fontrom_ + 8 * 0xa0, 0xa0, 0x40);
 }
 
 void CRTC::CreateTFont(const uint8_t* src, int idx, int num) {
-  uint8_t* dest = font + 64 * idx;
-  uint8_t* destw = font + 0x8000 + 128 * idx;
+  uint8_t* dest = font_ + 64 * idx;
+  uint8_t* destw = font_ + 0x8000 + 128 * idx;
 
   for (uint32_t i = 0; i < num * 8; i++) {
     uint8_t d = *src++;
@@ -419,8 +419,8 @@ void CRTC::CreateTFont(const uint8_t* src, int idx, int num) {
 }
 
 void CRTC::ModifyFont(uint32_t off, uint32_t d) {
-  uint8_t* dest = font + 8 * off;
-  uint8_t* destw = font + 0x8000 + 16 * off;
+  uint8_t* dest = font_ + 8 * off;
+  uint8_t* destw = font_ + 0x8000 + 16 * off;
 
   for (uint32_t j = 0; j < 8; j++, d *= 2) {
     uint8_t b = d & 0x80 ? TEXT_SET : TEXT_RES;
@@ -428,15 +428,15 @@ void CRTC::ModifyFont(uint32_t off, uint32_t d) {
     *destw++ = b;
     *destw++ = b;
   }
-  mode |= refresh;
+  mode_ |= refresh;
 }
 
 // ---------------------------------------------------------------------------
 //  セミグラフィックス用フォントを作成する
 //
 void CRTC::CreateGFont() {
-  uint8_t* dest = font + 0x4000;
-  uint8_t* destw = font + 0x10000;
+  uint8_t* dest = font_ + 0x4000;
+  uint8_t* destw = font_ + 0x10000;
   const uint8_t order[8] = {0x01, 0x10, 0x02, 0x20, 0x04, 0x40, 0x08, 0x80};
 
   for (int i = 0; i < 256; i++) {
@@ -463,13 +463,13 @@ void CRTC::CreateGFont() {
 //  画面表示開始のタイミング処理
 //
 void IOCALL CRTC::StartDisplay(uint32_t) {
-  sev = 0;
-  column = 0;
-  mode &= ~suppressdisplay;
+  sev_ = 0;
+  column_ = 0;
+  mode_ &= ~suppressdisplay;
   //  Log("DisplayStart\n");
-  bus->Out(PC88::kVRTC, 0);
-  if (++frametime > blinkrate)
-    frametime = 0;
+  bus_->Out(PC88::kVRTC, 0);
+  if (++frametime_ > blink_rate_)
+    frametime_ = 0;
   ExpandLine();
 }
 
@@ -479,13 +479,13 @@ void IOCALL CRTC::StartDisplay(uint32_t) {
 void IOCALL CRTC::ExpandLine(uint32_t) {
   int e = ExpandLineSub();
   if (e) {
-    event = e + 1;
-    sev = scheduler->AddEvent(linetime * e, this,
+    event_ = e + 1;
+    sev_ = scheduler_->AddEvent(linetime_ * e, this,
                               static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
   } else {
-    if (++column < height) {
-      event = 1;
-      sev = scheduler->AddEvent(linetime, this,
+    if (++column_ < height_) {
+      event_ = 1;
+      sev_ = scheduler_->AddEvent(linetime_, this,
                                 static_cast<TimeFunc>(&CRTC::ExpandLine));
     } else
       ExpandLineEnd();
@@ -494,59 +494,59 @@ void IOCALL CRTC::ExpandLine(uint32_t) {
 
 int CRTC::ExpandLineSub() {
   uint8_t* dest;
-  dest = vram[bank] + linesize * column;
-  if (!(mode & skipline) || !(column & 1)) {
-    if (status & 0x10) {
-      if (linesize > dmac->RequestRead(dmabank, dest, linesize)) {
+  dest = vram_[bank_] + linesize_ * column_;
+  if (!(mode_ & skipline) || !(column_ & 1)) {
+    if (status_ & 0x10) {
+      if (linesize_ > dmac_->RequestRead(dmabank, dest, linesize_)) {
         // DMA アンダーラン
-        mode = (mode & ~(enable)) | clear;
-        status = (status & ~0x10) | 0x08;
-        memset(dest, 0, linesize);
+        mode_ = (mode_ & ~(enable)) | clear;
+        status_ = (status_ & ~0x10) | 0x08;
+        memset(dest, 0, linesize_);
         Log("DMA underrun\n");
       } else {
-        if (mode & suppressdisplay)
-          memset(dest, 0, linesize);
+        if (mode_ & suppressdisplay)
+          memset(dest, 0, linesize_);
 
-        if (mode & control) {
+        if (mode_ & control) {
           bool docontrol = false;
 #if 0  // XXX: 要検証
-                    for (int i=1; i<=attrperline; i++)
+                    for (int i=1; i<=attr_per_line_; i++)
                     {
-                        if ((dest[linesize-i*2] & 0x7f) == 0x60)
+                        if ((dest[linesize_-i*2] & 0x7f) == 0x60)
                         {
                             docontrol = true;
                             break;
                         }
                     }
 #else
-          docontrol = (dest[linesize - 2] & 0x7f) == 0x60;
+          docontrol = (dest[linesize_ - 2] & 0x7f) == 0x60;
 #endif
           if (docontrol) {
             // 特殊制御文字
-            int sc = dest[linesize - 1];
+            int sc = dest[linesize_ - 1];
             if (sc & 1) {
-              int skip = height - column - 1;
+              int skip = height_ - column_ - 1;
               if (skip) {
-                memset(dest + linesize, 0, linesize * skip);
+                memset(dest + linesize_, 0, linesize_ * skip);
                 return skip;
               }
             }
             if (sc & 2)
-              mode |= suppressdisplay;
+              mode_ |= suppressdisplay;
           }
         }
       }
     } else
-      memset(dest, 0, linesize);
+      memset(dest, 0, linesize_);
   }
   return 0;
 }
 
 inline void IOCALL CRTC::ExpandLineEnd(uint32_t) {
   //  Log("Vertical Retrace\n");
-  bus->Out(PC88::kVRTC, 1);
-  event = -1;
-  sev = scheduler->AddEvent(linetime * vretrace, this,
+  bus_->Out(PC88::kVRTC, 1);
+  event_ = -1;
+  sev_ = scheduler_->AddEvent(linetime_ * vretrace_, this,
                             static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 }
 
@@ -563,47 +563,47 @@ void CRTC::UpdateScreen(uint8_t* image,
                         int _bpl,
                         Draw::Region& region,
                         bool ref) {
-  bpl = _bpl;
+  bpl_ = _bpl;
   Log("UpdateScreen:");
-  if (mode & clear) {
+  if (mode_ & clear) {
     Log(" clear\n");
-    mode &= ~(clear | refresh);
+    mode_ &= ~(clear | refresh);
     ClearText(image);
-    region.Update(0, screenheight);
+    region.Update(0, screen_height_);
     return;
   }
-  if (mode & resize) {
+  if (mode_ & resize) {
     Log(" resize");
     // 仮想画面自体の大きさを変えてしまうのが理想的だが，
     // 色々面倒なので実際はテキストマスクを貼る
-    mode &= ~resize;
-    //      draw->Resize(screenwidth, screenheight);
+    mode_ &= ~resize;
+    //      draw_->Resize(screen_width_, screen_height_);
     ref = true;
   }
-  if ((mode & refresh) || ref) {
+  if ((mode_ & refresh) || ref) {
     Log(" refresh");
-    mode &= ~refresh;
+    mode_ &= ~refresh;
     ClearText(image);
   }
 
-  // Toast::Show(10, 0, "CRTC: %.2x %.2x %.2x", status, mode, attr);
-  if (status & 0x10) {
+  // Toast::Show(10, 0, "CRTC: %.2x %.2x %.2x", status_, mode_, attr_);
+  if (status_ & 0x10) {
     static const uint8_t ctype[5] = {0, underline, underline, reverse, reverse};
 
-    if ((cursor_type & 1) &&
-        ((frametime <= blinkrate / 4) ||
-         (blinkrate / 2 <= frametime && frametime <= 3 * blinkrate / 4)))
-      attr_cursor = 0;
+    if ((cursor_type_ & 1) &&
+        ((frametime_ <= blink_rate_ / 4) ||
+         (blink_rate_ / 2 <= frametime_ && frametime_ <= 3 * blink_rate_ / 4)))
+      attr_cursor_ = 0;
     else
-      attr_cursor = ctype[1 + cursor_type];
+      attr_cursor_ = ctype[1 + cursor_type_];
 
-    attr_blink = frametime < blinkrate / 4 ? secret : 0;
-    underlineptr = (linesperchar - 1) * bpl;
+    attr_blink_ = frametime_ < blink_rate_ / 4 ? secret : 0;
+    underlineptr_ = (lines_per_char_ - 1) * bpl_;
 
     Log(" update");
 
-    //      Log("time: %d  cursor: %d(%d)  blink: %d\n", frametime,
-    //      attr_cursor, cursor_type, attr_blink);
+    //      Log("time: %d  cursor: %d(%d)  blink: %d\n", frametime_,
+    //      attr_cursor_, cursor_type_, attr_blink_);
     ExpandImage(image, region);
   }
   Log("\n");
@@ -615,10 +615,10 @@ void CRTC::UpdateScreen(uint8_t* image,
 void CRTC::ClearText(uint8_t* dest) {
   uint32_t y;
 
-  //  screenheight = 300;
-  for (y = 0; y < screenheight; y++) {
+  //  screen_height_ = 300;
+  for (y = 0; y < screen_height_; y++) {
     packed* d = reinterpret_cast<packed*>(dest);
-    packed mask = pat_mask;
+    packed mask = pat_mask_;
 
     for (uint32_t x = 640 / sizeof(packed) / 4; x > 0; x--) {
       d[0] = (d[0] & mask) | TEXT_RESP;
@@ -627,13 +627,13 @@ void CRTC::ClearText(uint8_t* dest) {
       d[3] = (d[3] & mask) | TEXT_RESP;
       d += 4;
     }
-    dest += bpl;
+    dest += bpl_;
   }
 
   packed pat0 = colorpattern[0] | TEXT_SETP;
   for (; y < 400; y++) {
     packed* d = reinterpret_cast<packed*>(dest);
-    packed mask = pat_mask;
+    packed mask = pat_mask_;
 
     for (uint32_t x = 640 / sizeof(packed) / 4; x > 0; x--) {
       d[0] = (d[0] & mask) | pat0;
@@ -642,10 +642,10 @@ void CRTC::ClearText(uint8_t* dest) {
       d[3] = (d[3] & mask) | pat0;
       d += 4;
     }
-    dest += bpl;
+    dest += bpl_;
   }
   // すべてのテキストをシークレット属性扱いにする
-  memset(attrcache, secret, 0x1400);
+  memset(attrcache_, secret, 0x1400);
 }
 
 // ---------------------------------------------------------------------------
@@ -660,30 +660,30 @@ void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
   int top = 100;
   int bottom = -1;
 
-  int linestep = linesperchar * bpl;
+  int linestep = lines_per_char_ * bpl_;
 
-  int yy = std::min(screenheight / linesperchar, height) - 1;
+  int yy = std::min(screen_height_ / lines_per_char_, height_) - 1;
 
-  //  Log("ExpandImage Bank:%d\n", bank);
+  //  Log("ExpandImage Bank:%d\n", bank_);
   //  image += y * linestep;
-  uint8_t* src = vram[bank];         // + y * linesize;
-  uint8_t* cache = vram[bank ^= 1];  // + y * linesize;
-  uint8_t* cache_attr = attrcache;   // + y * width;
+  uint8_t* src = vram_[bank_];         // + y * linesize_;
+  uint8_t* cache = vram_[bank_ ^= 1];  // + y * linesize_;
+  uint8_t* cache_attr = attrcache_;   // + y * width;
 
   uint32_t left = 999;
   int right = -1;
 
   for (int y = 0; y <= yy; y++, image += linestep) {
-    if (!(mode & skipline) || !(y & 1)) {
-      attr &= ~(overline | underline);
-      ExpandAttributes(attrflag, src + width, y);
+    if (!(mode_ & skipline) || !(y & 1)) {
+      attr_ &= ~(overline | underline);
+      ExpandAttributes(attrflag, src + width_, y);
 
       int rightl = -1;
-      if (widefont) {
-        for (uint32_t x = 0; x < width; x += 2) {
+      if (widefont_) {
+        for (uint32_t x = 0; x < width_; x += 2) {
           uint8_t a = attrflag[x];
           if ((src[x] ^ cache[x]) | (a ^ cache_attr[x])) {
-            pat_col = colorpattern[(a >> 5) & 7];
+            pat_col_ = colorpattern[(a >> 5) & 7];
             cache_attr[x] = a;
             rightl = x + 1;
             if (x < left)
@@ -692,11 +692,11 @@ void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
           }
         }
       } else {
-        for (uint32_t x = 0; x < width; x++) {
+        for (uint32_t x = 0; x < width_; x++) {
           uint8_t a = attrflag[x];
           //                  Log("%.2x ", a);
           if ((src[x] ^ cache[x]) | (a ^ cache_attr[x])) {
-            pat_col = colorpattern[(a >> 5) & 7];
+            pat_col_ = colorpattern[(a >> 5) & 7];
             cache_attr[x] = a;
             rightl = x;
             if (x < left)
@@ -714,13 +714,13 @@ void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
         bottom = y + 1;
       }
     }
-    src += linesize;
-    cache += linesize;
-    cache_attr += width;
+    src += linesize_;
+    cache += linesize_;
+    cache_attr += width_;
   }
   //  Log("\n");
-  region.Update(left * 8, linesperchar * top, (right + 1) * 8,
-                linesperchar * bottom - 1);
+  region.Update(left * 8, lines_per_char_ * top, (right + 1) * 8,
+                lines_per_char_ * bottom - 1);
   //  Log("Update: from %3d to %3d\n", region.top, region.bottom);
 }
 
@@ -730,14 +730,14 @@ void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
 void CRTC::ExpandAttributes(uint8_t* dest, const uint8_t* src, uint32_t y) {
   int i;
 
-  if (attrperline == 0) {
+  if (attr_per_line_ == 0) {
     memset(dest, 0xe0, 80);
     return;
   }
 
   // コントロールコード有効時にはアトリビュートが1組減るという
   // 記述がどこかにあったけど、嘘ですか？
-  uint32_t nattrs = attrperline;  // - (mode & control ? 1 : 0);
+  uint32_t nattrs = attr_per_line_;  // - (mode_ & control ? 1 : 0);
 
   // アトリビュート展開
   //  文献では 2 byte で一組となっているが、実は桁と属性は独立している模様
@@ -748,35 +748,35 @@ void CRTC::ExpandAttributes(uint8_t* dest, const uint8_t* src, uint32_t y) {
     dest[src[i] & 0x7f] = 1;
 
   src++;
-  for (i = 0; i < width; i++) {
+  for (i = 0; i < width_; i++) {
     if (dest[i])
       ChangeAttr(*src), src += 2;
-    dest[i] = attr;
+    dest[i] = attr_;
   }
 
   // カーソルの属性を反映
-  if (cursor_y == y && cursor_x < width)
-    dest[cursor_x] ^= attr_cursor;
+  if (cursor_y_ == y && cursor_x_ < width_)
+    dest[cursor_x_] ^= attr_cursor_;
 }
 
 // ---------------------------------------------------------------------------
 //  アトリビュートコードを内部のフラグに変換
 //
 void CRTC::ChangeAttr(uint8_t code) {
-  if (mode & color) {
+  if (mode_ & color) {
     if (code & 0x8) {
-      attr = (attr & 0x0f) | (code & 0xf0);
-      //          attr ^= mode & inverse;
+      attr_ = (attr_ & 0x0f) | (code & 0xf0);
+      //          attr_ ^= mode_ & inverse;
     } else {
-      attr = (attr & 0xf0) | ((code >> 2) & 0xd) | ((code & 1) << 1);
-      attr ^= mode & inverse;
-      attr ^= ((code & 2) && !(code & 1)) ? attr_blink : 0;
+      attr_ = (attr_ & 0xf0) | ((code >> 2) & 0xd) | ((code & 1) << 1);
+      attr_ ^= mode_ & inverse;
+      attr_ ^= ((code & 2) && !(code & 1)) ? attr_blink_ : 0;
     }
   } else {
-    attr =
+    attr_ =
         0xe0 | ((code >> 2) & 0x0d) | ((code & 1) << 1) | ((code & 0x80) >> 3);
-    attr ^= mode & inverse;
-    attr ^= ((code & 2) && !(code & 1)) ? attr_blink : 0;
+    attr_ ^= mode_ & inverse;
+    attr_ ^= ((code & 2) && !(code & 1)) ? attr_blink_ : 0;
   }
 }
 
@@ -784,14 +784,14 @@ void CRTC::ChangeAttr(uint8_t code) {
 //  フォントのアドレスを取得
 //
 inline const uint8_t* CRTC::GetFont(uint32_t c) {
-  return font + c * 64;
+  return font_ + c * 64;
 }
 
 // ---------------------------------------------------------------------------
 //  フォント(40文字)のアドレスを取得
 //
 inline const uint8_t* CRTC::GetFontW(uint32_t c) {
-  return font + 0x8000 + c * 128;
+  return font_ + 0x8000 + c * 128;
 }
 
 // ---------------------------------------------------------------------------
@@ -807,8 +807,8 @@ inline void CRTC::PutChar(packed* dest, uint8_t ch, uint8_t attr) {
     PutNormal(dest, src), PutLineNormal(dest, attr);
 }
 
-#define NROW (bpl / sizeof(packed))
-#define DRAW(dest, data) (dest) = ((dest)&pat_mask) | (data)
+#define NROW (bpl_ / sizeof(packed))
+#define DRAW(dest, data) (dest) = ((dest)&pat_mask_) | (data)
 
 // ---------------------------------------------------------------------------
 //  普通のテキスト文字
@@ -816,21 +816,21 @@ inline void CRTC::PutChar(packed* dest, uint8_t ch, uint8_t attr) {
 void CRTC::PutNormal(packed* dest, const packed* src) {
   uint32_t h;
 
-  for (h = 0; h < linecharlimit; h += 2) {
-    packed x = *src++ | pat_col;
-    packed y = *src++ | pat_col;
+  for (h = 0; h < linecharlimit_; h += 2) {
+    packed x = *src++ | pat_col_;
+    packed y = *src++ | pat_col_;
 
     DRAW(dest[0], x);
     DRAW(dest[1], y);
     DRAW(dest[NROW + 0], x);
     DRAW(dest[NROW + 1], y);
-    dest += bpl * 2 / sizeof(packed);
+    dest += bpl_ * 2 / sizeof(packed);
   }
-  packed p = pat_col | TEXT_RESP;
-  for (; h < linesperchar; h++) {
+  packed p = pat_col_ | TEXT_RESP;
+  for (; h < lines_per_char_; h++) {
     DRAW(dest[0], p);
     DRAW(dest[1], p);
-    dest += bpl / sizeof(packed);
+    dest += bpl_ / sizeof(packed);
   }
 }
 
@@ -840,22 +840,22 @@ void CRTC::PutNormal(packed* dest, const packed* src) {
 void CRTC::PutReversed(packed* dest, const packed* src) {
   uint32_t h;
 
-  for (h = 0; h < linecharlimit; h += 2) {
-    packed x = (*src++ ^ pat_rev) | pat_col;
-    packed y = (*src++ ^ pat_rev) | pat_col;
+  for (h = 0; h < linecharlimit_; h += 2) {
+    packed x = (*src++ ^ pat_rev_) | pat_col_;
+    packed y = (*src++ ^ pat_rev_) | pat_col_;
 
     DRAW(dest[0], x);
     DRAW(dest[1], y);
     DRAW(dest[NROW + 0], x);
     DRAW(dest[NROW + 1], y);
-    dest += bpl * 2 / sizeof(packed);
+    dest += bpl_ * 2 / sizeof(packed);
   }
 
-  packed p = pat_col ^ pat_rev;
-  for (; h < linesperchar; h++) {
+  packed p = pat_col_ ^ pat_rev_;
+  for (; h < lines_per_char_; h++) {
     DRAW(dest[0], p);
     DRAW(dest[1], p);
-    dest += bpl / sizeof(packed);
+    dest += bpl_ / sizeof(packed);
   }
 }
 
@@ -863,27 +863,27 @@ void CRTC::PutReversed(packed* dest, const packed* src) {
 //  オーバーライン、アンダーライン表示
 //
 void CRTC::PutLineNormal(packed* dest, uint8_t attr) {
-  packed d = pat_col | TEXT_SETP;
+  packed d = pat_col_ | TEXT_SETP;
   if (attr & overline)  // overline
   {
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
-  if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8_t*)dest) + underlineptr);
+  if ((attr & underline) && lines_per_char_ > 14) {
+    dest = (packed*)(((uint8_t*)dest) + underlineptr_);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
 }
 
 void CRTC::PutLineReversed(packed* dest, uint8_t attr) {
-  packed d = (pat_col | TEXT_SETP) ^ pat_rev;
+  packed d = (pat_col_ | TEXT_SETP) ^ pat_rev_;
   if (attr & overline) {
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
-  if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8_t*)dest) + underlineptr);
+  if ((attr & underline) && lines_per_char_ > 14) {
+    dest = (packed*)(((uint8_t*)dest) + underlineptr_);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
   }
@@ -909,29 +909,29 @@ void CRTC::PutNormalW(packed* dest, const packed* src) {
   uint32_t h;
   packed x, y;
 
-  for (h = 0; h < linecharlimit; h += 2) {
-    x = *src++ | pat_col;
-    y = *src++ | pat_col;
+  for (h = 0; h < linecharlimit_; h += 2) {
+    x = *src++ | pat_col_;
+    y = *src++ | pat_col_;
     DRAW(dest[0], x);
     DRAW(dest[1], y);
     DRAW(dest[NROW + 0], x);
     DRAW(dest[NROW + 1], y);
 
-    x = *src++ | pat_col;
-    y = *src++ | pat_col;
+    x = *src++ | pat_col_;
+    y = *src++ | pat_col_;
     DRAW(dest[2], x);
     DRAW(dest[3], y);
     DRAW(dest[NROW + 2], x);
     DRAW(dest[NROW + 3], y);
-    dest += bpl * 2 / sizeof(packed);
+    dest += bpl_ * 2 / sizeof(packed);
   }
-  x = pat_col | TEXT_RESP;
-  for (; h < linesperchar; h++) {
+  x = pat_col_ | TEXT_RESP;
+  for (; h < lines_per_char_; h++) {
     DRAW(dest[0], x);
     DRAW(dest[1], x);
     DRAW(dest[2], x);
     DRAW(dest[3], x);
-    dest += bpl / sizeof(packed);
+    dest += bpl_ / sizeof(packed);
   }
 }
 
@@ -942,31 +942,31 @@ void CRTC::PutReversedW(packed* dest, const packed* src) {
   uint32_t h;
   packed x, y;
 
-  for (h = 0; h < linecharlimit; h += 2) {
-    x = (*src++ ^ pat_rev) | pat_col;
-    y = (*src++ ^ pat_rev) | pat_col;
+  for (h = 0; h < linecharlimit_; h += 2) {
+    x = (*src++ ^ pat_rev_) | pat_col_;
+    y = (*src++ ^ pat_rev_) | pat_col_;
     DRAW(dest[0], x);
     DRAW(dest[1], y);
     DRAW(dest[NROW + 0], x);
     DRAW(dest[NROW + 1], y);
 
-    x = (*src++ ^ pat_rev) | pat_col;
-    y = (*src++ ^ pat_rev) | pat_col;
+    x = (*src++ ^ pat_rev_) | pat_col_;
+    y = (*src++ ^ pat_rev_) | pat_col_;
     DRAW(dest[2], x);
     DRAW(dest[3], y);
     DRAW(dest[NROW + 2], x);
     DRAW(dest[NROW + 3], y);
 
-    dest += bpl * 2 / sizeof(packed);
+    dest += bpl_ * 2 / sizeof(packed);
   }
 
-  x = pat_col ^ pat_rev;
-  for (; h < linesperchar; h++) {
+  x = pat_col_ ^ pat_rev_;
+  for (; h < lines_per_char_; h++) {
     DRAW(dest[0], x);
     DRAW(dest[1], x);
     DRAW(dest[2], x);
     DRAW(dest[3], x);
-    dest += bpl / sizeof(packed);
+    dest += bpl_ / sizeof(packed);
   }
 }
 
@@ -974,7 +974,7 @@ void CRTC::PutReversedW(packed* dest, const packed* src) {
 //  オーバーライン、アンダーライン表示
 //
 void CRTC::PutLineNormalW(packed* dest, uint8_t attr) {
-  packed d = pat_col | TEXT_SETP;
+  packed d = pat_col_ | TEXT_SETP;
   if (attr & overline)  // overline
   {
     DRAW(dest[0], d);
@@ -982,8 +982,8 @@ void CRTC::PutLineNormalW(packed* dest, uint8_t attr) {
     DRAW(dest[2], d);
     DRAW(dest[3], d);
   }
-  if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8_t*)dest) + underlineptr);
+  if ((attr & underline) && lines_per_char_ > 14) {
+    dest = (packed*)(((uint8_t*)dest) + underlineptr_);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
     DRAW(dest[2], d);
@@ -992,15 +992,15 @@ void CRTC::PutLineNormalW(packed* dest, uint8_t attr) {
 }
 
 void CRTC::PutLineReversedW(packed* dest, uint8_t attr) {
-  packed d = (pat_col | TEXT_SETP) ^ pat_rev;
+  packed d = (pat_col_ | TEXT_SETP) ^ pat_rev_;
   if (attr & overline) {
     DRAW(dest[0], d);
     DRAW(dest[1], d);
     DRAW(dest[2], d);
     DRAW(dest[3], d);
   }
-  if ((attr & underline) && linesperchar > 14) {
-    dest = (packed*)(((uint8_t*)dest) + underlineptr);
+  if ((attr & underline) && lines_per_char_ > 14) {
+    dest = (packed*)(((uint8_t*)dest) + underlineptr_);
     DRAW(dest[0], d);
     DRAW(dest[1], d);
     DRAW(dest[2], d);
@@ -1014,23 +1014,23 @@ void CRTC::PutLineReversedW(packed* dest, uint8_t attr) {
 void IOCALL CRTC::PCGOut(uint32_t p, uint32_t d) {
   switch (p) {
     case 0:
-      pcgdat = d;
+      pcgdat_ = d;
       break;
     case 1:
-      pcgadr = (pcgadr & 0xff00) | d;
+      pcgadr_ = (pcgadr_ & 0xff00) | d;
       break;
     case 2:
-      pcgadr = (pcgadr & 0x00ff) | (d << 8);
+      pcgadr_ = (pcgadr_ & 0x00ff) | (d << 8);
       break;
   }
 
-  if (pcgadr & 0x1000) {
+  if (pcgadr_ & 0x1000) {
     uint32_t tmp =
-        (pcgadr & 0x2000) ? fontrom[0x400 + (pcgadr & 0x3ff)] : pcgdat;
-    Log("PCG: %.4x <- %.2x\n", pcgadr, tmp);
-    pcgram[pcgadr & 0x3ff] = tmp;
-    if (pcgenable)
-      ModifyFont(0x400 + (pcgadr & 0x3ff), tmp);
+        (pcgadr_ & 0x2000) ? fontrom_[0x400 + (pcgadr_ & 0x3ff)] : pcgdat_;
+    Log("PCG: %.4x <- %.2x\n", pcgadr_, tmp);
+    pcgram_[pcgadr_ & 0x3ff] = tmp;
+    if (pcg_enable_)
+      ModifyFont(0x400 + (pcgadr_ & 0x3ff), tmp);
   }
 }
 
@@ -1038,13 +1038,13 @@ void IOCALL CRTC::PCGOut(uint32_t p, uint32_t d) {
 //  OUT
 //
 void CRTC::EnablePCG(bool enable) {
-  pcgenable = enable;
-  if (!pcgenable) {
+  pcg_enable_ = enable;
+  if (!pcg_enable_) {
     CreateTFont();
-    mode |= refresh;
+    mode_ |= refresh;
   } else {
     for (int i = 0; i < 0x400; i++)
-      ModifyFont(0x400 + i, pcgram[i]);
+      ModifyFont(0x400 + i, pcgram_[i]);
   }
 }
 
@@ -1053,15 +1053,15 @@ void CRTC::EnablePCG(bool enable) {
 //  bit4 = ひらがな(1)・カタカナ(0)選択
 //
 void IOCALL CRTC::SetKanaMode(uint32_t, uint32_t data) {
-  if (kanaenable)
+  if (kana_enable_)
     data &= 0x10;
   else
     data = 0;
 
-  if (data != kanamode) {
-    kanamode = data;
+  if (data != kana_mode_) {
+    kana_mode_ = data;
     CreateKanaFont();
-    mode |= refresh;
+    mode_ |= refresh;
   }
 }
 
@@ -1069,7 +1069,7 @@ void IOCALL CRTC::SetKanaMode(uint32_t, uint32_t data) {
 //  apply config
 //
 void CRTC::ApplyConfig(const Config* cfg) {
-  kanaenable = cfg->basicmode == Config::N80V2;
+  kana_enable_ = cfg->basicmode == Config::N80V2;
   EnablePCG((cfg->flags & Config::kEnablePCG) != 0);
 }
 
@@ -1091,20 +1091,20 @@ bool IFCALL CRTC::SaveStatus(uint8_t* s) {
   Status* st = (Status*)s;
 
   st->rev = ssrev;
-  st->cmdm = cmdm;
-  st->cmdc = std::max(cmdc, 0xff);
-  memcpy(st->pcount, pcount, sizeof(pcount));
-  memcpy(st->param0, param0, sizeof(param0));
-  st->param1 = param1;
-  st->cursor_x = cursor_x;
-  st->cursor_y = cursor_y;
-  st->cursor_t = cursor_type;
-  st->attr = attr;
-  st->column = column;
-  st->mode = mode;
-  st->status = status;
-  st->event = event;
-  st->color = (pat_rev == PACK(0x08));
+  st->cmdm = cmdm_;
+  st->cmdc = std::max(cmdc_, 0xff);
+  memcpy(st->pcount, pcount_, sizeof(pcount_));
+  memcpy(st->param0, param0_, sizeof(param0_));
+  st->param1 = param1_;
+  st->cursor_x = cursor_x_;
+  st->cursor_y = cursor_y_;
+  st->cursor_t = cursor_type_;
+  st->attr = attr_;
+  st->column = column_;
+  st->mode = mode_;
+  st->status = status_;
+  st->event = event_;
+  st->color = (pat_rev_ == PACK(0x08));
   return true;
 }
 
@@ -1118,26 +1118,26 @@ bool IFCALL CRTC::LoadStatus(const uint8_t* s) {
     Out(i ? 0 : 1, st->param0[i]);
   if (st->pcount[1])
     Out(1, st->param1);
-  cmdm = st->cmdm, cmdc = st->cmdc;
-  cursor_x = st->cursor_x;
-  cursor_y = st->cursor_y;
-  cursor_type = st->cursor_t;
-  attr = st->attr;
-  column = st->column;
-  mode = st->mode;
-  status = st->status | clear;
-  event = st->event;
+  cmdm_ = st->cmdm, cmdc_ = st->cmdc;
+  cursor_x_ = st->cursor_x;
+  cursor_y_ = st->cursor_y;
+  cursor_type_ = st->cursor_t;
+  attr_ = st->attr;
+  column_ = st->column;
+  mode_ = st->mode;
+  status_ = st->status | clear;
+  event_ = st->event;
   SetTextMode(st->color);
 
-  scheduler->DelEvent(sev);
-  if (event == 1)
-    sev = scheduler->AddEvent(linetime, this,
+  scheduler_->DelEvent(sev_);
+  if (event_ == 1)
+    sev_ = scheduler_->AddEvent(linetime_, this,
                               static_cast<TimeFunc>(&CRTC::ExpandLine));
-  else if (event > 1)
-    sev = scheduler->AddEvent(linetime * (event - 1), this,
+  else if (event_ > 1)
+    sev_ = scheduler_->AddEvent(linetime_ * (event_ - 1), this,
                               static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
-  else if (event == -1 || st->rev == 1)
-    sev = scheduler->AddEvent(linetime * vretrace, this,
+  else if (event_ == -1 || st->rev == 1)
+    sev_ = scheduler_->AddEvent(linetime_ * vretrace_, this,
                               static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 
   return true;
