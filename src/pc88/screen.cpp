@@ -70,8 +70,7 @@ Screen::~Screen() {}
 // ---------------------------------------------------------------------------
 //  初期化
 //
-bool Screen::Init(IOBus* _bus, Memory* mem, CRTC* _crtc) {
-  bus = _bus;
+bool Screen::Init(Memory* mem, CRTC* _crtc) {
   memory = mem;
   crtc = _crtc;
 

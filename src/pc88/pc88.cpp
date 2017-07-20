@@ -427,7 +427,7 @@ bool PC88::ConnectDevices() {
   scrn = new Screen(DEV_ID('S', 'C', 'R', 'N'));
   if (!scrn || !main_bus_.Connect(scrn, c_scrn))
     return false;
-  if (!scrn->Init(&main_bus_, mem1, crtc))
+  if (!scrn->Init(mem1, crtc))
     return false;
 
   static const IOBus::Connector c_intc[] = {

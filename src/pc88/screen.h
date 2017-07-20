@@ -48,7 +48,7 @@ class Screen final : public Device {
   explicit Screen(const ID& id);
   ~Screen();
 
-  bool Init(IOBus* bus, Memory* memory, CRTC* crtc);
+  bool Init(Memory* memory, CRTC* crtc);
   void IOCALL Reset(uint32_t = 0, uint32_t = 0);
   bool UpdatePalette(Draw* draw);
   void UpdateScreen(uint8_t* image,
@@ -97,7 +97,6 @@ class Screen final : public Device {
   void UpdateScreen320c(uint8_t* image, int bpl, Draw::Region& region);
   void UpdateScreen320b(uint8_t* image, int bpl, Draw::Region& region);
 
-  IOBus* bus;
   Memory* memory;
   CRTC* crtc;
 
