@@ -24,8 +24,8 @@
 //
 namespace pc88core {
 
-class Memory;
 class CRTC;
+class Memory;
 
 // ---------------------------------------------------------------------------
 //  88 の画面に関するクラス
@@ -74,15 +74,23 @@ class Screen final : public Device {
 
  private:
   struct Pal {
-    uint8_t red, blue, green, _pad;
+    uint8_t red;
+    uint8_t blue;
+    uint8_t green;
+    uint8_t _pad;
   };
   enum {
-    ssrev = 1,
+    SSREV = 1,
   };
   struct Status {
     uint32_t rev;
-    Pal pal[8], bgpal;
-    uint8_t p30, p31, p32, p33, p53;
+    Pal pal[8];
+    Pal bgpal;
+    uint8_t p30;
+    uint8_t p31;
+    uint8_t p32;
+    uint8_t p33;
+    uint8_t p53;
   };
 
   void CreateTable();
@@ -107,7 +115,7 @@ class Screen final : public Device {
 
   static const Draw::Palette palcolor_[8];
 
-  const uint8_t* pex_;
+  const uint8_t* lut_;
 
   uint8_t port30_;
   uint8_t port31_;
@@ -115,21 +123,21 @@ class Screen final : public Device {
   uint8_t port33_;
   uint8_t port53_;
 
-  bool fullline_;
-  bool fv15k_;
-  bool line400_;
-  bool line320_;  // 320x200 mode
+  bool is_fullline_;
+  bool is_fv15k_;
+  bool is_line400_;
+  bool is_width320_;  // 320x200 mode
   // uint8_t display_plane_;
   // bool display_text_;
   bool palette_changed_;
   bool mode_changed_;
-  bool color_;
-  bool display_graphics_;
+  bool is_color_mode_;
+  bool is_graphics_on_;
   bool text_tp_;
   bool n80mode_;
   bool text_priority_;
-  bool grph_priority_;
-  uint8_t gmask_;
+  bool graphics_priority_;
+  uint8_t graphics_mask_;
   Config::BASICMode newmode_;
 
   static packed BETable0[1 << sizeof(packed)];
