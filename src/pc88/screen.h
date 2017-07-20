@@ -97,40 +97,40 @@ class Screen final : public Device {
   void UpdateScreen320c(uint8_t* image, int bpl, Draw::Region& region);
   void UpdateScreen320b(uint8_t* image, int bpl, Draw::Region& region);
 
-  Memory* memory;
-  CRTC* crtc;
+  Memory* memory_;
+  CRTC* crtc_;
 
-  Pal pal[8];
-  Pal bgpal;
-  int prevgmode;
-  int prevpmode;
+  Pal pal_[8];
+  Pal bgpal_;
+  int prev_gmode_;
+  int prev_pmode_;
 
-  static const Draw::Palette palcolor[8];
+  static const Draw::Palette palcolor_[8];
 
-  const uint8_t* pex;
+  const uint8_t* pex_;
 
-  uint8_t port30;
-  uint8_t port31;
-  uint8_t port32;
-  uint8_t port33;
-  uint8_t port53;
+  uint8_t port30_;
+  uint8_t port31_;
+  uint8_t port32_;
+  uint8_t port33_;
+  uint8_t port53_;
 
-  bool fullline;
-  bool fv15k;
-  bool line400;
-  bool line320;  // 320x200 mode
-  uint8_t displayplane;
-  bool displaytext;
-  bool palettechanged;
-  bool modechanged;
-  bool color;
-  bool displaygraphics;
-  bool texttp;
-  bool n80mode;
-  bool textpriority;
-  bool grphpriority;
-  uint8_t gmask;
-  Config::BASICMode newmode;
+  bool fullline_;
+  bool fv15k_;
+  bool line400_;
+  bool line320_;  // 320x200 mode
+  // uint8_t display_plane_;
+  // bool display_text_;
+  bool palette_changed_;
+  bool mode_changed_;
+  bool color_;
+  bool display_graphics_;
+  bool text_tp_;
+  bool n80mode_;
+  bool text_priority_;
+  bool grph_priority_;
+  uint8_t gmask_;
+  Config::BASICMode newmode_;
 
   static packed BETable0[1 << sizeof(packed)];
   static packed BETable1[1 << sizeof(packed)];
