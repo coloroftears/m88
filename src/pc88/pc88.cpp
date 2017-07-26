@@ -515,8 +515,8 @@ bool PC88::ConnectDevices() {
     return false;
 
   static const IOBus::Connector c_beep[] = {
-      {0x40, IOBus::portout, pc88core::Beep::kOut40}, {0, 0, 0}};
-  beep_.reset(new pc88core::Beep(DEV_ID('B', 'E', 'E', 'P')));
+      {0x40, IOBus::portout, Beep::kOut40}, {0, 0, 0}};
+  beep_.reset(new Beep(DEV_ID('B', 'E', 'E', 'P')));
   if (!beep_ || !beep_->Init())
     return false;
   if (!main_bus_.Connect(beep_.get(), c_beep))
@@ -587,7 +587,7 @@ bool PC88::ConnectDevices2() {
       {0xfa, IOBus::portin, FDC::kGetStatus},
       {0xfb, IOBus::portin, FDC::kGetData},
       {0, 0, 0}};
-  fdc_.reset(new pc88core::FDC(DEV_ID('F', 'D', 'C', ' ')));
+  fdc_.reset(new FDC(DEV_ID('F', 'D', 'C', ' ')));
   if (!sub_bus_.Connect(fdc_.get(), c_fdc))
     return false;
   if (!fdc_->Init(diskmgr_, sched_.get(), &sub_bus_, kPortIRQ2, kPortFDStat))
@@ -620,7 +620,7 @@ void PC88::ApplyConfig(Config* cfg) {
   if ((cfg->flags & Config::kSubCPUControl) != 0)
     cpumode |= stopwhenidle;
 
-  if (cfg->flags & pc88core::Config::kEnablePad) {
+  if (cfg->flags & Config::kEnablePad) {
     joypad_->SetButtonMode(cfg->flags & Config::kSwappedButtons
                               ? JoyPad::SWAPPED
                               : JoyPad::NORMAL);
@@ -628,16 +628,16 @@ void PC88::ApplyConfig(Config* cfg) {
     joypad_->SetButtonMode(JoyPad::DISABLED);
   }
 
-  //  EnablePad((cfg->flags & pc88core::Config::enablepad) != 0);
+  //  EnablePad((cfg->flags & Config::enablepad) != 0);
   //  if (padenable)
-  //      cfg->flags &= ~pc88core::Config::enablemouse;
-  //  EnableMouse((cfg->flags & pc88core::Config::enablemouse) != 0);
+  //      cfg->flags &= ~Config::enablemouse;
+  //  EnableMouse((cfg->flags & Config::enablemouse) != 0);
 }
 
 // ---------------------------------------------------------------------------
 //  音量変更
 //
-void PC88::SetVolume(pc88core::Config* cfg) {
+void PC88::SetVolume(Config* cfg) {
   opn1_->SetVolume(cfg);
   opn2_->SetVolume(cfg);
 }
