@@ -485,7 +485,7 @@ void FDC::CmdReadData() {
 
     case kTCPhase:
       DelTimer();
-      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_);
+      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_.get());
       ShiftToResultPhase7();
       return;
 
@@ -537,7 +537,7 @@ void FDC::CmdScanEqual() {
 
     case kTCPhase:
       DelTimer();
-      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_);
+      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_.get());
       ShiftToResultPhase7();
       return;
 
@@ -838,7 +838,7 @@ void FDC::CmdWriteData() {
 
     case kTCPhase:
       DelTimer();
-      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_);
+      Log("\tTC at 0x%x byte\n", bufptr_ - buffer_.get());
       if (prev_phase_ == kExecWritePhase) {
         // 転送中？
         Log("flush");
