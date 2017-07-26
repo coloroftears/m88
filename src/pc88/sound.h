@@ -27,7 +27,6 @@ class Sound : public Device,
               public ISoundControl,
               protected SoundSource<Sample32> {
  public:
-  Sound();
   ~Sound();
 
   bool Init(PC88* pc, uint32_t rate, int bufsize);
@@ -57,6 +56,7 @@ class Sound : public Device,
   int GetAvail() const final { return INT_MAX; }
 
  protected:
+  Sound();
   uint32_t mixrate;
   uint32_t samplingrate;  // サンプリングレート
   uint32_t rate50;        // samplingrate / 50
