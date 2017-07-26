@@ -46,9 +46,10 @@ class PC88 : public SchedulerDelegate,
 
  public:
   PC88();
-  ~PC88();
+  virtual ~PC88() override;
 
   bool Init(Draw* draw, DiskManager* diskmgr, TapeManager* tape);
+  void Cleanup();
 
   void Reset();
 
@@ -71,14 +72,14 @@ class PC88 : public SchedulerDelegate,
 
   bool IsCDSupported() const;
 
-  Memory* GetMem1() { return mem1; }
-  SubSystem* GetMem2() { return subsys; }
-  OPNInterface* GetOPN1() { return opn1; }
-  OPNInterface* GetOPN2() { return opn2; }
+  Memory* GetMem1() { return main_memory_.get(); }
+  SubSystem* GetMem2() { return subsystem_.get(); }
+  OPNInterface* GetOPN1() { return opn1_.get(); }
+  OPNInterface* GetOPN2() { return opn2_.get(); }
   Z80* GetCPU1() { return &main_cpu_; }
   Z80* GetCPU2() { return &sub_cpu_; }
-  PD8257* GetDMAC() { return dmac; }
-  Beep* GetBEEP() { return beep; }
+  PD8257* GetDMAC() { return dmac_.get(); }
+  Beep* GetBEEP() { return beep_.get(); }
 
   Scheduler* GetScheduler() const { return sched_.get(); }
 
@@ -143,28 +144,28 @@ class PC88 : public SchedulerDelegate,
   uint32_t cfgflag2;
   bool updated;
 
-  Memory* mem1;
-  KanjiROM* knj1;
-  KanjiROM* knj2;
-  Screen* scrn;
-  InterruptController* intc;
-  CRTC* crtc;
-  Base* base;
-  FDC* fdc;
-  SubSystem* subsys;
-  SIO* siotape;
-  SIO* siomidi;
-  OPNInterface* opn1;
-  OPNInterface* opn2;
-  Calendar* caln;
-  Beep* beep;
-  PD8257* dmac;
+  std::unique_ptr<Base> base_;
+  std::unique_ptr<Beep> beep_;
+  std::unique_ptr<CRTC> crtc_;
+  std::unique_ptr<Calendar> calendar_;
+  std::unique_ptr<InterruptController> interrupt_controller_;
+  std::unique_ptr<KanjiROM> kanji1_;
+  std::unique_ptr<KanjiROM> kanji2_;
+  std::unique_ptr<Memory> main_memory_;
+  std::unique_ptr<OPNInterface> opn1_;
+  std::unique_ptr<OPNInterface> opn2_;
+  std::unique_ptr<PD8257> dmac_;
+  std::unique_ptr<SIO> sio_tape_;
+  std::unique_ptr<SIO> sio_midi_;
+  std::unique_ptr<Screen> screen_;
+  std::unique_ptr<SubSystem> subsystem_;
+  std::unique_ptr<FDC> fdc_;
 
  protected:
-  Draw* draw;
+  Draw* draw_;
   DiskManager* diskmgr_;
   TapeManager* tapemgr_;
-  JoyPad* joypad;
+  std::unique_ptr<JoyPad> joypad_;
 
   MemoryManager main_mm_;
   MemoryManager sub_mm_;

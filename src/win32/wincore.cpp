@@ -82,6 +82,7 @@ bool WinCore::Init(WinUI* _ui,
 //  後始末
 //
 bool WinCore::Cleanup() {
+  PC88::Cleanup();
   seq.Cleanup();
 
   for (ExtendModules::iterator i = extmodules.begin(); i != extmodules.end();
@@ -115,12 +116,12 @@ void WinCore::ApplyConfig(pc88core::Config* cfg) {
   seq.SetSpeed(cfg->speed() / 10);
   seq.SetRefreshTiming(cfg->refreshtiming);
 
-  if (joypad)
-    joypad->Connect(&padif);
+  if (joypad_)
+    joypad_->Connect(&padif);
 
   PC88::ApplyConfig(cfg);
   sound.ApplyConfig(cfg);
-  draw->SetFlipMode(false);
+  draw_->SetFlipMode(false);
 }
 
 // ---------------------------------------------------------------------------
