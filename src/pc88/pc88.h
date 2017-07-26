@@ -12,17 +12,7 @@
 #include "common/draw.h"
 #include "common/scheduler.h"
 #include "common/sequencer.h"
-
-// ---------------------------------------------------------------------------
-//  使用する Z80 エンジンの種類を決める
-//  標準では C++ 版の Z80 エンジンは Release 版ではコンパイルしない設定に
-//  なっているので注意！
-//
-#ifdef USE_Z80_X86
-#include "devices/z80_x86.h"
-#else
 #include "devices/z80c.h"
-#endif
 
 namespace pc88core {
 
@@ -52,11 +42,7 @@ class PC88 : public SchedulerDelegate,
              public SequencerDelegate,
              public ICPUTime {
  public:
-#if defined(USE_Z80_X86)
-  using Z80 = Z80_x86;
-#else
   using Z80 = Z80C;
-#endif
 
  public:
   PC88();
@@ -78,21 +64,21 @@ class PC88 : public SchedulerDelegate,
   uint32_t IFCALL GetCPUTick() final { return main_cpu_.GetCount(); }
   uint32_t IFCALL GetCPUSpeed() final { return clock_; }
 
-  void ApplyConfig(pc88core::Config*);
-  void SetVolume(pc88core::Config*);
+  void ApplyConfig(Config*);
+  void SetVolume(Config*);
 
   uint32_t GetEffectiveSpeed() { return eclock_; }
 
-  bool IsCDSupported();
+  bool IsCDSupported() const;
 
-  pc88core::Memory* GetMem1() { return mem1; }
-  pc88core::SubSystem* GetMem2() { return subsys; }
-  pc88core::OPNInterface* GetOPN1() { return opn1; }
-  pc88core::OPNInterface* GetOPN2() { return opn2; }
+  Memory* GetMem1() { return mem1; }
+  SubSystem* GetMem2() { return subsys; }
+  OPNInterface* GetOPN1() { return opn1; }
+  OPNInterface* GetOPN2() { return opn2; }
   Z80* GetCPU1() { return &main_cpu_; }
   Z80* GetCPU2() { return &sub_cpu_; }
-  pc88core::PD8257* GetDMAC() { return dmac; }
-  pc88core::Beep* GetBEEP() { return beep; }
+  PD8257* GetDMAC() { return dmac; }
+  Beep* GetBEEP() { return beep; }
 
   Scheduler* GetScheduler() const { return sched_.get(); }
 
@@ -157,28 +143,28 @@ class PC88 : public SchedulerDelegate,
   uint32_t cfgflag2;
   bool updated;
 
-  pc88core::Memory* mem1;
-  pc88core::KanjiROM* knj1;
-  pc88core::KanjiROM* knj2;
-  pc88core::Screen* scrn;
-  pc88core::InterruptController* intc;
-  pc88core::CRTC* crtc;
-  pc88core::Base* base;
-  pc88core::FDC* fdc;
-  pc88core::SubSystem* subsys;
-  pc88core::SIO* siotape;
-  pc88core::SIO* siomidi;
-  pc88core::OPNInterface* opn1;
-  pc88core::OPNInterface* opn2;
-  pc88core::Calendar* caln;
-  pc88core::Beep* beep;
-  pc88core::PD8257* dmac;
+  Memory* mem1;
+  KanjiROM* knj1;
+  KanjiROM* knj2;
+  Screen* scrn;
+  InterruptController* intc;
+  CRTC* crtc;
+  Base* base;
+  FDC* fdc;
+  SubSystem* subsys;
+  SIO* siotape;
+  SIO* siomidi;
+  OPNInterface* opn1;
+  OPNInterface* opn2;
+  Calendar* caln;
+  Beep* beep;
+  PD8257* dmac;
 
  protected:
   Draw* draw;
   DiskManager* diskmgr_;
   TapeManager* tapemgr_;
-  pc88core::JoyPad* joypad;
+  JoyPad* joypad;
 
   MemoryManager main_mm_;
   MemoryManager sub_mm_;
@@ -190,10 +176,10 @@ class PC88 : public SchedulerDelegate,
   Z80 main_cpu_;
   Z80 sub_cpu_;
 
-  friend class pc88core::Base;
+  friend class Base;
 };
 
-inline bool PC88::IsCDSupported() {
+inline bool PC88::IsCDSupported() const {
   return devlist_.Find(DEV_ID('c', 'd', 'i', 'f')) != 0;
 }
 
