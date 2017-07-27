@@ -49,7 +49,7 @@ PC88::PC88()
   assert((1 << MemoryManager::pagebits) <= 0x400);
   sched_.reset(new Scheduler(this));
   DIAGINIT(&main_cpu_);
-  dexc = 0;
+  dexc_ = 0;
 }
 
 PC88::~PC88() {
@@ -90,7 +90,7 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
     return false;
 
   Reset();
-  region.Reset();
+  region_.Reset();
   clock_ = 1;
   return true;
 }
@@ -120,16 +120,16 @@ SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks,
 SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   LOADBEGIN("Core.CPU");
   int exc = ticks * clock_;
-  if (!(cpumode & stopwhenidle) || subsystem_->IsBusy() || fdc_->IsBusy()) {
-    if ((cpumode & 1) == ms11)
+  if (!(cpumode_ & stopwhenidle) || subsystem_->IsBusy() || fdc_->IsBusy()) {
+    if ((cpumode_ & 1) == ms11)
       exc = Z80Util::ExecDual(&main_cpu_, &sub_cpu_, exc);
     else
       exc = Z80Util::ExecDual2(&main_cpu_, &sub_cpu_, exc);
   } else {
     exc = Z80Util::ExecSingle(&main_cpu_, &sub_cpu_, exc);
   }
-  exc += dexc;
-  dexc = exc % clock_;
+  exc += dexc_;
+  dexc_ = exc % clock_;
   LOADEND("Core.CPU");
   return exc / clock_;
 }
@@ -142,7 +142,7 @@ void PC88::Shorten(SchedTimeDelta ticks) {
 }
 
 SchedTimeDelta PC88::GetTicks() {
-  return (Z80Util::GetCCount() + dexc) / clock_;
+  return (Z80Util::GetCCount() + dexc_) / clock_;
 }
 
 // ---------------------------------------------------------------------------
@@ -150,7 +150,7 @@ SchedTimeDelta PC88::GetTicks() {
 //
 void PC88::VSync() {
   statusdisplay.UpdateDisplay();
-  if (cfgflags & Config::kWatchRegister)
+  if (config_flags_ & Config::kWatchRegister)
     Toast::Show(10, 0, "%.4X(%.2X)/%.4X", main_cpu_.GetPC(), main_cpu_.GetReg().ireg,
                 sub_cpu_.GetPC());
 }
@@ -165,8 +165,8 @@ void PC88::UpdateScreen(bool refresh) {
 
   LOADBEGIN("Screen");
 
-  if (!updated || refresh) {
-    if (!(cfgflags & Config::kDrawPriorityLow) ||
+  if (!updated_ || refresh) {
+    if (!(config_flags_ & Config::kDrawPriorityLow) ||
         (dstat & (Draw::readytodraw | Draw::shouldrefresh)))
     //      if (dstat & (Draw::readytodraw | Draw::shouldrefresh))
     {
@@ -175,24 +175,24 @@ void PC88::UpdateScreen(bool refresh) {
 
       //          crtc_->SetSize();
       if (draw_->Lock(&image, &bpl)) {
-        Log("(%d -> %d) ", region.top, region.bottom);
-        crtc_->UpdateScreen(image, bpl, region, refresh);
-        Log("(%d -> %d) ", region.top, region.bottom);
-        screen_->UpdateScreen(image, bpl, region, refresh);
-        Log("(%d -> %d)\n", region.top, region.bottom);
+        Log("(%d -> %d) ", region_.top, region_.bottom);
+        crtc_->UpdateScreen(image, bpl, region_, refresh);
+        Log("(%d -> %d) ", region_.top, region_.bottom);
+        screen_->UpdateScreen(image, bpl, region_, refresh);
+        Log("(%d -> %d)\n", region_.top, region_.bottom);
 
         bool palchanged = screen_->UpdatePalette(draw_);
         draw_->Unlock();
-        updated = palchanged || region.Valid();
+        updated_ = palchanged || region_.Valid();
       }
     }
   }
   LOADEND("Screen");
   if (draw_->GetStatus() & Draw::readytodraw) {
-    if (updated) {
-      updated = false;
-      draw_->DrawScreen(region);
-      region.Reset();
+    if (updated_) {
+      updated_ = false;
+      draw_->DrawScreen(region_);
+      region_.Reset();
     } else {
       Draw::Region r;
       r.Reset();
@@ -221,10 +221,10 @@ void PC88::Reset() {
     dmac_->ConnectRd(main_memory_->GetRAM(), 0, 0x10000);
   dmac_->ConnectWr(main_memory_->GetRAM(), 0, 0x10000);
 
-  opn1_->SetOPNMode((cfgflags & Config::kEnableOPNA) != 0);
-  opn1_->Enable(isv2 || !(cfgflag2 & Config::kDisableOPN44));
-  opn2_->SetOPNMode((cfgflags & Config::kOPNAOnA8) != 0);
-  opn2_->Enable((cfgflags & (Config::kOPNAOnA8 | Config::kOPNOnA8)) != 0);
+  opn1_->SetOPNMode((config_flags_ & Config::kEnableOPNA) != 0);
+  opn1_->Enable(isv2 || !(config_flag2_ & Config::kDisableOPN44));
+  opn2_->SetOPNMode((config_flags_ & Config::kOPNAOnA8) != 0);
+  opn2_->Enable((config_flags_ & (Config::kOPNAOnA8 | Config::kOPNOnA8)) != 0);
 
   if (!isn80v2)
     opn1_->SetIMask(0x32, 0x80);
@@ -257,11 +257,11 @@ void PC88::Reset() {
 //  デバイス接続
 //
 bool PC88::ConnectDevices() {
-  static const IOBus::Connector c_cpu1[] = {
+  static const IOBus::Connector c_main_cpu[] = {
       {kPortReset, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
       {kPortIRQ, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
       {0, 0, 0}};
-  if (!main_bus_.Connect(&main_cpu_, c_cpu1))
+  if (!main_bus_.Connect(&main_cpu_, c_main_cpu))
     return false;
   if (!main_cpu_.Init(&main_mm_, &main_bus_, kPortIntAck))
     return false;
@@ -321,7 +321,7 @@ bool PC88::ConnectDevices() {
   if (!crtc_ || !main_bus_.Connect(crtc_.get(), c_crtc))
     return false;
 
-  static const IOBus::Connector c_mem1[] = {
+  static const IOBus::Connector c_main_mem[] = {
       {kPortReset, IOBus::portout, Memory::kReset},
       {0x31, IOBus::portout, Memory::kOut31},
       {0x32, IOBus::portout, Memory::kOut32},
@@ -350,7 +350,7 @@ bool PC88::ConnectDevices() {
       {0xe3, IOBus::portin, Memory::kIne3},
       {0, 0, 0}};
   main_memory_.reset(new Memory(DEV_ID('M', 'E', 'M', '1')));
-  if (!main_memory_ || !main_bus_.Connect(main_memory_.get(), c_mem1))
+  if (!main_memory_ || !main_bus_.Connect(main_memory_.get(), c_main_mem))
     return false;
   if (!main_memory_->Init(&main_mm_, &main_bus_, crtc_.get(), main_cpu_.GetWaits()))
     return false;
@@ -554,11 +554,11 @@ bool PC88::ConnectDevices() {
 //  デバイス接続(サブCPU)
 //
 bool PC88::ConnectDevices2() {
-  static const IOBus::Connector c_cpu2[] = {
+  static const IOBus::Connector c_sub_cpu[] = {
       {kPortReset2, IOBus::portout, static_cast<uint8_t>(Z80Int::kReset)},
       {kPortIRQ2, IOBus::portout, static_cast<uint8_t>(Z80Int::kIRQ)},
       {0, 0, 0}};
-  if (!sub_bus_.Connect(&sub_cpu_, c_cpu2))
+  if (!sub_bus_.Connect(&sub_cpu_, c_sub_cpu))
     return false;
   if (!sub_cpu_.Init(&sub_mm_, &sub_bus_, kPortIntAck2))
     return false;
@@ -600,8 +600,8 @@ bool PC88::ConnectDevices2() {
 //  設定反映
 //
 void PC88::ApplyConfig(Config* cfg) {
-  cfgflags = cfg->flags;
-  cfgflag2 = cfg->flag2;
+  config_flags_ = cfg->flags;
+  config_flag2_ = cfg->flag2;
 
   base_->SetSwitch(cfg);
   screen_->ApplyConfig(cfg);
@@ -614,11 +614,11 @@ void PC88::ApplyConfig(Config* cfg) {
   opn2_->SetFMMixMode(!!(cfg->flag2 & Config::kUseFMClock));
   opn2_->SetVolume(cfg);
 
-  cpumode = (cfg->cpumode == Config::msauto)
+  cpumode_ = (cfg->cpumode == Config::msauto)
                 ? (cfg->mainsubratio > 1 ? ms21 : ms11)
                 : (cfg->cpumode & 1);
   if ((cfg->flags & Config::kSubCPUControl) != 0)
-    cpumode |= stopwhenidle;
+    cpumode_ |= stopwhenidle;
 
   if (cfg->flags & Config::kEnablePad) {
     joypad_->SetButtonMode(cfg->flags & Config::kSwappedButtons

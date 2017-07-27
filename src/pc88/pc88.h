@@ -133,16 +133,16 @@ class PC88 : public SchedulerDelegate,
 
   std::unique_ptr<Scheduler> sched_;
 
-  Draw::Region region;
+  Draw::Region region_;
 
   SchedClock clock_ = 1;
-  int cpumode;
-  int dexc;
+  int cpumode_;
+  int dexc_;
   int eclock_;
 
-  uint32_t cfgflags;
-  uint32_t cfgflag2;
-  bool updated;
+  uint32_t config_flags_;
+  uint32_t config_flag2_;
+  bool updated_;
 
   std::unique_ptr<Base> base_;
   std::unique_ptr<Beep> beep_;
