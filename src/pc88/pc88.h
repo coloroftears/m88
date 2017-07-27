@@ -72,14 +72,14 @@ class PC88 : public SchedulerDelegate,
 
   bool IsCDSupported() const;
 
-  Memory* GetMem1() { return main_memory_.get(); }
-  SubSystem* GetMem2() { return subsystem_.get(); }
-  OPNInterface* GetOPN1() { return opn1_.get(); }
-  OPNInterface* GetOPN2() { return opn2_.get(); }
+  Memory* GetMem1() const { return main_memory_.get(); }
+  SubSystem* GetMem2() const { return subsystem_.get(); }
+  OPNInterface* GetOPN1() const { return opn1_.get(); }
+  OPNInterface* GetOPN2() const { return opn2_.get(); }
   Z80* GetCPU1() { return &main_cpu_; }
   Z80* GetCPU2() { return &sub_cpu_; }
-  PD8257* GetDMAC() { return dmac_.get(); }
-  Beep* GetBEEP() { return beep_.get(); }
+  PD8257* GetDMAC() const { return dmac_.get(); }
+  Beep* GetBEEP() const { return beep_.get(); }
 
   Scheduler* GetScheduler() const { return sched_.get(); }
 
