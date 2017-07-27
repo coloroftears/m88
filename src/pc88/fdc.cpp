@@ -412,8 +412,8 @@ void FDC::SetTimer(Phase p, SchedTimeDelta ticks) {
   t_phase_ = p;
   if (!disk_wait_)
     ticks = (ticks + 127) / 128;
-  timer_handle_ = scheduler_->AddEvent(ticks, this,
-                                    static_cast<TimeFunc>(&FDC::PhaseTimer), p);
+  timer_handle_ = scheduler_->AddEvent(
+      ticks, this, static_cast<TimeFunc>(&FDC::PhaseTimer), p);
 }
 
 void FDC::DelTimer() {
@@ -569,7 +569,8 @@ void FDC::ReadData(bool deleted, bool scan) {
   }
 
   uint32_t dr = hdu_ & 3;
-  uint32_t flags = ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
+  uint32_t flags =
+      ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
 
   result_ = diskmgr_->GetFDU(dr)->ReadSector(flags, idr_, buffer_.get());
 
@@ -586,7 +587,7 @@ void FDC::ReadData(bool deleted, bool scan) {
     return;
   }
   int xbyte = idr_.n ? (0x80 << std::min(8, static_cast<int>(idr_.n)))
-                    : (std::min(dtl_, 0x80U));
+                     : (std::min(dtl_, 0x80U));
 
   if (!scan)
     ShiftToExecReadPhase(xbyte);
@@ -652,8 +653,8 @@ void FDC::Seek(uint32_t dr, uint32_t cy) {
     Log("Seek: %d -> %d (%d)\n", drive_[dr].cylinder, cy, seekcount);
     drive_[dr].cylinder = cy;
     seek_time_ = seekcount && disk_wait_ ? (400 * seekcount + 500) : 10;
-    scheduler_->AddEvent(seek_time_, this, static_cast<TimeFunc>(&FDC::SeekEvent),
-                        dr);
+    scheduler_->AddEvent(seek_time_, this,
+                         static_cast<TimeFunc>(&FDC::SeekEvent), dr);
     seek_state_ |= 1 << dr;
 
     if (seek_time_ > 10) {
@@ -800,7 +801,8 @@ void FDC::CmdWriteData() {
         if (!result_) {
           uint32_t dr = hdu_ & 3;
           result_ = diskmgr_->GetFDU(dr)->FindID(
-              ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80), idr_);
+              ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80),
+              idr_);
         }
         if (result_) {
           ShiftToResultPhase7();
@@ -856,8 +858,8 @@ void FDC::CmdWriteData() {
 void FDC::WriteData(bool deleted) {
   Log("\twrite %.2x %.2x %.2x %.2x\n", idr_.c, idr_.h, idr_.r, idr_.n);
   if (show_status_)
-    Toast::Show(85, 0, "Write (%d) %.2x %.2x %.2x %.2x", hdu_ & 3, idr_.c, idr_.h,
-                idr_.r, idr_.n);
+    Toast::Show(85, 0, "Write (%d) %.2x %.2x %.2x %.2x", hdu_ & 3, idr_.c,
+                idr_.h, idr_.r, idr_.n);
 
   CriticalSection::Lock lock(diskmgr_->GetCS());
   if (result_ = CheckCondition(true)) {
@@ -866,8 +868,10 @@ void FDC::WriteData(bool deleted) {
   }
 
   uint32_t dr = hdu_ & 3;
-  uint32_t flags = ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
-  result_ = diskmgr_->GetFDU(dr)->WriteSector(flags, idr_, buffer_.get(), deleted);
+  uint32_t flags =
+      ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
+  result_ =
+      diskmgr_->GetFDU(dr)->WriteSector(flags, idr_, buffer_.get(), deleted);
   return;
 }
 
@@ -984,7 +988,8 @@ void FDC::WriteID() {
   }
 
   uint32_t dr = hdu_ & 3;
-  uint32_t flags = ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
+  uint32_t flags =
+      ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
   result_ = diskmgr_->GetFDU(dr)->WriteID(flags, &wid_);
   if (show_status_)
     Toast::Show(85, 0, "WriteID dr:%d tr:%d sec:%.2d N:%.2x", dr,
@@ -1018,7 +1023,7 @@ void FDC::CmdReadDiagnostic() {
         return;
       }
       xbyte_ = idr_.n ? 0x80 << std::min(8, static_cast<int>(idr_.n))
-                    : std::min(dtl_, 0x80U);
+                      : std::min(dtl_, 0x80U);
       ct = std::min(static_cast<int>(readdiag_lim_ - readdiag_ptr_),
                     static_cast<int>(xbyte_));
       readdiag_count_ = ct;
@@ -1081,8 +1086,8 @@ void FDC::ReadDiagnostic() {
         ((hdu_ >> 2) & 1) | (command_ & 0x40) | (drive_[dr].hd & 0x80);
     uint32_t size;
     int tr = (drive_[dr].cylinder >> drive_[dr].dd) * 2 + ((hdu_ >> 2) & 1);
-    Toast::Show(84, show_status_ ? 1000 : 2000, "ReadDiagnostic (Dr%d Tr%d)", dr,
-                tr);
+    Toast::Show(84, show_status_ ? 1000 : 2000, "ReadDiagnostic (Dr%d Tr%d)",
+                dr, tr);
 
     result_ = diskmgr_->GetFDU(dr)->MakeDiagData(flags, buffer_.get(), &size);
     if (result_) {
@@ -1092,7 +1097,8 @@ void FDC::ReadDiagnostic() {
     readdiag_lim_ = buffer_.get() + size;
     Log("[0x%.4x]", size);
   }
-  result_ = diskmgr_->GetFDU(hdu_ & 3)->ReadDiag(buffer_.get(), &readdiag_ptr_, idr_);
+  result_ =
+      diskmgr_->GetFDU(hdu_ & 3)->ReadDiag(buffer_.get(), &readdiag_ptr_, idr_);
   Log(" (ptr=0x%.4x re=%d)\n", readdiag_ptr_ - buffer_.get(), result_);
   return;
 }
@@ -1204,9 +1210,9 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
 
   scheduler_->DelEvent(this);
   if (st->t_phase != kIdlePhase)
-    timer_handle_ = scheduler_->AddEvent(disk_wait_ ? 100 : 10, this,
-                                      static_cast<TimeFunc>(&FDC::PhaseTimer),
-                                      st->t_phase);
+    timer_handle_ = scheduler_->AddEvent(
+        disk_wait_ ? 100 : 10, this, static_cast<TimeFunc>(&FDC::PhaseTimer),
+        st->t_phase);
 
   fdstat_ = 0;
   for (int d = 0; d < num_drives; d++) {
@@ -1214,7 +1220,7 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
     diskmgr_->GetFDU(d)->Seek(drive_[d].cylinder);
     if (seek_state_ & (1 << d)) {
       scheduler_->AddEvent(disk_wait_ ? 100 : 10, this,
-                          static_cast<TimeFunc>(&FDC::SeekEvent), d);
+                           static_cast<TimeFunc>(&FDC::SeekEvent), d);
       fdstat_ |= 0x10;
     }
     statusdisplay.FDAccess(d, drive_[d].hd != 0, false);

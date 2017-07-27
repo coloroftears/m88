@@ -159,8 +159,7 @@ bool TapeManager::Motor(bool s) {
         scheduler_->DelEvent(event_);
         event_ = nullptr;
       }
-      Toast::Show(10, 2000, "Motor off: %d %d", timerremain_,
-                         timercount_);
+      Toast::Show(10, 2000, "Motor off: %d %d", timerremain_, timercount_);
     }
     motor_ = false;
   }

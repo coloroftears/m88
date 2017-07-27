@@ -83,7 +83,8 @@ bool PC88::Init(Draw* _draw, DiskManager* disk, TapeManager* tape) {
   if (!sub_mm_.Init(0x10000, read, write))
     return false;
 
-  if (!main_bus_.Init(kPortEnd, &devlist_) || !sub_bus_.Init(kPortEnd2, &devlist_))
+  if (!main_bus_.Init(kPortEnd, &devlist_) ||
+      !sub_bus_.Init(kPortEnd2, &devlist_))
     return false;
 
   if (!ConnectDevices() || !ConnectDevices2())
@@ -151,8 +152,8 @@ SchedTimeDelta PC88::GetTicks() {
 void PC88::VSync() {
   statusdisplay.UpdateDisplay();
   if (config_flags_ & Config::kWatchRegister)
-    Toast::Show(10, 0, "%.4X(%.2X)/%.4X", main_cpu_.GetPC(), main_cpu_.GetReg().ireg,
-                sub_cpu_.GetPC());
+    Toast::Show(10, 0, "%.4X(%.2X)/%.4X", main_cpu_.GetPC(),
+                main_cpu_.GetReg().ireg, sub_cpu_.GetPC());
 }
 
 // ---------------------------------------------------------------------------
@@ -352,7 +353,8 @@ bool PC88::ConnectDevices() {
   main_memory_.reset(new Memory(DEV_ID('M', 'E', 'M', '1')));
   if (!main_memory_ || !main_bus_.Connect(main_memory_.get(), c_main_mem))
     return false;
-  if (!main_memory_->Init(&main_mm_, &main_bus_, crtc_.get(), main_cpu_.GetWaits()))
+  if (!main_memory_->Init(&main_mm_, &main_bus_, crtc_.get(),
+                          main_cpu_.GetWaits()))
     return false;
 
   if (!crtc_->Init(&main_bus_, sched_.get(), dmac_.get(), draw_))
@@ -419,8 +421,10 @@ bool PC88::ConnectDevices() {
       {0xe6, IOBus::portout, InterruptController::kSetMask},
       {kPortIntAck, IOBus::portin, InterruptController::kIntAck},
       {0, 0, 0}};
-  interrupt_controller_.reset(new InterruptController(DEV_ID('I', 'N', 'T', 'C')));
-  if (!interrupt_controller_ || !main_bus_.Connect(interrupt_controller_.get(), c_intc))
+  interrupt_controller_.reset(
+      new InterruptController(DEV_ID('I', 'N', 'T', 'C')));
+  if (!interrupt_controller_ ||
+      !main_bus_.Connect(interrupt_controller_.get(), c_intc))
     return false;
   if (!interrupt_controller_->Init(&main_bus_, kPortIRQ, kPortInt0))
     return false;
@@ -615,15 +619,15 @@ void PC88::ApplyConfig(Config* cfg) {
   opn2_->SetVolume(cfg);
 
   cpumode_ = (cfg->cpumode == Config::msauto)
-                ? (cfg->mainsubratio > 1 ? ms21 : ms11)
-                : (cfg->cpumode & 1);
+                 ? (cfg->mainsubratio > 1 ? ms21 : ms11)
+                 : (cfg->cpumode & 1);
   if ((cfg->flags & Config::kSubCPUControl) != 0)
     cpumode_ |= stopwhenidle;
 
   if (cfg->flags & Config::kEnablePad) {
     joypad_->SetButtonMode(cfg->flags & Config::kSwappedButtons
-                              ? JoyPad::SWAPPED
-                              : JoyPad::NORMAL);
+                               ? JoyPad::SWAPPED
+                               : JoyPad::NORMAL);
   } else {
     joypad_->SetButtonMode(JoyPad::DISABLED);
   }

@@ -255,8 +255,8 @@ uint32_t CRTC::Command(bool a0, uint32_t data) {
           lines_per_char_ = (data & 0x1f) + 1;
 
           linetime_ = (is_15khz_ ? static_cast<int>(6.258 * 1024)
-                              : static_cast<int>(4.028 * 1024)) *
-                     lines_per_char_ / 1024;
+                                 : static_cast<int>(4.028 * 1024)) *
+                      lines_per_char_ / 1024;
           if (data & 0x80)
             mode_ |= skipline;
           if (is_15khz_)
@@ -400,7 +400,8 @@ void CRTC::CreateTFont() {
 }
 
 void CRTC::CreateKanaFont() {
-  CreateTFont((kana_mode_ && hirarom_) ? hirarom_ : fontrom_ + 8 * 0xa0, 0xa0, 0x40);
+  CreateTFont((kana_mode_ && hirarom_) ? hirarom_ : fontrom_ + 8 * 0xa0, 0xa0,
+              0x40);
 }
 
 void CRTC::CreateTFont(const uint8_t* src, int idx, int num) {
@@ -481,12 +482,12 @@ void IOCALL CRTC::ExpandLine(uint32_t) {
   if (e) {
     event_ = e + 1;
     sev_ = scheduler_->AddEvent(linetime_ * e, this,
-                              static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
+                                static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
   } else {
     if (++column_ < height_) {
       event_ = 1;
       sev_ = scheduler_->AddEvent(linetime_, this,
-                                static_cast<TimeFunc>(&CRTC::ExpandLine));
+                                  static_cast<TimeFunc>(&CRTC::ExpandLine));
     } else
       ExpandLineEnd();
   }
@@ -547,7 +548,7 @@ inline void IOCALL CRTC::ExpandLineEnd(uint32_t) {
   bus_->Out(PC88::kVRTC, 1);
   event_ = -1;
   sev_ = scheduler_->AddEvent(linetime_ * vretrace_, this,
-                            static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
+                              static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -668,7 +669,7 @@ void CRTC::ExpandImage(uint8_t* image, Draw::Region& region) {
   //  image += y * linestep;
   uint8_t* src = vram_[bank_];         // + y * linesize_;
   uint8_t* cache = vram_[bank_ ^= 1];  // + y * linesize_;
-  uint8_t* cache_attr = attrcache_;   // + y * width;
+  uint8_t* cache_attr = attrcache_;    // + y * width;
 
   uint32_t left = 999;
   int right = -1;
@@ -1132,13 +1133,13 @@ bool IFCALL CRTC::LoadStatus(const uint8_t* s) {
   scheduler_->DelEvent(sev_);
   if (event_ == 1)
     sev_ = scheduler_->AddEvent(linetime_, this,
-                              static_cast<TimeFunc>(&CRTC::ExpandLine));
+                                static_cast<TimeFunc>(&CRTC::ExpandLine));
   else if (event_ > 1)
     sev_ = scheduler_->AddEvent(linetime_ * (event_ - 1), this,
-                              static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
+                                static_cast<TimeFunc>(&CRTC::ExpandLineEnd));
   else if (event_ == -1 || st->rev == 1)
     sev_ = scheduler_->AddEvent(linetime_ * vretrace_, this,
-                              static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
+                                static_cast<TimeFunc>(&CRTC::StartDisplay), 0);
 
   return true;
 }
