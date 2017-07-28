@@ -497,7 +497,6 @@
     <ClCompile Include="src\win32\monitors\soundmon.cpp" />
     <ClCompile Include="src\win32\monitors\winmon.cpp" />
     <ClCompile Include="src\win32\newdisk.cpp" />
-    <ClCompile Include="src\win32\romeo\piccolo.cpp" />
     <ClCompile Include="src\win32\soundds.cpp" />
     <ClCompile Include="src\win32\soundds2.cpp" />
     <ClCompile Include="src\win32\soundwo.cpp" />
@@ -607,9 +606,6 @@
     <ClInclude Include="src\win32\monitors\winmon.h" />
     <ClInclude Include="src\win32\newdisk.h" />
     <ClInclude Include="src\win32\resource.h" />
-    <ClInclude Include="src\win32\romeo\juliet.h" />
-    <ClInclude Include="src\win32\romeo\piccolo.h" />
-    <ClInclude Include="src\win32\romeo\romeo.h" />
     <ClInclude Include="src\win32\sounddrv.h" />
     <ClInclude Include="src\win32\soundds.h" />
     <ClInclude Include="src\win32\soundds2.h" />
