@@ -13,8 +13,6 @@
 
 class PC88;
 class Scheduler;
-class Piccolo;
-class PiccoloChip;
 
 //#define USE_OPN
 
@@ -126,14 +124,7 @@ class OPNInterface final : public Device, public ISoundSource {
  private:
   void UpdateTimer();
   void IOCALL TimeEvent(uint32_t);
-  uint32_t ChipTime();
-#if 0
-    bool ROMEOInit();
-    bool ROMEOEnabled() { return romeo_user == this; }
-#endif
   OPNUnit opn;
-  Piccolo* piccolo;
-  PiccoloChip* chip;
   ISoundControl* soundcontrol;
   IOBus* bus;
   Scheduler* scheduler;
@@ -144,8 +135,6 @@ class OPNInterface final : public Device, public ISoundSource {
   uint32_t currentrate;
   bool fmmixmode;
 
-  uint32_t basetime;
-  uint32_t basetick;
   uint32_t clock;
 
   bool opnamode;
@@ -160,8 +149,6 @@ class OPNInterface final : public Device, public ISoundSource {
   uint8_t regs[0x200];
 
   static int prescaler;
-
-  //  static OPNInterface* romeo_user;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

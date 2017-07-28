@@ -13,18 +13,10 @@
 #include "common/toast.h"
 #include "pc88/config.h"
 
-#include "win32/romeo/piccolo.h"
-
-//#include "romeo/juliet.h"
-
 #define LOGNAME "opnif"
 #include "common/diag.h"
 
 namespace pc88core {
-
-// OPNInterface* OPNInterface::romeo_user = 0;
-
-#define ROMEO_JULIET 0
 
 // ---------------------------------------------------------------------------
 //  プリスケーラの設定値
@@ -36,7 +28,7 @@ int OPNInterface::prescaler = 0x2d;
 // ---------------------------------------------------------------------------
 //  生成・破棄
 //
-OPNInterface::OPNInterface(const ID& id) : Device(id), chip(0) {
+OPNInterface::OPNInterface(const ID& id) : Device(id) {
   Log("Hello\n");
   scheduler = 0;
   soundcontrol = 0;
@@ -65,24 +57,6 @@ bool OPNInterface::Init(IOBus* b, int intrport, int io, Scheduler* s) {
     return false;
   prevtime = scheduler->GetTime();
   TimeEvent(1);
-
-  piccolo = Piccolo::GetInstance();
-  if (piccolo) {
-    Log("asking piccolo to obtain YMF288 instance\n");
-    if (piccolo->GetChip(PICCOLO_YMF288, &chip) >= 0) {
-      Log(" success.\n");
-      if (piccolo->IsDriverBased())
-        Toast::Show(100, 10000, "ROMEO_PICCOLO: YMF288 enabled");
-      else
-        Toast::Show(100, 10000, "ROMEO_JULIET: YMF288 enabled");
-#ifdef USE_OPN
-      clock = 4000000;
-#else
-      clock = 8000000;
-#endif
-      //  opn.Init(clock, 8000, 0);
-    }
-  }
 
   return true;
 }
@@ -150,10 +124,6 @@ void OPNInterface::SetVolume(const Config* config) {
   opn.SetVolumeRhythm(4, ConvertVolume(config->voltom));
   opn.SetVolumeRhythm(5, ConvertVolume(config->volrim));
 #endif
-
-  if (chip) {
-    delay = config->romeolatency * 1000;
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -170,9 +140,6 @@ void IOCALL OPNInterface::Reset(uint32_t, uint32_t) {
   opn.Reset();
   opn.SetIntrMask(true);
   prescaler = 0x2d;
-
-  if (chip)
-    chip->Reset();
 }
 
 // ---------------------------------------------------------------------------
@@ -223,13 +190,6 @@ void IOCALL OPNInterface::SetIndex1(uint32_t a, uint32_t data) {
 }
 
 // ---------------------------------------------------------------------------
-//
-//
-inline uint32_t OPNInterface::ChipTime() {
-  return basetime + (scheduler->GetTime() - basetick) * 10 + delay;
-}
-
-// ---------------------------------------------------------------------------
 //  WriteRegister
 //
 void IOCALL OPNInterface::WriteData0(uint32_t a, uint32_t data) {
@@ -252,13 +212,6 @@ void IOCALL OPNInterface::WriteData0(uint32_t a, uint32_t data) {
     }
     regs[index0] = data;
     opn.SetReg(index0, data);
-#if ROMEO_JULIET
-    if (ROMEOEnabled())
-      juliet_YMF288A(index0, data);
-#endif
-    if (chip && index0 != 0x20)
-      chip->SetReg(ChipTime(), index0, data);
-
     if (index0 == 0x27) {
       UpdateTimer();
     }
@@ -275,9 +228,6 @@ void IOCALL OPNInterface::WriteData1(uint32_t a, uint32_t data) {
     data1 = data;
     regs[0x100 | index1] = data;
     opn.SetReg(0x100 | index1, data);
-
-    if (chip && index1 >= 0x30)
-      chip->SetReg(ChipTime(), 0x100 | index1, data);
   }
 #endif
 }
@@ -455,10 +405,7 @@ bool IFCALL OPNInterface::LoadStatus(const uint8_t* s) {
 //  カウンタを同期
 //
 void IOCALL OPNInterface::Sync(uint32_t, uint32_t) {
-  if (chip) {
-    basetime = piccolo->GetCurrentTime();
-    basetick = scheduler->GetTime();
-  }
+  // TODO: This used to sync with external sound source (romeo).
 }
 
 // ---------------------------------------------------------------------------
