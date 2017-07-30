@@ -9,18 +9,12 @@
 #include "common/device.h"
 #include "devices/opna.h"
 
-// ---------------------------------------------------------------------------
-
 class PC88;
 class Scheduler;
 
-//#define USE_OPN
-
 namespace pc88core {
 class Config;
-// ---------------------------------------------------------------------------
-//  88 用の OPN Unit
-//
+// 88 用の OPN Unit
 class OPNInterface final : public Device, public ISoundSource {
  public:
   enum IDFunc {
@@ -37,18 +31,14 @@ class OPNInterface final : public Device, public ISoundSource {
     readdata1,
   };
   enum {
-#ifdef USE_OPN
-    baseclock = 3993600,
-#else
-    baseclock = 7987200,
-#endif
+    kBaseClock = 7987200,
   };
 
  public:
   explicit OPNInterface(const ID& id);
   ~OPNInterface();
 
-  bool Init(IOBus* bus, int intrport, int io, Scheduler* s);
+  bool Init(IOBus* bus, int intrport, int port, Scheduler* s);
   void SetIMask(uint32_t port, uint32_t bit);
 
   // Overrides ISoundSource.
@@ -65,9 +55,9 @@ class OPNInterface final : public Device, public ISoundSource {
   bool IFCALL SaveStatus(uint8_t* status) final;
   bool IFCALL LoadStatus(const uint8_t* status) final;
 
-  void Enable(bool en) { enable = en; }
-  void SetOPNMode(bool _opna) { opnamode = _opna; }
-  const uint8_t* GetRegs() { return regs; }
+  void Enable(bool enable) { enable_ = enable; }
+  void SetOPNMode(bool _opna) { opnamode_ = _opna; }
+  const uint8_t* GetRegs() { return regs_; }
   void SetChannelMask(uint32_t ch);
 
   void IOCALL SetIntrMask(uint32_t, uint32_t intrmask);
@@ -83,30 +73,24 @@ class OPNInterface final : public Device, public ISoundSource {
   void IOCALL Sync(uint32_t, uint32_t);
 
  private:
-  class OPNUnit final :
-#ifndef USE_OPN
-      public fmgen::OPNA
-#else
-      public fmgen::OPN
-#endif
-  {
+  class OPNUnit final : public fmgen::OPNA {
    public:
-    OPNUnit() : bus(nullptr) {}
+    OPNUnit() {}
     ~OPNUnit() override {}
 
     void Intr(bool f) override;
 
-    void SetIntr(IOBus* b, int p) { bus = b, pintr = p; }
+    void SetIntr(IOBus* b, int p) { bus_ = b, pintr_ = p; }
     void SetIntrMask(bool e);
     uint32_t IntrStat() {
-      return (intrenabled ? 1 : 0) | (intrpending ? 2 : 0);
+      return (interrupt_enabled_ ? 1 : 0) | (interrup_pending_ ? 2 : 0);
     }
 
    private:
-    IOBus* bus;
-    int pintr;
-    bool intrenabled;
-    bool intrpending;
+    IOBus* bus_ = nullptr;
+    int pintr_;
+    bool interrupt_enabled_;
+    bool interrup_pending_;
 
     friend class OPNInterface;
   };
@@ -124,31 +108,31 @@ class OPNInterface final : public Device, public ISoundSource {
  private:
   void UpdateTimer();
   void IOCALL TimeEvent(uint32_t);
-  OPNUnit opn;
-  ISoundControl* soundcontrol;
-  IOBus* bus;
-  Scheduler* scheduler;
-  uint32_t imaskport;
-  int imaskbit;
-  int prevtime;
-  int portio;
-  uint32_t currentrate;
-  bool fmmixmode;
+  OPNUnit opn_;
 
-  uint32_t clock;
+  ISoundControl* soundcontrol_ = nullptr;
+  IOBus* bus_ = nullptr;
+  Scheduler* scheduler_ = nullptr;
 
-  bool opnamode;
-  bool enable;
+  uint32_t imaskport_ = 0;
+  int imaskbit_ = 0;
+  int prevtime_ = 0;
+  int portio_ = 0;
+  uint32_t currentrate_ = 0;
 
-  uint32_t index0;
-  uint32_t index1;
-  uint32_t data1;
+  uint32_t clock = 0;
 
-  int delay;
+  bool fmmixmode_ = true;
+  bool opnamode_ = false;
+  bool enable_ = false;
 
-  uint8_t regs[0x200];
+  uint32_t index0_;
+  uint32_t index1_;
+  uint32_t data1_;
 
-  static int prescaler;
+  uint8_t regs_[0x200];
+
+  static int prescaler_;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];
@@ -156,6 +140,6 @@ class OPNInterface final : public Device, public ISoundSource {
 };
 
 inline void OPNInterface::SetChannelMask(uint32_t ch) {
-  opn.SetChannelMask(ch);
+  opn_.SetChannelMask(ch);
 }
 }  // namespace pc88core
