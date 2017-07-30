@@ -29,12 +29,6 @@ class Sound : public Device,
  public:
   ~Sound();
 
-  bool Init(PC88* pc, uint32_t rate, int bufsize);
-  void Cleanup();
-
-  void ApplyConfig(const Config* config);
-  bool SetRate(uint32_t rate, int bufsize);
-
   void IOCALL UpdateCounter(uint32_t);
 
   // Overrides ISoundControl.
@@ -43,41 +37,47 @@ class Sound : public Device,
   bool IFCALL Update(ISoundSource* src = nullptr) final;
   int IFCALL GetSubsampleTime(ISoundSource* src) final;
 
-  void FillWhenEmpty(bool f) { soundbuf.FillWhenEmpty(f); }
-
-  SoundSource<Sample16>* GetSoundSource() { return &soundbuf; }
+  void FillWhenEmpty(bool f) { soundbuf_.FillWhenEmpty(f); }
 
   int Get(Sample16* dest, int size);
 
   // Overrides SoundSource<Sample32>.
   int Get(Sample32* dest, int size) final;
-  uint32_t GetRate() const final { return mixrate; }
+  uint32_t GetRate() const final { return mix_rate_; }
   int GetChannels() const final { return 2; }
   int GetAvail() const final { return INT_MAX; }
 
  protected:
   Sound();
-  uint32_t mixrate;
-  uint32_t samplingrate;  // サンプリングレート
-  uint32_t rate50;        // samplingrate / 50
+
+  bool Init(PC88* pc, uint32_t rate, int bufsize);
+  void Cleanup();
+
+  void ApplyConfig(const Config* config);
+  bool SetRate(uint32_t rate, int bufsize);
+
+  SoundSource<Sample16>* GetSoundSource() { return &soundbuf_; }
 
  private:
-  //  SoundBuffer2 soundbuf;
-  SamplingRateConverter soundbuf;
+  //  SoundBuffer2 soundbuf_;
+  SamplingRateConverter soundbuf_;
 
-  PC88* pc;
+  PC88* pc_;
 
   std::unique_ptr<int32_t[]> mixingbuf_;
-  int buffersize;
+  int buffer_size_;
 
-  uint32_t prevtime;
-  uint32_t cfgflg;
-  int tdiff;
-  uint32_t mixthreshold;
+  uint32_t prev_time_;
+  int tdiff_;
+  uint32_t mix_threashold_;
 
-  bool enabled;
+  bool enabled_ = false;
+
+  uint32_t mix_rate_;
+  uint32_t sampling_rate_;  // サンプリングレート
+  uint32_t rate50_;        // sampling_rate_ / 50
 
   std::vector<ISoundSource*> sslist_;
-  CriticalSection cs_ss;
+  CriticalSection cs_;
 };
 }  // namespace pc88core
