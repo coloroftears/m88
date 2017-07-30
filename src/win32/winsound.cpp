@@ -41,14 +41,15 @@ WinSound::~WinSound() {
 //  初期化
 //
 bool WinSound::Init(pc88core::PC88* pc, HWND hwindow, uint32_t rate, uint32_t buflen) {
+  if (!Sound::Init(pc, 8000, 0))
+    return false;
+
   currentrate = 100;
   currentbuflen = 0;
   hwnd = hwindow;
 
   dumper.SetSource(GetSoundSource());
 
-  if (!Sound::Init(pc, 8000, 0))
-    return false;
   return true;
 }
 
@@ -56,12 +57,13 @@ bool WinSound::Init(pc88core::PC88* pc, HWND hwindow, uint32_t rate, uint32_t bu
 //  後処理
 //
 void WinSound::Cleanup() {
+  Sound::Cleanup();
+
   if (driver) {
     driver->Cleanup();
     delete driver;
     driver = 0;
   }
-  Sound::Cleanup();
 }
 
 // ---------------------------------------------------------------------------
@@ -139,6 +141,8 @@ bool WinSound::ChangeRate(uint32_t rate, uint32_t buflen, bool waveout) {
 //  設定更新
 //
 void WinSound::ApplyConfig(const Config* config) {
+  Sound::ApplyConfig(config);
+
   useds2 = !!(config->flag2 & Config::kUseDSNotify);
 
   bool wo = (config->flag2 & Config::kUseWaveOutDrv) != 0;
@@ -146,8 +150,6 @@ void WinSound::ApplyConfig(const Config* config) {
 
   if (driver)
     driver->MixAlways(0 != (config->flags & Config::kMixSoundAlways));
-
-  Sound::ApplyConfig(config);
 }
 
 bool WinSound::DumpBegin(char* filename) {
