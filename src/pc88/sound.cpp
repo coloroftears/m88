@@ -84,6 +84,7 @@ void Sound::Cleanup() {
   mixingbuf_.reset();
 }
 
+#if 0  // Not used.
 // 音合成
 int Sound::Get(Sample16* dest, int nsamples) {
   int mixsamples = std::min(nsamples, buffer_size_);
@@ -104,6 +105,7 @@ int Sound::Get(Sample16* dest, int nsamples) {
   }
   return mixsamples;
 }
+#endif
 
 // 音合成
 int Sound::Get(Sample32* dest, int nsamples) {

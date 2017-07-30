@@ -39,7 +39,8 @@ class Sound : public Device,
 
   void FillWhenEmpty(bool f) { soundbuf_.FillWhenEmpty(f); }
 
-  int Get(Sample16* dest, int size);
+  // Not used.
+  // int Get(Sample16* dest, int size);
 
   // Overrides SoundSource<Sample32>.
   int Get(Sample32* dest, int size) final;
