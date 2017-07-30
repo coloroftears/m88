@@ -8,16 +8,11 @@
 
 #include "common/device.h"
 
-// ---------------------------------------------------------------------------
-
 class PC88;
 
 namespace pc88core {
 class Config;
 
-// ---------------------------------------------------------------------------
-//
-//
 class Beep final : public Device, public ISoundSource {
  public:
   enum IDFunc { kOut40 };
@@ -56,14 +51,14 @@ class Beep final : public Device, public ISoundSource {
     uint32_t prevtime;
   };
 
-  ISoundControl* soundcontrol_;
-  int bslice_;
-  int pslice_;
-  int bcount_;
-  int bperiod_;
+  ISoundControl* soundcontrol_ = nullptr;
+  int bslice_ = 0;
+  int pslice_ = 0;
+  int bcount_ = 0;
+  int bperiod_ = 0;
 
-  uint32_t port40_;
-  uint32_t p40mask_;
+  uint32_t port40_ = 0;
+  uint32_t p40mask_ = 0xa0;
 
   static const Descriptor descriptor;
   static const OutFuncPtr outdef[];

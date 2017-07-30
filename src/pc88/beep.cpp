@@ -8,29 +8,20 @@
 
 namespace pc88core {
 
-// ---------------------------------------------------------------------------
-//  生成・破棄
-//
-Beep::Beep(const ID& id) : Device(id), soundcontrol_(0) {}
+Beep::Beep(const ID& id) : Device(id) {}
 
 Beep::~Beep() {
   Cleanup();
 }
 
-// ---------------------------------------------------------------------------
-//  初期化とか
-//
 bool Beep::Init() {
   port40_ = 0;
   p40mask_ = 0xa0;
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  後片付け
-//
 void Beep::Cleanup() {
-  Connect(0);
+  Connect(nullptr);
 }
 
 bool IFCALL Beep::Connect(ISoundControl* control) {
@@ -42,9 +33,6 @@ bool IFCALL Beep::Connect(ISoundControl* control) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  レート設定
-//
 bool Beep::SetRate(uint32_t rate) {
   pslice_ = 0;
   bslice_ = 0;
@@ -120,9 +108,6 @@ void IOCALL Beep::Out40(uint32_t, uint32_t data) {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  状態保存
-//
 uint32_t IFCALL Beep::GetStatusSize() {
   return sizeof(Status);
 }
@@ -142,9 +127,6 @@ bool IFCALL Beep::LoadStatus(const uint8_t* s) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  device description
-//
 const Device::Descriptor Beep::descriptor = {0, outdef};
 
 const Device::OutFuncPtr Beep::outdef[] = {
