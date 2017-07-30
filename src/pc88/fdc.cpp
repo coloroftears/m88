@@ -26,9 +26,6 @@
 
 namespace pc88core {
 
-// ---------------------------------------------------------------------------
-//  構築/消滅
-//
 FDC::FDC(const ID& id) : Device(id) {
   timer_handle_ = 0;
   litdrive_ = 0;
@@ -43,14 +40,11 @@ FDC::FDC(const ID& id) : Device(id) {
 
 FDC::~FDC() {}
 
-// ---------------------------------------------------------------------------
-//  初期化
-//
 bool FDC::Init(DiskManager* dm, Scheduler* s, IOBus* b, int ip, int sp) {
   diskmgr_ = dm;
   scheduler_ = s;
   bus_ = b;
-  pintr = ip;
+  pintr_ = ip;
   pfdstat_ = sp;
 
   show_status_ = 0;
@@ -69,9 +63,6 @@ bool FDC::Init(DiskManager* dm, Scheduler* s, IOBus* b, int ip, int sp) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  設定反映
-//
 void FDC::ApplyConfig(const Config* cfg) {
   disk_wait_ = !(cfg->flag2 & Config::kFDDNoWait);
   show_status_ = (cfg->flags & Config::kShowFDCStatus) != 0;
@@ -115,12 +106,9 @@ void IOCALL FDC::DriveControl(uint32_t, uint32_t data) {
 //  割り込み発生
 //
 inline void FDC::Intr(bool i) {
-  bus_->Out(pintr, i);
+  bus_->Out(pintr_, i);
 }
 
-// ---------------------------------------------------------------------------
-//  Reset
-//
 void IOCALL FDC::Reset(uint32_t, uint32_t) {
   Log("Reset\n");
   ShiftToIdlePhase();
@@ -135,26 +123,22 @@ void IOCALL FDC::Reset(uint32_t, uint32_t) {
     bus_->Out(pfdstat_, fdstat_);
 }
 
-// ---------------------------------------------------------------------------
-//  FDC::Status
-//  ステータスレジスタ
+// FDC::Status
+// ステータスレジスタ
 //
-//  MSB                         LSB
-//  RQM DIO NDM CB  D3B D2B D1B D0B
+// MSB                         LSB
+// RQM DIO NDM CB  D3B D2B D1B D0B
 //
-//  CB  = kIdlePhase 以外
-//  NDM = E-Phase
-//  DIO = 0 なら CPU->FDC (Put)  1 なら FDC->CPU (Get)
-//  RQM = データの送信・受信の用意ができた
-//
+// CB  = kIdlePhase 以外
+// NDM = E-Phase
+// DIO = 0 なら CPU->FDC (Put)  1 なら FDC->CPU (Get)
+// RQM = データの送信・受信の用意ができた
 uint32_t IOCALL FDC::Status(uint32_t) {
   return seek_state_ | status_;
 }
 
-// ---------------------------------------------------------------------------
-//  FDC::SetData
-//  CPU から FDC にデータを送る
-//
+// FDC::SetData
+// CPU から FDC にデータを送る
 void IOCALL FDC::SetData(uint32_t, uint32_t d) {
   // 受け取れる状況かチェック
   if ((status_ & (S_RQM | S_DIO)) == S_RQM) {
@@ -213,10 +197,8 @@ void IOCALL FDC::SetData(uint32_t, uint32_t d) {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  FDC::GetData
-//  FDC -> CPU
-//
+// FDC::GetData
+// FDC -> CPU
 uint32_t IOCALL FDC::GetData(uint32_t) {
   if ((status_ & (S_RQM | S_DIO)) == (S_RQM | S_DIO)) {
     Intr(false);
@@ -253,9 +235,7 @@ uint32_t IOCALL FDC::GetData(uint32_t) {
   return data_;
 }
 
-// ---------------------------------------------------------------------------
-//  TC (転送終了)
-//
+// TC (Transfer Complete)
 uint32_t IOCALL FDC::TC(uint32_t) {
   if (accept_tc_) {
     Log(" <TC>");
@@ -267,9 +247,7 @@ uint32_t IOCALL FDC::TC(uint32_t) {
   return 0;
 }
 
-// ---------------------------------------------------------------------------
-//  I-PHASE (コマンド待ち)
-//
+// I-PHASE (Idle phase, waiting for command)
 void FDC::ShiftToIdlePhase() {
   phase_ = kIdlePhase;
   status_ = S_RQM;
@@ -283,9 +261,7 @@ void FDC::ShiftToIdlePhase() {
   Log("FD %d Off\n", litdrive_);
 }
 
-// ---------------------------------------------------------------------------
-//  C-PHASE (パラメータ待ち)
-//
+// C-PHASE (Command phase, waiting for parameters)
 void FDC::ShiftToCommandPhase(int nbytes) {
   phase_ = kCommandPhase;
   status_ = S_RQM | S_CB;
@@ -302,17 +278,13 @@ void FDC::ShiftToCommandPhase(int nbytes) {
     bus_->Out(pfdstat_, fdstat_);
 }
 
-// ---------------------------------------------------------------------------
-//  E-PHASE
-//
+// E-PHASE (Execution phase)
 void FDC::ShiftToExecutePhase() {
   phase_ = kExecutePhase;
   (this->*CommandTable[command_ & 31])();
 }
 
-// ---------------------------------------------------------------------------
-//  E-PHASE (FDC->CPU)
-//
+// E-PHASE (FDC->CPU)
 void FDC::ShiftToExecReadPhase(int nbytes, uint8_t* data) {
   phase_ = kExecReadPhase;
   status_ = S_RQM | S_DIO | S_NDM | S_CB;
@@ -323,9 +295,7 @@ void FDC::ShiftToExecReadPhase(int nbytes, uint8_t* data) {
   count_ = nbytes;
 }
 
-// ---------------------------------------------------------------------------
-//  E-PHASE (CPU->FDC)
-//
+// E-PHASE (CPU->FDC)
 void FDC::ShiftToExecWritePhase(int nbytes) {
   phase_ = kExecWritePhase;
   status_ = S_RQM | S_NDM | S_CB;
@@ -335,9 +305,7 @@ void FDC::ShiftToExecWritePhase(int nbytes) {
   bufptr_ = buffer_.get(), count_ = nbytes;
 }
 
-// ---------------------------------------------------------------------------
-//  E-PHASE (CPU->FDC, COMPARE)
-//
+// E-PHASE (CPU->FDC, COMPARE)
 void FDC::ShiftToExecScanPhase(int nbytes) {
   phase_ = kExecScanPhase;
   status_ = S_RQM | S_NDM | S_CB;
@@ -348,9 +316,7 @@ void FDC::ShiftToExecScanPhase(int nbytes) {
   bufptr_ = buffer_.get(), count_ = nbytes;
 }
 
-// ---------------------------------------------------------------------------
-//  R-PHASE
-//
+// R-PHASE (Result phase)
 void FDC::ShiftToResultPhase(int nbytes) {
   phase_ = kResultPhase;
   status_ = S_RQM | S_CB | S_DIO;
@@ -360,9 +326,7 @@ void FDC::ShiftToResultPhase(int nbytes) {
   Log("\t{");
 }
 
-// ---------------------------------------------------------------------------
-//  R/W DATA 系 kResultPhase (ST0/ST1/ST2/C/H/R/N)
-
+// R/W DATA 系 kResultPhase (ST0/ST1/ST2/C/H/R/N)
 void FDC::ShiftToResultPhase7() {
   buffer_[0] = (result_ & 0xf8) | (hdue_ & 7);
   buffer_[1] = uint8_t(result_ >> 8);
@@ -375,9 +339,7 @@ void FDC::ShiftToResultPhase7() {
   ShiftToResultPhase(7);
 }
 
-// ---------------------------------------------------------------------------
-//  command や EOT を参考にレコード増加
-//
+// command や EOT を参考にレコード増加
 bool FDC::IDIncrement() {
   //  Log("IDInc");
   if ((command_ & 19) == 17) {
@@ -405,9 +367,6 @@ bool FDC::IDIncrement() {
   return false;
 }
 
-// ---------------------------------------------------------------------------
-//  タイマー
-//
 void FDC::SetTimer(Phase p, SchedTimeDelta ticks) {
   t_phase_ = p;
   if (!disk_wait_)
@@ -428,13 +387,11 @@ void IOCALL FDC::PhaseTimer(uint32_t p) {
   (this->*CommandTable[command_ & 31])();
 }
 
-// ---------------------------------------------------------------------------
-
 const FDC::CommandFunc FDC::CommandTable[32] = {
     &FDC::CmdInvalid,        &FDC::CmdInvalid,  // 0
-    &FDC::CmdReadDiagnostic, &FDC::CmdSpecify,     &FDC::CmdSenceDeviceStatus,
+    &FDC::CmdReadDiagnostic, &FDC::CmdSpecify,     &FDC::CmdSenseDeviceStatus,
     &FDC::CmdWriteData,  // 4
-    &FDC::CmdReadData,       &FDC::CmdRecalibrate, &FDC::CmdSenceIntStatus,
+    &FDC::CmdReadData,       &FDC::CmdRecalibrate, &FDC::CmdSenseIntStatus,
     &FDC::CmdWriteData,  // 8
     &FDC::CmdReadID,         &FDC::CmdInvalid,     &FDC::CmdReadData,
     &FDC::CmdWriteID,  // c
@@ -449,9 +406,6 @@ const FDC::CommandFunc FDC::CommandTable[32] = {
     &FDC::CmdInvalid,        &FDC::CmdInvalid,
 };
 
-// ---------------------------------------------------------------------------
-//  ReadData
-//
 void FDC::CmdReadData() {
   //  static int t0;
   switch (phase_) {
@@ -496,9 +450,7 @@ void FDC::CmdReadData() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  Scan*Equal
-//
+// Scan*Equal
 void FDC::CmdScanEqual() {
   switch (phase_) {
     case kIdlePhase:
@@ -596,9 +548,7 @@ void FDC::ReadData(bool deleted, bool scan) {
   return;
 }
 
-// ---------------------------------------------------------------------------
-//  Seek
-//
+// Seek
 void FDC::CmdSeek() {
   switch (phase_) {
     case kIdlePhase:
@@ -615,9 +565,7 @@ void FDC::CmdSeek() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  Recalibrate
-//
+// Recalibrate
 void FDC::CmdRecalibrate() {
   switch (phase_) {
     case kIdlePhase:
@@ -634,9 +582,7 @@ void FDC::CmdRecalibrate() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  指定のドライブをシークする
-//
+// 指定のドライブをシークする
 void FDC::Seek(uint32_t dr, uint32_t cy) {
   dr &= 3;
 
@@ -691,9 +637,7 @@ void IOCALL FDC::SeekEvent(uint32_t dr) {
   seek_state_ &= ~(1 << dr);
 }
 
-// ---------------------------------------------------------------------------
-//  Specify
-//
+// Specify
 void FDC::CmdSpecify() {
   switch (phase_) {
     case kIdlePhase:
@@ -708,19 +652,15 @@ void FDC::CmdSpecify() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  Invalid
-//
+// Invalid
 void FDC::CmdInvalid() {
   Log("Invalid\n");
   buffer_[0] = uint8_t(ST0_IC);
   ShiftToResultPhase(1);
 }
 
-// ---------------------------------------------------------------------------
-//  SenceIntState
-//
-void FDC::CmdSenceIntStatus() {
+// SenseIntState
+void FDC::CmdSenseIntStatus() {
   if (int_requested_) {
     Log("SenceIntStatus ");
     int_requested_ = false;
@@ -746,10 +686,8 @@ void FDC::CmdSenceIntStatus() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  SenceDeviceStatus
-//
-void FDC::CmdSenceDeviceStatus() {
+// SenseDeviceStatus
+void FDC::CmdSenseDeviceStatus() {
   switch (phase_) {
     case kIdlePhase:
       Log("SenceDeviceStatus ");
@@ -773,9 +711,7 @@ uint32_t FDC::GetDeviceStatus(uint32_t dr) {
     return 0x80 | dr;
 }
 
-// ---------------------------------------------------------------------------
-//  WriteData
-//
+// WriteData
 void FDC::CmdWriteData() {
   switch (phase_) {
     case kIdlePhase:
@@ -852,9 +788,7 @@ void FDC::CmdWriteData() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  WriteID Execution
-//
+// WriteID Execution
 void FDC::WriteData(bool deleted) {
   Log("\twrite %.2x %.2x %.2x %.2x\n", idr_.c, idr_.h, idr_.r, idr_.n);
   if (show_status_)
@@ -875,9 +809,7 @@ void FDC::WriteData(bool deleted) {
   return;
 }
 
-// ---------------------------------------------------------------------------
-//  ReadID
-//
+// ReadID
 void FDC::CmdReadID() {
   switch (phase_) {
     case kIdlePhase:
@@ -904,9 +836,7 @@ void FDC::CmdReadID() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  ReadID Execution
-//
+// ReadID Execution
 void FDC::ReadID() {
   CriticalSection::Lock lock(diskmgr_->GetCS());
   result_ = CheckCondition(false);
@@ -922,9 +852,7 @@ void FDC::ReadID() {
   ShiftToResultPhase7();
 }
 
-// ---------------------------------------------------------------------------
-//  WriteID
-//
+// WriteID
 void FDC::CmdWriteID() {
   switch (phase_) {
     case kIdlePhase:
@@ -968,9 +896,7 @@ void FDC::CmdWriteID() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  WriteID Execution
-//
+// WriteID Execution
 void FDC::WriteID() {
 #if defined(LOGNAME) && defined(_DEBUG)
   Log("\tWriteID  sc:%.2x N:%.2x\n", wid_.sc, wid_.n);
@@ -999,9 +925,7 @@ void FDC::WriteID() {
   ShiftToResultPhase7();
 }
 
-// ---------------------------------------------------------------------------
-//  ReadDiagnostic
-//
+// ReadDiagnostic
 void FDC::CmdReadDiagnostic() {
   switch (phase_) {
     int ct;
@@ -1103,9 +1027,7 @@ void FDC::ReadDiagnostic() {
   return;
 }
 
-// ---------------------------------------------------------------------------
-//  Read/Write 操作が実行可能かどうかを確認
-//
+// Read/Write 操作が実行可能かどうかを確認
 uint32_t FDC::CheckCondition(bool write) {
   uint32_t dr = hdu_ & 3;
   hdue_ = hdu_;
@@ -1118,9 +1040,7 @@ uint32_t FDC::CheckCondition(bool write) {
   return 0;
 }
 
-// ---------------------------------------------------------------------------
-//  Read/Write Data 系のパラメータを得る
-//
+// Read/Write Data 系のパラメータを得る
 void FDC::GetSectorParameters() {
   Log("(%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x)\n", buffer_[0], buffer_[1],
       buffer_[2], buffer_[3], buffer_[4], buffer_[5], buffer_[6], buffer_[7]);
@@ -1135,9 +1055,6 @@ void FDC::GetSectorParameters() {
   dtl_ = buffer_[7];
 }
 
-// ---------------------------------------------------------------------------
-//  状態保存
-//
 uint32_t IFCALL FDC::GetStatusSize() {
   return sizeof(Snapshot);
 }
@@ -1234,9 +1151,6 @@ bool IFCALL FDC::LoadStatus(const uint8_t* s) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  device description
-//
 const Device::Descriptor FDC::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr FDC::outdef[] = {

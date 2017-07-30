@@ -198,7 +198,7 @@ class FDC final : public Device {
 
   DiskManager* diskmgr_;
   IOBus* bus_;
-  int pintr;
+  int pintr_;
   Scheduler* scheduler_ = nullptr;
 
   SchedulerEvent* timer_handle_ = nullptr;
@@ -249,8 +249,8 @@ class FDC final : public Device {
   void CmdInvalid();
   void CmdSpecify();
   void CmdRecalibrate();
-  void CmdSenceIntStatus();
-  void CmdSenceDeviceStatus();
+  void CmdSenseIntStatus();
+  void CmdSenseDeviceStatus();
   void CmdSeek();
   void CmdReadData();
   void CmdReadDiagnostic();
