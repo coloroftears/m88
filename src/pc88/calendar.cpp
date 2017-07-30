@@ -19,19 +19,12 @@
 
 namespace pc88core {
 
-// ---------------------------------------------------------------------------
-//  Construct/Destruct
-//
 Calendar::Calendar(const ID& id) : Device(id) {
-  diff_ = 0;
   Reset();
 }
 
 Calendar::~Calendar() {}
 
-// ---------------------------------------------------------------------------
-//  入・出力
-//
 void IOCALL Calendar::Reset(uint32_t, uint32_t) {
   datain_ = 0;
   dataoutmode_ = 0;
@@ -68,9 +61,6 @@ void IOCALL Calendar::Out40(uint32_t, uint32_t data) {
     ShiftData();
 }
 
-// ---------------------------------------------------------------------------
-//  制御
-//
 void Calendar::Command() {
   if (pcmd_ == 7)
     cmd_ = scmd_ | 0x80;
@@ -79,7 +69,7 @@ void Calendar::Command() {
 
   Log("Command = %.2x\n", cmd_);
   switch (cmd_ & 15) {
-    case 0x00:  // register hold_
+    case 0x00:  // register hold
       hold_ = true;
       dataoutmode_ = false;
       break;
@@ -103,9 +93,6 @@ void Calendar::Command() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  データシフト
-//
 void Calendar::ShiftData() {
   if (hold_) {
     if (cmd_ & 0x80) {
@@ -136,14 +123,12 @@ void Calendar::ShiftData() {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  時間取得
-//
 void Calendar::GetTime() {
   time_t ct;
 
   ct = time(&ct) + diff_;
 
+  // Note: localtime() is not thread-safe.
   tm* lt = localtime(&ct);
 
   reg[5] = NtoBCD(lt->tm_year % 100);
@@ -154,9 +139,6 @@ void Calendar::GetTime() {
   reg[0] = NtoBCD(lt->tm_sec);
 }
 
-// ---------------------------------------------------------------------------
-//  時間設定
-//
 void Calendar::SetTime() {
   time_t ct;
   time(&ct);
@@ -177,9 +159,6 @@ void Calendar::SetTime() {
   diff_ = at - ct;
 }
 
-// ---------------------------------------------------------------------------
-//  状態保存
-//
 uint32_t IFCALL Calendar::GetStatusSize() {
   return sizeof(Status);
 }
@@ -216,9 +195,7 @@ bool IFCALL Calendar::LoadStatus(const uint8_t* s) {
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  device description
-//
+// device description
 const Device::Descriptor Calendar::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr Calendar::outdef[] = {
