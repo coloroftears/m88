@@ -62,6 +62,8 @@ class PC88 : public SchedulerDelegate,
   SchedTimeDelta GetFramePeriod() const final;
 
   // Override ICPUTime.
+  // Note: These functions should be marked const, but for compatibility
+  // they are not.
   uint32_t IFCALL GetCPUTick() final { return main_cpu_.GetCount(); }
   uint32_t IFCALL GetCPUSpeed() final { return clock_; }
 
