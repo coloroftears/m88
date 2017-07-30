@@ -178,7 +178,9 @@ struct ITime {
 //  より精度の高い時間を取得するためのインターフェース
 //
 struct ICPUTime {
+  // Returns CPU clocks.
   virtual uint32_t IFCALL GetCPUTick() = 0;
+  // Returns CPU clock speed in SchedClock.
   virtual uint32_t IFCALL GetCPUSpeed() = 0;
 };
 
