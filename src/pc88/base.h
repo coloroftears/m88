@@ -13,14 +13,12 @@ namespace pc88core {
 
 class Config;
 class PC88;
-class TapeManager;
 
 class Base final : public Device {
  public:
   enum IDOut { kReset, kVRTC };
   enum IDIn { kIn30, kIn31, kIn40, kIn6e };
 
- public:
   explicit Base(const ID& id);
   ~Base() final;
 
@@ -42,20 +40,20 @@ class Base final : public Device {
   uint32_t IOCALL In6e(uint32_t);
 
  private:
-  PC88* pc_;
+  PC88* pc_ = nullptr;
 
-  int dipsw_;
-  int flags_;
-  int clock_;
-  int bmode_;
+  int dipsw_ = 0;
+  int flags_ = 0;
+  int clock_ = 0;
+  int bmode_ = 0;
 
-  uint8_t port40_;
-  uint8_t sw30_;
-  uint8_t sw31_;
-  uint8_t sw6e_;
+  uint8_t port40_ = 0;
+  uint8_t sw30_ = 0;
+  uint8_t sw31_ = 0;
+  uint8_t sw6e_ = 0;
 
-  bool autoboot_;
-  bool fv15k_;
+  bool autoboot_ = true;
+  bool fv15k_ = false;
 
   static const Descriptor descriptor;
   static const InFuncPtr indef[];

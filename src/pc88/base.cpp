@@ -21,22 +21,16 @@
 
 namespace pc88core {
 
-// ---------------------------------------------------------------------------
-//  構築・破壊
-//
-Base::Base(const ID& id) : Device(id) {
-  port40_ = 0;
-  autoboot_ = true;
+  Base::Base(const ID& id) : Device(id) {
 }
 
 Base::~Base() {}
 
-// ---------------------------------------------------------------------------
-//  初期化
-//
 bool Base::Init(PC88* pc88) {
   pc_ = pc88;
+
   RTC();
+
   sw30_ = 0xcb;
   sw31_ = 0x79;
   sw6e_ = 0xff;
@@ -46,27 +40,25 @@ bool Base::Init(PC88* pc88) {
       Scheduler::SchedTimeDeltaFromMS(1000000 / 600);
   pc_->GetScheduler()->AddEvent(kRTCInterval, this,
                                 static_cast<TimeFunc>(&Base::RTC), 0, true);
+
   return true;
 }
 
-// ---------------------------------------------------------------------------
-//  スイッチ更新
-//
-void Base::SetSwitch(const Config* cfg) {
-  bmode_ = cfg->basicmode;
-  clock_ = cfg->clock();
-  dipsw_ = cfg->dipsw();
-  flags_ = cfg->flags;
-  fv15k_ = cfg->IsFV15k();
+void Base::SetSwitch(const Config* config) {
+  bmode_ = config->basicmode;
+  clock_ = config->clock();
+  dipsw_ = config->dipsw();
+  flags_ = config->flags;
+  fv15k_ = config->IsFV15k();
 }
 
-// ---------------------------------------------------------------------------
-//  りせっと
-//
 void IOCALL Base::Reset(uint32_t, uint32_t) {
   port40_ =
       0xc0 + (fv15k_ ? 2 : 0) + ((dipsw_ & (1 << 11)) || !autoboot_ ? 8 : 0);
+
+  // Port 6e bit7: 0 if 8MHz
   sw6e_ = (sw6e_ & 0x7f) | ((!clock_ || abs(clock_) >= 60) ? 0 : 0x80);
+
   sw31_ = ((dipsw_ >> 5) & 0x3f) | (bmode_ & 1 ? 0x40 : 0) |
           (bmode_ & 0x10 ? 0 : 0x80);
 
@@ -107,17 +99,13 @@ void IOCALL Base::Reset(uint32_t, uint32_t) {
   Toast::Show(100, 2000, "%s mode", mode);
 }
 
-// ---------------------------------------------------------------------------
-//  Real Time Clock Interrupt (600Hz)
-//
+// Real Time Clock Interrupt (600Hz)
 void IOCALL Base::RTC(uint32_t) {
   pc_->main_bus_.Out(PC88::kPortInt2, 1);
   //  Log("RTC\n");
 }
 
-// ---------------------------------------------------------------------------
-//  Vertical Retrace Interrupt
-//
+// Vertical Retrace Interrupt
 void IOCALL Base::VRTC(uint32_t, uint32_t en) {
   if (en) {
     pc_->VSync();
@@ -130,9 +118,7 @@ void IOCALL Base::VRTC(uint32_t, uint32_t en) {
   }
 }
 
-// ---------------------------------------------------------------------------
-//  In
-//
+// In
 uint32_t IOCALL Base::In30(uint32_t) {
   return sw30_;
 }
@@ -149,9 +135,6 @@ uint32_t IOCALL Base::In6e(uint32_t) {
   return sw6e_ | 0x7f;
 }
 
-// ---------------------------------------------------------------------------
-//  device description
-//
 const Device::Descriptor Base::descriptor = {indef, outdef};
 
 const Device::OutFuncPtr Base::outdef[] = {
