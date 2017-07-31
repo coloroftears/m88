@@ -610,7 +610,8 @@ INT_PTR WinMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
       SetScrollInfo(hdlg, SB_VERT, &si, true);
 
       Update();
-      return true;
+      r = true;
+      break;
 
     case WM_KEYDOWN:
       if (nlines) {
@@ -639,6 +640,14 @@ INT_PTR WinMonitor::DlgProc(HWND hdlg, UINT msg, WPARAM wp, LPARAM lp) {
           SendMessage(hwnd, WM_VSCROLL, MAKELONG(sn, 0), 0L);
       }
       break;
+
+    case WM_MOUSEWHEEL: {
+      int delta = GET_WHEEL_DELTA_WPARAM(wp);
+      if (delta != 0)
+        SendMessage(hwnd, WM_VSCROLL,
+                    MAKELONG((delta < 0 ? SB_LINEDOWN : SB_LINEUP), 0), 0L);
+    }
+    break;
 
     case WM_DRAWITEM:
       if ((UINT)wp == 1) {
