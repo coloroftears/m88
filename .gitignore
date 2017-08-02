@@ -1,6 +1,7 @@
 # Compiled Object files
-Win32/
-x64/
+/Win32/
+/x64/
+/out/
 *.lib
 *.obj
 *.pdb
