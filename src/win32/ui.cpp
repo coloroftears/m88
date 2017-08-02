@@ -126,6 +126,9 @@ bool WinUI::InitM88(const char* cmdline) {
   if (!SanityCheck())
     return false;
 
+  // Prevent display from sleeping.
+  SetThreadExecutionState(ES_DISPLAY_REQUIRED);
+
   //  エミュレーション開始
   Log("%d\temulation begin\n", timeGetTime());
   core.Wait(false);
