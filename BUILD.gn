@@ -30,7 +30,7 @@ executable("m88") {
   configs += [ ":m88_config" ]
 
   if (is_win32) {
-    deps += [ "//src/win32:win32" ]
+    deps += [ "//src/win32:m88win" ]
   }
 }
 

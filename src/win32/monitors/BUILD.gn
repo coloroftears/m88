@@ -1,0 +1,23 @@
+static_library("monitors") {
+  configs += [ "//build/config:common_config" ]
+  sources = [
+    "basmon.cpp",
+    "basmon.h",
+    "codemon.cpp",
+    "codemon.h",
+    "iomon.cpp",
+    "iomon.h",
+    "loadmon.cpp",
+    "loadmon.h",
+    "memmon.cpp",
+    "memmon.h",
+    "mvmon.cpp",
+    "mvmon.h",
+    "regmon.cpp",
+    "regmon.h",
+    "soundmon.cpp",
+    "soundmon.h",
+    "winmon.cpp",
+    "winmon.h",
+  ]
+}
