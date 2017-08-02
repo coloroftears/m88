@@ -1,0 +1,39 @@
+declare_args() {
+  # Build for win32 environment.
+  is_win32 = false
+}
+
+config("m88_config") {
+  include_dirs = [ "src" ]
+}
+
+executable("m88") {
+  sources = [
+    "build/main.cpp",
+  ]
+
+  deps = [
+    "//src/common:common",
+    "//src/devices:fmgen",
+    "//src/devices:z80cpu",
+    "//src/pc88:pc88",
+  ]
+
+  configs += [ ":m88_config" ]
+
+  if (is_win32) {
+    deps += [ "//src/win32:win32" ]
+  }
+}
+
+executable("m88_unit_tests") {
+  deps = [
+    "//src/common:common_unittests",
+    "//testing/gtest:gtest_main",
+  ]
+
+  configs += [ ":m88_config" ]
+
+  if (is_win32) {
+  }
+}

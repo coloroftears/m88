@@ -1,0 +1,28 @@
+static_library("fmgen") {
+  configs += [ "//build/config:common_config" ]
+  sources = [
+    "fmgen.cpp",
+    "fmgen.h",
+    "fmgen_types.h",
+    "fmtimer.cpp",
+    "fmtimer.h",
+    #"opm.cpp",
+    #"opm.h",
+    "opna.cpp",
+    "opna.h",
+    "psg.cpp",
+    "psg.h",
+    "tables.h",
+  ]
+}
+
+static_library("z80cpu") {
+  configs += [ "//build/config:common_config" ]
+  sources = [
+    "z80.h",
+    "z80c.cpp",
+    "z80c.h",
+    "z80diag.cpp",
+    "z80diag.h",
+  ]
+}
