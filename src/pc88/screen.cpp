@@ -1423,7 +1423,7 @@ void Screen::ApplyConfig(const Config* config) {
 // ---------------------------------------------------------------------------
 //  Table 作成
 //
-packed Screen::BETable0[1 << sizeof(packed)] = {-1};
+packed Screen::BETable0[1 << sizeof(packed)];
 packed Screen::BETable1[1 << sizeof(packed)];
 packed Screen::BETable2[1 << sizeof(packed)];
 packed Screen::E80Table[1 << sizeof(packed)];
@@ -1440,7 +1440,8 @@ packed Screen::BE80Table[4];
 #endif
 
 void Screen::CreateTable() {
-  if (BETable0[0] == -1) {
+  static bool done = false;
+  if (!done) {
     int i;
     for (i = 0; i < (1 << sizeof(packed)); i++) {
       int j;
