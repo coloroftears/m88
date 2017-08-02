@@ -1,0 +1,6 @@
+config("common_config") {
+  include_dirs = [
+    "//src",
+    "//third_party",
+  ]
+}

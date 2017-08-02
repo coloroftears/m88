@@ -1,0 +1,34 @@
+config("gtest_config") {
+  include_dirs = [
+      "../../third_party/gtest/googletest/include",
+      "../../third_party/gtest/googletest"
+  ]
+
+  defines = []
+}
+
+static_library("gtest") {
+  sources = [
+    "//third_party/gtest/googletest/src/gtest-death-test.cc",
+    "//third_party/gtest/googletest/src/gtest-filepath.cc",
+    "//third_party/gtest/googletest/src/gtest-port.cc",
+    "//third_party/gtest/googletest/src/gtest-printers.cc",
+    "//third_party/gtest/googletest/src/gtest-test-part.cc",
+    "//third_party/gtest/googletest/src/gtest-typed-test.cc",
+    "//third_party/gtest/googletest/src/gtest.cc",
+  ]
+
+  defines = []
+
+  public_configs = [ ":gtest_config" ]
+}
+
+source_set("gtest_main")  {
+  sources = [
+      "//third_party/gtest/googletest/src/gtest_main.cc",
+  ]
+
+  public_deps = [
+    ":gtest",
+  ]
+}
