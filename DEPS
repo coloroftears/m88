@@ -8,7 +8,7 @@ vars = {
 
 deps = {
   'm88/buildtools': Var('chromium_git') + '/chromium/buildtools.git' + '@' + Var('buildtools_revision'),
-  'm88/third_party/gtest': 'git@github.com:google/googletest.git' + '@' + Var('gtest_revision'),
+  'm88/third_party/gtest': 'git://github.com/google/googletest.git' + '@' + Var('gtest_revision'),
   'm88/third_party/picojson': 'git://github.com/kazuho/picojson.git' + '@' + Var('picojson_revision'),
   'm88/tools/gyp': Var('chromium_git') + '/external/gyp.git' + '@' + Var('gyp_revision'),
 }
