@@ -32,7 +32,7 @@
 #include "pc88/sio.h"
 #include "pc88/subsys.h"
 #include "pc88/tape_manager.h"
-#include "win32/monitors/loadmon.h"
+// #include "win32/monitors/loadmon.h"
 
 //#define LOGNAME "pc88"
 #include "common/diag.h"
@@ -119,7 +119,7 @@ SchedTimeDelta PC88::Proceed(SchedTimeDelta ticks,
 //  実行
 //
 SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
-  LOADBEGIN("Core.CPU");
+  // LOADBEGIN("Core.CPU");
   int exc = ticks * clock_;
   if (!(cpumode_ & stopwhenidle) || subsystem_->IsBusy() || fdc_->IsBusy()) {
     if ((cpumode_ & 1) == ms11)
@@ -131,7 +131,7 @@ SchedTimeDelta PC88::Execute(SchedTimeDelta ticks) {
   }
   exc += dexc_;
   dexc_ = exc % clock_;
-  LOADEND("Core.CPU");
+  // LOADEND("Core.CPU");
   return exc / clock_;
 }
 
@@ -164,7 +164,7 @@ void PC88::UpdateScreen(bool refresh) {
   if (dstat & Draw::shouldrefresh)
     refresh = true;
 
-  LOADBEGIN("Screen");
+  // LOADBEGIN("Screen");
 
   if (!updated_ || refresh) {
     if (!(config_flags_ & Config::kDrawPriorityLow) ||
@@ -188,7 +188,7 @@ void PC88::UpdateScreen(bool refresh) {
       }
     }
   }
-  LOADEND("Screen");
+  // LOADEND("Screen");
   if (draw_->GetStatus() & Draw::readytodraw) {
     if (updated_) {
       updated_ = false;
