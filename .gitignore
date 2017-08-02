@@ -11,6 +11,7 @@
 /buildtools
 
 # Work files
+*.aps
 *.db
 *.dmp
 *.ini
