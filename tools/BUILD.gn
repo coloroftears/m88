@@ -1,0 +1,11 @@
+config("tools_config") {
+  include_dirs = [ "." ]
+}
+
+executable("writetag") {
+  sources = [
+    "writetag/writetag.cpp",
+  ]
+
+  configs += [ ":tools_config" ]
+}

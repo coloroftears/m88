@@ -7,6 +7,14 @@ config("m88_config") {
   include_dirs = [ "src" ]
 }
 
+group("gn_all") {
+  deps = [
+    ":m88",
+    ":m88_unit_tests",
+    "//tools:writetag",
+  ]
+}
+
 executable("m88") {
   sources = [
     "build/main.cpp",
