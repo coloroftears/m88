@@ -1,16 +1,19 @@
 # Compiled Object files
-Debug/
-Release/
-Tuning/
+Win32/
+x64/
 *.lib
 *.obj
+*.pdb
+*.o
+
+# Third party
+/buildtools
 
 # Work files
 *.db
 *.dmp
-*.dmp
 *.ini
-*.opendb
+*.vc.opendb
 *.suo
 *.user
 .vs/
