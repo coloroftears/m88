@@ -171,7 +171,9 @@ bool Sound::Update(ISoundSource* /*src*/) {
     // sample = ticks * (rate/50) / clock / 2000
 
     // MulDiv(a, b, c) = (int64) a * b / c
-    int a = MulDiv(time, rate50_, pc_->GetEffectiveSpeed()) + tdiff_;
+    // int a = MulDiv(time, rate50_, pc_->GetEffectiveSpeed()) + tdiff_;
+    int a = static_cast<int>(static_cast<int64_t>(time) * rate50_ /
+                             pc_->GetEffectiveSpeed()) + tdiff_;
     //      a = MulDiv(a, mix_rate_, sampling_rate_);
     int samples = a / 2000;
     tdiff_ = a % 2000;
