@@ -11,7 +11,7 @@ group("gn_all") {
   deps = [
     ":m88",
     ":m88_unit_tests",
-    "//tools:writetag",
+    "//tools/writetag:writetag",
   ]
 }
 
